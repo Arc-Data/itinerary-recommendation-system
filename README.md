@@ -1,4 +1,4 @@
-# itinerary-recommendation-system
+### itinerary-recommendation-system
 Built using Django + React + Tensorflow Recommenders
 
 ## Installation Instructions ##
@@ -17,6 +17,15 @@ Type the following in the terminal
 ```
 cd C:/path/to/project/folder
 virtualenv env
+```
+
+The project root folder should now look like this
+```
+itinerary-recommendation-system
+|- env
+|- frontend
+|- project
+|- README.md
 ```
 
 Activate the virtual environment by typing this to the terminal and move to the project folder afterwards
