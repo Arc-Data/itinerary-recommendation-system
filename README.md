@@ -1,0 +1,43 @@
+# itinerary-recommendation-system
+Built using Django + React + Tensorflow Recommenders
+
+## Installation Instructions ##
+
+Before proceeding, you must have an appropriate version of Python installed on your computer.
+
+Clone the project into your local folder.
+
+```
+git clone https://github.com/Arc-Data/itinerary-recommendation-system.git
+```
+
+Create a virtual environment to support appropriate versions in the project root folder.
+Type the following in the terminal
+
+```
+cd C:/path/to/project/folder
+virtualenv env
+```
+
+Activate the virtual environment by typing this to the terminal and move to the project folder afterwards
+
+```
+env/Scripts/activate
+cd project
+```
+
+Install project backend dependencies and use command pip freeze to confirm you have installed the project dependencies
+
+```
+pip install -r requirements.txt
+pip freeze
+cd ..
+```
+
+Change directory into frontend and install frontend dependencies
+
+```
+npm install 
+```
+
+
