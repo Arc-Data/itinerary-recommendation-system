@@ -49,4 +49,14 @@ Change directory into frontend and install frontend dependencies
 npm install 
 ```
 
+## Backend Installation ##
+
+Make sure you have MySQL installed.
+
+'''
+CREATE DATABASE irsdb;
+CREATE USER irsadmin IDENTIFIED BY 'irspass';
+GRANT ALL ON irsdb . * TO ‘irsadmin’@’%’;
+FLUSH PRIVILEGES;
+'''
 
