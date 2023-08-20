@@ -24,6 +24,7 @@ rather than generating a complete itinerary
 '''
 
 class User(AbstractUser):
+    email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
 
@@ -44,10 +45,10 @@ class Location(models.Model):
     def __str__(self):
         return self.name
 
-
 class Bookmark(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     spot = models.ForeignKey("Spot", on_delete=models.CASCADE)
+
     class Meta:
         unique_together = ('user', 'spot')
 
