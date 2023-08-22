@@ -1,7 +1,12 @@
-// import { useState, useEffect } from 'react'
+import React from 'react';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import LandingPage from './pages/LandingPage';
+import DetailPage from './pages/DetailPage';
+import Login from './pages/Login';
+import Sign from './pages/Sign';
 
-function App() {
-  // const [popular, setPopular] = useState()
+
+ // const [popular, setPopular] = useState()
   
   // useEffect(() => {
   //   fetch('http://127.0.0.1:8000/popular/')
@@ -11,9 +16,16 @@ function App() {
 
   // console.log(popular)
 
+export default  function App() {
   return (
-    <div>Nice</div>
-  )
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/detailPage" element={<DetailPage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/sign" element={<Sign />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
