@@ -49,14 +49,32 @@ Change directory into frontend and install frontend dependencies
 npm install 
 ```
 
-## Backend Installation ##
+## Backend MySQL Configuration ##
 
 Make sure you have MySQL installed.
 
-'''
+```
 CREATE DATABASE irsdb;
+USE irsdb;
+
 CREATE USER irsadmin IDENTIFIED BY 'irspass';
 GRANT ALL ON irsdb . * TO ‘irsadmin’@’%’;
 FLUSH PRIVILEGES;
+```
+
+Migrate the models.
+
+```
+python manage.py makemigrations
+python manage.py migrate
+```
+
+Load the script for database entries
+
+'''
+python manage.py import_csv
 '''
 
+
+
+pip install virtualenv

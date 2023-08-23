@@ -1,5 +1,7 @@
 import React from "react";
+/*ICON*/
 import userIcon from "/images/user.png";
+/*DATA*/
 import detailsData from "../detailsData";
 
 export default function AddReview({ isOpen, onClose }) {

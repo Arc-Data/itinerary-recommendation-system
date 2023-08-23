@@ -17,7 +17,7 @@ export default function UserNav() {
       </Link>
 
       <div className='search--bar-container'>
-        <img className='search-icon' src={searchIcon} alt="Search Icon" />
+        <img className='search--icon' src={searchIcon} alt="Search Icon" />
         <input
           type="text"
           placeholder="Search CebuRoute"
@@ -33,7 +33,7 @@ export default function UserNav() {
           onClick={toggleLogoutPopup}
         />
         {logoutPopupVisible && (
-          <div className="logout-popup">
+          <div className="logout--popup">
             <button onClick={toggleLogoutPopup}>Logout</button>
           </div>
         )}
