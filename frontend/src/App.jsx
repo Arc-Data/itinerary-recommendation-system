@@ -1,13 +1,9 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 /*PAGES*/
-import LandingPage from './pages/LandingPage';
 import DetailPage from './pages/DetailPage';
+import LandingPage from './pages/LandingPage';
 import SearchPage from './pages/SearchPage';
-import Login from './pages/Login';
-import Sign from './pages/Sign';
-
-
 
  // const [popular, setPopular] = useState()
   
@@ -23,10 +19,13 @@ export default  function App() {
   return (
     <BrowserRouter>
       <Routes>
+<<<<<<< HEAD
         <Route path="/" element={<LandingPage />} />
+=======
+        <Route index path="/" element={<LandingPage />} />
+        <Route path="/search" element={<SearchPage />} />
+>>>>>>> b1cec8f0594caf4ae4712b63b7aede601b9388d7
         <Route path="/detailPage" element={<DetailPage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/sign" element={<Sign />} />
       </Routes>
     </BrowserRouter>
   );
