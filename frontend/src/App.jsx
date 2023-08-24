@@ -1,7 +1,10 @@
-import React from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import './App.css'
-import data from './data'
+import React from 'react';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+/*PAGES*/
+import data from './data';
+import DetailPage from './pages/DetailPage';
+import LandingPage from './pages/LandingPage';
+import SearchPage from './pages/SearchPage';
 import Layout from './components/Layout'
 import Users from './pages/Users'
 import Location from './pages/Location'
@@ -14,17 +17,21 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Layout />}>
-            <Route index element={<Users users={data[0].users}/>}></Route>
-            <Route path="location" element={<Location locations={data[0].locations}/>}></Route>
-            <Route path="accommodation" element={<Accommodation />}></Route>
-            <Route path="activity" element={<Activity />}></Route>
-            <Route path="food" element={<Food />}></Route>
-            <Route path="add-location" element={<AddLocation />}></Route>
+        <Route index path="/" element={<LandingPage />} />
+        <Route path="/search" element={<SearchPage />} />
+        <Route path="/detailPage" element={<DetailPage />} />
+        
+        <Route path="/admin" element={<Layout />}>
+            <Route path = "/admin/" index element={<Users users={data[0].users}/>}></Route>
+            <Route path="/admin/location" element={<Location locations={data[0].locations}/>}></Route>
+            <Route path="/admin/accommodation" element={<Accommodation />}></Route>
+            <Route path="/admin/activity" element={<Activity />}></Route>
+            <Route path="/admin/food" element={<Food />}></Route>
+            <Route path="/admin/add-location" element={<AddLocation />}></Route>
         </Route>
       </Routes>
     </BrowserRouter>
   )
 }
 
-export default App
+export default App;
