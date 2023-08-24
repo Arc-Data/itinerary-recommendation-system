@@ -1,11 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@200;400;700&display=swap');
+
+:root {
+	font-family: 'Work Sans', sans-serif;
+	line-height: 1.5;
+	font-weight: 400;
+
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-text-size-adjust: 100%;
+}
+
 * {
-  box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 body {
-  margin: 0;
-  font-family: 'Work Sans', sans-serif;
- 
+	margin: 0;
+	font-family: 'Work Sans', sans-serif;
 }
 
 /* USER NAVBAR*/
@@ -138,7 +151,7 @@ body {
 
 /*MODAL LOGIN and SignUp*/
 .modal--open {
-	overflow:hidden;
+overflow:hidden;
 }
 
 .modal--overlay { /*FOR LogIn AND SignUp AND AddReview*/
@@ -296,7 +309,6 @@ body {
 .addReview--rating{
     display: flex;
 }
-
 
 /*View Password*/
 .password-input-container {
@@ -494,15 +506,15 @@ input[type="text"] {
 
 /*FOR IPAD*/
 @media screen and (max-width: 880px) {
-.hero--cards {
-    grid-template-columns: repeat(1, 1fr); 
-}
+	.hero--cards {
+		grid-template-columns: repeat(1, 1fr); 
+	}
 }
 
 @media screen and (min-width: 768px) and (max-width: 880px) {
-.hero--cards {
-    grid-template-columns: repeat(2, 1fr);
-}
+	.hero--cards {
+	grid-template-columns: repeat(2, 1fr);
+	}
 }
 
 /* DETAIL PAGES */
