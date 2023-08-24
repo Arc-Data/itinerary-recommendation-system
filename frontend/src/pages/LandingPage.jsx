@@ -23,8 +23,9 @@ export default function LandingPage() {
 		}
 		setSignOpen(prev => !prev)
 	}
-
-	const cards = cardData.map(item => (
+	const limitedCardData = cardData.slice(0, 6);
+	
+	const cards = limitedCardData.map((item) => (
 		<Card key={item.id} {...item} />
 	));
 
@@ -35,7 +36,7 @@ export default function LandingPage() {
 				toggleLoginModal={toggleLoginModal} 
 				isSignOpen={isSignOpen}
 				toggleSignModal={toggleSignModal}/>
-			<div className='hero'>
+			<div className='hero d-Grid'>
 				<div className='title'>
 					<h1 className='title--h1'>Plan your next trip to Cebu</h1>
 					<p className='title--p'>
@@ -48,7 +49,7 @@ export default function LandingPage() {
 				</div>
 				<img className='hero--route-photo' src='../images/1.png' alt='Route' />
 			</div>
-			<div className='hero--map'>
+			<div className='hero--map d-Grid'>
 				<div className='hero--map-photo1'>
 					<img className='hero--map-photo' src="../images/3.png" />
 				</div>

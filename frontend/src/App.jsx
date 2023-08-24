@@ -17,22 +17,19 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-<<<<<<< HEAD
-        <Route path="/" element={<LandingPage />} />
-=======
-        <Route index path="/" element={<LandingPage />} />
-        <Route path="/search" element={<SearchPage />} />
->>>>>>> 8edb35c946d505eadff2fec3f73945592e923b77
+        <Route path="/" element={<SearchPage />} />
         <Route path="/detailPage" element={<DetailPage />} />
         
-        <Route path="/admin" element={<Layout />}>
+        {/*<Route path="/admin" element={<Layout />}>
             <Route path = "/admin/" index element={<Users users={data[0].users}/>}></Route>
             <Route path="/admin/location" element={<Location locations={data[0].locations}/>}></Route>
             <Route path="/admin/accommodation" element={<Accommodation />}></Route>
             <Route path="/admin/activity" element={<Activity />}></Route>
             <Route path="/admin/food" element={<Food />}></Route>
             <Route path="/admin/add-location" element={<AddLogcation />}></Route>
-        </Route>
+
+          </Route>*/}
+
       </Routes>
     </BrowserRouter>
   )
