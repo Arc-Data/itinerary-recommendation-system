@@ -23,7 +23,7 @@ export default  function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<SearchPage />} />
+        <Route path="/" element={<LandingPage />} />
         <Route path="/detailPage" element={<DetailPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/sign" element={<Sign />} />
