@@ -19,6 +19,7 @@ body {
     align-items: center;
     width: 100%;
     z-index: 1000;
+    padding: 15px 120px;
 }
 
 .search--bar-container {
@@ -26,16 +27,14 @@ body {
     align-items: center;
     background-color: #F7F7F7;
     border-radius: 5px;
-    padding: 5px;
+    padding: 5px; 
     width: 600px;
     margin: 0 auto; 
-    margin-right: 50px;
 }
 
 .search--icon {
     width: 20px;
     height: 20px;
-    margin-left: 5px;
 }
 
 .search--bar {
@@ -72,20 +71,18 @@ body {
     display: flex;
     background-color: #D9ED92;
     justify-content: space-between;
-    padding: 10px 10px;
+    padding: 10px 120px;
     align-items: center;
     width: 100%;
     z-index: 1000; 
 }
 
 .cebu--route {
-    margin: 0 50px;
     max-height: 60px;
 }
 
 .link {
     display: flex;
-    margin: 0 50px;
     color: #184E77;
     text-align: center;
     margin-left: auto;
@@ -94,7 +91,8 @@ body {
 .link--button {
     margin-right: 20px;
     padding: 0;
-    font-size: 8px;
+    font-weight: 700;
+    font-size: 12px;
     background-color: #D9ED92;
     color: inherit;
     border: none;
@@ -324,9 +322,8 @@ input[type="text"] {
 /*LANDING PAGE- PLAN*/
 .hero {
     background-color: #D9ED92;
-    height: auto;
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     align-items: center;
     border-radius: 0 0 40px 40px;
     padding: 20px;

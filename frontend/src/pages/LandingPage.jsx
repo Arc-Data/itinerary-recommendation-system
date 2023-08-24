@@ -46,9 +46,7 @@ export default function LandingPage() {
 					Get Started
 					</button>
 				</div>
-				<div className='hero--route'>
-					<img className='hero--route-photo' src='../images/1.png' alt='Route' />
-				</div>
+				<img className='hero--route-photo' src='../images/1.png' alt='Route' />
 			</div>
 			<div className='hero--map'>
 				<div className='hero--map-photo1'>
