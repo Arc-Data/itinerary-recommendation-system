@@ -1,9 +1,10 @@
-/*PAGES*/
-import Login from './Login.jsx';
 import { Link } from 'react-router-dom';
+/*PAGES*/
+import Modal from './Modal.jsx';
+import Login from './Login.jsx';
+import Signup from './Signup.jsx';
 
-
-export default function Navbar({isLoginOpen, toggleLoginModal}) {
+export default function Navbar({isLoginOpen, toggleLoginModal, isSignOpen, toggleSignModal}) {
 	return (
 		<>
 			<nav className='navbar'>
@@ -14,12 +15,21 @@ export default function Navbar({isLoginOpen, toggleLoginModal}) {
 					<button className='link--button' onClick={toggleLoginModal}>
 						<h1 className='login--text'>LOGIN</h1>
 					</button>
-					<button className='link--button'>
+					<button className='link--button' onClick={toggleSignModal}>
 						<h1 className='sign--text'>SIGN UP</h1>
 					</button>
 				</div>
 			</nav>
-			{isLoginOpen && <Login onClose={toggleLoginModal}/>}
+			{isLoginOpen && (
+				<Modal onClose={toggleLoginModal}>
+					<Login onClose={toggleLoginModal}/>
+				</Modal>
+			)}
+			{isSignOpen && (
+				<Modal onClose={toggleSignModal}>
+					<Signup onClose={toggleSignModal}/>
+				</Modal>
+			)}
 		</>
 	);
 }

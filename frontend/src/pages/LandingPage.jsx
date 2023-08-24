@@ -8,12 +8,20 @@ import cardData from '../cardData';
 
 export default function LandingPage() {
 	const [isLoginOpen, setLoginOpen] = useState(false)
-
+	const [isSignOpen, setSignOpen] = useState(false)
+	
 	const toggleLoginModal = (event) => {
 		if(event) {
 			event.stopPropagation();
 		}
 		setLoginOpen(prev => !prev)
+	}
+	
+	const toggleSignModal = (event) => {
+		if(event) {
+			event.stopPropagation();
+		}
+		setSignOpen(prev => !prev)
 	}
 
 	const cards = cardData.map(item => (
@@ -22,7 +30,11 @@ export default function LandingPage() {
 
 	return (
 		<div>
-			<Navbar isLoginOpen={isLoginOpen} toggleLoginModal={toggleLoginModal}/>
+			<Navbar 
+				isLoginOpen={isLoginOpen} 
+				toggleLoginModal={toggleLoginModal} 
+				isSignOpen={isSignOpen}
+				toggleSignModal={toggleSignModal}/>
 			<div className='hero'>
 				<div className='title'>
 					<h1 className='title--h1'>Plan your next trip to Cebu</h1>
