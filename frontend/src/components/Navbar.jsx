@@ -22,12 +22,12 @@ export default function Navbar({isLoginOpen, toggleLoginModal, isSignOpen, toggl
 			</nav>
 			{isLoginOpen && (
 				<Modal onClose={toggleLoginModal}>
-					<Login onClose={toggleLoginModal}/>
+					<Login/>
 				</Modal>
 			)}
 			{isSignOpen && (
 				<Modal onClose={toggleSignModal}>
-					<Signup onClose={toggleSignModal}/>
+					<Signup/>
 				</Modal>
 			)}
 		</>

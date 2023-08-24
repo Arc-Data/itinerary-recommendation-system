@@ -128,6 +128,10 @@ cursor: pointer;
 }
 
 /*MODAL LOGIN and SignUp*/
+.modal--open {
+	overflow:hidden;
+}
+
 .modal--overlay { /*FOR LogIn AND SignUp AND AddReview*/
 position: fixed;
 top: 0;

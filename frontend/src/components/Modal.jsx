@@ -10,9 +10,11 @@ const Modal = ({ onClose, children }) => {
             }
         };
 
+        document.body.classList.add("modal--open")
         document.addEventListener("click", handleClickOutside);
 
         return () => {
+            document.body.classList.remove("modal--open")
             document.removeEventListener("click", handleClickOutside);
         };
     }, [onClose]);

@@ -1,7 +1,6 @@
-import { useRef, useState, useEffect } from "react"
-import { Link } from "react-router-dom"
+import { useState } from "react"
 
-const Signup = ({onClose}) => {
+const Signup = () => {
     const [showPassword, setShowPassword] = useState(false)
 
     const togglePasswordVisibility = () => {
