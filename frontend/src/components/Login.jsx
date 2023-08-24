@@ -40,9 +40,9 @@ const Login = () => {
 
                 <button className='button-login-sign' type="submit">Login</button>
             </form>
-            <div className="login-sign-link">
+            {/* <div className="login-sign-link">
                 Don't have an account? <Link to="/sign">Sign Up</Link>
-            </div>
+            </div> */}
         </div>
     )
 }
