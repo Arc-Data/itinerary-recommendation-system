@@ -13,9 +13,9 @@ const Login = () => {
     return (
         <div>
             <h2 className='modal-login-sign-text'>Login</h2>
-            <form className='modal-login-sign-form' onSubmit={loginUser}>
+            <form className='modal-login-sign-form' onSubmit={(e) => loginUser(e)}>
                 <label>Email:</label>
-                <input type="email" placeholder="Enter your email" />
+                <input type="email" name="email" placeholder="Enter your email" />
 
                 <label>
                 Password:
@@ -24,6 +24,7 @@ const Login = () => {
                     <input
                         type={showPassword ? "text" : "password"}
                         placeholder="Enter your password"
+                        name="password"
                     />
                     <button
                         type="button"
