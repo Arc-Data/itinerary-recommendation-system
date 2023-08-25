@@ -3,7 +3,6 @@ from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 
-
 '''
 how do i express difference in time schedules and sometimes varying fees
 do i simply express fees as an estimation of expenses per person?
