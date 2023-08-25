@@ -22,11 +22,15 @@ rather than generating a complete itinerary
 '''
 
 class User(AbstractUser):
+    email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
 
     class Meta:
         db_table = 'auth_user'
+
+    def get_full_name(self):
+        return self.first_name + " " + self.last_name
 
 class Location(models.Model):
     name = models.CharField(max_length=250, unique=True)
@@ -36,25 +40,44 @@ class Location(models.Model):
     longitude = models.FloatField()
     image = models.ImageField(upload_to='location_images/', default='location_images/Background.jpg')
 
+    def __str__(self):
+        return self.name
+
+class Bookmark(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    spot = models.ForeignKey("Spot", on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('user', 'spot')
+
+    def __str__(self):
+        return f"{self.user.get_full_name} bookmarked {self.spot.name}"
+
 class Spot(Location):
     fees = models.PositiveIntegerField()
     expected_duration = models.DurationField(default=timedelta(hours=1))
+    interested = models.ManyToManyField(User, through=Bookmark, related_name="bookmarks")
     # opening_time = models.TimeField()
     # closing_time = models.TimeField()
-    historical_relevance = models.PositiveIntegerField(default=1)
-    art_focus = models.PositiveIntegerField(default=1)
-    activity_focus = models.PositiveIntegerField(default=1)
+
+    def __str__(self):
+        return self.name
+
+class Tag(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
 
 class Accomodation(Location):
-    pass
+    
+    def __str__(self):
+        return self.name
 
 class FoodPlace(Location):
-    # opening_time = models.TimeField()
-    # closing_time = models.TimeField()
-    pass
-
-class Activity(Location):
-    fees = models.PositiveIntegerField()
+ 
+    def __str__(self):
+        return self.name
 
 class Itinerary(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

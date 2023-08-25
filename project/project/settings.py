@@ -189,3 +189,8 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 AUTH_USER_MODEL = 'api.User'
+
+AUTHENTICATION_BACKENDS = [
+    'api.backends.EmailBackend',  # Replace 'your_project' with your project name
+    'django.contrib.auth.backends.ModelBackend',  # Keep the default ModelBackend
+]
