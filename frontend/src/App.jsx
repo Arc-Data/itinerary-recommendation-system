@@ -17,8 +17,8 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<SearchPage />} />
-        <Route path="/detailPage" element={<DetailPage />} />
+        <Route path="/" element={<LandingPage />} />
+        {/* <Route path="/detailPage" element={<DetailPage />} /> */}
         
         {/*<Route path="/admin" element={<Layout />}>
             <Route path = "/admin/" index element={<Users users={data[0].users}/>}></Route>
@@ -26,7 +26,7 @@ function App() {
             <Route path="/admin/accommodation" element={<Accommodation />}></Route>
             <Route path="/admin/activity" element={<Activity />}></Route>
             <Route path="/admin/food" element={<Food />}></Route>
-            <Route path="/admin/add-location" element={<AddLogcation />}></Route>
+            <Route path="/admin/add-location" element={<AddLocation />}></Route>
 
           </Route>*/}
 

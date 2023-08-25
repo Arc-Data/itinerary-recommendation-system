@@ -1,10 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@200;400;700&display=swap');
 
-
 /*GENERAL STYLE*/
 :root {
 	font-family: 'Work Sans', sans-serif;
-	line-height: 1.5;
 	font-weight: 400;
 
 	font-synthesis: none;
@@ -16,6 +14,7 @@
 
 * {
 	box-sizing: border-box;
+    line-height: 1;
 }
 
 body {
@@ -23,10 +22,17 @@ body {
 	font-family: 'Work Sans', sans-serif;
 }
 
+button {
+    color: #FFFFFF;
+    border: none;
+    text-decoration: none;
+    cursor: pointer;
+}
+
 /*DISPLAY GRID FOR LANDING PAGE*/
 .d-Grid {
     display: grid;
-    grid-template-columns: 700px 1fr;
+    grid-template-columns: 800px 1fr;
     align-items: center;
 }
 
@@ -355,52 +361,72 @@ input[type="text"] {
 
 /*LANDING PAGE- PLAN*/
 .hero {
-    background-color: #D9ED92;
-    border-radius: 0 0 40px 40px;
-    padding: 60px 120px;
+    background-image: linear-gradient(to left, rgba(0, 0, 0, 0), rgba(0, 0, 0.5, 0.7)), url('/herobackground.jpeg');
+    background-position: center top;
+    background-size: cover;
+    border-radius: 0 0 50px 50px;
+    height: 700px;
+    padding: clamp(80px, 20vw, 190px) clamp(60px, 10vw, 120px);
+    color: #FFFFFF;
 }
-
-.hero--route-photo {
-    margin: 0 auto;
-    max-width: 500px;
-    object-fit: cover;
-    object-position: center;
-    width: 100%;
+.title > h1 {
+    font-size: clamp(60px, 10vw, 100px);
 }
-
 .title {
-    color: #333333;
-    text-align: center;
+    width: clamp(60%, min(100%, 60%), 100%);
 }
-
-.title--h1 {
-    text-align: left;
-    font-size: 80px;
-    font-weight: 900;
-    line-height: 1;
+.title > h1 {
+    font-weight: 800;
+    margin: 0;
 }
-
-.title--p  {
-    justify-content: center;
-    font-size: 20px;
-    max-width: 75%;
-    text-align: justify;
-    text-justify: auto;
+.title > p {
+    font-size: clamp(12px, 5vw, 30px);
+    font-weight: 200;
 }
-
-.button--started {
-    background-color: #184E77;
-    border: none;
-    text-decoration: none;
+.title > button {
+    background-color: #38A3A5;
     padding: 15px 50px;
     font-size: 20px;
-    color: #FFFFFF;
     border-radius: 10px;
-    display: flex;
-    align-items: center; 
-    justify-content: center; 
 }
-
+.hero--guide {
+    background-image: url('/beach.jpg');
+    height: 700px;
+    background-position: center bottom;
+    background-size: cover;
+    margin: 40px 30px;
+    border-radius: 50px;
+    padding: 50px;
+    color: #184E77;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.guide--cards {
+    display: flex;
+    flex-direction: row;
+}
+.guide--cards .card > h1 {
+    font-size: 50px;
+}
+.guide--cards .card > p {
+    font-size: 20px;
+}
+.guide--cards > .card {
+    background-color: #F5F1ED;
+    border-radius: 50px;
+    border-top-left-radius: 0; /* No border radius for this corner */
+    border-top: 10px solid #38A3A5;
+    padding: 20px 40px;
+    margin: 10px;
+}
+.hero--guide > p {
+    color: white;
+    font-size: 20px;
+    font-weight: 200;
+    margin-top: 50px;
+}
 /*LANDING PAGE- SEE*/
 .hero--map{
     padding: 60px 120px;
@@ -426,7 +452,6 @@ input[type="text"] {
     font-size: 55px;
     font-weight: 900;
     max-width: 100%;
-    line-height: 1;
 }
 
 .hero--p  {
@@ -437,7 +462,7 @@ input[type="text"] {
 .hero--destination{
     display: relative;
     justify-content: center;
-    padding: 120px;
+    padding: 20px 120px;
     width: 100%;
     object-fit: cover;
 }
