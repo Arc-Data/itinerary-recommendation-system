@@ -4,10 +4,10 @@ import searchIcon from "/images/search.png";
 import { Link } from 'react-router-dom';
 
 export default function UserNav() {
-  const [logoutPopupVisible, setLogoutPopupVisible] = useState(false);
+  const [popupVisible, setPopupVisible] = useState(false);
 
-  const toggleLogoutPopup = () => {
-    setLogoutPopupVisible(!logoutPopupVisible);
+  const togglePopup = () => {
+    setPopupVisible(!popupVisible);
   };
 
   return (
@@ -26,17 +26,19 @@ export default function UserNav() {
       </div>
 
       <div className='link'>
-        <img
-          src={userIcon} 
-          alt="User Icon"
-          className='user--logo'
-          onClick={toggleLogoutPopup}
-        />
-        {logoutPopupVisible && (
-          <div className="logout--popup">
-            <button onClick={toggleLogoutPopup}>Logout</button>
-          </div>
-        )}
+        <div className='user--dropdown' onClick={togglePopup}>
+          <img
+            src={userIcon} 
+            alt="User Icon"
+            className='user--logo'
+          />
+          {popupVisible && (
+            <div className="user--dropdown-content">
+              <button>View Itinerary</button>
+              <button>Logout</button>
+            </div>
+          )}
+        </div>
       </div>
     </nav>
   );

@@ -1,0 +1,137 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Work Sans', sans-serif;
+}
+html, body {
+  color: #333333;
+}
+main {
+  margin-left: 250px;
+  padding: 50px 80px;
+  width: 100%;
+}
+.site-wrapper, .container {
+  display: flex;
+  flex: 1;
+}
+.link {
+  text-decoration: none;
+  color: #333333;
+}
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 0 10px 0 0;
+  color: white;
+}
+.center {
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.sidebar {
+  border-right: 2px solid #E7E7E7;
+  background-color: #F7F7F7;
+  width: 250px;
+  height: 100vh;
+  z-index: 1;
+  position: fixed;
+}
+.sidebar h1 {
+  padding: 20px;
+  font-size: 20px;
+}
+.sidebar--menu {
+  display: grid;
+}
+.sidebar--menu a {
+  width: auto;
+  padding: 10px 20px;
+  text-decoration: none;
+}
+.active {
+  background-color: #184E77;
+  color: white;
+}
+.dropdown {
+  background-color: #30668F;
+  color: white;
+}
+.active-drp {
+  background-color: #467CA5;
+}
+.btn.logout {
+  bottom: 0;
+  position: fixed;
+  margin: 20px;
+  padding: 10px;
+}
+.btn.add-location {
+  background-color: #B5E48C;
+}
+
+table {
+  border-spacing: 0;
+  border-radius: 10px;
+  border: 2px solid #E7E7E7;
+  width: 100%;
+  margin-top: 20px;
+}
+table th, table td {
+  padding: 10px 20px;
+  text-align: left;
+}
+table tr:nth-child(even) {
+  background-color: #E7E7E7; 
+}
+
+.search--bar {
+  padding: 10px;
+  width: 50%;
+  height: 100%;
+}
+.btn.search, .btn.logout, .btn.done {
+  background-color: #184E77;
+}
+.location--img {
+  width: 140px;
+}
+.input {
+  flex-direction: column;
+  margin-right: 20px;
+}
+.input--form {
+  width: 60%;
+}
+label {
+  font-weight: 400;
+  margin-top: 15px;
+  margin-bottom: 4px;
+}
+select, input[type="text"], input[type="time"], textarea {
+  padding: 10px;
+  border: 1px solid #E7E7E7;
+  border-radius: 5px;
+  background-color: #EFEFEF;
+  font-size: 16px;
+  margin-right: 10px;
+}
+textarea {
+  resize: none;
+  height: 120px;
+}
+select {
+  width: 50%;
+}
+.image--border {
+  border: 3px dashed #E7E7E7;
+  border-radius: 20px;
+}
+h3, .btn.done {
+  margin-top: 20px;
+}

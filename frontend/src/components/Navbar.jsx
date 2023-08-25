@@ -13,10 +13,10 @@ export default function Navbar({isLoginOpen, toggleLoginModal, isSignOpen, toggl
 				</Link>
 				<div className='link'>
 					<button className='link--button' onClick={toggleLoginModal}>
-						<h1 className='login--text'>LOGIN</h1>
+						LOGIN
 					</button>
 					<button className='link--button' onClick={toggleSignModal}>
-						<h1 className='sign--text'>SIGN UP</h1>
+						SIGN UP
 					</button>
 				</div>
 			</nav>
