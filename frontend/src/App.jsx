@@ -25,20 +25,19 @@ function App() {
             <Route element={<PrivateRoutes />}>
               <Route element={<HomePage />} path="/home" />
               <Route element={<SearchPage />} path="/search" />
+              <Route path="/detailPage" element={<DetailPage />} />
+              <Route path="/admin" element={<Layout />}>
+                <Route path = "/admin/" index element={<Users users={data[0].users}/>}></Route>
+                <Route path="/admin/location" element={<Location locations={data[0].locations}/>}></Route>
+                <Route path="/admin/accommodation" element={<Accommodation />}></Route>
+                <Route path="/admin/activity" element={<Activity />}></Route>
+                <Route path="/admin/food" element={<Food />}></Route>
+                <Route path="/admin/add-location" element={<AddLocation />}></Route>
+              </Route>
             </Route>
         </Routes>
       </AuthProvider>
         
-        {/* <Route path="/detailPage" element={<DetailPage />} /> */}
-        {/*<Route path="/admin" element={<Layout />}>
-            <Route path = "/admin/" index element={<Users users={data[0].users}/>}></Route>
-            <Route path="/admin/location" element={<Location locations={data[0].locations}/>}></Route>
-            <Route path="/admin/accommodation" element={<Accommodation />}></Route>
-            <Route path="/admin/activity" element={<Activity />}></Route>
-            <Route path="/admin/food" element={<Food />}></Route>
-            <Route path="/admin/add-location" element={<AddLocation />}></Route>
-
-          </Route>*/}
 
     </BrowserRouter>
   )

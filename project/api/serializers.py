@@ -5,7 +5,13 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth.hashers import make_password
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
-   username_field = get_user_model().EMAIL_FIELD
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        token['email'] = user.email
+        token['is_staff'] = user.is_staff
+        return token
 
 class UserSerializers(serializers.ModelSerializer):
     class Meta:

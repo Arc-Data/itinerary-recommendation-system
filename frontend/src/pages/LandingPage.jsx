@@ -6,12 +6,18 @@ import Card from '../components/Card';
 import AuthContext from '../context/AuthContext';
 /*DATA*/
 import cardData from '../cardData';
+import { Navigate } from 'react-router-dom';
 
 export default function LandingPage() {
-	
+	const { user } = useContext(AuthContext)
 	const [isLoginOpen, setLoginOpen] = useState(false)
 	const [isSignOpen, setSignOpen] = useState(false)
 	
+	if(user) {
+		console.log("Should be")
+		return (user.is_staff ? <Navigate to = "/admin"/> : <Navigate to ="/home" />)
+	}
+
 	const toggleLoginModal = (event) => {
 		if(event) {
 			event.stopPropagation();
