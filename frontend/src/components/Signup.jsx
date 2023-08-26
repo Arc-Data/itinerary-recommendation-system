@@ -1,6 +1,7 @@
 import { useState } from "react"
 
 const Signup = () => {
+    const [passwordMatch, setPasswordMatch] = useState(false)
     const [formData, setFormData] = useState({
         'firstname': '',
         'lastname': '', 
@@ -16,10 +17,20 @@ const Signup = () => {
             ...prevData,
             [name]: value
         }));
+
+        if(name === 'confirm') {
+            formData.password === value ? setPasswordMatch(true) : setPasswordMatch(false);
+        }
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+
+        if(passwordMatch) {
+            console.log("Passwords matched")
+        } else {
+            console.log("Not match")
+        }
     }
 
     const togglePasswordVisibility = () => {

@@ -39,7 +39,6 @@ export const AuthProvider = ({children}) => {
     }
 
     const updateToken = async() => {
-        console.log("Updates Token")
         const response = await fetch('http://127.0.0.1:8000/api/token/refresh/', {
             method:'POST',
             headers: {
@@ -61,7 +60,6 @@ export const AuthProvider = ({children}) => {
         }
 
         if(loading) {
-            console.log("Set loading to false")
             setLoading(false)
         }
     }

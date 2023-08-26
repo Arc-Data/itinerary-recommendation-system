@@ -3,7 +3,6 @@ import { Link } from "react-router-dom"
 import AuthContext from "../context/AuthContext"
 
 const Login = () => {
-    const { loginUser } = useContext(AuthContext)
     const [showPassword, setShowPassword] = useState(false)
 
     const togglePasswordVisibility = () => {
