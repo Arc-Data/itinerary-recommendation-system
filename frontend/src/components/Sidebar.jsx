@@ -1,8 +1,10 @@
 import React from 'react'
+import { useContext } from 'react'
 import { NavLink } from 'react-router-dom'
+import AuthContext from '../context/AuthContext'
 
 function Sidebar() {
-
+    const { logoutUser } = useContext(AuthContext)
     const [dropdown, setDropdown] = React.useState(false)
 
     function toggleLocationDropdown() {
@@ -55,7 +57,7 @@ function Sidebar() {
                     </>
                 )}
             </div>
-            <button className="btn logout"> 
+            <button className="btn logout" onClick={logoutUser}> 
                 Logout
             </button>
         </div>

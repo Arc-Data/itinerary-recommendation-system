@@ -60,11 +60,8 @@ export const AuthProvider = ({children}) => {
             })
         })
 
-        console.log(response.status)
-
         if(response.status === 201) {
             const data = await response.json()
-            
             alert("Successfully created user")
             loginUser({ target: { email: { value: formData.email }, password: {value: formData.password} }, preventDefault: () => {} });
 
