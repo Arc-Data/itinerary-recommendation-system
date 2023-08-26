@@ -1,6 +1,8 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
+import AuthContext from "../context/AuthContext"
 
 const Signup = () => {
+    const { registerUser } = useContext(AuthContext)
     const [passwordMatch, setPasswordMatch] = useState(false)
     const [formData, setFormData] = useState({
         'firstname': '',
@@ -27,7 +29,8 @@ const Signup = () => {
         e.preventDefault()
 
         if(passwordMatch) {
-            console.log("Passwords matched")
+            await registerUser(formData)
+            
         } else {
             console.log("Not match")
         }
