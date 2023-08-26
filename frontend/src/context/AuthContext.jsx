@@ -14,6 +14,7 @@ export const AuthProvider = ({children}) => {
     const navigate = useNavigate()
 
     const loginUser = async (e) => {
+        e.preventDefault()
         console.log(e.target.email.value, e.target.password.value)
         const response = await fetch('http://127.0.0.1:8000/api/token/', {
             method:'POST',
@@ -55,8 +56,9 @@ export const AuthProvider = ({children}) => {
 
         if(response.status === 201) {
             const data = await response.json()
+            
             alert("Successfully created user")
-            loginUser({ target: { email: { value: formData.email }, password: {value: formData.password} } });
+            loginUser({ target: { email: { value: formData.email }, password: {value: formData.password} }, preventDefault: () => {} });
 
         } else if(response.status === 401) {
             console.log("401")
