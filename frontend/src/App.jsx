@@ -4,7 +4,10 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import data from './data';
 import DetailPage from './pages/DetailPage';
 import LandingPage from './pages/LandingPage';
+import HomePage from './pages/Home';
+import PrivateRoutes from './utils/PrivateRoutes'
 import SearchPage from './pages/SearchPage';
+import { AuthProvider } from './context/AuthContext';
 import Layout from './components/Layout'
 import Users from './pages/Users'
 import Location from './pages/Location'
@@ -16,10 +19,17 @@ import AddLocation from './pages/AddLocation'
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        {/* <Route path="/detailPage" element={<DetailPage />} /> */}
+      <AuthProvider>
+        <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route element={<PrivateRoutes />}>
+              <Route element={<HomePage />} path="/home" />
+              <Route element={<SearchPage />} path="/search" />
+            </Route>
+        </Routes>
+      </AuthProvider>
         
+        {/* <Route path="/detailPage" element={<DetailPage />} /> */}
         {/*<Route path="/admin" element={<Layout />}>
             <Route path = "/admin/" index element={<Users users={data[0].users}/>}></Route>
             <Route path="/admin/location" element={<Location locations={data[0].locations}/>}></Route>
@@ -30,7 +40,6 @@ function App() {
 
           </Route>*/}
 
-      </Routes>
     </BrowserRouter>
   )
 }

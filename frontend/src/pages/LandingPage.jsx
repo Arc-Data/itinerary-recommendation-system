@@ -1,12 +1,14 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 /*COMPONENTS*/
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Card from '../components/Card';
+import AuthContext from '../context/AuthContext';
 /*DATA*/
 import cardData from '../cardData';
 
 export default function LandingPage() {
+	
 	const [isLoginOpen, setLoginOpen] = useState(false)
 	const [isSignOpen, setSignOpen] = useState(false)
 	

@@ -1,10 +1,26 @@
-from rest_framework import serializers
+from django.contrib.auth import get_user_model
 from .models import *
+from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from django.contrib.auth.hashers import make_password
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+   username_field = get_user_model().EMAIL_FIELD
 
 class UserSerializers(serializers.ModelSerializer):
     class Meta:
         model = User
-        exclude = ['password', 'is_superuser', 'email', 'is_staff', 'is_active', 'date_joined', 'groups', 'user_permissions', 'last_login']
+        exclude = ['password', 'is_superuser', 'is_staff', 'is_active', 'date_joined', 'groups', 'user_permissions', 'last_login']
+
+class UserRegistrationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'email', 'password')
+
+    def create(self, validated_data):
+        validated_data['password'] = make_password(validated_data['password'])
+        user = get_user_model().objects.create(**validated_data)
+        return user
 
 class ReviewSerializers(serializers.ModelSerializer):
     user = UserSerializers()

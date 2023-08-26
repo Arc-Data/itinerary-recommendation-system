@@ -1,7 +1,8 @@
-import { useState } from "react"
-import { Link } from "react-router-dom"
+import { useContext, useState } from "react"
+import AuthContext from "../context/AuthContext"
 
 const Login = () => {
+    const { loginUser } = useContext(AuthContext)
     const [showPassword, setShowPassword] = useState(false)
 
     const togglePasswordVisibility = () => {
@@ -11,9 +12,9 @@ const Login = () => {
     return (
         <div>
             <h2 className='modal-login-sign-text'>Login</h2>
-            <form className='modal-login-sign-form'>
+            <form className='modal-login-sign-form' onSubmit={(e) => loginUser(e)}>
                 <label>Email:</label>
-                <input type="email" placeholder="Enter your email" />
+                <input type="email" name="email" placeholder="Enter your email" />
 
                 <label>
                 Password:
@@ -22,6 +23,7 @@ const Login = () => {
                     <input
                         type={showPassword ? "text" : "password"}
                         placeholder="Enter your password"
+                        name="password"
                     />
                     <button
                         type="button"
@@ -38,7 +40,7 @@ const Login = () => {
                 <a href="#">Forgot your Password?</a>
                 </div>
 
-                <button className='button-login-sign' type="submit">Login</button>
+                <button className='button-login-sign'>Login</button>
             </form>
             {/* <div className="login-sign-link">
                 Don't have an account? <Link to="/sign">Sign Up</Link>

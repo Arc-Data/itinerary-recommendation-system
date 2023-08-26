@@ -2,11 +2,25 @@ from django.shortcuts import get_object_or_404, render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework.generics import CreateAPIView
 
 from .models import *
 from .serializers import *
 
-# Create your views here.
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
+
+class UserRegistrationView(CreateAPIView):
+    serializer_class = UserRegistrationSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+
+        return Response({"message": "User registered successfully"}, status=status.HTTP_201_CREATED)
+
 @api_view(["GET"])
 def popular_spots(request):
     if request.method == "GET":
