@@ -15,6 +15,7 @@ import Accommodation from './pages/Accommodation'
 import Activity from './pages/Activity'
 import Food from './pages/Food'
 import AddLocation from './pages/AddLocation'
+import UserLayout from './layout/UserLayout';
 
 function App() {
   return (
@@ -22,10 +23,12 @@ function App() {
       <AuthProvider>
         <Routes>
             <Route path="/" element={<LandingPage />} />
-            <Route element={<PrivateRoutes />}>
-              <Route element={<HomePage />} path="/home" />
-              <Route element={<SearchPage />} path="/search" />
-              <Route path="/detailPage" element={<DetailPage />} />
+            <Route element={<PrivateRoutes />} >
+              <Route element={<UserLayout />}>
+                <Route element={<HomePage />} path="/home" />
+                <Route element={<SearchPage />} path="/search" />
+                <Route path="/detailPage" element={<DetailPage />} />
+              </Route> 
               <Route path="/admin" element={<Layout />}>
                 <Route path = "/admin/" index element={<Users users={data[0].users}/>}></Route>
                 <Route path="/admin/location" element={<Location locations={data[0].locations}/>}></Route>
