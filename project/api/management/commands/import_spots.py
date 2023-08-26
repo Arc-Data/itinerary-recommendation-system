@@ -19,9 +19,6 @@ class Command(BaseCommand):
                     address=row['Address'],
                     latitude=float(row['Latitude']),
                     longitude=float(row['Longitude']),
-                    historical_relevance=int(row['HistoricalRelevance']),
-                    art_focus=int(row['ArtFocused']),
-                    activity_focus=int(row['ActivityFocused']),
                     fees=0,
                 )
                 spot.save()

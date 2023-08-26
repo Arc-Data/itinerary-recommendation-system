@@ -2,6 +2,7 @@ from datetime import timedelta
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
+from .managers import CustomUserManager
 
 '''
 how do i express difference in time schedules and sometimes varying fees
@@ -22,12 +23,14 @@ rather than generating a complete itinerary
 '''
 
 class User(AbstractUser):
+    username = None
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     USERNAME_FIELD = 'email'
-    EMAIL_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
+    REQUIRED_FIELDS = []
+
+    objects = CustomUserManager()
 
     class Meta:
         db_table = 'auth_user'
