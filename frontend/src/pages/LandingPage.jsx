@@ -7,6 +7,7 @@ import Card from '../components/Card';
 import cardData from '../cardData';
 
 export default function LandingPage() {
+	console.log("Finally inside landing page")
 	const [isLoginOpen, setLoginOpen] = useState(false)
 	const [isSignOpen, setSignOpen] = useState(false)
 	
