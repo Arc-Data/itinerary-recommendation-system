@@ -5,14 +5,11 @@ import SearchCard from '../components/SearchCard';
 /*DATA*/
 import cardData from '../cardData';
 
-
-
-
 export default function SearchPage() {
     
-    const search = cardData.map(item => (
-        <SearchCard key={item.id} {...item} />
-      ));
+    // const search = cardData.map(item => (
+    //     <SearchCard key={item.id} {...item} />
+    //   ));
 
     return (
         <div>
@@ -26,11 +23,10 @@ export default function SearchPage() {
                     <a href="#">Restaurant</a>
                     <a href="#">Activities</a>
                 </div>
-                <div class="searchPage--card">
-                    {search}
+                <div className="searchPage--card">
+                    {/* insert cards here */}
                 </div>
             </div>
-            <Footer />
         </div>
     )
 }
