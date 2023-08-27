@@ -92,6 +92,7 @@ export const AuthProvider = ({children}) => {
             localStorage.setItem('authTokens', JSON.stringify(data))
  
         } else {
+            console.log("Supposedly logs out the user")
             logoutUser()
         }
 
