@@ -9,7 +9,10 @@ urlpatterns = [
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('register/', UserRegistrationView.as_view(), name="register"),
 
+    # provides a list of popular spots (6)
     path('popular/', popular_spots),
-    path('location/', location),
+    # provides a list of locations, fetching with additional parameters is possible
+    path('location/', LocationViewSet.as_view({'get': 'list'}), name="locations"),
+    # provides a spot information given you send the id
     path('spot/<int:pk>/', spot),
 ]

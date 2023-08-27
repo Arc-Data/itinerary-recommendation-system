@@ -33,6 +33,13 @@ class ReviewSerializers(serializers.ModelSerializer):
     class Meta:
         model = Review
         exclude = ['location']
+        
+class LocationQuerySerializers(serializers.ModelSerializer):
+    image = serializers.ImageField(use_url=True)
+    
+    class Meta:
+        model = Location
+        exclude = () 
 
 class LocationSerializers(serializers.ModelSerializer):
     image = serializers.ImageField(use_url=True)
