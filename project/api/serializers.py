@@ -27,12 +27,21 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         validated_data['password'] = make_password(validated_data['password'])
         user = get_user_model().objects.create(**validated_data)
         return user
-
-class ReviewSerializers(serializers.ModelSerializer):
-    user = UserSerializers()
+    
+class SpotSerializers(serializers.ModelSerializer):
     class Meta:
-        model = Review
-        exclude = ['location']
+        model = Spot
+        exclude = []
+
+class FoodPlaceSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = FoodPlace
+        fields = '__all__'
+
+class AccomodationSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = Accomodation
+        fields = '__all__'
 
 class LocationImageSerializers(serializers.ModelSerializer):
     class Meta:
@@ -43,25 +52,45 @@ class LocationImageSerializers(serializers.ModelSerializer):
 class LocationSerializers(serializers.ModelSerializer):
     images = LocationImageSerializers(many=True, read_only=True)
     primary_image = serializers.SerializerMethodField()
+    location_type = serializers.SerializerMethodField()
     
     class Meta:
         model = Location
-        fields = ('id', 'name', 'address', 'description', 'latitude', 'longitude', 'images', 'primary_image')
+        fields = ('id', 'location_type', 'name', 'address', 'description', 'latitude', 'longitude', 'primary_image', 'images', )
 
     def get_primary_image(self, obj):
         primary_image = obj.images.filter(is_primary_image=True).first()
-        
+
         if primary_image:
             return primary_image.image.url
         
+        hasattr()
+
         return None
+
+    def get_location_type(self, obj):
+        if hasattr(obj, 'spot'):
+            return '1'
+        elif hasattr(obj, 'foodplace'):
+            return '2'
+        elif hasattr(obj, 'accomodation'):
+            return '3'
+        
+        print("Error identifying location type")
+        return None
+
+class ReviewSerializers(serializers.ModelSerializer):
+    user = UserSerializers()
+    class Meta:
+        model = Review
+        exclude = ['location']
 
 class SpotDetailSerializers(serializers.ModelSerializer):
     location_reviews = serializers.SerializerMethodField()
 
     class Meta:
         model = Spot
-        exclude = ['historical_relevance', 'art_focus', 'activity_focus']
+        exclude = []
 
     def get_location_reviews(self, obj):
         location_reviews = obj.review_set.all()
