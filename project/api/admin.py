@@ -5,6 +5,7 @@ from .models import *
 admin.site.register(User)
 admin.site.register(Location)
 admin.site.register(Spot)
+admin.site.register(LocationImage)
 admin.site.register(Accomodation)
 admin.site.register(FoodPlace)
 admin.site.register(Itinerary)

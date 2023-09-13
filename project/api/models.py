@@ -2,6 +2,8 @@ from datetime import timedelta
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 from .managers import CustomUserManager
 
 import datetime
@@ -70,8 +72,10 @@ class Bookmark(models.Model):
 
 class LocationImage(models.Model):
     location = models.ForeignKey(Location, on_delete=models.CASCADE, related_name="images")
-    image = models.ImageField(upload_to='location_images/')
-    description = models.CharField(max_length=500, blank=True, null=True)
+    image = models.ImageField(upload_to='location_images/', default='location_images/Background.jpg')
+
+    def __str__(self):
+        return f"Image for {self.location.name}"
 
 class Spot(Location):
     fees = models.PositiveIntegerField()
@@ -132,3 +136,14 @@ class Food(models.Model):
     item = models.CharField(max_length=100)
     price = models.FloatField()
     image = models.ImageField(blank=True, null=True, upload_to='location_food/')
+
+
+@receiver(post_save, sender=Location)
+@receiver(post_save, sender=Spot)
+def create_locationimage(sender, instance, created, **kwargs):
+    if created:
+        LocationImage.objects.create(
+            location=instance
+        ).save()
+
+    
