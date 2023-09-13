@@ -11,6 +11,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         token['email'] = user.email
         token['is_staff'] = user.is_staff
+        token['set_preferences'] = user.set_preferences
         return token
 
 class UserSerializers(serializers.ModelSerializer):
