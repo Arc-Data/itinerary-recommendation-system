@@ -33,23 +33,30 @@ class ReviewSerializers(serializers.ModelSerializer):
     class Meta:
         model = Review
         exclude = ['location']
+
+class LocationImageSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = LocationImage
+        fields = ['image']
         
-class LocationQuerySerializers(serializers.ModelSerializer):
-    image = serializers.ImageField(use_url=True)
+    
+class LocationSerializers(serializers.ModelSerializer):
+    images = LocationImageSerializers(many=True, read_only=True)
+    primary_image = serializers.SerializerMethodField()
     
     class Meta:
         model = Location
-        exclude = () 
+        fields = ('id', 'name', 'address', 'description', 'latitude', 'longitude', 'images', 'primary_image')
 
-class LocationSerializers(serializers.ModelSerializer):
-    image = serializers.ImageField(use_url=True)
-
-    class Meta:
-        model = Location
-        exclude = ()
+    def get_primary_image(self, obj):
+        primary_image = obj.images.filter(is_primary_image=True).first()
+        
+        if primary_image:
+            return primary_image.image.url
+        
+        return None
 
 class SpotDetailSerializers(serializers.ModelSerializer):
-    image = serializers.ImageField(use_url=True)
     location_reviews = serializers.SerializerMethodField()
 
     class Meta:
@@ -61,8 +68,7 @@ class SpotDetailSerializers(serializers.ModelSerializer):
         return ReviewSerializers(location_reviews, many=True).data
     
 class SpotPopularSerializers(serializers.ModelSerializer):
-    image = serializers.ImageField(use_url=True)
 
     class Meta:
         model = Spot
-        fields = ['id', 'image', 'name', 'description']
+        fields = ['id', 'name', 'description']

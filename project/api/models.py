@@ -73,6 +73,7 @@ class Bookmark(models.Model):
 class LocationImage(models.Model):
     location = models.ForeignKey(Location, on_delete=models.CASCADE, related_name="images")
     image = models.ImageField(upload_to='location_images/', default='location_images/Background.jpg')
+    is_primary_image = models.BooleanField(default=False)
 
     def __str__(self):
         return f"Image for {self.location.name}"
@@ -143,7 +144,8 @@ class Food(models.Model):
 def create_locationimage(sender, instance, created, **kwargs):
     if created:
         LocationImage.objects.create(
-            location=instance
+            location=instance,
+            is_primary_image=True
         ).save()
 
     
