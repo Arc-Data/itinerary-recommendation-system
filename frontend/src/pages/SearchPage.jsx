@@ -21,7 +21,6 @@ const SearchPage = () => {
 
     }, [query])
     
-    console.log(locations)
     const locationResults = locations && locations.map(location => {
         return <SearchCard key={location.id} {...location} />
     })
