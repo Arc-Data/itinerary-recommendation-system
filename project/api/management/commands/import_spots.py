@@ -3,7 +3,7 @@ import csv
 from django.conf import settings
 from datetime import timedelta
 from django.core.management.base import BaseCommand
-from api.models import Spot
+from api.models import Spot, Tag
 
 class Command(BaseCommand):
     help = 'Import data from CSV to Spot model'
@@ -22,5 +22,16 @@ class Command(BaseCommand):
                     fees=0,
                 )
                 spot.save()
+
+                tags = []  # Create a list to store tags
+                tag_names = ['Historical', 'Nature', 'Religious', 'Art', 'Activities', 'Entertainment', 'Culture']
+
+                for tag_name in tag_names:
+                    tag_value = int(row[tag_name])
+                    if tag_value == 1:
+                        tag, created = Tag.objects.get_or_create(name=tag_name)
+                        tags.append(tag)
+
+                spot.tags.set(tags)  # Associate tags with the Spot instance
 
         self.stdout.write(self.style.SUCCESS('Data imported successfully'))
