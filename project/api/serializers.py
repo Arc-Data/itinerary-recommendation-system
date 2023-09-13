@@ -46,7 +46,7 @@ class AccomodationSerializers(serializers.ModelSerializer):
     location_type = 3
     
     class Meta:
-        model = Accomodation
+        model = Accommodation
         exclude = []
 
 class LocationImageSerializers(serializers.ModelSerializer):

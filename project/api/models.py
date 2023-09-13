@@ -7,6 +7,8 @@ from django.db.models.signals import post_save
 from .managers import CustomUserManager
 
 import datetime
+import os
+
 '''
 how do i express difference in time schedules and sometimes varying fees
 do i simply express fees as an estimation of expenses per person?
@@ -76,9 +78,9 @@ class Location(models.Model):
             foodplace.__dict__.update(self.__dict__)
             foodplace.save()
         elif self.location_type == '3':
-            accomodation = Accomodation(location_ptr=self)
-            accomodation.__dict__.update(self.__dict__)
-            accomodation.save()
+            accommodation = Accommodation(location_ptr=self)
+            accommodation.__dict__.update(self.__dict__)
+            accommodation.save()
             
     def __str__(self):
         return self.name
@@ -93,9 +95,16 @@ class Bookmark(models.Model):
     def __str__(self):
         return f"{self.user.get_full_name} bookmarked {self.spot.name}"
 
+def location_image_path(instance, filename):
+    ext = filename.split('.')[-1]
+    folder_name = instance.location.name.replace(" ", "_")
+    filename = f"{instance.location.name}.{ext}"
+    return os.path.join('location_images', folder_name, filename)
+
+
 class LocationImage(models.Model):
     location = models.ForeignKey(Location, on_delete=models.CASCADE, related_name="images")
-    image = models.ImageField(upload_to='location_images/', default='location_images/Background.jpg')
+    image = models.ImageField(upload_to=location_image_path, default='location_images/Background.jpg')
     is_primary_image = models.BooleanField(default=False)
 
     def __str__(self):
@@ -185,3 +194,5 @@ def create_locationimage(sender, instance, created, **kwargs):
         ).save()
 
     
+
+
