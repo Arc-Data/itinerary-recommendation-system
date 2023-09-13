@@ -1,21 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 /*COMPONENTS*/
-import Footer from '../components/Footer';
 import SearchCard from '../components/SearchCard';
 /*DATA*/
-import cardData from '../cardData';
+import { useSearchParams } from 'react-router-dom';
 
-export default function SearchPage() {
+const SearchPage = () => {
+    // initially set data to null, should contain an array of data depending on query
+    const [locations, setLocations] = useState(null)
+    const [searchParams, setSearchParams] = useSearchParams()
+    const query = searchParams.get("query")
+
+    useEffect(() => {
+        const fetchData = async() => {
+            const response = await fetch(`http://127.0.0.1:8000/api/location/?query=${query}`)  
+            const data = await response.json()
+            setLocations(data)
+        }
+
+        fetchData()
+
+    }, [query])
     
-    // const search = cardData.map(item => (
-    //     <SearchCard key={item.id} {...item} />
-    //   ));
-
+    console.log(locations)
+    const locationResults = locations && locations.map(location => {
+        return <SearchCard key={location.id} {...location} />
+    })
+    
     return (
         <div>
             <div className="searchPage--container">
-                <h1 className="searchPage--title">Search result for "Moalboal"</h1>
-                <p className="searchPage--result">12 of 12 results</p>
+                <h1 className="searchPage--title">Search result for "{`${query}`}"</h1>
+                <p className="searchPage--result">{locations ? locations.length : "0"}</p>
                 <div className="searchPage--navbar">
                     <a href="#">All Results</a>
                     <a href="#">Destination</a>
@@ -24,10 +39,11 @@ export default function SearchPage() {
                     <a href="#">Activities</a>
                 </div>
                 <div className="searchPage--card">
-                    {/* insert cards here */}
+                    {locationResults}
                 </div>
             </div>
         </div>
     )
 }
-     
+    
+export default SearchPage;

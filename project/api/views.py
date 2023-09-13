@@ -37,8 +37,8 @@ class LocationViewSet(viewsets.ReadOnlyModelViewSet):
         query = self.request.query_params.get('query')
 
         if query:
-            queryset = queryset.filter(name__startswith=query)
-        
+            queryset = queryset.filter(name__istartswith=query)
+
         return queryset
 
 @api_view(["GET"])
