@@ -3,25 +3,10 @@ from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from .managers import CustomUserManager
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
 import datetime
-'''
-how do i express difference in time schedules and sometimes varying fees
-do i simply express fees as an estimation of expenses per person?
-
-using JSON Fields in order to express 
-
-class Location(models.Model):
-    name = models.CharField(max_length=100)
-    schedule = JSONField()
-
-however, coming up with a model that is able to 
-consider day breaks might again prove to be difficult but 
-technically doable as well
-
-makes me wonder, could itinerary items one by one be better 
-rather than generating a complete itinerary
-'''
 
 class User(AbstractUser):
     username = None
@@ -47,6 +32,22 @@ class Preferences(models.Model):
     historical = models.BooleanField(default=False)
     activity = models.BooleanField(default=False)
     outdoors = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.user.email
+
+@receiver(post_save, sender=User)
+def create_preferences(sender, instance, created, **kwargs):
+   if created:
+       Preferences.objects.create(
+           user=instance,
+       ) 
+       print("Nice")
+
+@receiver(post_save, sender=User)
+def save_user_preferences(sender, instance, **kwargs):
+    instance.preferences.save()
+
 
 class Location(models.Model):
     name = models.CharField(max_length=250, unique=True)
