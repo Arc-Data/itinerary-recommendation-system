@@ -29,19 +29,25 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         return user
     
 class SpotSerializers(serializers.ModelSerializer):
+    location_type = 1
+    
     class Meta:
         model = Spot
         exclude = []
 
 class FoodPlaceSerializers(serializers.ModelSerializer):
+    location_type = 2
+    
     class Meta:
         model = FoodPlace
-        fields = '__all__'
+        exclude = []
 
 class AccomodationSerializers(serializers.ModelSerializer):
+    location_type = 3
+    
     class Meta:
         model = Accomodation
-        fields = '__all__'
+        exclude = []
 
 class LocationImageSerializers(serializers.ModelSerializer):
     class Meta:

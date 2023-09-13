@@ -56,7 +56,30 @@ class Location(models.Model):
     description = models.CharField(default="No Description Provided.", max_length=500)
     latitude = models.FloatField()
     longitude = models.FloatField()
+    location_type = models.CharField(
+        max_length=1,
+        choices=[
+            ('1', 'Spot'),
+            ('2', 'FoodPlace'),
+            ('3', 'Accommodation'),
+        ],
+        default=1
+    )
 
+    def save(self, *args, **kwargs):
+        if self.location_type == '1':
+            spot = Spot(location_ptr=self)
+            spot.__dict__.update(self.__dict__)
+            spot.save()
+        elif self.location_type == '2':
+            foodplace = FoodPlace(location_ptr=self)
+            foodplace.__dict__.update(self.__dict__)
+            foodplace.save()
+        elif self.location_type == '3':
+            accomodation = Accomodation(location_ptr=self)
+            accomodation.__dict__.update(self.__dict__)
+            accomodation.save()
+            
     def __str__(self):
         return self.name
 
@@ -85,6 +108,10 @@ class Spot(Location):
     opening_time = models.TimeField(default=datetime.time(8,0,0))
     closing_time = models.TimeField(default=datetime.time(20,0,0))
 
+    def save(self, *args, **kwargs):
+        self.location_type = '1'
+        super(Spot, self).save(*args, **kwargs)
+
     def __str__(self):
         return self.name
         
@@ -94,16 +121,25 @@ class Tag(models.Model):
     def __str__(self):
         return self.name
 
-class Accomodation(Location):
-    contact_number=models.CharField(max_length=11, blank=True, null=True)
-    
+class FoodPlace(Location):
+ 
+    def save(self, *args, **kwargs):
+        self.location_type = '2'
+        super(FoodPlace, self).save(*args, **kwargs)
+
     def __str__(self):
         return self.name
 
-class FoodPlace(Location):
- 
+class Accommodation(Location):
+    contact_number=models.CharField(max_length=11, blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        self.location_type = '3'
+        super(FoodPlace, self).save(*args, **kwargs)
+
     def __str__(self):
         return self.name
+
 
 class Itinerary(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
