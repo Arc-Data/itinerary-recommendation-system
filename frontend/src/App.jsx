@@ -16,6 +16,7 @@ import Activity from './pages/Activity'
 import Food from './pages/Food'
 import AddLocation from './pages/AddLocation'
 import UserLayout from './layout/UserLayout';
+import CreateTrip from './pages/CreateTrip';
 
 function App() {
   return (
@@ -24,24 +25,26 @@ function App() {
         <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route element={<PrivateRoutes />} >
+ 
               <Route element={<UserLayout />}>
-                <Route element={<HomePage />} path="/home" />
-                <Route element={<SearchPage />} path="/search" />
+                <Route path="/home" element={<HomePage />} />
+                <Route path="/create" element={<CreateTrip />} /> 
+                <Route path="/search" element={<SearchPage />} />
                 <Route path="/detailPage" element={<DetailPage />} />
               </Route> 
+ 
               <Route path="/admin" element={<Layout />}>
-                <Route path = "/admin/" index element={<Users users={data[0].users}/>}></Route>
-                <Route path="/admin/location" element={<Location locations={data[0].locations}/>}></Route>
-                <Route path="/admin/accommodation" element={<Accommodation />}></Route>
-                <Route path="/admin/activity" element={<Activity />}></Route>
-                <Route path="/admin/food" element={<Food />}></Route>
-                <Route path="/admin/add-location" element={<AddLocation />}></Route>
+                <Route path = "/admin/" index element={<Users users={data[0].users}/>} />
+                <Route path="/admin/location" element={<Location locations={data[0].locations}/>} />
+                <Route path="/admin/accommodation" element={<Accommodation />} />
+                <Route path="/admin/activity" element={<Activity />} />
+                <Route path="/admin/food" element={<Food />} />
+                <Route path="/admin/add-location" element={<AddLocation />} />
               </Route>
+ 
             </Route>
         </Routes>
       </AuthProvider>
-        
-
     </BrowserRouter>
   )
 }

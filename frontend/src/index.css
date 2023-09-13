@@ -43,7 +43,6 @@ button {
     margin-right: 15px;
 }
 
-
 /* USER NAVBAR*/
 .user--navbar {
     position: fixed;
@@ -51,34 +50,43 @@ button {
     display: flex;
     background-color: #FFFFFF;
     justify-content: space-between;
-    padding: 10px 20px;
     align-items: center;
     width: 100%;
     z-index: 1000;
     padding: 15px 120px;
+    border-bottom: 1px solid #271414;
+}
+
+.user--search {
+    width: 800px;
+    display:grid;
+    place-items: center;
+    text-align: center;
 }
 
 .search--bar-container {
-    display: flex;
-    align-items: center;
-    background-color: #F7F7F7;
-    border-radius: 5px;
-    padding: 5px; 
-    width: 600px;
-    margin: 0 auto; 
+    position:relative;
+    width: 660px;
 }
 
 .search--icon {
-    width: 20px;
-    height: 20px;
+    position:absolute;
+    left: 0;
+    top:50%;
+    transform: translate(60%, -50%);
+    height: 24px;
 }
 
 .search--bar {
     border: none;
+    text-indent: 40px;
+    width: 100%;
+    margin:0 auto;
+    padding:20px 12px;
     background-color: #F7F7F7;
-    padding: 5px;
-    flex: 1; 
+    border-radius: 4px;
 }
+
 
 .user--dropdown {
     position: relative;
@@ -100,7 +108,6 @@ button {
   
   .user--dropdown-content button { 
     display: block;
-    width: 100%;
     padding: 8px 5px;
     text-align: center;
     border: none;
@@ -151,12 +158,18 @@ button {
 
 /* FOOTER */
 .footer {
+    background-color: #E5E5E5;
+    width: 100%;
+    display:grid;
+    place-items:center;
+    height:92px
+}
+
+.footer--content {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #E5E5E5;
-    padding: 0 50px;
-    width: 100%;
+    width:80%;
 }
 
 .footer--logo {
@@ -518,21 +531,27 @@ input[type="text"] {
 
 /*FOR CELLPHONE*/
 @media screen and (max-width: 768px) {
-.hero--destination {
-    padding: 50px; 
-}
+    .hero--destination {
+        padding: 50px; 
+    }
 
-.hero--cards {
-    grid-template-columns: 1fr; 
-    overflow-x: hidden; 
-}
+    .hero--cards {
+        grid-template-columns: 1fr; 
+        overflow-x: hidden; 
+    }
+
+    
 }
 
 /*FOR IPAD*/
 @media screen and (max-width: 880px) {
-	.hero--cards {
-		grid-template-columns: repeat(1, 1fr); 
+    .hero--cards {
+        grid-template-columns: repeat(1, 1fr); 
 	}
+
+    .home---page-content {
+        padding:0;
+    }
 }
 
 @media screen and (min-width: 768px) and (max-width: 880px) {
@@ -795,4 +814,40 @@ input[type="text"] {
 
 .searchPage--info {
     margin: 0 30px;
+}
+
+.home--page-content {
+    margin: 0 auto;
+    padding: 160px 130px;
+    max-width: 1400px;
+    width:100%
+}
+
+.home--page-header {
+    display:flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.home--create-trip {
+    padding: 11px 23px;
+    border-radius: 5px;
+    background: #184E77;
+}
+
+.home--your-trips {
+    font-size: 35px;
+    font-weight:700;
+}
+
+.home--trips-container {
+    height: 380px;
+    display:grid;
+    place-items:center;
+}
+
+.home--no-trips {
+    font-size: 20px;
+    font-weight: 500;
+    color: #333333;
 }

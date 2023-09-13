@@ -1,7 +1,8 @@
 from django.shortcuts import get_object_or_404, render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from rest_framework import status
+from rest_framework import status, viewsets, filters
+from rest_framework.filters import SearchFilter
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.generics import CreateAPIView
 
@@ -20,6 +21,25 @@ class UserRegistrationView(CreateAPIView):
         user = serializer.save()
 
         return Response({"message": "User registered successfully"}, status=status.HTTP_201_CREATED)
+
+class LocationViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Location.objects.all()
+    serializer_class = LocationSerializers
+    filter_backends = [SearchFilter]
+    search_fields = ['name']
+
+    action = {
+        'list': 'list',
+    }
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        query = self.request.query_params.get('query')
+
+        if query:
+            queryset = queryset.filter(name__startswith=query)
+        
+        return queryset
 
 @api_view(["GET"])
 def popular_spots(request):
