@@ -87,7 +87,7 @@ class Location(models.Model):
         return self.name
     
 class CustomFee(models.Model):
-    location = models.ForeignKey("Spot", on_delete=models.CASCADE)
+    spot = models.ForeignKey("Spot", on_delete=models.CASCADE)
     min_cost = models.FloatField()
     max_cost = models.FloatField()
 
@@ -126,8 +126,8 @@ class Spot(Location):
     fees = models.PositiveIntegerField()
     expected_duration = models.DurationField(default=timedelta(hours=1))
     interested = models.ManyToManyField(User, through=Bookmark, related_name="bookmarks")
-    opening_time = models.TimeField(default=datetime.time(8,0,0), blank=True, null=True)
-    closing_time = models.TimeField(default=datetime.time(20,0,0), blank=True, null=True)
+    opening_time = models.TimeField(blank=True, null=True)
+    closing_time = models.TimeField(blank=True, null=True)
 
     def save(self, *args, **kwargs):
         self.location_type = '1'
