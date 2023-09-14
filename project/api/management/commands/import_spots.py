@@ -3,13 +3,12 @@ import csv
 from django.conf import settings
 from datetime import time
 from django.core.management.base import BaseCommand
-from api.models import Spot, Tag
-from project.api.models import CustomFee
+from api.models import Spot, Tag, CustomFee
 
 class Command(BaseCommand):
     help = 'Import data from CSV to Spot model'
 
-    def get_time_str(time_str):
+    def get_time_str(self, time_str):
         if not time_str:
             return None
         
@@ -21,7 +20,10 @@ class Command(BaseCommand):
 
         with open(csv_file, 'r') as file:
             reader = csv.DictReader(file)
+            count = 0;
             for row in reader:
+                count += 1
+                print(count)
                 is_closed = bool(int(row.get('IsClosed', 0)))
                 
                 opening_time_str = row.get('OpeningTime', '00:00:00')
@@ -30,21 +32,21 @@ class Command(BaseCommand):
                 opening_time = self.get_time_str(opening_time_str)
                 closing_time = self.get_time_str(closing_time_str)
                 
-                spot = Spot(
-                    name=row['Name'],
+                spot = Spot.objects.create(
+                    name=row['Place'],
                     address=row['Address'],
                     is_closed=is_closed,
                     latitude=float(row['Latitude']),
                     longitude=float(row['Longitude']),
-                    fees=row['Fees'] if row['Fees'] != '' else None,
+                    fees=row['Fee'] if row['Fee'] != '' else None,
                     opening_time=opening_time,
+                    location_type='1',
                     closing_time=closing_time 
                 )
-                spot.save()
 
                 if spot.fees == None:
-                    min_cost = float(row.get('min_cost', 0.0))  # Provide a default value of 0.0 if 'min_cost' is missing
-                    max_cost = float(row.get('max_cost', 0.0))  # Provide a default value of 0.0 if 'max_cost' is missing
+                    min_cost = float(row.get('MinFee', 0.0)) 
+                    max_cost = float(row.get('MaxFee', 0.0))  
                     CustomFee.objects.create(
                         spot=spot,
                         min_cost=min_cost,

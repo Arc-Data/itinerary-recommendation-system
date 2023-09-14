@@ -91,15 +91,17 @@ class Location(models.Model):
     is_closed = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
-        if self.location_type == '1':
+        super(Location, self).save(*args, **kwargs)
+
+        if self.location_type == '1' and not hasattr(self, 'spot'):
             spot = Spot(location_ptr=self)
             spot.__dict__.update(self.__dict__)
             spot.save()
-        elif self.location_type == '2':
+        elif self.location_type == '2' and not hasattr(self, 'foodplace'):
             foodplace = FoodPlace(location_ptr=self)
             foodplace.__dict__.update(self.__dict__)
             foodplace.save()
-        elif self.location_type == '3':
+        elif self.location_type == '3' and not hasattr(self, 'accommodation'):
             accommodation = Accommodation(location_ptr=self)
             accommodation.__dict__.update(self.__dict__)
             accommodation.save()
@@ -144,15 +146,12 @@ class LocationImage(models.Model):
         return f"Image for {self.location.name}"
 
 class Spot(Location):
-    fees = models.PositiveIntegerField()
+    fees = models.PositiveIntegerField(blank=True, null=True)
     expected_duration = models.DurationField(default=timedelta(hours=1))
     interested = models.ManyToManyField(User, through=Bookmark, related_name="bookmarks")
+    tags = models.ManyToManyField("Tag", related_name="spots")
     opening_time = models.TimeField(blank=True, null=True)
     closing_time = models.TimeField(blank=True, null=True)
-
-    def save(self, *args, **kwargs):
-        self.location_type = '1'
-        super(Spot, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name
