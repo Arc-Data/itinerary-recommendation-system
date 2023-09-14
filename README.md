@@ -68,13 +68,3 @@ Migrate the models.
 python manage.py makemigrations
 python manage.py migrate
 ```
-
-Load the script for database entries
-
-'''
-python manage.py import_csv
-'''
-
-
-
-pip install virtualenv

@@ -2,11 +2,32 @@ from datetime import timedelta
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 from .managers import CustomUserManager
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 
 import datetime
+import os
+
+'''
+how do i express difference in time schedules and sometimes varying fees
+do i simply express fees as an estimation of expenses per person?
+
+using JSON Fields in order to express 
+
+class Location(models.Model):
+    name = models.CharField(max_length=100)
+    schedule = JSONField()
+
+however, coming up with a model that is able to 
+consider day breaks might again prove to be difficult but 
+technically doable as well
+
+makes me wonder, could itinerary items one by one be better 
+rather than generating a complete itinerary
+'''
 
 class User(AbstractUser):
     username = None
@@ -55,7 +76,30 @@ class Location(models.Model):
     description = models.CharField(default="No Description Provided.", max_length=500)
     latitude = models.FloatField()
     longitude = models.FloatField()
+    location_type = models.CharField(
+        max_length=1,
+        choices=[
+            ('1', 'Spot'),
+            ('2', 'FoodPlace'),
+            ('3', 'Accommodation'),
+        ],
+        default=1
+    )
 
+    def save(self, *args, **kwargs):
+        if self.location_type == '1':
+            spot = Spot(location_ptr=self)
+            spot.__dict__.update(self.__dict__)
+            spot.save()
+        elif self.location_type == '2':
+            foodplace = FoodPlace(location_ptr=self)
+            foodplace.__dict__.update(self.__dict__)
+            foodplace.save()
+        elif self.location_type == '3':
+            accommodation = Accommodation(location_ptr=self)
+            accommodation.__dict__.update(self.__dict__)
+            accommodation.save()
+            
     def __str__(self):
         return self.name
 
@@ -69,10 +113,20 @@ class Bookmark(models.Model):
     def __str__(self):
         return f"{self.user.get_full_name} bookmarked {self.spot.name}"
 
+def location_image_path(instance, filename):
+    ext = filename.split('.')[-1]
+    folder_name = instance.location.name.replace(" ", "_")
+    filename = f"{instance.location.name}.{ext}"
+    return os.path.join('location_images', folder_name, filename)
+
+
 class LocationImage(models.Model):
     location = models.ForeignKey(Location, on_delete=models.CASCADE, related_name="images")
-    image = models.ImageField(upload_to='location_images/')
-    description = models.CharField(max_length=500, blank=True, null=True)
+    image = models.ImageField(upload_to=location_image_path, default='location_images/Background.jpg')
+    is_primary_image = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"Image for {self.location.name}"
 
 class Spot(Location):
     fees = models.PositiveIntegerField()
@@ -80,6 +134,10 @@ class Spot(Location):
     interested = models.ManyToManyField(User, through=Bookmark, related_name="bookmarks")
     opening_time = models.TimeField(default=datetime.time(8,0,0))
     closing_time = models.TimeField(default=datetime.time(20,0,0))
+
+    def save(self, *args, **kwargs):
+        self.location_type = '1'
+        super(Spot, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name
@@ -90,16 +148,25 @@ class Tag(models.Model):
     def __str__(self):
         return self.name
 
-class Accomodation(Location):
-    contact_number=models.CharField(max_length=11, blank=True, null=True)
-    
+class FoodPlace(Location):
+ 
+    def save(self, *args, **kwargs):
+        self.location_type = '2'
+        super(FoodPlace, self).save(*args, **kwargs)
+
     def __str__(self):
         return self.name
 
-class FoodPlace(Location):
- 
+class Accommodation(Location):
+    contact_number=models.CharField(max_length=11, blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        self.location_type = '3'
+        super(FoodPlace, self).save(*args, **kwargs)
+
     def __str__(self):
         return self.name
+
 
 class Itinerary(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -133,3 +200,17 @@ class Food(models.Model):
     item = models.CharField(max_length=100)
     price = models.FloatField()
     image = models.ImageField(blank=True, null=True, upload_to='location_food/')
+
+
+@receiver(post_save, sender=Location)
+@receiver(post_save, sender=Spot)
+def create_locationimage(sender, instance, created, **kwargs):
+    if created:
+        LocationImage.objects.create(
+            location=instance,
+            is_primary_image=True
+        ).save()
+
+    
+
+
