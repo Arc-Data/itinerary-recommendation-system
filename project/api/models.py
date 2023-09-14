@@ -82,9 +82,20 @@ class Location(models.Model):
             accommodation = Accommodation(location_ptr=self)
             accommodation.__dict__.update(self.__dict__)
             accommodation.save()
-            
+
     def __str__(self):
         return self.name
+    
+class CustomFee(models.Model):
+    location = models.ForeignKey("Spot", on_delete=models.CASCADE)
+    min_cost = models.FloatField()
+    max_cost = models.FloatField()
+
+    def save(self, *args, **kwargs):
+        if self.min_cost >= self.max_cost:
+            raise ValueError("min_cost must be less than max_cost.")
+        
+        super().save(*args, **kwargs)
 
 class Bookmark(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
