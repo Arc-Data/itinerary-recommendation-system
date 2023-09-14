@@ -5,6 +5,8 @@ from django.contrib.auth.models import AbstractUser
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from .managers import CustomUserManager
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
 import datetime
 import os
@@ -47,10 +49,29 @@ class User(AbstractUser):
 
 class Preferences(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    art = models.BooleanField(default=False)
     historical = models.BooleanField(default=False)
+    nature = models.BooleanField(default=False)
+    religious = models.BooleanField(default=False)
+    art = models.BooleanField(default=False)
     activity = models.BooleanField(default=False)
+    entertainment = models.BooleanField(default=False)
     outdoors = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.user.email
+
+@receiver(post_save, sender=User)
+def create_preferences(sender, instance, created, **kwargs):
+   if created:
+       Preferences.objects.create(
+           user=instance,
+       ) 
+       print("Nice")
+
+@receiver(post_save, sender=User)
+def save_user_preferences(sender, instance, **kwargs):
+    instance.preferences.save()
+
 
 class Location(models.Model):
     name = models.CharField(max_length=250, unique=True)
