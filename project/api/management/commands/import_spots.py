@@ -4,6 +4,7 @@ from django.conf import settings
 from datetime import time
 from django.core.management.base import BaseCommand
 from api.models import Spot, Tag
+from project.api.models import CustomFee
 
 class Command(BaseCommand):
     help = 'Import data from CSV to Spot model'
@@ -28,7 +29,7 @@ class Command(BaseCommand):
                 
                 opening_time = self.get_time_str(opening_time_str)
                 closing_time = self.get_time_str(closing_time_str)
-
+                
                 spot = Spot(
                     name=row['Name'],
                     address=row['Address'],
@@ -40,6 +41,15 @@ class Command(BaseCommand):
                     closing_time=closing_time 
                 )
                 spot.save()
+
+                if spot.fees == None:
+                    min_cost = float(row.get('min_cost', 0.0))  # Provide a default value of 0.0 if 'min_cost' is missing
+                    max_cost = float(row.get('max_cost', 0.0))  # Provide a default value of 0.0 if 'max_cost' is missing
+                    CustomFee.objects.create(
+                        spot=spot,
+                        min_cost=min_cost,
+                        max_cost=max_cost
+                    )
 
                 tags = []  
                 tag_names = ['Historical', 'Nature', 'Religious', 'Art', 'Activities', 'Entertainment', 'Culture']
