@@ -1,33 +1,73 @@
-Name,Address,Latitude,Longitude
-Temple of Leah,"Cebu Transcentral Highway, Cebu City, Cebu",10.31042,123.91813
-Cebu Taoist Temple,"8VMQ+M5X, Cebu City, Cebu",10.3342,123.888
-Mactan Shrine,"Lapu-Lapu City, Cebu",10.31084005,124.0152209
-Magellan's Cross,"7WV2+CQG, P. Burgos St., Cebu City, Cebu",10.2893,123.9011
-Basilica Minore Del Santo Nino,"Osmena Boulevard, Cebu City, Cebu",10.2941,123.9021
-Fort San Pedro,"7WR4+X7J, A. Pigafetta Street, Cebu City, Cebu",10.29240422,123.9056319
-Upside Down World,"2nd Floor Unit A 204-205-206 City Time Square Phase 2 Mantawi Int'l Drive, Tipolo, Mandaue City, Cebu",10.3266,123.9333
-Casa Gorordo Museum,"35 Eduardo Aboitiz St, Cebu City, 6000 Cebu",10.29976929,123.9048905
-Cebu Provincial Museum,"731 M. J. Cuenco Ave, Cebu City, 6000 Cebu",10.30378995,123.9064318
-Jesuit House Museum,"26 Zulueta St, Cebu City, 6000 Cebu",10.29866552,123.9040441
-Yap-San Diego Ancestral Hous,"155 Mabini St, Cebu City, 6000 Cebu",10.29926791,123.9039687
-Busay Falls,"9V7J+3M4, Cebu Transcentral Hwy, Cebu City, 6000 Cebu",10.3631119,123.8817008
-Island Eco Tourism Park,"62XX+79V, Sabang, Asinan, Lapu-Lapu City, 6015 Cebu",10.24824718,124.0484234
-Halad Museum,"7WW2+RR7, J and J Building, Dionisio Jakosalem Street corner V. Gullas Street, Cebu City, Cebu ",10.29703223,123.9020834
-BPI Museum,"P. Burgos Street, Inside BPI bank, Cebu City, PH 6000",10.29357966,123.9025823
-Jumalon Butterfly Sanctuary And Art Gallery,"7VR7+7Q9, J.N, Jumalon St, Cebu City, 6000 Cebu",10.290659,123.8644892
-Heritage of Cebu Monument,"7WX3+GCP, Sikatuna St, Cebu City, 6000 Cebu",10.29885868,123.9035734
-Budlaan Falls,"9VPP+925, Apas, Cebu City, 6000 Cebu",10.38590875,123.8851035
-Cebu Happy World Museum,"Lot 2-A-3, Brgy. Gabi, Cordova, 6007",10.26177804,123.9589808
-Bagacay Point Lighthouse,"92M9+8CJ, Liloan, 6002 Cebu",10.383313,124.0185106
-Cebu Metropolitan Cathedral,"7WW3+65 Cebu City, Cebu",10.2956,123.903
-D' Family Park,"9W56+C82, Cebu City, 6000 Cebu",10.35851333,123.9107759
-Crocolandia ,"6RWM+HHW, Burgos St, Talisay, 6045 Cebu",10.2465111,123.8339558
-Sirao Garden,"CV48+MPV, Cebu City, 6000 Cebu",10.40673516,123.8668098
-Millennium Park,"8XF9+X65, Marcelo Fernan Bridge, Lapu-Lapu City, 6015 Cebu",10.32491821,123.9680928
-Kawasan Falls,"Bayan ng Alegria, Lalawigan ng Cebu",9.8035,123.3743
-"Terrazas de Flores Botanical Garden","9VH9+JFG, Cebu Transcentral Hwy, Cebu City, 6000 Cebu",10.37905026,123.86869
-Genesis Valley,"CW2J+GMW, Cabangahan, Consolacion, 6001 Lalawigan ng Cebu",10.40140506,123.9317597
-Cebu Ocean Park,"SM Seaside Complex, F. Vestil St, Cebu City, Cebu",10.28137217,123.8785129
-Carmelite Sanctuary,"8W96+FHQ, New Era, Cebu City, 6000 Cebu",10.31873038,123.9114742
-Virgen de la Regla National Shrine,"B.M Dimataga Street, Lapu-Lapu City, Cebu",10.31252771,123.9486738
-Buwakan ni Alejandra,"Sitio Bunga Barangay, Balamban, 6041 Cebu",10.43055959,123.7761629
+Place,Address,IsClosed,Fee,MinFee,MaxFee,Start,End,Latitude,Longitude,Historical,Nature,Religious,Art,Activities,Entertainment,Culture
+Temple of Leah,"Roosevelt Street Busay, Cebu City 6000 Philippines",0,100,,,7:00:00,18:00:00,10.36914746,123.8734036,1,0,0,1,0,0,1
+Cebu Taoist Temple,"Beverly Hills, Cebu City 6000 Philippines",0,0,,,8:00:00,17:00:00,10.33424816,123.8879844,1,0,1,1,0,0,0
+Mactan Shrine,"Lapu-Lapu City, Cebu",0,0,,,5:00:00,22:00:00,10.31086995,124.0152303,1,0,0,0,0,0,1
+Magellan's Cross,"P. Burgos St., Cebu City, Cebu",0,0,,,8:00:00,18:00:00,10.29352076,123.9019409,1,0,0,0,0,0,1
+Basilica Minore Del Santo Nino,"Osmena Boulevard, Cebu City, Cebu",0,0,,,6:00:00,19:00:00,10.29406702,123.9021057,1,0,1,0,0,0,1
+Fort San Pedro,"A. Pigafetta Street, Cebu City, Cebu",0,30,,,8:00:00,17:00:00,10.29245509,123.9056361,1,0,0,0,0,0,0
+Upside Down World,"2nd Floor Unit A 204-205-206 City Time Square Phase 2 Mantawi Int'l Drive, Tipolo, Mandaue City, Cebu",1,250,,,10:00:00,21:00:00,10.32674003,123.9334251,0,0,0,1,0,1,0
+Casa Gorordo Museum,"35 Eduardo Aboitiz St, Cebu City, 6000 Cebu",0,,50,150,9:00:00,17:00:00,10.29976554,123.9048913,1,0,0,0,0,0,1
+Cebu Provincial Museum,"731 M. J. Cuenco Ave, Cebu City, 6000 Cebu",0,,10,75,10:00:00,15:00:00,10.30379163,123.9064319,1,0,0,0,0,0,1
+Jesuit House Museum,"26 Zulueta St, Cebu City, 6000 Cebu",0,50,,,8:00:00,17:00:00,10.29866874,123.9040431,1,0,1,0,0,0,0
+Yap-San Diego Ancestral House,"155 Mabini St, Cebu City, 6000 Cebu",0,,50,100,9:00:00,19:00:00,10.29927053,123.9039525,1,0,0,0,0,0,0
+Island Eco Tourism Park,"Sabang, Asinan, Lapu-Lapu City, 6015 Cebu",0,,20,260,0:00:00,23:59:59,10.24823498,124.048425,0,0,0,0,1,1,0
+Halad Museum,"J and J Building, Dionisio Jakosalem Street corner V. Gullas Street, Cebu City, Cebu ",1,10,,,9:00:00,17:00:00,10.29703306,123.9020852,1,0,0,1,0,0,1
+BPI Museum,"P. Burgos Street, Inside BPI bank, Cebu City, PH 6000",0,0,,,9:00:00,16:00:00,10.29358104,123.9025823,1,0,0,0,0,0,0
+Jumalon Butterfly Sanctuary And Art Gallery,"J.N. Jumalon Street, Cebu City 6000 Philippines",0,,50,100,9:00:00,17:00:00,10.29065716,123.8644892,0,1,0,1,0,0,0
+Heritage of Cebu Monument,"Sikatuna St, Cebu City, 6000 Cebu",0,0,,,0:00:00,0:00:00,10.29887189,123.9036403,1,0,0,0,0,0,0
+Kabang Falls (Budlaan Falls),"Apas, Cebu City, 6000 Cebu",0,0,,,0:00:00,23:59:59,10.38679093,123.8834885,0,1,0,0,0,0,0
+Cebu Happy World Museum,"Lot 2-A-3, Brgy. Gabi, Cordova, 6007",0,,250,350,9:00:00,20:00:00,10.26156886,123.9591311,0,0,0,1,0,1,0
+Bagacay Point Lighthouse,"Liloan, 6002 Cebu",0,0,,,0:00:00,0:00:00,10.38332975,124.0185096,1,0,0,0,0,0,0
+Cebu Metropolitan Cathedral,"6000 Mabini St, Cebu City, 6000 Cebu",0,0,,,8:00:00,17:00:00,10.29557509,123.9029957,1,0,0,0,0,0,1
+D' Family Park,"M. Cuenco Ave., Talamban 6000 Cebu City, Philippines",0,,10,85,5:00:00,19:00:00,10.35850376,123.9107685,0,0,0,0,1,1,0
+Crocolandia ,"Burgos St, Talisay, 6045 Cebu",0,,150,200,8:00:00,17:00:00,10.24649799,123.8339545,0,0,0,0,1,1,0
+Sirao Garden,"Cebu City, 6000 Cebu",0,,80,100,8:00:00,18:00:00,10.40673627,123.86679,0,1,0,0,0,0,0
+Millennium Park,"Marcelo Fernan Bridge, Lapu-Lapu City, 6015 Cebu",0,0,,,0:00:00,23:59:59,10.32489373,123.9680928,0,0,0,0,1,1,0
+Kawasan Falls,"Bayan ng Alegria, Lalawigan ng Cebu",0,,20,40,0:00:00,23:59:59,9.803498766,123.374333,0,1,0,0,0,0,0
+"Terrazas de Flores Botanical Garden","Cebu Transcentral Highway 6000 Malubog, Philippines",0,100,,,7:00:00,22:00:00,10.37905442,123.8686863,0,1,0,0,0,0,0
+Genesis Valley,"Cabangahan, Consolacion, 6001 Lalawigan ng Cebu",0,,150,200,8:00:00,17:00:00,10.40137402,123.9317047,0,0,0,0,1,0,0
+Cebu Ocean Park,"SM Seaside Complex, F. Vestil St, Cebu City, Cebu",0,550,,,10:00:00,18:00:00,10.281376,123.8785156,0,1,0,0,0,1,0
+Carmelite Monastery,"Pope John Paul II Avenue, Mabolo 6000 Cebu City, Philippines",0,0,,,5:30:00,18:00:00,10.31872802,123.9114729,0,0,1,0,0,0,0
+Virgen de la Regla National Shrine,"B.M. Dimataga St., Poblacion 6015 Lapu-Lapu City, Philippines",0,0,,,0:00:00,23:59:59,10.312532,123.9486724,0,0,1,0,0,0,1
+Buwakan ni Alejandra,"Sitio Bunga Barangay, Balamban, 6041 Cebu",0,,75,100,7:00:00,17:30:00,10.43054061,123.7761233,0,1,0,0,0,0,0
+Tumalog Falls,"Brgy Natalio Bacalso Avenue, Oslob, Cebu",0,,20,50,7:00:00,16:00:00,9.48600603,123.3696317,0,1,0,0,1,0,0
+Bluewater Resort Sumilon Island,"Sumilon Island, Cebu",0,,1000,2500,8:00:00,16:00:00,9.433597837,123.3906558,0,1,0,0,1,1,0
+Sumilon Island Sandbar,"Sumilon Island, Cebu",0,50,,,8:00:00,16:00:00,9.43406608,123.3867783,0,1,0,0,1,1,0
+Canyoneering Cebu Badian Adventure,"Badian, Cebu Alegria, Cebu City, 6000 Cebu",0,1500,,,6:30:00,14:00:00,9.812390572,123.3683351,0,0,0,0,1,1,0
+Oslob Whale Shark Watching,"Natalio Bacalso Avenue, Oslob, 6023 Cebu",0,,500,1000,6:00:00,11:00:00,9.463361151,123.379734,0,1,0,0,1,0,0
+La Vie in the Sky,"Tops Road, Cebu City, 6000 Cebu",0,100,,,7:00:00,2:00:00,10.37268207,123.8707757,0,1,0,0,0,1,0
+Tops Lookout,"Tops Road, Cebu City, 6000 Cebu",1,,,,0:00:00,23:59:59,10.37061619,123.870872,0,1,0,0,0,1,0
+Simala Shrine (Monastery of the Holy Eucharist),"Sibonga, Cebu",0,0,,,8:00:00,20:00:00,9.979448786,123.5996654,1,0,1,0,0,0,1
+Alegre Guitar Factory,"Pajac-Maribago Rd, Lapu-Lapu City, Cebu",0,0,,,8:00:00,18:00:00,10.29407279,123.9877251,1,0,0,0,0,0,1
+Sachiko's Little Kyoto,"Sitio Lamacan, Babag Uno 6000 Cebu City, Philippines",0,100,,,8:00:00,20:00:00,10.37128679,123.8552826,0,1,0,0,0,1,0
+Adventure Cafe and Zipline,"Brgy Gaas, Balamban, Cebu",0,,5,205,8:00:00,17:00:00,10.42974261,123.7756562,0,0,0,0,1,1,0
+Chapel of San Pedro Calungsod,"Church Ave., SM Seaside Complex, Cebu City, Cebu",0,0,,,9:30:00,17:00:00,10.28179911,123.8778243,0,0,1,0,0,0,0
+Mountain View Nature's Park,"Cebu Transcentral Hwy, Cebu City, 6000 Cebu",0,,50,200,9:00:00,21:00:00,10.3711171,123.8742797,0,0,0,0,1,1,0
+Osmena Peak,"Mantalongon, Dalaguete 6022 Philippines",0,30,,,0:00:00,23:59:59,9.822499964,123.448333,0,1,0,0,1,0,0
+Panagsama Beach,"Moalboal, Cebu",0,,0,100,0:00:00,23:59:59,9.946423854,123.3685542,0,1,0,0,1,0,0
+White Beach Moalboal,"Moalboal, Cebu",0,,10,20,0:00:00,23:59:59,9.972218514,123.3720414,0,1,0,0,1,0,0
+Pescador Island,Pescador Island,0,100,,,0:00:00,23:59:59,9.923230709,123.3434683,0,1,0,0,1,0,0
+Tingko Beach,"Alcoy, Cebu",0,,10,1000,0:00:00,23:59:59,9.681884417,123.5030218,0,1,0,0,1,0,0
+10000 Roses Cafe,"Day-as Barangay Rd, Cordova, Cebu",0,20,,,14:00:00,22:00:00,10.25667471,123.9323656,0,1,0,0,0,1,0
+Teofilo Camomot Shrine,"Carcar City, Cebu",0,0,,,8:00:00,16:30:00,10.10321198,123.6581503,0,0,1,0,0,0,0
+Theotokos Shrine,"Natalio B. Bacalso S National Hwy, Carcar City, Cebu",0,0,,,6:00:00,16:00:00,10.11622865,123.6738466,0,0,1,0,0,0,0
+Sky Experience Adventure,"Osmeña Blvd, Cebu City, 6000 Cebu",1,250,,,14:00:00,0:00:00,10.30786628,123.8941179,0,0,0,0,1,1,0
+Nalusuan Island,"Cordova Reef, Cordova 6000 Philippines",0,400,,,6:00:00,20:00:00,10.19074508,124.0003623,0,1,0,0,1,0,0
+Hilutongan Island (Gilutongan Island),"Cordova Reef, Cordova 6000 Philippines",0,,100,300,0:00:00,23:59:59,10.20675372,123.9900088,0,1,0,0,1,0,0
+Caohagan Island,"Lapu-Lapu City, Cebu",0,,200,300,0:00:00,23:59:59,10.20388762,124.0177052,0,1,0,0,1,0,0
+Taboan Public Market,"Cebu City, 6000 Cebu",0,0,,,4:00:00,19:00:00,10.29556248,123.8914812,0,0,0,0,1,0,1
+Colon Street,"Cebu City, 6000 Cebu",0,0,,,0:00:00,23:59:59,10.29674146,123.8990271,0,0,0,0,1,0,1
+Plaza Independencia,"CSCR Tunnel, Cebu City, 6000 Cebu",0,30,,,8:00:00,19:00:00,10.29318993,123.9051288,1,0,0,0,0,0,1
+Olango Islands,"Lapu-Lapu City, Cebu",0,,20,100,0:00:00,23:59:59,10.24950083,124.0376597,0,1,0,0,1,0,0
+San Vicente Marine Sanctuary,"Lapu-Lapu City, Cebu",0,30,,,7:00:00,17:00:00,10.24859008,124.0228568,0,1,0,0,1,0,0
+Orchids Gallery,"National Hwy, Moalboal, Cebu",0,,20,70,8:00:00,18:00:00,9.941121798,123.3979552,0,1,0,0,0,0,0
+SeaQuest Dive Center,"Panagsama Rd, Moalboal, 6032 Cebu",0,100,,,8:00:00,20:00:00,9.950267727,123.3657441,0,1,0,0,1,0,0
+Cambais Falls,"Alegría, Cebu",0,50,,,7:00:00,17:00:00,9.748458702,123.389276,0,1,0,0,0,0,0
+Green Mosque,"Creekside Street, Cebu City, 6000 Cebu",0,0,,,0:00:00,23:59:59,10.30389291,123.9009976,0,0,1,0,0,0,1
+Inambakan Falls,"Ginatilan, Cebu",0,50,,,0:00:00,23:59:59,9.568627615,123.3386586,0,1,0,0,0,0,0
+Alegria Heritage Park,"Alegría, Cebu",0,0,,,0:00:00,23:59:59,9.728419118,123.3393343,0,0,0,0,0,1,1
+Malapascua Light House,"Daanbantayan, Cebu",0,0,,,0:00:00,23:59:59,11.34320081,124.1112622,1,0,0,0,0,0,1
+Cuartel Ruins,"Oslob, Cebu",0,0,,,0:00:00,23:59:59,9.520215868,123.4341474,1,0,0,0,0,0,0
+Capila de Sta. Ana,"Toledo City, Cebu",0,,50,200,9:00:00,16:00:00,10.3702742,123.6275732,1,0,1,0,0,0,0
+Archdiocesan Museum of Cebu,"P. Burgos St, Cebu City, 6000 Cebu",0,100,,,9:00:00,17:00:00,10.29613547,123.9035637,1,0,1,0,0,0,1
+OAD Tabor Hill,"Purok 3 Talamban Rd, Cebu City, 6000 Cebu",0,0,,,0:00:00,23:59:59,10.37912544,123.913167,0,0,1,0,0,0,0
