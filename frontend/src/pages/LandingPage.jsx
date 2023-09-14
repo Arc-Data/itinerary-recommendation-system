@@ -7,6 +7,7 @@ import AuthContext from '../context/AuthContext';
 /*DATA*/
 import cardData from '../cardData';
 import { Navigate } from 'react-router-dom';
+import { Link } from "react-router-dom"
 
 export default function LandingPage() {
 	const { user } = useContext(AuthContext)
@@ -51,20 +52,11 @@ export default function LandingPage() {
 						Discover the best routes, attractions, food places and accommodations for your
 						Cebu trip with CebuRoute's expert guidance.
 					</p>
-					<button onClick={toggleLoginModal}>
-						Get Started
+					<button>
+						<Link to="login">Get Started</Link>
 					</button>
 				</div>
 			</div>
-			{/* <div className='hero--map d-Grid'>
-				<div className='hero--map-photo1'>
-					<img className='hero--map-photo' src="../images/3.png" />
-				</div>
-				<div className='hero--map-text'>
-					<h1 className='hero--h1'>See your itinerary in one view</h1>
-					<p className='hero--p'>No more switching between apps and tabs to plan your trip.</p>
-				</div>
-			</div> */}
 			<div className="hero--guide">
 				<h1>How CebuRoute™ Works</h1>
 				<div className="guide--cards">

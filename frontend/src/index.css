@@ -29,6 +29,12 @@ button {
     cursor: pointer;
 }
 
+a:-webkit-any-link {
+    color: white;
+    cursor: pointer;
+    text-decoration: none;
+}
+
 /*DISPLAY GRID FOR LANDING PAGE*/
 .d-Grid {
     display: grid;
@@ -126,7 +132,7 @@ button {
     position: fixed;
     top: 0;
     display: flex;
-    background-color: #D9ED92;
+    background-color: transparent;
     justify-content: space-between;
     padding: 10px 120px;
     align-items: center;
@@ -150,7 +156,7 @@ button {
     padding: 0;
     font-weight: 700;
     font-size: 12px;
-    background-color: #D9ED92;
+    background-color: transparent;
     color: inherit;
     border: none;
     cursor: pointer;
@@ -194,28 +200,19 @@ button {
     margin: 0 10px;
 }
 
-/*MODAL LOGIN and SignUp*/
-.modal--open {
-    overflow:hidden;
+/*LOGIN and SignUp PAGE*/
+.container--sign-log {
+    display: grid;
+    grid-template-columns: 60% 40%;
+    align-items: center;
+    overflow-y: hidden; 
 }
 
-.modal--overlay { /*FOR Log In AND Sign Up AND Add Review*/
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.container-form {
+    padding: 15%;
 }
 
-.modal-login-sign-text {
+.container-form >h2 {
     margin: 0;
     font-weight: 800;
 }
@@ -225,19 +222,9 @@ button {
     flex-direction: column;
 }
 
-.close-button {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    border: none;
-    padding: 8px;
-    cursor: pointer;
-    background-color: white;
-}
-
 .login-sign-link {
     margin-top: 10px;
-    text-align: center;
+    text-align: left;
     font-size: 13px;
     color: gray;
 }
@@ -258,15 +245,15 @@ button {
     margin-top: 25px;
 }
 
-.modal--login label,
-.modal--sign label {
+.container-form label,
+.container-form label {
     margin-top: 15px;
     font-size: 15px;
     color: gray;
 }
 
-.modal--sign input,
-.modal--login input {
+.container-form input,
+.container-form input {
     padding: 8px;
     height: 45px;
     border: 1px solid #ccc;
@@ -274,14 +261,29 @@ button {
     margin-top: 5px;
 }
 
-/*MODAL LOGIN*/
-.modal--login { /*Modal for sign and login*/
-    background-color: #FFFFFF;
-    padding: 35px;
-    border-radius: 8px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
-    width: 378px;
-    position: relative;
+.cebu--logo {
+    position: absolute;
+    top: 5%;
+}
+
+/*LOGIN PAGE*/
+.container-images > img {
+    width: auto; 
+    height: 928px; 
+    max-width: 100%;
+    object-fit: cover; 
+    object-position: center; 
+}
+
+/*FOR 19 INCH*/
+@media screen and (max-width: 1604px) {
+    .container-images > img {
+        width: auto; 
+        height: 742px; 
+        max-width: 100%; 
+        object-fit: cover; 
+        object-position: center; 
+    }
 }
 
 .forgot-password {
@@ -365,10 +367,11 @@ input[type="text"] {
 
 .toggle-password-button {
     background: transparent;
+    color: black;
     border: none;
     cursor: pointer;
-    font-size: 1.0em;
-    margin-left: -35px; 
+    font-size: 18px;
+    margin: 5px 0 0 -50px; 
     z-index: 1;
 }
 
@@ -401,7 +404,9 @@ input[type="text"] {
     padding: 15px 50px;
     font-size: 20px;
     border-radius: 10px;
+    text-decoration: none;
 }
+
 .hero--guide {
     background-image: url('/beach.jpg');
     height: 700px;

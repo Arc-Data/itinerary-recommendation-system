@@ -12,6 +12,7 @@ import timeIcon from "/images/clock.png";
 import userIcon from "/images/user.png"
 
 
+
 export default function DetailPage() {
 
     /*DATA FOR DETAIL DATA*/

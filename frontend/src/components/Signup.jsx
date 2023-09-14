@@ -1,5 +1,8 @@
 import { useContext, useState } from "react"
+import { Link } from 'react-router-dom';
 import AuthContext from "../context/AuthContext"
+/*IMAGES*/
+import herobackground from "/public/herobackground.jpeg";
 
 const Signup = () => {
     const { registerUser } = useContext(AuthContext)
@@ -41,8 +44,12 @@ const Signup = () => {
     }
 
     return (
-        <div>
-            <h2 className='modal-login-sign-text'>Sign Up</h2>
+        <div className="container--sign-log">
+            <div className="container-form">
+                <Link to="/">
+					<img className="cebu--logo" src="../images/Untitled design.png" alt="LandingPage" />
+				</Link>
+            <h2>Sign Up</h2>
             <form className='modal-login-sign-form' onSubmit={handleSubmit}>
                 <div className="name-inputs">
                     <div className="name-firstName">
@@ -106,10 +113,14 @@ const Signup = () => {
                 </div>
                 </label>
                 <button className='button-login-sign' type="submit">Sign Up</button>
+                  <div className="login-sign-link">
+                     Already have an account? <Link to="/login">Login</Link>
+                </div>
                 </form>
-            {/* <div className="login-sign-link">
-            Already have an account? <Link to="/login">Login</Link>
-            </div> */}
+            </div>
+            <div className="container-images">
+                <img src={herobackground}/>
+            </div>
         </div>
     );
 }
