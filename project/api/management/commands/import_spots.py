@@ -14,12 +14,14 @@ class Command(BaseCommand):
         with open(csv_file, 'r') as file:
             reader = csv.DictReader(file)
             for row in reader:
+                is_closed = bool(int(row.get('IsClosed', 0)))
                 spot = Spot(
                     name=row['Name'],
                     address=row['Address'],
                     latitude=float(row['Latitude']),
                     longitude=float(row['Longitude']),
                     fees=0,
+                    is_closed=is_closed
                 )
                 spot.save()
 

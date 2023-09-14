@@ -67,6 +67,7 @@ class Location(models.Model):
         ],
         default=1
     )
+    is_closed = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         if self.location_type == '1':
@@ -114,8 +115,8 @@ class Spot(Location):
     fees = models.PositiveIntegerField()
     expected_duration = models.DurationField(default=timedelta(hours=1))
     interested = models.ManyToManyField(User, through=Bookmark, related_name="bookmarks")
-    opening_time = models.TimeField(default=datetime.time(8,0,0))
-    closing_time = models.TimeField(default=datetime.time(20,0,0))
+    opening_time = models.TimeField(default=datetime.time(8,0,0), blank=True, null=True)
+    closing_time = models.TimeField(default=datetime.time(20,0,0), blank=True, null=True)
 
     def save(self, *args, **kwargs):
         self.location_type = '1'

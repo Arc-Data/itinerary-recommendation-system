@@ -40,7 +40,7 @@ class LocationViewSet(viewsets.ReadOnlyModelViewSet):
             queryset = queryset.filter(name__istartswith=query)
 
         return queryset
-
+     
 @api_view(["GET"])
 def popular_spots(request):
     if request.method == "GET":
