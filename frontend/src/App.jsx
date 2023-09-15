@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-/*PAGES*/
+/*Pages*/
 import data from './data';
 import DetailPage from './pages/DetailPage';
 import LandingPage from './pages/LandingPage';
@@ -8,15 +8,22 @@ import HomePage from './pages/Home';
 import PrivateRoutes from './utils/PrivateRoutes'
 import SearchPage from './pages/SearchPage';
 import { AuthProvider } from './context/AuthContext';
-import Layout from './components/Layout'
 import Users from './pages/Users'
 import Location from './pages/Location'
 import Accommodation from './pages/Accommodation'
 import Activity from './pages/Activity'
 import Food from './pages/Food'
 import AddLocation from './pages/AddLocation'
+// import CreateTrip from './pages/CreateTrip';
+/*Components*/
+import Layout from './components/Layout'
+import Login from './components/Login'
+import Signup from './components/Signup'
+import ForgotPassword from './components/ForgotPassword'
+/*Layout*/
 import UserLayout from './layout/UserLayout';
-import CreateTrip from './pages/CreateTrip';
+
+
 
 function App() {
   return (
@@ -24,13 +31,16 @@ function App() {
       <AuthProvider>
         <Routes>
             <Route path="/" element={<LandingPage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/forgotpass" element={<ForgotPassword />} />
+            <Route path="/detailPage" element={<DetailPage />} />
             <Route element={<PrivateRoutes />} >
  
               <Route element={<UserLayout />}>
                 <Route path="/home" element={<HomePage />} />
-                <Route path="/create" element={<CreateTrip />} /> 
+                {/* <Route path="/create" element={<CreateTrip />} />  */}
                 <Route path="/search" element={<SearchPage />} />
-                <Route path="/detailPage" element={<DetailPage />} />
               </Route> 
  
               <Route path="/admin" element={<Layout />}>
