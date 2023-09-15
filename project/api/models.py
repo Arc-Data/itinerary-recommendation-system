@@ -2,7 +2,14 @@ from datetime import timedelta
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 from .managers import CustomUserManager
+from django.dispatch import receiver
+from django.db.models.signals import post_save
+
+import datetime
+import os
 
 '''
 how do i express difference in time schedules and sometimes varying fees
@@ -27,6 +34,7 @@ class User(AbstractUser):
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
+    set_preferences = models.BooleanField(default=False)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
@@ -38,16 +46,79 @@ class User(AbstractUser):
     def get_full_name(self):
         return self.first_name + " " + self.last_name
 
+
+class Preferences(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    historical = models.BooleanField(default=False)
+    nature = models.BooleanField(default=False)
+    religious = models.BooleanField(default=False)
+    art = models.BooleanField(default=False)
+    activity = models.BooleanField(default=False)
+    entertainment = models.BooleanField(default=False)
+    outdoors = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.user.email
+
+@receiver(post_save, sender=User)
+def create_preferences(sender, instance, created, **kwargs):
+   if created:
+       Preferences.objects.create(
+           user=instance,
+       ) 
+       print("Nice")
+
+@receiver(post_save, sender=User)
+def save_user_preferences(sender, instance, **kwargs):
+    instance.preferences.save()
+
+
 class Location(models.Model):
     name = models.CharField(max_length=250, unique=True)
     address = models.CharField(max_length=250)
     description = models.CharField(default="No Description Provided.", max_length=500)
     latitude = models.FloatField()
     longitude = models.FloatField()
-    image = models.ImageField(upload_to='location_images/', default='location_images/Background.jpg')
+    location_type = models.CharField(
+        max_length=1,
+        choices=[
+            ('1', 'Spot'),
+            ('2', 'FoodPlace'),
+            ('3', 'Accommodation'),
+        ],
+        default=1
+    )
+    is_closed = models.BooleanField(default=False)
+
+    def save(self, *args, **kwargs):
+        super(Location, self).save(*args, **kwargs)
+
+        if self.location_type == '1' and not hasattr(self, 'spot'):
+            spot = Spot(location_ptr=self)
+            spot.__dict__.update(self.__dict__)
+            spot.save()
+        elif self.location_type == '2' and not hasattr(self, 'foodplace'):
+            foodplace = FoodPlace(location_ptr=self)
+            foodplace.__dict__.update(self.__dict__)
+            foodplace.save()
+        elif self.location_type == '3' and not hasattr(self, 'accommodation'):
+            accommodation = Accommodation(location_ptr=self)
+            accommodation.__dict__.update(self.__dict__)
+            accommodation.save()
 
     def __str__(self):
         return self.name
+    
+class CustomFee(models.Model):
+    spot = models.ForeignKey("Spot", on_delete=models.CASCADE)
+    min_cost = models.FloatField()
+    max_cost = models.FloatField()
+
+    def save(self, *args, **kwargs):
+        if self.min_cost >= self.max_cost:
+            raise ValueError("min_cost must be less than max_cost.")
+        
+        super().save(*args, **kwargs)
 
 class Bookmark(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -59,34 +130,62 @@ class Bookmark(models.Model):
     def __str__(self):
         return f"{self.user.get_full_name} bookmarked {self.spot.name}"
 
+def location_image_path(instance, filename):
+    ext = filename.split('.')[-1]
+    folder_name = instance.location.name.replace(" ", "_")
+    filename = f"{instance.location.name}.{ext}"
+    return os.path.join('location_images', folder_name, filename)
+
+
+class LocationImage(models.Model):
+    location = models.ForeignKey(Location, on_delete=models.CASCADE, related_name="images")
+    image = models.ImageField(upload_to=location_image_path, default='location_images/Background.jpg')
+    is_primary_image = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"Image for {self.location.name}"
+
 class Spot(Location):
-    fees = models.PositiveIntegerField()
+    fees = models.PositiveIntegerField(blank=True, null=True)
     expected_duration = models.DurationField(default=timedelta(hours=1))
     interested = models.ManyToManyField(User, through=Bookmark, related_name="bookmarks")
-    # opening_time = models.TimeField()
-    # closing_time = models.TimeField()
+    tags = models.ManyToManyField("Tag", related_name="spots")
+    opening_time = models.TimeField(blank=True, null=True)
+    closing_time = models.TimeField(blank=True, null=True)
 
     def __str__(self):
         return self.name
-
+        
 class Tag(models.Model):
     name = models.CharField(max_length=50)
 
     def __str__(self):
         return self.name
 
-class Accomodation(Location):
-    
+class FoodPlace(Location):
+ 
+    def save(self, *args, **kwargs):
+        self.location_type = '2'
+        super(FoodPlace, self).save(*args, **kwargs)
+
     def __str__(self):
         return self.name
 
-class FoodPlace(Location):
- 
+class Accommodation(Location):
+    contact_number=models.CharField(max_length=11, blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        self.location_type = '3'
+        super(FoodPlace, self).save(*args, **kwargs)
+
     def __str__(self):
         return self.name
+
 
 class Itinerary(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    number_of_people = models.PositiveIntegerField(default=1)
+    budget = models.FloatField(default=0)
 
 class Day(models.Model):
     date = models.DateField()
@@ -100,6 +199,32 @@ class Review(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True)
     comment = models.TextField()
     rating = models.PositiveIntegerField()
-    created_at = models.DateTimeField(auto_now_add=True)
+    datetime_created = models.DateTimeField(auto_now_add=True)
+
+class Ownership(models.Model):
+    location = models.ForeignKey(Location, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    approval_status = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = ('owner', 'location')
+
+class Food(models.Model):
+    location = models.ForeignKey(FoodPlace, on_delete=models.CASCADE)
+    item = models.CharField(max_length=100)
+    price = models.FloatField()
+    image = models.ImageField(blank=True, null=True, upload_to='location_food/')
+
+
+@receiver(post_save, sender=Location)
+@receiver(post_save, sender=Spot)
+def create_locationimage(sender, instance, created, **kwargs):
+    if created:
+        LocationImage.objects.create(
+            location=instance,
+            is_primary_image=True
+        ).save()
+
+    
 
 
