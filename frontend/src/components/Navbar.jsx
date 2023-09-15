@@ -1,10 +1,11 @@
+import React from "react"
 import { Link } from 'react-router-dom';
 /*PAGES*/
 import Modal from './Modal.jsx';
 import Login from './Login.jsx';
 import Signup from './Signup.jsx';
 
-export default function Navbar({isLoginOpen, toggleLoginModal, isSignOpen, toggleSignModal}) {
+export default function Navbar({}) {
 	return (
 		<>
 			<nav className='navbar'>
@@ -12,24 +13,19 @@ export default function Navbar({isLoginOpen, toggleLoginModal, isSignOpen, toggl
 					<img className="cebu--route" src="../images/Untitled design.png" alt="LandingPage" />
 				</Link>
 				<div className='link'>
-					<button className='link--button' onClick={toggleLoginModal}>
+				<Link to="login">
+					<button className='link--button'>
 						LOGIN
 					</button>
-					<button className='link--button' onClick={toggleSignModal}>
-						SIGN UP
+				</Link>
+				<Link to="signup">
+					<button className='link--button'>
+						SIGNUP
 					</button>
+				</Link>
 				</div>
 			</nav>
-			{isLoginOpen && (
-				<Modal onClose={toggleLoginModal}>
-					<Login/>
-				</Modal>
-			)}
-			{isSignOpen && (
-				<Modal onClose={toggleSignModal}>
-					<Signup/>
-				</Modal>
-			)}
+			
 		</>
 	);
 }
