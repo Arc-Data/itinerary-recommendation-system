@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
 /*Pages*/
 import data from './data';
 import DetailPage from './pages/DetailPage';
@@ -7,14 +8,13 @@ import LandingPage from './pages/LandingPage';
 import HomePage from './pages/Home';
 import PrivateRoutes from './utils/PrivateRoutes'
 import SearchPage from './pages/SearchPage';
-import { AuthProvider } from './context/AuthContext';
 import Users from './pages/Users'
 import Location from './pages/Location'
 import Accommodation from './pages/Accommodation'
 import Activity from './pages/Activity'
 import Food from './pages/Food'
 import AddLocation from './pages/AddLocation'
-// import CreateTrip from './pages/CreateTrip';
+import CreateTrip from './pages/CreateTrip';
 /*Components*/
 import Layout from './components/Layout'
 import Login from './components/Login'
@@ -22,8 +22,9 @@ import Signup from './components/Signup'
 import ForgotPassword from './components/ForgotPassword'
 /*Layout*/
 import UserLayout from './layout/UserLayout';
-
-
+import CreateTripLayout from './layout/CreateTripLayout';
+/*css*/
+ 
 
 function App() {
   return (
@@ -39,9 +40,11 @@ function App() {
  
               <Route element={<UserLayout />}>
                 <Route path="/home" element={<HomePage />} />
-                {/* <Route path="/create" element={<CreateTrip />} />  */}
                 <Route path="/search" element={<SearchPage />} />
               </Route> 
+              <Route element={<CreateTripLayout/>}>
+                <Route path="/create" element={<CreateTrip />} /> 
+              </Route>
  
               <Route path="/admin" element={<Layout />}>
                 <Route path = "/admin/" index element={<Users users={data[0].users}/>} />
