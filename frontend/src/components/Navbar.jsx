@@ -1,13 +1,8 @@
 import React from "react"
 import { Link } from 'react-router-dom';
-/*PAGES*/
-import Modal from './Modal.jsx';
-import Login from './Login.jsx';
-import Signup from './Signup.jsx';
 
-export default function Navbar({}) {
+export default function Navbar() {
 	return (
-		<>
 			<nav className='navbar'>
 				<Link to="/">
 					<img className="cebu--route" src="../images/Untitled design.png" alt="LandingPage" />
@@ -25,7 +20,5 @@ export default function Navbar({}) {
 				</Link>
 				</div>
 			</nav>
-			
-		</>
-	);
+	)
 }

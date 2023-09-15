@@ -11,27 +11,12 @@ import { Link } from "react-router-dom"
 
 export default function LandingPage() {
 	const { user } = useContext(AuthContext)
-	const [isLoginOpen, setLoginOpen] = useState(false)
-	const [isSignOpen, setSignOpen] = useState(false)
-	
+
 	if(user) {
 		console.log("Should be")
 		return (user.is_staff ? <Navigate to = "/admin"/> : <Navigate to ="/home" />)
 	}
 
-	const toggleLoginModal = (event) => {
-		if(event) {
-			event.stopPropagation();
-		}
-		setLoginOpen(prev => !prev)
-	}
-	
-	const toggleSignModal = (event) => {
-		if(event) {
-			event.stopPropagation();
-		}
-		setSignOpen(prev => !prev)
-	}
 	const limitedCardData = cardData.slice(0, 6);
 	
 	const cards = limitedCardData.map((item) => (
@@ -40,11 +25,7 @@ export default function LandingPage() {
 
 	return (
 		<div>
-			<Navbar 
-				isLoginOpen={isLoginOpen} 
-				toggleLoginModal={toggleLoginModal} 
-				isSignOpen={isSignOpen}
-				toggleSignModal={toggleSignModal}/>
+			<Navbar />
 			<div className='hero'>
 				<div className='title'>
 					<h1>Plan your next trip to Cebu</h1>
