@@ -205,11 +205,19 @@ a:-webkit-any-link {
     display: grid;
     grid-template-columns: 60% 40%;
     align-items: center;
-    overflow-y: hidden; 
+    height: 100vh;
+    overflow:hidden;
+}
+
+@media screen and (max-width: 1253px) {
+    .container--sign-log {
+        overflow:visible;
+    }
+   
 }
 
 .container-form {
-    padding: 15%;
+   padding: 60px;
 }
 
 .container-form >h2 {
@@ -259,31 +267,23 @@ a:-webkit-any-link {
     border: 1px solid #ccc;
     border-radius: 4px;
     margin-top: 5px;
+    font-size: 15px;
 }
 
 .cebu--logo {
     position: absolute;
-    top: 5%;
+    top: 0;
+    margin-top: 10px;
 }
+
 
 /*LOGIN PAGE*/
 .container-images > img {
     width: auto; 
-    height: 928px; 
+    height: 100vh; 
     max-width: 100%;
     object-fit: cover; 
     object-position: center; 
-}
-
-/*FOR 19 INCH*/
-@media screen and (max-width: 1604px) {
-    .container-images > img {
-        width: auto; 
-        height: 742px; 
-        max-width: 100%; 
-        object-fit: cover; 
-        object-position: center; 
-    }
 }
 
 .forgot-password {
@@ -303,10 +303,26 @@ a:-webkit-any-link {
     grid-template-columns: 1fr 1fr;
     align-items: center;
     margin-top: 15px;
+    gap: 10px;
 }
 
-.name-lastName {
-    margin-left: 8px;
+/*View Password*/
+
+input[type="password"],
+input[type="text"] {
+    width: 100%;
+}
+
+.toggle-password-button {
+    position: relative;
+    float: right;
+    bottom: 30px;
+    right: 15px;
+    background: transparent;
+    color: black;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
 }
 
 /*MODAL ADD REVIEW*/
@@ -353,27 +369,6 @@ a:-webkit-any-link {
     display: flex;
 }
 
-/*View Password*/
-.password-input-container {
-    display: flex;
-    align-items: center;
-    max-width: auto;  
-}
-
-input[type="password"],
-input[type="text"] {
-    width: 100%;
-}
-
-.toggle-password-button {
-    background: transparent;
-    color: black;
-    border: none;
-    cursor: pointer;
-    font-size: 18px;
-    margin: 5px 0 0 -50px; 
-    z-index: 1;
-}
 
 /*LANDING PAGE- PLAN*/
 .hero {
@@ -479,6 +474,7 @@ input[type="text"] {
 /*LANDING PAGE- DISCOVER*/
 .hero--destination{
     display: relative;
+    background-color: #F9F9F9;
     justify-content: center;
     padding: 20px 120px;
     width: 100%;

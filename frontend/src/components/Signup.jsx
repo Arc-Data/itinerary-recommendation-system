@@ -52,7 +52,7 @@ const Signup = () => {
             <h2>Sign Up</h2>
             <form className='modal-login-sign-form' onSubmit={handleSubmit}>
                 <div className="name-inputs">
-                    <div className="name-firstName">
+                    <div>
                         <label>First Name:</label>
                         <input 
                             type="text" 
@@ -61,7 +61,7 @@ const Signup = () => {
                             value={formData.firstname}
                             onChange={handleInputChange} />
                     </div>
-                    <div className="name-lastName">
+                    <div>
                         <label>Last Name:</label>
                         <input 
                             type="text" 
@@ -79,7 +79,7 @@ const Signup = () => {
                     value={formData.email}
                     onChange={handleInputChange} />
                 <label>Password:</label>
-                <div className="password-input">
+                <div>
                     <input
                         type={showPassword ? "text" : "password"}
                         placeholder="Enter your password"
@@ -97,7 +97,7 @@ const Signup = () => {
                 </div>
                 <label>
                 Confirm Password:
-                <div className="password-input">
+                <div>
                     <input
                         type={showPassword ? "text" : "password"}
                         placeholder="Confirm your password"
