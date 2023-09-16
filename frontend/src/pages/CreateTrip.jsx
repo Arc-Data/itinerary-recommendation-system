@@ -1,9 +1,13 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import CreateNav from '../components/CreateNav'
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css'; 
+import AuthContext from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const CreateTrip = () => {
+    const { user, authTokens } = useContext(AuthContext)
+    const navigate = useNavigate()
     const [formData, setFormData] = useState({
         startDate: '',
         budget: '',
@@ -18,9 +22,40 @@ const CreateTrip = () => {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(formData);
+
+        const data = {
+            start_date: formData.startDate.toISOString().split('T')[0], 
+            budget: parseFloat(formData.budget),
+            end_date: formData.endDate.toISOString().split('T')[0], 
+            number_of_people: parseInt(formData.numberOfPeople),
+            user: user.user_id, 
+        };
+
+        try {
+            const access = String(authTokens.access)
+            const response = await fetch('http://127.0.0.1:8000/api/create_itinerary/', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${access}`,
+              },
+              body: JSON.stringify(data),
+            });
+        
+            if (!response.ok) {
+              throw new Error('Error creating itinerary');
+            }
+        
+            const responseData = await response.json();
+        
+            console.log(responseData)
+            navigate(`/plan/${responseData.id}`)
+        } catch (error) {
+        console.error('Error creating itinerary:', error);
+        }
+
     };
 
     return (

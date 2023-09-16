@@ -23,6 +23,7 @@ import ForgotPassword from './components/ForgotPassword'
 /*Layout*/
 import UserLayout from './layout/UserLayout';
 import CreateTripLayout from './layout/CreateTripLayout';
+import Plan from './pages/Plan';
 /*css*/
  
 
@@ -44,6 +45,7 @@ function App() {
               </Route> 
               <Route element={<CreateTripLayout/>}>
                 <Route path="/create" element={<CreateTrip />} /> 
+                <Route path="/plan/:id/" element={<Plan />}/>
               </Route>
  
               <Route path="/admin" element={<Layout />}>
