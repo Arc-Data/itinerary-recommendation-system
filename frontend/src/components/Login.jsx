@@ -26,8 +26,7 @@ const Login = () => {
 
                     <label>
                     Password:
-                    <div className="password-input">
-                        <div className="password-input-container">
+                        <div>
                         <input
                             type={showPassword ? "text" : "password"}
                             placeholder="Enter your password"
@@ -41,7 +40,6 @@ const Login = () => {
                             {showPassword ? "👁️‍🗨️" : "👁"}
                         </button>
                         </div>
-                    </div>
                     </label>
 
                     <div className="forgot-password">
