@@ -1,4 +1,4 @@
-* {
+/* * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -117,7 +117,7 @@ select, input[type="text"], input[type="time"], textarea {
   padding: 10px;
   border: 1px solid #E7E7E7;
   border-radius: 5px;
-  background-color: #EFEFEF;
+  background-color: #e15b5b;
   font-size: 16px;
   margin-right: 10px;
 }
@@ -134,4 +134,4 @@ select {
 }
 h3, .btn.done {
   margin-top: 20px;
-}
+} */
