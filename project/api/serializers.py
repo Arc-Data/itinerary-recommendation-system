@@ -92,6 +92,11 @@ class ReviewSerializers(serializers.ModelSerializer):
         model = Review
         exclude = ['location']
 
+class ItinerarySerializers(serializers.ModelSerializer):
+    class Meta:
+        model = Itinerary
+        fields = ['start_date', 'budget', 'end_date', 'number_of_people', 'user', 'id']
+
 class SpotDetailSerializers(serializers.ModelSerializer):
     location_reviews = serializers.SerializerMethodField()
 
