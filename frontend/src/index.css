@@ -217,10 +217,6 @@ a:-webkit-any-link {
     font-weight: 800;
 }
 
-.modal-login-sign-form {
-    display: flex;
-    flex-direction: column;
-}
 
 .login-sign-link {
     margin-top: 10px;
@@ -855,4 +851,118 @@ input[type="text"] {
     font-size: 20px;
     font-weight: 500;
     color: #333333;
+}
+
+.create {
+    border: 1px solid #e7e7e7;
+    box-shadow: 4px 4px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.create--layout {
+    display:grid;
+    grid-template-columns: 2fr 1fr;
+    height:100vh;
+    overflow-y:hidden;
+}
+
+.create--map-wrap {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.create--map {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.create--nav-bar {
+    background:white;
+    padding: 20px 50px;
+    border-bottom: 1px solid #e7e7e7;
+}
+
+.create--main-content {
+    background: #fcfcfc;
+    height:calc(100vh - 72px);
+    display:grid;
+    place-items: center;
+}
+
+.create--form-container {
+    width: 80%;
+    background:white;
+    border-radius: 50px;
+    border: 1px solid #e7e7e7;
+    padding:95px 73px;
+}
+
+.create--form {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    font-size: 20px;
+}
+
+.create--form-title {
+    font-size: 35px;
+    font-weight: bold;
+}
+
+.create--form-content {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 30px;
+}
+
+.create--form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.create--form-input {
+    padding: 14px 30px;
+    font-size: 20px;
+    border: 1px solid #DEDEDE;
+    border-radius: 10px;
+    font-family: 'Work Sans', sans-serif;
+}
+
+.create--form-button {
+    background: #184E77;
+    color: white;
+    padding: 14px 0px;
+    width: 180px;
+    border-radius: 10px;
+    font-size:20px;
+}
+
+.create--form-footer {
+    text-align: center;
+}
+
+.create--form > input::placeholder{
+    color: #767676;
+}
+
+.create--currency {
+    position:relative;
+}
+
+.create--currency > input {
+    width: 100%;
+}
+
+.create--form-input.budget {
+    text-indent: 60px;
+}
+
+.create--currency-indicator {
+    position: absolute;
+    left:20px;
+    top: 50%;
+    padding: 0px 20px;
+    transform: translateY(-50%);
 }

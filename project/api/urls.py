@@ -11,6 +11,7 @@ urlpatterns = [
 
     # provides a list of popular spots (6)
     path('popular/', popular_spots),
+    path('create_itinerary/', create_itinerary, name='create_itinerary'),
     # provides a list of locations, fetching with additional parameters is possible
     path('location/', LocationViewSet.as_view({'get': 'list'}), name="locations"),
     # path('location/<int:pk>/', LocationDetailView.as_view(), name='location-detail')
