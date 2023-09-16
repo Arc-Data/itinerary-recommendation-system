@@ -3,14 +3,12 @@ import * as maptilersdk from '@maptiler/sdk'
 import "@maptiler/sdk/dist/maptiler-sdk.css"
 
 const Map = () => {
-    console.log(import.meta.env, import.meta.env.VITE_WHAT)
     const apiKey = import.meta.env.VITE_MAPTILER_API_KEY
     const mapContainer = useRef(null)
     const map = useRef(null)
     const cebu = { lng: 123.8854, lat: 10.3157 }
     const [zoom] = useState(11)
 
-    console.log(apiKey)
 	maptilersdk.config.apiKey = apiKey
 
     // [123.91813, 10.31042], [123.888, 10.3342]
