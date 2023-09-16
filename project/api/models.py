@@ -185,6 +185,8 @@ class Accommodation(Location):
 class Itinerary(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     number_of_people = models.PositiveIntegerField(default=1)
+    start_date = models.DateField(default=datetime.datetime.now)
+    end_date = models.DateField(default=datetime.datetime.now() + timedelta(days=1))
     budget = models.FloatField(default=0)
 
 class Day(models.Model):
