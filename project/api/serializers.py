@@ -95,8 +95,13 @@ class ReviewSerializers(serializers.ModelSerializer):
 class ItinerarySerializers(serializers.ModelSerializer):
     class Meta:
         model = Itinerary
-        fields = ['start_date', 'budget', 'end_date', 'number_of_people', 'user', 'id']
+        fields = ['id', 'budget', 'number_of_people', 'user']
 
+class DaySerializers(serializers.ModelSerializer):
+    class Meta:
+        model = Day
+        fields = '__all__'
+            
 class SpotDetailSerializers(serializers.ModelSerializer):
     location_reviews = serializers.SerializerMethodField()
 

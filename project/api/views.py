@@ -6,7 +6,6 @@ from rest_framework.views import APIView
 from rest_framework.filters import SearchFilter
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.generics import CreateAPIView
-from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
@@ -48,14 +47,39 @@ class LocationViewSet(viewsets.ReadOnlyModelViewSet):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def create_itinerary(request):
-    print("Hello")
-    serializer = ItinerarySerializers(data=request.data)
+    start_date = request.data.get('start_date') 
+    end_date = request.data.get('end_date')  
 
-    if serializer.is_valid():
-        serializer.save(user=request.user)
-        return Response({'id': serializer.data['id']}, status=status.HTTP_201_CREATED)
+    itinerary_data = {
+        'user': request.user.id,  
+        'number_of_people': request.data.get('number_of_people', 1),
+        'budget': request.data.get('budget', 0),
+    }
+    itinerary_serializer = ItinerarySerializers(data=itinerary_data)
 
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    if itinerary_serializer.is_valid():
+        itinerary = itinerary_serializer.save()
+
+        current_date = datetime.datetime.strptime(start_date, '%Y-%m-%d').date()
+        end_date = datetime.datetime.strptime(end_date, '%Y-%m-%d').date()
+        
+        while current_date <= end_date:
+            day_data = {
+                'date': current_date,
+                'itinerary': itinerary.id,
+            }
+            day_serializer = DaySerializers(data=day_data)
+
+            if day_serializer.is_valid():
+                day_serializer.save()
+            else:
+                return Response(day_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+            current_date += timedelta(days=1)
+        
+        return Response({'id': itinerary.id}, status=status.HTTP_201_CREATED)
+
+    return Response(itinerary_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(["GET"])
 def popular_spots(request):
