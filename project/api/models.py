@@ -139,7 +139,7 @@ def location_image_path(instance, filename):
 
 class LocationImage(models.Model):
     location = models.ForeignKey(Location, on_delete=models.CASCADE, related_name="images")
-    image = models.ImageField(upload_to=location_image_path, default='location_images/Background.jpg')
+    image = models.ImageField(upload_to=location_image_path, default='location_images/Background.jpg', max_length=512)
     is_primary_image = models.BooleanField(default=False)
 
     def __str__(self):
@@ -216,14 +216,6 @@ class Food(models.Model):
     image = models.ImageField(blank=True, null=True, upload_to='location_food/')
 
 
-@receiver(post_save, sender=Location)
-@receiver(post_save, sender=Spot)
-def create_locationimage(sender, instance, created, **kwargs):
-    if created:
-        LocationImage.objects.create(
-            location=instance,
-            is_primary_image=True
-        ).save()
 
     
 
