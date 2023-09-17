@@ -82,6 +82,27 @@ def create_itinerary(request):
     return Response(itinerary_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def get_itinerary(request, itinerary_id):
+    if request.method == "GET":
+        try:
+            itinerary = Itinerary.objects.get(id=itinerary_id, user=request.user)
+            itinerary_serializer = ItinerarySerializers(itinerary)
+
+            day = Day.objects.filter(itinerary=itinerary)
+            day_serializers = DaySerializers(day)
+
+            response_data = {
+                'itinerary': itinerary_serializer.data,
+                'days': day_serializers.data
+            }
+
+            return Response(response_data, status=status.HTTP_200_OK)
+
+        except Itinerary.DoesNotExist:
+            return Response({'message': 'Itinerary not found'}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(["GET"])
 def popular_spots(request):
     if request.method == "GET":
         spot = Spot.objects.all()[:6]
