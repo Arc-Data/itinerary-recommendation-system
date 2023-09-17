@@ -110,7 +110,7 @@ class Location(models.Model):
         return self.name
     
 class CustomFee(models.Model):
-    spot = models.ForeignKey("Spot", on_delete=models.CASCADE)
+    spot = models.OneToOneField("Spot", on_delete=models.CASCADE, related_name='custom_fee')
     min_cost = models.FloatField()
     max_cost = models.FloatField()
 
@@ -155,6 +155,20 @@ class Spot(Location):
 
     def __str__(self):
         return self.name
+    
+    @property
+    def get_min_cost(self):
+        if hasattr(self, 'custom_fee') and self.custom_fee.min_cost is not None:
+            return self.custom_fee.min_cost
+        else:
+            return self.fees if self.fees is not None else None
+
+    @property
+    def get_max_cost(self):
+        if hasattr(self, 'custom_fee') and self.custom_fee.max_cost is not None:
+            return self.custom_fee.max_cost
+        else:
+            return self.fees if self.fees is not None else None
         
 class Tag(models.Model):
     name = models.CharField(max_length=50)
@@ -193,6 +207,16 @@ class Day(models.Model):
 
 class ModelItinerary(models.Model):
     locations = models.ManyToManyField("Spot")
+
+    @property
+    def total_min_cost(self):
+        min_costs = [spot.get_min_cost for spot in self.locations.all()]
+        return sum(min_costs)
+
+    @property
+    def total_max_cost(self):
+        max_costs = [spot.get_max_cost for spot in self.locations.all()]
+        return sum(max_costs)
 
 class ItineraryItem(models.Model):
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
