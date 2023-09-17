@@ -1,10 +1,14 @@
 import { Outlet } from 'react-router-dom'
 import Map from '../components/Map'
+import CreateNav from '../components/CreateNav'
 
 const CreateTripLayout = () => {
   return (
     <div className='create--layout'>
-        <Outlet />
+        <div>
+          <CreateNav />
+          <Outlet />
+        </div>
         <Map />
     </div>
   )
