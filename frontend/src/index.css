@@ -4,7 +4,6 @@
 :root {
 	font-family: 'Work Sans', sans-serif;
 	font-weight: 400;
-
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
@@ -93,7 +92,6 @@ a:-webkit-any-link {
     border-radius: 4px;
 }
 
-
 .user--dropdown {
     position: relative;
     display: inline-block;
@@ -125,7 +123,6 @@ a:-webkit-any-link {
     background-color: #184E77;
     color: white;
   }
-
 
 /*NAVBAR*/
 .navbar {
@@ -212,8 +209,7 @@ a:-webkit-any-link {
 @media screen and (max-width: 1253px) {
     .container--sign-log {
         overflow:visible;
-    }
-   
+    } 
 }
 
 .container-form {
@@ -224,7 +220,6 @@ a:-webkit-any-link {
     margin: 0;
     font-weight: 800;
 }
-
 
 .login-sign-link {
     margin-top: 10px;
@@ -293,7 +288,7 @@ a:-webkit-any-link {
     text-decoration: none;
 }
 
-/*MODAL SIGN*/
+/*SIGN IN PAGE*/
 .name-inputs {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -303,7 +298,6 @@ a:-webkit-any-link {
 }
 
 /*View Password*/
-
 input[type="password"],
 input[type="text"] {
     width: 100%;
@@ -470,7 +464,7 @@ input[type="text"] {
 /*LANDING PAGE- DISCOVER*/
 .hero--destination{
     display: relative;
-    background-color: #F9F9F9;
+    background-color: #F5F1ED;
     justify-content: center;
     padding: 20px 120px;
     width: 100%;
@@ -536,8 +530,6 @@ input[type="text"] {
         grid-template-columns: 1fr; 
         overflow-x: hidden; 
     }
-
-    
 }
 
 /*FOR IPAD*/
