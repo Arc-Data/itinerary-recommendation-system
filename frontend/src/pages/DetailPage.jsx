@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-/*COMPONENTS*/
+/*Components*/
 import Footer from '../components/Footer';
 import Review from '../components/Review';
 import AddReview from '../components/AddReview';
-/*DATA*/
+/*Data*/
 import detailsData from "../detailsData";
 import reviewData from "../reviewData";
-/*ICON*/
+/*Icon*/
 import addressIcon from "/images/maps-and-flags.png";
 import timeIcon from "/images/clock.png";
 import userIcon from "/images/user.png"

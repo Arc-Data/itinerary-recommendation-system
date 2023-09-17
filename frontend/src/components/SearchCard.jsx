@@ -10,6 +10,11 @@ export default function SearchCard (props) {
             <div className="searchPage--info">
                 <h2 className="searchPage--info-title">{props.name}</h2>
                 <span className="searchPage--info-address">{props.address}</span>
+                <div className="seachPage--star">
+                    {[1, 2, 3, 4, 5].map((index) => (
+                    <span key={index} className="star">⭐</span> ))}
+                    <span> • {props.rating}</span> {/* Rate of the location*/}
+                </div>
             </div>
         </div>
     )

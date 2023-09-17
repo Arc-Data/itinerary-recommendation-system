@@ -15,11 +15,11 @@ import Activity from './pages/Activity'
 import Food from './pages/Food'
 import AddLocation from './pages/AddLocation'
 import CreateTrip from './pages/CreateTrip';
+import Login from './pages/Login'
+import Signup from './pages/Signup'
+import ForgotPassword from './pages/ForgotPassword'
 /*Components*/
 import Layout from './components/Layout'
-import Login from './components/Login'
-import Signup from './components/Signup'
-import ForgotPassword from './components/ForgotPassword'
 /*Layout*/
 import UserLayout from './layout/UserLayout';
 import CreateTripLayout from './layout/CreateTripLayout';

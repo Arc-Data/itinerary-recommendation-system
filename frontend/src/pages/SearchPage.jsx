@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-/*COMPONENTS*/
+/*Components*/
 import SearchCard from '../components/SearchCard';
-/*DATA*/
+/*Data*/
 import { useSearchParams } from 'react-router-dom';
 
 const SearchPage = () => {
@@ -29,7 +29,7 @@ const SearchPage = () => {
         <div>
             <div className="searchPage--container">
                 <h1 className="searchPage--title">Search result for "{`${query}`}"</h1>
-                <p className="searchPage--result">{locations ? locations.length : "0"}</p>
+                <p className="searchPage--result">{locations ? locations.length : "0"} of {locations ? locations.length : "0"} Results</p>
                 <div className="searchPage--navbar">
                     <a href="#">All Results</a>
                     <a href="#">Destination</a>

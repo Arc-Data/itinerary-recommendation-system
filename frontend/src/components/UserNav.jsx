@@ -53,7 +53,7 @@ const UserNav = () => {
             />
             {popupVisible && (
             <div className="user--dropdown-content">
-            <button>View Itinerary</button>
+            <Link to="/"><button>View Itinerary</button></Link>
             <button onClick={logoutUser}>Logout</button>
             </div>
             )}
