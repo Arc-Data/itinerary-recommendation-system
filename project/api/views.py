@@ -44,6 +44,19 @@ class LocationViewSet(viewsets.ReadOnlyModelViewSet):
 
         return queryset
 
+
+@api_view(['GET'])
+def get_location(request, id):
+    try:
+        location = Location.objects.get(pk=id)
+    except Location.DoesNotExist:
+        return Response({'error': 'Location not found'}, status=404)
+  
+    serializer = LocationSerializers(location)
+  
+    
+    return Response(serializer.data)
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def create_itinerary(request):
