@@ -90,7 +90,7 @@ def get_itinerary(request, itinerary_id):
             itinerary_serializer = ItinerarySerializers(itinerary)
 
             day = Day.objects.filter(itinerary=itinerary)
-            day_serializers = DaySerializers(day)
+            day_serializers = DaySerializers(day, many=True)
 
             response_data = {
                 'itinerary': itinerary_serializer.data,
