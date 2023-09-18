@@ -3,8 +3,8 @@
 /*GENERAL STYLE*/
 :root {
 	font-family: 'Work Sans', sans-serif;
+    font-size: 16px;
 	font-weight: 400;
-
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
@@ -24,6 +24,7 @@ button, input {
 body {
 	margin: 0;
 	font-family: 'Work Sans', sans-serif;
+    background: #fcfcfc;
 }
 
 button {
@@ -46,13 +47,6 @@ a:-webkit-any-link {
     align-items: center;
 }
 
-/* USER LOGO */
-.user--logo {
-    width: 35px;
-    height: 35px;
-    margin-right: 15px;
-}
-
 /* USER NAVBAR*/
 .user--navbar {
     position: fixed;
@@ -66,6 +60,7 @@ a:-webkit-any-link {
     width: 100%;
     z-index: 1000;
     padding: 12px 24px;
+    border-bottom: 1px solid black;
 }
 
 .user--search {
@@ -162,13 +157,6 @@ a:-webkit-any-link {
 .cebu--route {
     max-height: 55px;
 }
-
-/* .link {
-    display: flex;
-    color: #184E77;
-    text-align: center;
-    margin-left: auto;
-} */
 
 .link--button {
     margin-right: 20px;
@@ -851,39 +839,44 @@ input[type="text"] {
 }
 
 .home--page-content {
-    margin: 0 auto;
-    padding: 160px 130px;
-    max-width: 1400px;
-    width:100%
+    max-width: 1200px;
+    min-height: 100vh;
+    height:100%;
+    width:100%;
+    /* background:black; */
+    margin: 130px auto;
+    color: black;
 }
 
-.home--page-header {
-    display:flex;
-    justify-content: space-between;
-    width: 100%;
+.home--banner {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 120px;
+    grid-gap: 20px;
+    color: white;
 }
 
-.home--create-trip {
-    padding: 11px 23px;
-    border-radius: 5px;
-    background: #184E77;
-}
-
-.home--your-trips {
-    font-size: 35px;
-    font-weight:700;
-}
-
-.home--trips-container {
-    height: 380px;
-    display:grid;
-    place-items:center;
-}
-
-.home--no-trips {
+.home--banner > div {
     font-size: 20px;
-    font-weight: 500;
-    color: #333333;
+    font-weight: 700;
+    border-radius: 10px;
+    padding: 0px 36px;
+    display: grid;
+    align-items:center;
+    cursor: pointer;
+}
+
+.home--banner > div:first-child {
+    grid-row: span 2;
+    background: #39a3a5;
+}
+
+.home--banner-business {
+    background-color: #ED6A5A; 
+}
+  
+.home--banner-ai {
+    background: linear-gradient(270deg, #184E77 0.05%, #38A3A5 36.19%, #57CC99 69.75%, #80ED99 99.18%);
 }
 
 .create {
