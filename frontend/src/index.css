@@ -12,6 +12,10 @@
 	-webkit-text-size-adjust: 100%;
 }
 
+p {
+    margin: 0;
+}
+
 * {
 	box-sizing: border-box;
     line-height: 1;
@@ -889,6 +893,12 @@ input[type="text"] {
     font-weight: 700;
 }
 
+.home--trip-containers {
+    display: flex;
+    overflow-x: hidden;
+    padding: 30px 0px;
+}
+
 .create {
     border: 1px solid #e7e7e7;
     box-shadow: 4px 4px 4px 4px rgba(0, 0, 0, 0.25);
@@ -1003,11 +1013,13 @@ input[type="text"] {
     transform: translateY(-50%);
 }
 
-.itinerary--container {
+.itinerary {
     display: flex;
-    overflow-x: hidden;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .itinerary--image {
     object-fit: cover;
+    border-radius: 10px;
 }
