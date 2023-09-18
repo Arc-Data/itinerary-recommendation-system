@@ -2,14 +2,13 @@ import React, { useEffect, useState } from "react";
 /*Components*/
 import Footer from '../components/Footer';
 import Review from '../components/Review';
-import AddReview from '../components/AddReview';
 /*Data*/
 import detailsData from "../detailsData";
 import reviewData from "../reviewData";
 /*Icon*/
 import addressIcon from "/images/maps-and-flags.png";
 import timeIcon from "/images/clock.png";
-import userIcon from "/images/user.png"
+import bookmarkIcon from "/images/bookmark.png";
 import { useParams } from "react-router-dom";
 
 
@@ -56,14 +55,6 @@ export default function DetailPage() {
         <Review key={item.id} {...item} />
     ));
 
-    const [isModalOpen, setModalOpen] = useState(false);
-    const openModal = () => {
-        setModalOpen(true);
-    };
-    const closeModal = () => {
-        setModalOpen(false);
-    };
-
     if(loading) {
         return (
             <div>Loading</div>
@@ -73,33 +64,36 @@ export default function DetailPage() {
     return (
         <div className='detailPage'>
             <div className="detailPage--text">
-                <h1 className="detailPage--title">{location.name}</h1>
                 <div className="detailPage--address-time"> 
+                    <h1 className="detailPage--title">{location.name}</h1>
                     <p> <img className="detailPage--icon" src={addressIcon}  />
                         {location.address}
                     </p>
                     <p> <img className="detailPage--icon" src={timeIcon}  />
-                        {details.time}
+                        {details.time} {/* OPEN AND CLOSE FOR THE SPOT*/}
                     </p> 
-                </div>
-                <div className="detailPage--rating-stars">
-                    {[1, 2, 3, 4, 5].map((index) => (
-                        <span key={index} className="detailPage--star">⭐</span>
-                    ))}
+            
                     <div className="detailPage--rating-category">
-                        <span> • {details.rating}</span>
-                        <span> • {details.categories} </span>
+                        <span>  {[1, 2, 3, 4, 5].map((index) => (
+                        <span key={index} className="detailPage--star">⭐</span> ))}</span>
+                        <span> • {details.rating}</span> {/* RATING FOR THE SPOT*/}
+                        <span> • {details.categories} </span> {/* CATEGORY FOR THE SPOT*/}
                     </div>
                 </div>
+                <button className="detailPage--bookmark">
+                    <img src={bookmarkIcon} alt="Bookmark" />
+                </button>
             </div>
             <div className="detailPage--sections">
                 <div className="detailPage--about">
                     <h1 className="detailPage--title1">About</h1>
-                    <p>{details.about}</p>
+                    <p>{location.description}</p> {/* ABOUT FOR THE SPOT*/}
+                    <p>{details.about}</p> {/* ABOUT FOR THE SPOT*/}
+                    <p className="entrance--free bold">Entrance Fee: <span className="bold1">25 </span></p> {/* FEE FOR THE SPOT*/}
                 </div>
                 <div className="detailPage--pictures">
                     <div className="detailPage--images">
-                        <img className='detailPage--main-image' src={currentImage} alt="Main" />
+                        <img className='detailPage--main-image' src={currentImage} />
                         <div className="detailPage--thumbnail">
                             {details.images.map((image, index) => (
                                 <img
@@ -114,6 +108,18 @@ export default function DetailPage() {
                     </div>
                 </div>
             </div>
+
+            <div>
+                <h1>Also Popular with travelers</h1>
+                
+            </div>
+
+
+
+
+
+
+            
             <div className='detailPage--review'>
                 <div className="detailPage--review-stars">
                     <h1>Reviews</h1>
@@ -125,27 +131,27 @@ export default function DetailPage() {
                     </div>
                     <div className="progress--bars">
                         {[1, 2, 3, 4, 5].map((index) => (
-                        <div key={index} className="progress--bar">
-                        {6 - index}
-                        </div>
+                            <div key={index} className="progress--bar">
+                            <div key={index} className="progress--number">{6 - index}</div>
+                            <div className="progress--fill"></div>
+                            </div>
                         ))}
                     </div>
                 </div>
-                <div className="review--write">
-                    <div className="user--logo-and-name">
-                        <img className="user--logo" src={userIcon}  />
-                        <span className='user--username'>Elaine Suganob</span> {/* PUT THERE THE USERNAME OF (THE ID OF THE USER)*/}
-                    </div>
-                    <div>
-                        <button className='add--review' onClick={openModal}>Add a Review</button>
+                <div className="write--review">
+                    <input className="input--review" placeholder="How do you find this place?" rows="5"></input>
+                    <div className="button--stars"> 
+                        <button className='add--review'>Submit Review</button> 
+                        <div className="detailPage--star">
+                            {[1, 2, 3, 4, 5].map((index) => (
+                            <span key={index} className="star">⭐</span> ))}
+                        </div>
                     </div>
                 </div>    
             </div>
             <div className="user--review"> 
                 {reviews}
             </div>
-            <Footer />
-            <AddReview isOpen={isModalOpen} onClose={closeModal} /> 
         </div>
     )
 }   

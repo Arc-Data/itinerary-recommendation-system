@@ -44,6 +44,14 @@ a:-webkit-any-link {
     text-decoration: none;
 }
 
+.bold {
+    font-weight: 800;
+}
+
+.bold1 {
+    font-weight: 400;
+}
+
 /*DISPLAY GRID FOR LANDING PAGE*/
 .d-Grid {
     display: grid;
@@ -231,7 +239,7 @@ a:-webkit-any-link {
    padding: 60px;
 }
 
-.container-form >h2 {
+.container-form > h2 {
     margin-bottom: 20px;
     font-weight: 800;
 }
@@ -330,51 +338,6 @@ input[type="text"] {
     cursor: pointer;
     font-size: 15px;
 }
-
-/*MODAL ADD REVIEW*/
-.addReview--modal {
-    background-color: #FFFFFF;
-    padding: 35px;
-    border-radius: 8px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
-    width: 600px;
-    position: relative;
-}
-
-.addReview--modal >h2 {
-    margin: 0;
-    font-size: 25px;
-}
-
-.addReview--modal > p  {
-    margin: 0.2rem 0 2rem 0;
-    font-size: 15px;
-    color: #6F6F6F;
-}
-
-.addReview--button  {
-    background-color: #184E77;
-    border: none;
-    text-decoration: none;
-    height: 40px;
-    font-size: 12px;
-    width: 150px;
-    color: #FFFFFF;
-    border-radius: 10px;
-    align-items: center; 
-    justify-content: center; 
-    margin-left: auto;
-}
-
-.addReview--input {
-    width: 100%;
-    margin: 1rem 0 1rem 0;
-}
-
-.addReview--rating{
-    display: flex;
-}
-
 
 /*LANDING PAGE- PLAN*/
 .hero {
@@ -577,12 +540,16 @@ input[type="text"] {
 
 .detailPage--text {
     margin: 10rem 120px 0 120px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
 }
 
 .detailPage--title {
     font-size: 30px;
     font-weight: 900;
     margin: 0 0 12px 0;
+    color: black;
 }
 
 .detailPage--address-time{
@@ -609,12 +576,14 @@ input[type="text"] {
 
 .detailPage--star {
     font-size: 15px;
+    margin-top: 10px;
 }
 
 .detailPage--rating-category {
     display: relative;
     font-size: 15px;
     margin-top: 10px;
+    color: black;
 }
 
 /*DETAIL PAGE - ABOUT & PICTURE */
@@ -628,9 +597,10 @@ input[type="text"] {
 .detailPage--about {
     text-align: justify;
     text-justify: auto;
+    background-color: #E3E3E3;
     border: 2px solid #E7E7E7;
-    width: 40%;
-    padding: 20px; 
+    width: 35%;
+    padding: 20px;
     border-radius: 10px;
     font-size: 17px;
 }
@@ -639,6 +609,26 @@ input[type="text"] {
 .detailPage--about > p {
    padding: 10px;
 }
+  
+.detailPage--bookmark {
+    background-color: #F2C44F;
+    padding: 5px 10px;
+    border-radius: 10px;
+    margin: 15px 0 0 auto;
+  }
+  
+  .detailPage--bookmark > img {
+    width: 40px;
+  }
+
+  .entrance--free {
+    background-color: #366181;
+    margin: 10px;
+    border-radius: 10px;
+    color: white;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+  }
 
 /*PICTURES OF DESTINATION*/
 .detailPage--pictures {
@@ -686,39 +676,75 @@ input[type="text"] {
 }
 
 /*DETAIL PAGE - REVIEW SECTION*/
+
+.user--logo {
+    width: 40px;
+    height: 40px;
+    margin: 0 5px 10px 0;
+}
 .detailPage--review {
-    display: flex;
-    margin: 70px 120px 0 120px;
+    display: grid;
+    grid-template-columns: 40% 60%;
     height: auto;
 }
 
 /* REVIEW WITH STARS and PROGRESS BAR */
 .detailPage--review-stars {
     justify-content: center;
-    width: 30%;
+    width: 40%;
     height: auto;
+    margin: 50px;
 }
 
-.progress--bar {
-    margin-top: 15px;
-    font-size: 15px;
-}
+.progress--bars {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+  }
+  
+  .progress--bar {
+    display: flex;
+    align-items: center;
+    width: 50%; 
+    height: 12px; 
+    margin-bottom: 10px;
+    gap: 10px;
+    border-radius: 10px;
+  }
+  
+  .progress--fill {
+    background-color: #F2C44F; 
+    border-radius: 10px;
+    width: 100%; 
+    height: 12px; 
+  }
 
 /* USER AND ADD REVIEW BUTTON*/
-.review--write {
+.write--review {
     padding: 5px; 
-    margin-top: 90px;
-    margin-left: 125px;
+    margin: 150px 150px 0 0;
+}
+
+.input--review{
+    width: 100%;
+    height: 50px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    padding: 25px; 
+}
+
+.button--stars{
+    display: flex;
+    justify-content: space-between;
 }
 
 /* ADD REVIEW BUTTON */
 .add--review {
-    background-color: white;
     border: 3px solid #184E77;
+    background-color: #184E77;
     font-size: 15px;
-    color: #184E77;
-    margin: 10px 50px;
-    padding: 10px;
+    border-radius: 20px;
+    padding: 15px;
 }
 
 /*USER LOGO AND USER NAME*/
