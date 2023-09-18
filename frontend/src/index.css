@@ -1002,3 +1002,12 @@ input[type="text"] {
     padding: 0px 20px;
     transform: translateY(-50%);
 }
+
+.itinerary--container {
+    display: flex;
+    overflow-x: hidden;
+}
+
+.itinerary--image {
+    object-fit: cover;
+}

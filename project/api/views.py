@@ -49,7 +49,7 @@ class LocationViewSet(viewsets.ReadOnlyModelViewSet):
 def get_user_itineraries(request):
     user = request.user
     itineraries = Itinerary.objects.filter(user=user)
-    serializer = ItinerarySerializers(itineraries, many=True)
+    serializer = ItineraryListSerializers(itineraries, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
