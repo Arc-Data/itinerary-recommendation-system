@@ -5,12 +5,14 @@ import searchIcon from '/images/search.png';
 import userIcon from '/images/user.png';
 
 const UserNav = () => {
-    const [popupVisible, setPopupVisible] = useState(false);
-    const { logoutUser } = useContext(AuthContext)
+    const [dropdown, setDropdown] = useState(false);
+    const { logoutUser, user } = useContext(AuthContext)
+    const letter = user.email[0].toUpperCase()
     const navigate = useNavigate()
 
-    const togglePopup = () => {
-        setPopupVisible(!popupVisible);
+
+    const toggleDropdown = () => {
+        setDropdown(prev => !prev);
     };
 
     const handleSearchSubmit = (e) => {
@@ -26,38 +28,36 @@ const UserNav = () => {
 
     return (
         <nav className='user--navbar'>
-            <Link to="/">
-            <img className="cebu--route" src="../images/Untitled design.png" alt="LandingPage" />
+            <Link to = "/home">
+                <img className="cebu--route" src="../images/Untitled design.png" alt="LandingPage" />
             </Link>
 
-            <div className='user--search'>
-                <form onSubmit={handleSearchSubmit} method="GET">
-                <div className='search--bar-container'>
-                    <img className='search--icon' src={searchIcon} alt="Search Icon" />
-                    <input
-                        type="search"
-                        placeholder="Search CebuRoute"
-                        className='search--bar' 
-                        name="search" />
+            <form onSubmit={handleSearchSubmit} method="GET">
+                <div className='user--search'>
+                    <div className='search--bar-container'>
+                        <img className='search--icon' src={searchIcon} alt="Search Icon" />
+                        <input
+                            type="search"
+                            placeholder="Search CebuRoute"
+                            className='search--bar' 
+                            name="search" />
+                    </div>
                 </div>
-                </form>
-            </div>
+            </form>
 
-
-            <div className='link'>
-            <div className='user--dropdown' onClick={togglePopup}>
-            <img
-            src={userIcon} 
-            alt="User Icon"
-            className='user--logo'
-            />
-            {popupVisible && (
-            <div className="user--dropdown-content">
-            <Link to="/"><button>View Itinerary</button></Link>
-            <button onClick={logoutUser}>Logout</button>
-            </div>
-            )}
-            </div>
+            <div className='user--links'>
+                <button className='user--create-trip'>Create a new trip</button>
+                <div className='user--profile' onClick={toggleDropdown}>
+                    <p>{letter}</p>
+                    {dropdown && 
+                    (
+                    <div className="user--dropdown-content">
+                        <button>View Itinerary</button>
+                        <button onClick={logoutUser}>Logout</button>
+                    </div>
+                    )
+                    }
+                </div>
             </div>
         </nav>
     )

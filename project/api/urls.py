@@ -15,6 +15,7 @@ urlpatterns = [
     # provides a list of locations, fetching with additional parameters is possible
     path('location/', LocationViewSet.as_view({'get': 'list'}), name="locations"),
     path('location/<int:id>/', get_location, name='location-detail'),
+    path('itineraries/', get_user_itineraries, name="itinerary-list"),
     # path('location/<int:pk>/', LocationDetailView.as_view(), name='location-detail')
     # provides a spot information given you send the id
     path('spot/<int:pk>/', spot),

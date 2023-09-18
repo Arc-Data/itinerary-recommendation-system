@@ -85,6 +85,16 @@ class ReviewSerializers(serializers.ModelSerializer):
         model = Review
         exclude = ['location']
 
+class ItineraryListSerializers(serializers.ModelSerializer):
+    image = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = Itinerary 
+        fields = '__all__'
+
+    def get_image(self, object):
+        return "/media/location_images/Background.jpg"
+
 class ItinerarySerializers(serializers.ModelSerializer):
     class Meta:
         model = Itinerary
