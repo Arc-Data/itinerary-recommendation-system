@@ -843,17 +843,22 @@ input[type="text"] {
     min-height: 100vh;
     height:100%;
     width:100%;
-    /* background:black; */
     margin: 130px auto;
     color: black;
 }
 
+.home--page-content > * {
+    padding: 40px 0px;
+}
+
 .home--banner {
+    padding-top: 20px;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-auto-rows: 120px;
     grid-gap: 20px;
     color: white;
+    border-bottom: 1px solid #e7e7e7;
 }
 
 .home--banner > div {
@@ -877,6 +882,11 @@ input[type="text"] {
   
 .home--banner-ai {
     background: linear-gradient(270deg, #184E77 0.05%, #38A3A5 36.19%, #57CC99 69.75%, #80ED99 99.18%);
+}
+
+.home--your-trips {
+    font-size: 24px;
+    font-weight: 700;
 }
 
 .create {
