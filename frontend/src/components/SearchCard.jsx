@@ -1,10 +1,11 @@
 import React from "react"
+import { Link } from 'react-router-dom';
 
 export default function SearchCard (props) {
     return (
         <div className="searchPage--details">  
             <div className="searchPage--picture"> 
-                <img className="searchPage--pic" src={`http://127.0.0.1:8000${props.primary_image}`}  />
+            <Link to={`/location/${props.id}`}> <img className="searchPage--pic" src={`http://127.0.0.1:8000${props.primary_image}`}  /></Link>
             </div>
             
             <div className="searchPage--info">
@@ -17,5 +18,6 @@ export default function SearchCard (props) {
                 </div>
             </div>
         </div>
+      
     )
 }

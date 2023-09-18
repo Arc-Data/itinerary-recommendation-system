@@ -179,7 +179,7 @@ a:-webkit-any-link {
     width: 100%;
     display:grid;
     place-items:center;
-    height:92px
+    height:90px;
 }
 
 .footer--content {
@@ -801,6 +801,7 @@ input[type="text"] {
 .searchPage--result{
     color: gray;
     font-size: 16px;
+    margin-bottom: 10px;
 }
 
 .searchPage--navbar {

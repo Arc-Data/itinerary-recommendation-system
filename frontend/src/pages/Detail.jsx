@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 /*Components*/
 import Footer from '../components/Footer';
 import Review from '../components/Review';
@@ -10,26 +10,52 @@ import reviewData from "../reviewData";
 import addressIcon from "/images/maps-and-flags.png";
 import timeIcon from "/images/clock.png";
 import userIcon from "/images/user.png"
+import { useParams } from "react-router-dom";
 
 
 
 export default function DetailPage() {
+ 
+    const [location, setLocation] = useState(null)
+    const { id } = useParams()
+    const [loading, setLoading] = useState(true)
 
-    /*DATA FOR DETAIL DATA*/
+    useEffect(() => {
+        const getLocationData = async () => {
+            const response = await fetch(`http://127.0.0.1:8000/api/location/${id}`, {
+                "method": "GET",
+                headers: {
+					'Content-Type': 'application/json',
+				}
+            })
+
+            if(!response.ok) {
+                throw new Error("Error fetching location data")
+            }
+
+            const data = await response.json()
+            console.log("Loading over")
+            setLoading(false)
+            setLocation(data)
+        } 
+
+        getLocationData();
+
+    }, [id])
+
+
+
     const details = detailsData[0];
 
-    /*THUMBNAIL*/
     const [currentImage, setCurrentImage] = useState(details.images[0]);
     const handleThumbnailClick = (image) => {
         setCurrentImage(image);
     };
 
-    /*DATA FOR REVIEW*/
     const reviews = reviewData.map(item => (
         <Review key={item.id} {...item} />
     ));
 
-    /*MOODAL FOR ADD REVIEW*/
     const [isModalOpen, setModalOpen] = useState(false);
     const openModal = () => {
         setModalOpen(true);
@@ -38,13 +64,19 @@ export default function DetailPage() {
         setModalOpen(false);
     };
 
+    if(loading) {
+        return (
+            <div>Loading</div>
+        )
+    }
+
     return (
         <div className='detailPage'>
             <div className="detailPage--text">
-                <h1 className="detailPage--title">{details.title}</h1>
+                <h1 className="detailPage--title">{location.name}</h1>
                 <div className="detailPage--address-time"> 
                     <p> <img className="detailPage--icon" src={addressIcon}  />
-                        {details.address}
+                        {location.address}
                     </p>
                     <p> <img className="detailPage--icon" src={timeIcon}  />
                         {details.time}
