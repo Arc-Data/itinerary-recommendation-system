@@ -44,6 +44,13 @@ class LocationViewSet(viewsets.ReadOnlyModelViewSet):
 
         return queryset
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_itineraries(request):
+    user = request.user
+    itineraries = Itinerary.objects.filter(user=user)
+    serializer = ItinerarySerializers(itineraries, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 def get_location(request, id):
