@@ -110,7 +110,7 @@ class Location(models.Model):
         return self.name
     
 class CustomFee(models.Model):
-    spot = models.ForeignKey("Spot", on_delete=models.CASCADE)
+    spot = models.OneToOneField("Spot", on_delete=models.CASCADE, related_name='custom_fee')
     min_cost = models.FloatField()
     max_cost = models.FloatField()
 
@@ -139,7 +139,7 @@ def location_image_path(instance, filename):
 
 class LocationImage(models.Model):
     location = models.ForeignKey(Location, on_delete=models.CASCADE, related_name="images")
-    image = models.ImageField(upload_to=location_image_path, default='location_images/Background.jpg')
+    image = models.ImageField(upload_to=location_image_path, default='location_images/Background.jpg', max_length=512)
     is_primary_image = models.BooleanField(default=False)
 
     def __str__(self):
@@ -155,6 +155,20 @@ class Spot(Location):
 
     def __str__(self):
         return self.name
+    
+    @property
+    def get_min_cost(self):
+        if hasattr(self, 'custom_fee') and self.custom_fee.min_cost is not None:
+            return self.custom_fee.min_cost
+        else:
+            return self.fees if self.fees is not None else None
+
+    @property
+    def get_max_cost(self):
+        if hasattr(self, 'custom_fee') and self.custom_fee.max_cost is not None:
+            return self.custom_fee.max_cost
+        else:
+            return self.fees if self.fees is not None else None
         
 class Tag(models.Model):
     name = models.CharField(max_length=50)
@@ -191,6 +205,19 @@ class Day(models.Model):
     date = models.DateField()
     itinerary = models.ForeignKey(Itinerary, on_delete=models.CASCADE)
 
+class ModelItinerary(models.Model):
+    locations = models.ManyToManyField("Spot")
+
+    @property
+    def total_min_cost(self):
+        min_costs = [spot.get_min_cost for spot in self.locations.all()]
+        return sum(min_costs)
+
+    @property
+    def total_max_cost(self):
+        max_costs = [spot.get_max_cost for spot in self.locations.all()]
+        return sum(max_costs)
+
 class ItineraryItem(models.Model):
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
 
@@ -216,14 +243,6 @@ class Food(models.Model):
     image = models.ImageField(blank=True, null=True, upload_to='location_food/')
 
 
-@receiver(post_save, sender=Location)
-@receiver(post_save, sender=Spot)
-def create_locationimage(sender, instance, created, **kwargs):
-    if created:
-        LocationImage.objects.create(
-            location=instance,
-            is_primary_image=True
-        ).save()
 
     
 

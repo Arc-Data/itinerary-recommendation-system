@@ -3,7 +3,7 @@ import csv
 from django.conf import settings
 from datetime import time
 from django.core.management.base import BaseCommand
-from api.models import Spot, Tag, CustomFee
+from api.models import Spot, Tag, CustomFee, LocationImage
 
 class Command(BaseCommand):
     help = 'Import data from CSV to Spot model'
@@ -52,6 +52,23 @@ class Command(BaseCommand):
                         min_cost=min_cost,
                         max_cost=max_cost
                     )
+
+                image_links = row['Image'].split(',') 
+
+                if image_links:
+                    primary_image_url = image_links[0]
+                    LocationImage.objects.create(
+                        location=spot,
+                        image=primary_image_url,
+                        is_primary_image=True
+                    )
+
+                    for secondary_image_url in image_links[1:]:
+                        LocationImage.objects.create(
+                            location=spot,
+                            image=secondary_image_url,
+                            is_primary_image=False
+                        )
 
                 tags = []  
                 tag_names = ['Historical', 'Nature', 'Religious', 'Art', 'Activities', 'Entertainment', 'Culture']

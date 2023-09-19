@@ -30,22 +30,16 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         return user
     
 class SpotSerializers(serializers.ModelSerializer):
-    location_type = 1
-    
     class Meta:
         model = Spot
-        exclude = []
+        fields = '__all__'
 
 class FoodPlaceSerializers(serializers.ModelSerializer):
-    location_type = 2
-    
     class Meta:
         model = FoodPlace
         exclude = []
 
-class AccomodationSerializers(serializers.ModelSerializer):
-    location_type = 3
-    
+class AccommodationSerializers(serializers.ModelSerializer):
     class Meta:
         model = Accommodation
         exclude = []
@@ -57,9 +51,8 @@ class LocationImageSerializers(serializers.ModelSerializer):
         
     
 class LocationSerializers(serializers.ModelSerializer):
-    images = LocationImageSerializers(many=True, read_only=True)
+    images = serializers.SerializerMethodField()
     primary_image = serializers.SerializerMethodField()
-    location_type = serializers.SerializerMethodField()
     
     class Meta:
         model = Location
@@ -70,27 +63,37 @@ class LocationSerializers(serializers.ModelSerializer):
 
         if primary_image:
             return primary_image.image.url
-        
-        hasattr()
 
         return None
 
-    def get_location_type(self, obj):
-        if hasattr(obj, 'spot'):
-            return '1'
-        elif hasattr(obj, 'foodplace'):
-            return '2'
-        elif hasattr(obj, 'accomodation'):
-            return '3'
+    def get_location_data(self, obj):
+        if obj.location_type == '1':
+            serializer = SpotSerializers(obj.location)
+        elif obj.location_type == '2':
+            serializer = FoodPlaceSerializers(obj.location)
+        else:
+            serializer = AccommodationSerializers(obj.location)
         
-        print("Error identifying location type")
-        return None
+        return serializer.data
+
+    def get_images(self, obj):
+        return [image.image.url for image in obj.images.all()]
 
 class ReviewSerializers(serializers.ModelSerializer):
     user = UserSerializers()
     class Meta:
         model = Review
         exclude = ['location']
+
+class ItineraryListSerializers(serializers.ModelSerializer):
+    image = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = Itinerary 
+        fields = '__all__'
+
+    def get_image(self, object):
+        return "/media/location_images/Background.jpg"
 
 class ItinerarySerializers(serializers.ModelSerializer):
     class Meta:
