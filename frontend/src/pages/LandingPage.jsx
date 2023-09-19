@@ -1,10 +1,10 @@
 import { useState, useContext } from 'react';
-/*COMPONENTS*/
+/*Components*/
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Card from '../components/Card';
 import AuthContext from '../context/AuthContext';
-/*DATA*/
+/*Data*/
 import cardData from '../cardData';
 import { Navigate } from 'react-router-dom';
 import { Link } from "react-router-dom"
