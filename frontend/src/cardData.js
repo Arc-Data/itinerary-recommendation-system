@@ -41,57 +41,10 @@ export default [
         img: "../images/taoisttemple.jpg",
         address: "Cebu City, Cebu"
     },
-    {
-        id: 6,
-        title: "Taoist Temple",
-        description: "Discover the mystical allure of the Taoist Temple in Cebu, a serene sanctuary that transports you to the heart of Chinese culture and spirituality, offering a captivating experience of ornate architecture and peaceful ambiance.",
-        img: "../images/taoisttemple.jpg",
-        address: "Cebu City, Cebu"
-    },
-    {
-        id: 6,
-        title: "Taoist Temple",
-        description: "Discover the mystical allure of the Taoist Temple in Cebu, a serene sanctuary that transports you to the heart of Chinese culture and spirituality, offering a captivating experience of ornate architecture and peaceful ambiance.",
-        img: "../images/taoisttemple.jpg",
-        address: "Cebu City, Cebu"
-    },
-    {
-        id: 6,
-        title: "Taoist Temple",
-        description: "Discover the mystical allure of the Taoist Temple in Cebu, a serene sanctuary that transports you to the heart of Chinese culture and spirituality, offering a captivating experience of ornate architecture and peaceful ambiance.",
-        img: "../images/taoisttemple.jpg",
-        address: "Cebu City, Cebu"
-    },
-    {
-        id: 6,
-        title: "Taoist Temple",
-        description: "Discover the mystical allure of the Taoist Temple in Cebu, a serene sanctuary that transports you to the heart of Chinese culture and spirituality, offering a captivating experience of ornate architecture and peaceful ambiance.",
-        img: "../images/taoisttemple.jpg",
-        address: "Cebu City, Cebu"
-    },
-    {
-        id: 6,
-        title: "Taoist Temple",
-        description: "Discover the mystical allure of the Taoist Temple in Cebu, a serene sanctuary that transports you to the heart of Chinese culture and spirituality, offering a captivating experience of ornate architecture and peaceful ambiance.",
-        img: "../images/taoisttemple.jpg",
-        address: "Cebu City, Cebu"
-    },
-    {
-        id: 6,
-        title: "Taoist Temple",
-        description: "Discover the mystical allure of the Taoist Temple in Cebu, a serene sanctuary that transports you to the heart of Chinese culture and spirituality, offering a captivating experience of ornate architecture and peaceful ambiance.",
-        img: "../images/taoisttemple.jpg",
-        address: "Cebu City, Cebu"
-    },
-    {
-        id: 6,
-        title: "Taoist betlog",
-        description: "Discover the mystical allure of the Taoist Temple in Cebu, a serene sanctuary that transports you to the heart of Chinese culture and spirituality, offering a captivating experience of ornate architecture and peaceful ambiance.",
-        img: "../images/taoisttemple.jpg",
-        address: "Cebu City, Cebu"
-    },
+
+   
     
-    
+
    
     
 ]
