@@ -27,7 +27,7 @@ class UserRegistrationView(CreateAPIView):
 
 class LocationViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Location.objects.all()
-    serializer_class = LocationSerializers
+    serializer_class = LocationQuerySerializers
     filter_backends = [SearchFilter]
     search_fields = ['name']
 
@@ -61,7 +61,6 @@ def get_location(request, id):
   
     serializer = LocationSerializers(location)
   
-    
     return Response(serializer.data)
 
 @api_view(['POST'])
@@ -112,7 +111,7 @@ def popular_spots(request):
 def location(request):
     if request.method == "GET":
         location = Location.objects.all()
-        serializer = LocationSerializers(location, many=True)
+        serializer = LocationQuerySerializers(location, many=True)
         return Response(serializer.data)
     
 @api_view(["GET"])

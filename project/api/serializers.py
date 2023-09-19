@@ -66,15 +66,22 @@ class AccommodationSerializers(serializers.ModelSerializer):
         model = Accommodation
         exclude = []
 
-class LocationSerializers(serializers.ModelSerializer):
-    images = serializers.SerializerMethodField()
+class LocationQuerySerializers(serializers.ModelSerializer):
+    tags = serializers.SerializerMethodField()
     primary_image = serializers.SerializerMethodField()
-    details = serializers.SerializerMethodField()
 
     class Meta:
         model = Location
-        fields = ('id', 'location_type', 'name', 'address', 'description', 'latitude', 'longitude', 'primary_image', 'images', 'details')
+        fields = ('tags', 'id', 'name', 'primary_image', 'address')
 
+    def get_tags(self, obj):
+        spot = Spot.objects.get(pk=obj.id)
+        
+        if spot:
+            return [tag.name for tag in spot.tags.all()]
+
+        return None 
+    
     def get_primary_image(self, obj):
         primary_image = obj.images.filter(is_primary_image=True).first()
 
@@ -82,6 +89,14 @@ class LocationSerializers(serializers.ModelSerializer):
             return primary_image.image.url
 
         return None
+
+class LocationSerializers(serializers.ModelSerializer):
+    images = serializers.SerializerMethodField()
+    details = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Location
+        fields = ('id', 'location_type', 'name', 'address', 'description', 'latitude', 'longitude', 'primary_image', 'images', 'details')
 
     def get_details(self, obj):
         if obj.location_type == '1':
