@@ -52,6 +52,14 @@ a:-webkit-any-link {
     font-weight: 400;
 }
 
+.font15 {
+    font-size: 15px;
+}
+
+.font12 {
+    font-size: 12px;
+}
+
 /*DISPLAY GRID FOR LANDING PAGE*/
 .d-Grid {
     display: grid;
@@ -468,11 +476,11 @@ input[type="text"] {
     overflow-x: auto;
 }
 
-.card--dest-image {
+.card--dest-image { /*Same to detailPage Popular*/
     width: 100%;
 }
 
-.card--image {
+.card--image { /*Same to detailPage Popular*/
     border-radius: 9px;
     object-fit: cover;
     object-position: center;
@@ -485,7 +493,7 @@ input[type="text"] {
 }
 
 .card--title {
-    overflow: hidden;
+    
     font-size: 25px;
     margin: 0 0 10px 0;
 }
@@ -533,9 +541,13 @@ input[type="text"] {
 /* DETAIL PAGES */
 
 /*DETAIL PAGE TITLE & ADDRESS & TIME  */
-.detailPages {
+.detailPage {
     display: flex;
     flex-direction: column;
+    max-width: 1600px;
+    height:100%;
+    width:100%;
+    margin: 10px auto;
 }
 
 .detailPage--text {
@@ -559,7 +571,7 @@ input[type="text"] {
 }
 
 .detailPage--address-time > p { 
-    margin: 0;
+    margin: 5px auto;
 }
 
 .detailPage--icon {
@@ -576,7 +588,7 @@ input[type="text"] {
 
 .detailPage--star {
     font-size: 15px;
-    margin-top: 10px;
+    margin: 10px 0;
 }
 
 .detailPage--rating-category {
@@ -591,15 +603,14 @@ input[type="text"] {
     display: flex;
     justify-content: space-between;
     align-items: flex-start; 
-    margin: 70px 120px 0 120px;
+    margin: 70px 120px;
 }
 
 .detailPage--about {
     text-align: justify;
     text-justify: auto;
     background-color: #E3E3E3;
-    border: 2px solid #E7E7E7;
-    width: 35%;
+    width: 40%;
     padding: 20px;
     border-radius: 10px;
     font-size: 17px;
@@ -607,27 +618,19 @@ input[type="text"] {
 
 .detailPage--about > h1,
 .detailPage--about > p {
-   padding: 10px;
+    padding: 10px;
+    line-height: 22px;
 }
   
 .detailPage--bookmark {
-    background-color: #F2C44F;
+    background-color: #D9D9D9;
     padding: 5px 10px;
     border-radius: 10px;
     margin: 15px 0 0 auto;
   }
   
-  .detailPage--bookmark > img {
-    width: 40px;
-  }
-
-  .entrance--free {
-    background-color: #366181;
-    margin: 10px;
-    border-radius: 10px;
-    color: white;
-    font-size: 13px;
-    letter-spacing: 0.1em;
+.detailPage--bookmark > img {
+    width: 35px;
   }
 
 /*PICTURES OF DESTINATION*/
@@ -675,6 +678,25 @@ input[type="text"] {
     border-color: #3498db;
 }
 
+/*DETAIL PAGE - POPULAR LOCATION*/
+
+.detailPage--popular {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 20px 120px;
+}
+
+.detailPage--cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+}
+
+.detailPage--popDescription {
+    text-align: start;
+}
+
 /*DETAIL PAGE - REVIEW SECTION*/
 
 .user--logo {
@@ -685,13 +707,13 @@ input[type="text"] {
 .detailPage--review {
     display: grid;
     grid-template-columns: 40% 60%;
-    height: auto;
+    margin: 0 120px;
 }
 
 /* REVIEW WITH STARS and PROGRESS BAR */
-.detailPage--review-stars {
+.detailPage--reviews{
     justify-content: center;
-    width: 40%;
+    width: 60%;
     height: auto;
     margin: 50px;
 }
@@ -730,7 +752,8 @@ input[type="text"] {
     height: 50px;
     border-radius: 20px;
     margin-bottom: 20px;
-    padding: 25px; 
+    padding: 20px; 
+    overflow: hidden;
 }
 
 .button--stars{
@@ -739,12 +762,16 @@ input[type="text"] {
 }
 
 /* ADD REVIEW BUTTON */
-.add--review {
-    border: 3px solid #184E77;
-    background-color: #184E77;
+.submit--review {
+    display: flex;
+    border-radius: 30px;
+    background: var(--1, #184E77);
+    height: 35px;
     font-size: 15px;
-    border-radius: 20px;
-    padding: 15px;
+    font-weight: 400;
+    padding: 17px 13px;
+    justify-content: center;
+    align-items: center;
 }
 
 /*USER LOGO AND USER NAME*/
@@ -773,6 +800,7 @@ input[type="text"] {
     text-align: justify;
     text-justify: auto;
     margin-bottom: 30px;
+    line-height: 27px;
 }
 
 .review--row {
@@ -864,7 +892,7 @@ input[type="text"] {
     font-size: 0.99rem;
 }
 
-.seachPage--star {
+.searchPage--star {
     margin-top: 15px;
 }
 

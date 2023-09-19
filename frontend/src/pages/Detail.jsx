@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 /*Components*/
 import Footer from '../components/Footer';
 import Review from '../components/Review';
+import DetailCard from '../components/DetailCard';
 /*Data*/
 import detailsData from "../detailsData";
 import reviewData from "../reviewData";
+import cardData from '../cardData';
 /*Icon*/
 import addressIcon from "/images/maps-and-flags.png";
 import timeIcon from "/images/clock.png";
@@ -51,15 +53,20 @@ export default function DetailPage() {
         setCurrentImage(image);
     };
 
-    const reviews = reviewData.map(item => (
-        <Review key={item.id} {...item} />
-    ));
 
     if(loading) {
         return (
             <div>Loading</div>
         )
     }
+
+    const detailCards = cardData.map((item) => (
+    <DetailCard key={item.id} {...item} />
+    ));
+
+    const reviews = reviewData.map(item => (
+        <Review key={item.id} {...item} />
+    ));
 
     return (
         <div className='detailPage'>
@@ -89,7 +96,7 @@ export default function DetailPage() {
                     <h1 className="detailPage--title1">About</h1>
                     <p>{location.description}</p> {/* ABOUT FOR THE SPOT*/}
                     <p>{details.about}</p> {/* ABOUT FOR THE SPOT*/}
-                    <p className="entrance--free bold">Entrance Fee: <span className="bold1">25 </span></p> {/* FEE FOR THE SPOT*/}
+                    <p className="font15 bold">Entrance Fee: <span className="bold1"> Free </span></p> {/* FEE FOR THE SPOT*/}
                 </div>
                 <div className="detailPage--pictures">
                     <div className="detailPage--images">
@@ -109,20 +116,15 @@ export default function DetailPage() {
                 </div>
             </div>
 
-            <div>
-                <h1>Also Popular with travelers</h1>
-                <h1>Also kineme</h1>
-                
+            <div className="detailPage--popular">
+                <h2>Also Popular with travelers</h2>
+                <div className='detailPage--cards'>
+					{detailCards}
+                </div>
             </div>
 
-
-
-
-
-
-            
             <div className='detailPage--review'>
-                <div className="detailPage--review-stars">
+                <div className="detailPage--reviews">
                     <h1>Reviews</h1>
                     <div className="detailPage--star">
                         {[1, 2, 3, 4, 5].map((index) => (
@@ -140,9 +142,9 @@ export default function DetailPage() {
                     </div>
                 </div>
                 <div className="write--review">
-                    <input className="input--review" placeholder="How do you find this place?" rows="5"></input>
+                    <textarea className="input--review" placeholder="How do you find this place?" rows="5"></textarea>
                     <div className="button--stars"> 
-                        <button className='add--review'>Submit Review</button> 
+                        <button className='submit--review'>Submit Review</button> 
                         <div className="detailPage--star">
                             {[1, 2, 3, 4, 5].map((index) => (
                             <span key={index} className="star">⭐</span> ))}
