@@ -96,7 +96,7 @@ class LocationSerializers(serializers.ModelSerializer):
 
     class Meta:
         model = Location
-        fields = ('id', 'location_type', 'name', 'address', 'description', 'latitude', 'longitude', 'primary_image', 'images', 'details')
+        fields = ('id', 'location_type', 'name', 'address', 'description', 'latitude', 'longitude',  'images', 'details')
 
     def get_details(self, obj):
         if obj.location_type == '1':
