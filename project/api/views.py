@@ -52,6 +52,27 @@ def get_user_itineraries(request):
     serializer = ItineraryListSerializers(itineraries, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def get_itinerary(request, itinerary_id):
+    if request.method == "GET":
+        try:
+            itinerary = Itinerary.objects.get(id=itinerary_id, user=request.user)
+            itinerary_serializer = ItinerarySerializers(itinerary)
+
+            days = Day.objects.filter(itinerary=itinerary)
+            day_serializers = DaySerializers(days, many=True)  # Use many=True here
+
+            response_data = {
+                'itinerary': itinerary_serializer.data,
+                'days': day_serializers.data
+            }
+
+            return Response(response_data, status=status.HTTP_200_OK)
+
+        except Itinerary.DoesNotExist:
+            return Response({'message': 'Itinerary not found'}, status=status.HTTP_404_NOT_FOUND)
+
 @api_view(['GET'])
 def get_location(request, id):
     try:
@@ -99,27 +120,6 @@ def create_itinerary(request):
         return Response({'id': itinerary.id}, status=status.HTTP_201_CREATED)
 
     return Response(itinerary_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-@api_view(["GET"])
-@permission_classes([IsAuthenticated])
-def get_itinerary(request, itinerary_id):
-    if request.method == "GET":
-        try:
-            itinerary = Itinerary.objects.get(id=itinerary_id, user=request.user)
-            itinerary_serializer = ItinerarySerializers(itinerary)
-
-            day = Day.objects.filter(itinerary=itinerary)
-            day_serializers = DaySerializers(day, many=True)
-
-            response_data = {
-                'itinerary': itinerary_serializer.data,
-                'days': day_serializers.data
-            }
-
-            return Response(response_data, status=status.HTTP_200_OK)
-
-        except Itinerary.DoesNotExist:
-            return Response({'message': 'Itinerary not found'}, status=status.HTTP_404_NOT_FOUND)
 
 @api_view(["GET"])
 def popular_spots(request):
