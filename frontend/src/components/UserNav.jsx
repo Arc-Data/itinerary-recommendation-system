@@ -46,7 +46,9 @@ const UserNav = () => {
             </form>
 
             <div className='user--links'>
-                <button className='user--create-trip'>Create a new trip</button>
+                <Link to="/create">
+                    <button className='user--create-trip'>Create a new trip</button>
+                </Link>
                 <div className='user--profile' onClick={toggleDropdown}>
                     <p>{letter}</p>
                     {dropdown && 

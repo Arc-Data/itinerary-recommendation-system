@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@200;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@200;300;400;500;700&display=swap');
 
 /*GENERAL STYLE*/
 :root {
@@ -1017,10 +1017,113 @@ input[type="text"] {
     width: 100%;
     height: 100%;
     display: grid;
-    grid-template-columns: 330px 1fr;
+    grid-template-columns: 250px 1fr;
     overflow-y: auto;
 }
 
 .plan--side-panel {
     background: #EEEEEE;
+    display: flex;
+    flex-direction: column;
+}
+
+.plan--main-panel {
+    padding: 20px 30px;
+}
+
+.plan--header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.plan--save-btn {
+    background-color: #38A3A5;
+    padding: 15px 30px;
+    border-radius: 10px;
+}
+
+.accordion-item {
+    margin-bottom: 10px;
+}
+
+.accordion-item input[type="checkbox"] {
+  display: none;
+}
+
+.accordion-header {
+  display: block;
+  padding: 25px 20px;
+  background-color: transparent;
+  cursor: pointer;
+  border: 2px solid #E7E7E7;
+  border-radius: 10px;
+  transition: border-color 0.3s ease;
+}
+
+.accordion-header:hover {
+  border: 2px solid #184E77;
+}
+
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out;
+  padding-top: 10px;
+}
+
+.accordion-item input[type="checkbox"]:checked + .accordion-header + .accordion-content {
+  max-height: 500px;
+}
+
+.plan--itinerary-result {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+    background-color: #D5EFBD;
+    border-radius: 10px;
+}
+
+.plan--ai-btn {
+    padding: 20px 30px;
+    color: white;
+    margin-top: 10px;
+    background: linear-gradient(to left, #57CC99 0%, #38A3A5 50%, #184E77 100%);
+    border-radius: 10px;
+}
+
+.plan--itinerary-item {
+    height: 90px;
+    background-color: #ECECEC;
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+    padding-left: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.location-icon {
+    color: #38A3A5;
+    font-size: 40px;
+    margin: 10px;
+}
+
+.plan--location-img {
+    width: 230px; 
+    height: 100%; 
+    object-fit: cover;
+    margin-left: auto;
+    mask-image: linear-gradient(transparent 0%, #000 100%);
+    mask-size: 100% 100%;
+}
+
+.plan--location-name {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.plan--location-details {
+    color: #333333;
 }
