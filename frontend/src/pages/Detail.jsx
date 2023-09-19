@@ -111,6 +111,7 @@ export default function DetailPage() {
 
             <div>
                 <h1>Also Popular with travelers</h1>
+                <h1>Also kineme</h1>
                 
             </div>
 
