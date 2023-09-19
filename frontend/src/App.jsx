@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 /*Pages*/
 import data from './data';
-import DetailPage from './pages/DetailPage';
 import LandingPage from './pages/LandingPage';
 import HomePage from './pages/Home';
 import PrivateRoutes from './utils/PrivateRoutes'
@@ -13,13 +12,15 @@ import Location from './pages/Location'
 import Accommodation from './pages/Accommodation'
 import Activity from './pages/Activity'
 import Food from './pages/Food'
+import Detail from './pages/Detail'
 import AddLocation from './pages/AddLocation'
 import CreateTrip from './pages/CreateTrip';
+import Login from './pages/Login'
+import Signup from './pages/Signup'
+import ForgotPassword from './pages/ForgotPassword'
+import Destination from './pages/Destination'
 /*Components*/
 import Layout from './components/Layout'
-import Login from './components/Login'
-import Signup from './components/Signup'
-import ForgotPassword from './components/ForgotPassword'
 /*Layout*/
 import UserLayout from './layout/UserLayout';
 import CreateTripLayout from './layout/CreateTripLayout';
@@ -36,10 +37,16 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/forgotpass" element={<ForgotPassword />} />
-            <Route path="/detailPage" element={<DetailPage />} />
+
+
+            <Route path="/destination" element={<Destination />} />
+            <Route path="/accommodation" element={<Accommodation />} />
+            <Route path="/food" element={<Food />} />
+
             <Route element={<PrivateRoutes />} >
  
               <Route element={<UserLayout />}>
+                <Route path="/location/:id" element={<Detail/>}/>
                 <Route path="/home" element={<HomePage />} />
                 <Route path="/search" element={<SearchPage />} />
               </Route> 

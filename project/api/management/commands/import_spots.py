@@ -1,7 +1,7 @@
 import os
 import csv
 from django.conf import settings
-from datetime import time
+from datetime import time, datetime
 from django.core.management.base import BaseCommand
 from api.models import Spot, Tag, CustomFee, LocationImage
 
@@ -11,10 +11,19 @@ class Command(BaseCommand):
     def get_time_str(self, time_str):
         if not time_str:
             return None
-        
-        time_str_parts = time_str.split(":")
-        return time(int(time_str_parts[0]), int(time_str_parts[1]), int(time_str_parts[2]))
-        
+
+        try:
+            time_formats = ['%H:%M:%S', '%I:%M %p', '%I:%M%p']
+            for format_str in time_formats:
+                try:
+                    return datetime.strptime(time_str, format_str).time()
+                except ValueError:
+                    pass
+
+            return None
+        except Exception as e:
+            return None
+
     def handle(self, *args, **options):
         csv_file = os.path.join(settings.BASE_DIR, 'Spot.csv')
 
@@ -23,15 +32,14 @@ class Command(BaseCommand):
             count = 0;
             for row in reader:
                 count += 1
-                print(count)
                 is_closed = bool(int(row.get('IsClosed', 0)))
                 
-                opening_time_str = row.get('OpeningTime', '00:00:00')
-                closing_time_str = row.get('ClosingTime', '00:00:00')
+                opening_time_str = row.get('Start')
+                closing_time_str = row.get('End')
                 
                 opening_time = self.get_time_str(opening_time_str)
                 closing_time = self.get_time_str(closing_time_str)
-                
+
                 spot = Spot.objects.create(
                     name=row['Place'],
                     address=row['Address'],
@@ -80,5 +88,7 @@ class Command(BaseCommand):
                         tags.append(tag)
 
                 spot.tags.set(tags) 
+
+                print("Imported " + spot.name)
 
         self.stdout.write(self.style.SUCCESS('Data imported successfully'))

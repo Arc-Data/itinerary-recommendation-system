@@ -30,9 +30,31 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         return user
     
 class SpotSerializers(serializers.ModelSerializer):
+    min_fee = serializers.SerializerMethodField()
+    max_fee = serializers.SerializerMethodField()
+    tags = serializers.SerializerMethodField()
+    is_bookmarked = serializers.SerializerMethodField()
+
     class Meta:
         model = Spot
-        fields = '__all__'
+        fields = ('min_fee', 'max_fee', 'opening_time', 'closing_time', 'tags', 'is_bookmarked')
+
+    def get_min_fee(self, obj):
+        return obj.get_min_cost
+    
+    def get_max_fee(self, obj):
+        return obj.get_max_cost
+
+    def get_tags(self, obj):
+        return [tag.name for tag in obj.tags.all()] 
+
+    def get_is_bookmarked(self, obj):
+        user = self.context.get('user')
+
+        if user:
+            return obj.interested.filter(id=user.id).exists()
+
+        return False
 
 class FoodPlaceSerializers(serializers.ModelSerializer):
     class Meta:
@@ -44,20 +66,22 @@ class AccommodationSerializers(serializers.ModelSerializer):
         model = Accommodation
         exclude = []
 
-class LocationImageSerializers(serializers.ModelSerializer):
-    class Meta:
-        model = LocationImage
-        fields = ['image']
-        
-    
-class LocationSerializers(serializers.ModelSerializer):
-    images = serializers.SerializerMethodField()
+class LocationQuerySerializers(serializers.ModelSerializer):
+    tags = serializers.SerializerMethodField()
     primary_image = serializers.SerializerMethodField()
-    
+
     class Meta:
         model = Location
-        fields = ('id', 'location_type', 'name', 'address', 'description', 'latitude', 'longitude', 'primary_image', 'images', )
+        fields = ('tags', 'id', 'name', 'primary_image', 'address')
 
+    def get_tags(self, obj):
+        spot = Spot.objects.get(pk=obj.id)
+        
+        if spot:
+            return [tag.name for tag in spot.tags.all()]
+
+        return None 
+    
     def get_primary_image(self, obj):
         primary_image = obj.images.filter(is_primary_image=True).first()
 
@@ -66,15 +90,26 @@ class LocationSerializers(serializers.ModelSerializer):
 
         return None
 
-    def get_location_data(self, obj):
+class LocationSerializers(serializers.ModelSerializer):
+    images = serializers.SerializerMethodField()
+    details = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Location
+        fields = ('id', 'location_type', 'name', 'address', 'description', 'latitude', 'longitude',  'images', 'details')
+
+    def get_details(self, obj):
         if obj.location_type == '1':
-            serializer = SpotSerializers(obj.location)
+            serializer = SpotSerializers(Spot.objects.get(pk=obj.id))
+            return serializer.data
         elif obj.location_type == '2':
-            serializer = FoodPlaceSerializers(obj.location)
-        else:
-            serializer = AccommodationSerializers(obj.location)
+            serializer = FoodPlaceSerializers(FoodPlace.objects.get(pk=obj.id))
+            return serializer.data
+        elif obj.location_type == '3':
+            serializer = AccommodationSerializers(Accommodation.objects.get(pk=obj.id))
+            return serializer.data
         
-        return serializer.data
+        return None
 
     def get_images(self, obj):
         return [image.image.url for image in obj.images.all()]

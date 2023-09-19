@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-/*COMPONENTS*/
+import { Link } from 'react-router-dom';
+/*Components*/
 import SearchCard from '../components/SearchCard';
-/*DATA*/
+/*Data*/
 import { useSearchParams } from 'react-router-dom';
 
 const SearchPage = () => {
@@ -21,21 +22,23 @@ const SearchPage = () => {
 
     }, [query])
     
+
     const locationResults = locations && locations.map(location => {
-        return <SearchCard key={location.id} {...location} />
+        return (
+            <SearchCard key={location.id} {...location} />
+        )
     })
     
     return (
         <div>
             <div className="searchPage--container">
                 <h1 className="searchPage--title">Search result for "{`${query}`}"</h1>
-                <p className="searchPage--result">{locations ? locations.length : "0"}</p>
+                <p className="searchPage--result">{locations ? locations.length : "0"} of {locations ? locations.length : "0"} Results</p>
                 <div className="searchPage--navbar">
                     <a href="#">All Results</a>
-                    <a href="#">Destination</a>
-                    <a href="#">Accommodation</a>
-                    <a href="#">Restaurant</a>
-                    <a href="#">Activities</a>
+                    <Link to="/destination"><a>Destination</a></Link>
+                    <Link to="/accommodation"><a>Accommodation</a></Link>
+                    <Link to="/food"><a>Restaurant</a></Link>
                 </div>
                 <div className="searchPage--card">
                     {locationResults}
