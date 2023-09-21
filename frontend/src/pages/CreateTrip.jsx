@@ -68,7 +68,7 @@ const CreateTrip = () => {
                             <DatePicker
                                 selected={formData.startDate}
                                 onChange={(date) => handleChange('startDate', date)}
-                                className='create--form-input'
+                                className='form-input'
                                 dateFormat="yyyy-MM-dd"
                                 isClearable
                                 placeholderText="Select a date"

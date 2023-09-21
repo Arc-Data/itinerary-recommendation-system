@@ -935,7 +935,7 @@ input[type="text"] {
     display:grid;
     grid-template-columns: 2fr 1fr;
     height:100vh;
-    overflow-y:hidden;
+    overflow:hidden;
 }
 
 .create--map-wrap {
@@ -989,7 +989,7 @@ input[type="text"] {
     grid-gap: 30px;
 }
 
-.create--form-row {
+.form-row {
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -1045,7 +1045,7 @@ input[type="text"] {
     height: 100%;
     display: grid;
     grid-template-columns: 250px 1fr;
-    overflow-y: auto;
+    overflow: hidden;
 }
 
 .plan--side-panel {
@@ -1056,6 +1056,8 @@ input[type="text"] {
 
 .plan--main-panel {
     padding: 20px 30px;
+    height: calc(100vh - 100px);
+    overflow-y: scroll;
 }
 
 .plan--header {
@@ -1074,12 +1076,7 @@ input[type="text"] {
     margin-bottom: 10px;
 }
 
-.accordion-item input[type="checkbox"] {
-  display: none;
-}
-
 .accordion-header {
-  display: block;
   padding: 25px 20px;
   background-color: transparent;
   cursor: pointer;
@@ -1093,14 +1090,8 @@ input[type="text"] {
 }
 
 .accordion-content {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
   padding-top: 10px;
-}
-
-.accordion-item input[type="checkbox"]:checked + .accordion-header + .accordion-content {
-  max-height: 500px;
 }
 
 .plan--itinerary-result {
@@ -1128,7 +1119,6 @@ input[type="text"] {
     margin: 10px 0;
     padding-left: 20px;
     border-radius: 10px;
-    overflow: hidden;
 }
 
 .location-icon {
