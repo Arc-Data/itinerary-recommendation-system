@@ -1144,3 +1144,7 @@ input[type="text"] {
 .plan--location-details {
     color: #333333;
 }
+
+.plan--search-input {
+    width: 100%;
+}
