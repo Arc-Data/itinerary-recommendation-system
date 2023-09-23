@@ -12,6 +12,12 @@
 	-webkit-text-size-adjust: 100%;
 }
 
+input[type="search"]::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    appearance: none;
+    display: none;
+}
+
 p {
     margin: 0;
 }
@@ -1146,5 +1152,26 @@ input[type="text"] {
 }
 
 .plan--search-input {
+    border: 2px solid #E7E7E7;
+    background-color: #F5F5F5;
     width: 100%;
+    padding: 1.05rem;
+    border-radius: 10px;
+    font-size: 1.05rem;
+    transition: border-color 0.3s ease;
+    margin-bottom: 0.5rem;
+}
+
+.plan--search-input:focus {
+    border: 2px solid #333333;
+    outline: none;
+}
+
+.plan--search-result {
+    padding: 1.05rem 0;
+    font-weight: 500;
+}
+
+.search-location-icon {
+    margin-right: 0.5rem;
 }
