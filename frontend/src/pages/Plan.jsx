@@ -36,7 +36,7 @@ const Plan = () => {
 			setItinerary(data.itinerary)
 			setDays(data.days)
 			setLoading(false)
-			console.log(data.days)
+			console.log(data)
 		}
 
 		fetchItineraryData()

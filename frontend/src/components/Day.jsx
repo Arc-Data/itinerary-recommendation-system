@@ -36,11 +36,6 @@ const Day = ({day}) => {
         }, debounceTimeout)
     }
 
-    useEffect(() => {
-        //  get all itinerary items connected to this day.
-        //  but how do i deal with ordering?  
-    }, [])
-
     return (
         <div className="plan--itinerary">
             <div className="accordion-item">

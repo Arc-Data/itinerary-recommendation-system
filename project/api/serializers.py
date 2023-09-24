@@ -129,6 +129,17 @@ class LocationSerializers(serializers.ModelSerializer):
     def get_images(self, obj):
         return [image.image.url for image in obj.images.all()]
 
+class SpotDetailSerializers(serializers.ModelSerializer):
+    location_reviews = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Spot
+        exclude = []
+
+    def get_location_reviews(self, obj):
+        location_reviews = obj.review_set.all()
+        return ReviewSerializers(location_reviews, many=True).data
+
 class ReviewSerializers(serializers.ModelSerializer):
     user = UserSerializers()
     class Meta:
@@ -150,21 +161,12 @@ class ItinerarySerializers(serializers.ModelSerializer):
         model = Itinerary
         fields = ['id', 'budget', 'number_of_people', 'user']
 
-class DaySerializers(serializers.ModelSerializer):
+
+class DayDetailSerializers(serializers.ModelSerializer):
     class Meta:
         model = Day
         fields = '__all__'
             
-class SpotDetailSerializers(serializers.ModelSerializer):
-    location_reviews = serializers.SerializerMethodField()
-
-    class Meta:
-        model = Spot
-        exclude = []
-
-    def get_location_reviews(self, obj):
-        location_reviews = obj.review_set.all()
-        return ReviewSerializers(location_reviews, many=True).data
     
 class ItineraryItemSerializer(serializers.ModelSerializer):
     location_details = LocationPlanSerializers(source='location', read_only=True)
@@ -173,6 +175,12 @@ class ItineraryItemSerializer(serializers.ModelSerializer):
         model = ItineraryItem
         fields = ['id', 'location', 'day', 'location_details']
 
+class DaySerializers(serializers.ModelSerializer):
+    itinerary_items = ItineraryItemSerializer(source='itineraryitem_set', many=True)
+
+    class Meta:
+        model = Day
+        fields = '__all__'
 
 
 class SpotPopularSerializers(serializers.ModelSerializer):
