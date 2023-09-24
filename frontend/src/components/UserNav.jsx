@@ -2,7 +2,6 @@ import React, { useContext, useState } from 'react';
 import AuthContext from '../context/AuthContext';
 import { Link, createSearchParams, useNavigate } from 'react-router-dom';
 import searchIcon from '/images/search.png';
-import userIcon from '/images/user.png';
 
 const UserNav = () => {
     const [dropdown, setDropdown] = useState(false);

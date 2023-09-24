@@ -119,6 +119,20 @@ def create_itinerary(request):
 
     return Response(itinerary_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(["POST"])
+def create_itinerary_item(request):
+    serializer = ItineraryItemSerializer(data=request.data)
+    print(request.data)
+
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    else:
+        print(serializer.errors)
+
+
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 @api_view(["GET"])
 def popular_spots(request):
     if request.method == "GET":

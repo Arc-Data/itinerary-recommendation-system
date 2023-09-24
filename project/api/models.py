@@ -219,6 +219,7 @@ class ModelItinerary(models.Model):
         return sum(max_costs)
 
 class ItineraryItem(models.Model):
+    day = models.ForeignKey(Day, on_delete=models.CASCADE, null=True)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
 
 class Review(models.Model):

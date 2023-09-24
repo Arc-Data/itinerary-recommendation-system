@@ -89,6 +89,21 @@ class LocationQuerySerializers(serializers.ModelSerializer):
             return primary_image.image.url
 
         return None
+    
+class LocationPlanSerializers(serializers.ModelSerializer):
+    primary_image = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Location
+        fields = ['id', 'name', 'primary_image']
+
+    def get_primary_image(self, obj):
+        primary_image = obj.images.filter(is_primary_image=True).first()
+
+        if primary_image:
+            return primary_image.image.url
+
+        return None
 
 class LocationSerializers(serializers.ModelSerializer):
     images = serializers.SerializerMethodField()
@@ -151,6 +166,15 @@ class SpotDetailSerializers(serializers.ModelSerializer):
         location_reviews = obj.review_set.all()
         return ReviewSerializers(location_reviews, many=True).data
     
+class ItineraryItemSerializer(serializers.ModelSerializer):
+    location_details = LocationPlanSerializers(source='location', read_only=True)
+
+    class Meta:
+        model = ItineraryItem
+        fields = ['id', 'location', 'day', 'location_details']
+
+
+
 class SpotPopularSerializers(serializers.ModelSerializer):
 
     class Meta:
