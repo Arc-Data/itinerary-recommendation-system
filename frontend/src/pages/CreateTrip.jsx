@@ -63,7 +63,7 @@ const CreateTrip = () => {
                 <form className='create--form' onSubmit={handleSubmit}>
                     <div className='create--form-title'>Trip Details</div>
                     <div className='create--form-content'>
-                        <div className='create--form-row'>
+                        <div className='form-row'>
                             <label htmlFor="startDate" className="create--form-label">Start Date</label>
                             <DatePicker
                                 selected={formData.startDate}
@@ -76,7 +76,7 @@ const CreateTrip = () => {
                                 id="startDate"
                             />
                         </div>
-                        <div className='create--form-row'>
+                        <div className='form-row'>
                             <label htmlFor="budget" className='create--form-label'>Budget per Person</label>
                             <div className='create--currency'>
                                 <input
@@ -91,7 +91,7 @@ const CreateTrip = () => {
                                 <div className='create--currency-indicator'>PHP</div>
                             </div>
                         </div>
-                        <div className='create--form-row'>
+                        <div className='form-row'>
                             <label htmlFor="endDate" className='create--form-label'>End Date</label>
                             <DatePicker
                                 selected={formData.endDate}
@@ -104,7 +104,7 @@ const CreateTrip = () => {
                                 id="endDate"
                             />
                         </div>
-                        <div className='create--form-row'>
+                        <div className='form-row'>
                             <label htmlFor="numberOfPeople" className='create--form-label'>Number of People</label>
                             <input
                                 type="number"

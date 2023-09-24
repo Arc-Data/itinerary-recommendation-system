@@ -2,10 +2,6 @@ import { useContext, useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import AuthContext from "../context/AuthContext"
 import Day from "../components/Day"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
-import DatePicker from 'react-datepicker';
-
 
 const Plan = () => {
   	const [itinerary, setItinerary] = useState(null)

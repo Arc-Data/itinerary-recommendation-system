@@ -4,7 +4,7 @@ import TripSearchResults from "./TripSearchResult"
 
 const Day = ({day}) => {
     const [open, setOpen] = useState(false)
-    const [locations, setLocations] = useState(false)
+    const [locations, setLocations] = useState([])
     const [searchData, setSearchData] = useState(null)
     
     // debounces search results by 3 seconds
@@ -65,7 +65,11 @@ const Day = ({day}) => {
                             className="plan--search-input"
                             onChange={handleChange}
                         />
-                        <TripSearchResults searchData={searchData}/>
+                        <TripSearchResults 
+                            searchData={searchData} 
+                            dayId={day.id} 
+                            locations={locations} 
+                            setLocations={setLocations} />
                     </div>
                 </div>
                 }
