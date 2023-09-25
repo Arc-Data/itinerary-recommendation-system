@@ -238,6 +238,7 @@ a:-webkit-any-link {
     .container--sign-log {
         overflow:visible;
     }
+    
    
 }
 
@@ -519,23 +520,6 @@ input[type="text"] {
     
 }
 
-/*FOR IPAD*/
-@media screen and (max-width: 880px) {
-    .hero--cards {
-        grid-template-columns: repeat(1, 1fr); 
-	}
-
-    .home---page-content {
-        padding:0;
-    }
-}
-
-@media screen and (min-width: 768px) and (max-width: 880px) {
-	.hero--cards {
-	    grid-template-columns: repeat(2, 1fr);
-	}
-}
-
 /* DETAIL PAGES */
 
 /*DETAIL PAGE TITLE & ADDRESS & TIME  */
@@ -621,13 +605,13 @@ input[type="text"] {
     padding: 5px 10px;
     border-radius: 10px;
     margin: 15px 0 0 auto;
-  }
-  
-  .detailPage--bookmark > img {
-    width: 40px;
-  }
+}
 
-  .entrance--free {
+.detailPage--bookmark > img {
+    width: 40px;
+}
+
+.entrance--free {
     background-color: #366181;
     margin: 10px;
     border-radius: 10px;
@@ -636,7 +620,7 @@ input[type="text"] {
     letter-spacing: 0.1em;
   }
 
-/*PICTURES OF DESTINATION*/
+  /*PICTURES OF DESTINATION*/
 .detailPage--pictures {
     flex: 1; 
     display: flex;
@@ -1057,12 +1041,41 @@ input[type="text"] {
 .plan--side-panel {
     display: flex;
     flex-direction: column;
-    padding: 65px 10px;
+    padding: 40px 10px;
     background: #fcfcfc;
     border-right: 1px solid #e7e7e7;
     font-size: 1rem;
     color: rgba(51, 51, 51, 0.99);
     font-weight: 400;
+}
+
+.plan--title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #333333;
+}
+
+.plan--expense-form {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+}
+
+.plan--expense-form label {
+    font-weight: 400;
+}
+
+.plan--expense-form span {
+    color: #767676;
+}
+
+.plan--expense-form input {
+    padding: 6px 12px;
+    border-radius: 10px;
+    border: 1px solid #dedede;
+    background: #fcfcfc;
+    font-size: 16px;
 }
 
 .plan--accordion-header {
@@ -1083,9 +1096,17 @@ input[type="text"] {
 }
 
 .plan--main-panel {
-    padding: 20px 30px;
     height: calc(100vh - 100px);
     overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.plan--main-panel > div {
+    padding: 40px 48px;
+}
+
+.plan--expense-container {
+    background-color: #f6f6f6;
 }
 
 .plan--header {
@@ -1196,4 +1217,26 @@ input[type="text"] {
 
 .search-location-icon {
     margin-right: 0.5rem;
+}
+
+/*FOR IPAD*/
+@media screen and (max-width: 880px) {
+    .hero--cards {
+        grid-template-columns: repeat(1, 1fr); 
+    }
+
+    .home---page-content {
+        padding:0;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 880px) {
+    .hero--cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    
+    .plan--expense-form {
+        display: block;
+    }
 }

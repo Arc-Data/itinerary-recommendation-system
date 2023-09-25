@@ -5,7 +5,10 @@ import Day from "../components/Day"
 import dayjs from "dayjs"
 
 const Plan = () => {
-  	const [itinerary, setItinerary] = useState(null)
+  	const [itinerary, setItinerary] = useState({
+		number_of_people: '1',
+		budget: ''
+	})
 	const [isLoading, setLoading] = useState(true)
 	const [days, setDays] = useState(null)
 	const [isExpenseOpen, setExpenseOpen] = useState(true)
@@ -42,7 +45,7 @@ const Plan = () => {
 			setItinerary(data.itinerary)
 			setDays(data.days)
 			setLoading(false)
-			console.log(data)
+			console.log(data.itinerary)
 		}
 
 		fetchItineraryData()
@@ -103,8 +106,30 @@ const Plan = () => {
 				}
 			</div>
 			<div className="plan--main-panel">
+				<div className="plan--expense-container">
+					<p className="plan--title">Expenses</p>
+					<div className="plan--expense-form">
+						<div className="form-row">
+							<label htmlFor="number_of_people">Groupsize</label>
+							<input 
+								type="number" 
+								name="number_of_people"
+								id="number_of_people"
+								defaultValue={itinerary.number_of_people}/>
+								
+						</div>
+						<div className="form-row">
+							<label htmlFor="budget">Budget <span>(per person)</span></label>
+							<input 
+								type="number" 
+								name="budget" 
+								id="budget"
+								defaultValue={itinerary.budget}/>							
+						</div>
+					</div>
+				</div>
 				<div className="plan--header">
-					<h1>Itinerary</h1>
+					<p className="plan--title">Itinerary</p>
 					<button className="plan--save-btn">Save</button>
 				</div>
 				{getDays}
