@@ -1,4 +1,5 @@
 import React from "react"
+import star from "/images/star.png"
 
 export default function DetailCard(props) {
     return (
@@ -10,7 +11,7 @@ export default function DetailCard(props) {
                 <h1 className="font15 bold">{props.title}</h1>
                 <div className="detailPage--star">
                     {[1, 2, 3, 4, 5].map((index) => (
-                    <span key={index} className="star">⭐</span> ))}
+                    <img key={index} src={star} alt="Star" className="star" />))}
                     <span> • {props.rating}</span> {/* RATING FOR THE SPOT*/}
                 </div>
                 <p className="font12 bold1" >{props.category}</p>

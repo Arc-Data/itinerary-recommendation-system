@@ -11,6 +11,7 @@ import cardData from '../cardData';
 import addressIcon from "/images/maps-and-flags.png";
 import timeIcon from "/images/clock.png";
 import bookmarkIcon from "/images/bookmark.png";
+import star from "/images/star.png";
 import { useParams } from "react-router-dom";
 
 
@@ -60,11 +61,15 @@ export default function DetailPage() {
         )
     }
 
-    const detailCards = cardData.map((item) => (
+    const limitedCardData = cardData.slice(0, 4);
+
+    const detailCards = limitedCardData.map((item) => (
     <DetailCard key={item.id} {...item} />
     ));
 
-    const reviews = reviewData.map(item => (
+    const limitedCardDataReview = reviewData.slice(0, 4);
+
+    const reviews = limitedCardDataReview.map(item => (
         <Review key={item.id} {...item} />
     ));
 
@@ -77,14 +82,21 @@ export default function DetailPage() {
                         {location.address}
                     </p>
                     <p> <img className="detailPage--icon" src={timeIcon}  />
-                        {details.time} {/* OPEN AND CLOSE FOR THE SPOT*/}
+                        <span>Open at {location.details.opening_time} | Closes at {location.details.closing_time} </span>
                     </p> 
             
                     <div className="detailPage--rating-category">
-                        <span>  {[1, 2, 3, 4, 5].map((index) => (
-                        <span key={index} className="detailPage--star">⭐</span> ))}</span>
-                        <span> • {details.rating}</span> {/* RATING FOR THE SPOT*/}
-                        <span> • {details.categories} </span> {/* CATEGORY FOR THE SPOT*/}
+                        {[1, 2, 3, 4, 5].map((index) => (
+                        <img key={index} src={star} alt="Star" className="star" />))}
+                        <span> • {details.rating} •</span> {/* RATING FOR THE SPOT*/}
+                        <span className="tags">
+                            {location.details.tags.map((tag, index) => (
+                            <span key={index} className="tag">
+                                {tag}
+                                {index < location.details.tags.length - 1 && <span className="tag-separator"> • </span>}
+                            </span>
+                            ))}
+                        </span>
                     </div>
                 </div>
                 <button className="detailPage--bookmark">
@@ -94,9 +106,9 @@ export default function DetailPage() {
             <div className="detailPage--sections">
                 <div className="detailPage--about">
                     <h1 className="detailPage--title1">About</h1>
-                    <p>{location.description}</p> {/* ABOUT FOR THE SPOT*/}
-                    <p>{details.about}</p> {/* ABOUT FOR THE SPOT*/}
-                    <p className="font15 bold">Entrance Fee: <span className="bold1"> Free </span></p> {/* FEE FOR THE SPOT*/}
+                    <p>{location.description}</p> 
+                    <p>{details.about}</p> 
+                    <p className="font15 bold">Entrance Fee: <span className="bold1"> {location.details.max_fee} </span></p> 
                 </div>
                 <div className="detailPage--pictures">
                     <div className="detailPage--images">
@@ -128,7 +140,7 @@ export default function DetailPage() {
                     <h1>Reviews</h1>
                     <div className="detailPage--star">
                         {[1, 2, 3, 4, 5].map((index) => (
-                        <span key={index} className="star">⭐</span> ))}
+                        <img key={index} src={star} alt="Star" className="star" />))}
                         <span> • {details.rating}</span>
                         <span> • {details.reviewCount} </span>
                     </div>
@@ -147,7 +159,7 @@ export default function DetailPage() {
                         <button className='submit--review'>Submit Review</button> 
                         <div className="detailPage--star">
                             {[1, 2, 3, 4, 5].map((index) => (
-                            <span key={index} className="star">⭐</span> ))}
+                            <img key={index} src={star} alt="Star" className="star" />))}
                         </div>
                     </div>
                 </div>    

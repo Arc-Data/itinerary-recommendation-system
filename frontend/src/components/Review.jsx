@@ -1,6 +1,7 @@
 import React from "react"
 /*ICON*/
 import userIcon from "/images/user.png"
+import star from "/images/star.png"
 
 export default function Review (props) {
     return (
@@ -13,7 +14,7 @@ export default function Review (props) {
                 </div>
                 <div className="star--rating-and-date">
                     {[1, 2, 3, 4, 5].map((index) => (
-                    <span key={index} className="star">⭐</span> ))}
+                    <img key={index} src={star} alt="Star" className="star" />))}
                     <span className="date--posted">Posted {props.date} </span>
                 </div>
             </div>
