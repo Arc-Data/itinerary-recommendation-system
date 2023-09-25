@@ -1,10 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@200;300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@200;300;400;500;600;700&display=swap');
 
 /*GENERAL STYLE*/
 :root {
 	font-family: 'Work Sans', sans-serif;
     font-size: 16px;
-	font-weight: 400;
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
@@ -1046,7 +1045,6 @@ input[type="text"] {
     border-right: 1px solid #e7e7e7;
     font-size: 1rem;
     color: rgba(51, 51, 51, 0.99);
-    font-weight: 400;
 }
 
 .plan--title {
@@ -1060,10 +1058,6 @@ input[type="text"] {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 40px;
-}
-
-.plan--expense-form label {
-    font-weight: 400;
 }
 
 .plan--expense-form span {
@@ -1099,30 +1093,15 @@ input[type="text"] {
     height: calc(100vh - 100px);
     overflow-y: scroll;
     overflow-x: hidden;
+    background: #fcfcfc;
 }
 
-.plan--main-panel > div {
+.plan--main-panel > * {
     padding: 40px 48px;
 }
 
-.plan--expense-container {
+.plan--expense-section {
     background-color: #f6f6f6;
-}
-
-.plan--header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.plan--save-btn {
-    background-color: #38A3A5;
-    padding: 15px 30px;
-    border-radius: 10px;
-}
-
-.accordion-item {
-    margin-bottom: 10px;
 }
 
 .accordion-header {
@@ -1138,35 +1117,44 @@ input[type="text"] {
   border: 2px solid #184E77;
 }
 
-.accordion-content {
-  transition: 0.3s ease-in-out;
-  padding-top: 10px;
+.plan--itinerary {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
+
 
 .plan--itinerary-result {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 30px;
-    background-color: #D5EFBD;
+    background-color: #D5EFBD;background: rgba(199, 249, 204, 0.50);
     border-radius: 10px;
+    gap: 10px;
 }
 
 .plan--ai-btn {
-    padding: 20px 30px;
+    padding: 6px 12px;
     color: white;
-    margin-top: 10px;
     background: linear-gradient(to left, #57CC99 0%, #38A3A5 50%, #184E77 100%);
     border-radius: 10px;
+    cursor: pointer;
+    font-size: 20px;
 }
 
 .plan--itinerary-item {
-    height: 90px;
-    background-color: #ECECEC;
+    display: grid;
+    grid-template-columns: 1fr 140px;
+    gap: 20px;
+}
+
+.plan--item {
     display: flex;
-    align-items: center;
-    margin: 10px 0;
-    padding-left: 20px;
+    gap: 10px;
+    padding: 15px 12px 30px;
+    background: #f1f1f1;
     border-radius: 10px;
 }
 
@@ -1176,23 +1164,25 @@ input[type="text"] {
     margin: 10px;
 }
 
-.plan--location-img {
-    width: 230px; 
-    height: 100%; 
-    object-fit: cover;
-    margin-left: auto;
-    mask-image: linear-gradient(transparent 0%, #000 100%);
-    mask-size: 100% 100%;
+.plan--location-details {
+    color: #333333;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.plan--location-details > div {
+    display: flex;
+    gap: 7px;
+    flex-direction: column;
+    color: #686868;
 }
 
 .plan--location-name {
     font-size: 18px;
-    font-weight: 500;
+    font-weight: 600;
 }
 
-.plan--location-details {
-    color: #333333;
-}
 
 .plan--search-input {
     border: 2px solid #E7E7E7;

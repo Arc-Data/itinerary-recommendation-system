@@ -121,17 +121,18 @@ def create_itinerary(request):
 
 @api_view(["POST"])
 def create_itinerary_item(request):
-    serializer = ItineraryItemSerializer(data=request.data)
-    print(request.data)
+    day_id = request.data.get("day")
+    location_id = request.data.get("location")
 
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    else:
-        print(serializer.errors)
+    try:
+        location = Location.objects.get(pk=location_id)
+    except Location.DoesNotExist:
+        return Response({"error": "Location not found"}, status=status.HTTP_404_NOT_FOUND)
 
+    itinerary_item = ItineraryItem.objects.create(day_id=day_id, location=location)
+    serializer = ItineraryItemSerializer(itinerary_item)
 
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 @api_view(["GET"])
 def popular_spots(request):

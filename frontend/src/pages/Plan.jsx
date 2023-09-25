@@ -75,7 +75,7 @@ const Plan = () => {
 
 	return (
     	<div className="plan--layout">
-			<div className="plan--side-panel">
+			<aside className="plan--side-panel">
 				<div 
 					className="plan--accordion-header" 
 					onClick={toggleExpense}>
@@ -104,9 +104,9 @@ const Plan = () => {
 					{ getDayTabs }
 				</div>
 				}
-			</div>
-			<div className="plan--main-panel">
-				<div className="plan--expense-container">
+			</aside>
+			<main className="plan--main-panel">
+				<section className="plan--expense-section">
 					<p className="plan--title">Expenses</p>
 					<div className="plan--expense-form">
 						<div className="form-row">
@@ -127,13 +127,12 @@ const Plan = () => {
 								defaultValue={itinerary.budget}/>							
 						</div>
 					</div>
-				</div>
-				<div className="plan--header">
+				</section>
+				<section className="plan--itinerary-section">
 					<p className="plan--title">Itinerary</p>
-					<button className="plan--save-btn">Save</button>
-				</div>
-				{getDays}
-			</div>
+					{getDays}
+				</section>
+			</main>
 		</div>
   	)
 }
