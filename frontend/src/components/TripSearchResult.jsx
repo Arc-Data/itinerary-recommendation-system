@@ -11,7 +11,6 @@ const TripSearchResults = ({searchData, setSearchData, dayId, locations, setLoca
     
     const handleClick = async (locationId) => {
         try {
-            console.log("Wait what")
             const requestBody = {
                 'location': locationId,
                 'day': dayId,

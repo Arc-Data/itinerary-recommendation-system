@@ -1055,9 +1055,31 @@ input[type="text"] {
 }
 
 .plan--side-panel {
-    background: #EEEEEE;
     display: flex;
     flex-direction: column;
+    padding: 65px 10px;
+    background: #fcfcfc;
+    border-right: 1px solid #e7e7e7;
+    font-size: 1rem;
+    color: rgba(51, 51, 51, 0.99);
+    font-weight: 400;
+}
+
+.plan--accordion-header {
+    border-radius: 10px;
+}
+
+.plan--accordion-header:hover, .plan--accordion-header.active {
+    background: #184e77;
+    color:white;
+}
+
+.plan--accordion-content > div, .plan--accordion-header {
+    display: grid;
+    grid-template-columns: 20px 1fr;
+    gap: 10px;
+    padding: 10px 15px;
+    cursor: pointer;
 }
 
 .plan--main-panel {
