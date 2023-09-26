@@ -92,10 +92,14 @@ class LocationQuerySerializers(serializers.ModelSerializer):
     
 class LocationPlanSerializers(serializers.ModelSerializer):
     primary_image = serializers.SerializerMethodField()
+    max_cost = serializers.SerializerMethodField()
+    min_cost = serializers.SerializerMethodField()
+    opening = serializers.SerializerMethodField()
+    closing = serializers.SerializerMethodField()
 
     class Meta:
         model = Location
-        fields = ['id', 'name', 'primary_image']
+        fields = ['name', 'primary_image', 'address', 'longitude', 'latitude', 'min_cost', 'max_cost', 'opening', 'closing']
 
     def get_primary_image(self, obj):
         primary_image = obj.images.filter(is_primary_image=True).first()
@@ -104,6 +108,31 @@ class LocationPlanSerializers(serializers.ModelSerializer):
             return primary_image.image.url
 
         return None
+    
+    def get_max_cost(self, obj):
+        spot = Spot.objects.get(pk=obj.id)
+
+        if spot:
+            return spot.get_max_cost
+
+    def get_min_cost(self, obj):
+        spot = Spot.objects.get(pk=obj.id)
+
+        if spot:
+            return spot.get_min_cost
+
+    def get_opening(self, obj):
+        spot = Spot.objects.get(pk=obj.id)
+
+        if spot:
+            return spot.opening_time
+        
+    def get_closing(self, obj):
+        spot = Spot.objects.get(pk=obj.id)
+
+        if spot:
+            return spot.closing_time
+
 
 class LocationSerializers(serializers.ModelSerializer):
     images = serializers.SerializerMethodField()
@@ -169,11 +198,11 @@ class DayDetailSerializers(serializers.ModelSerializer):
             
     
 class ItineraryItemSerializer(serializers.ModelSerializer):
-    location_details = LocationPlanSerializers(source='location', read_only=True)
+    details = LocationPlanSerializers(source='location', read_only=True)
 
     class Meta:
         model = ItineraryItem
-        fields = ['id', 'location', 'day', 'location_details']
+        fields = ['id', 'location', 'day', 'details']
 
 class DaySerializers(serializers.ModelSerializer):
     itinerary_items = ItineraryItemSerializer(source='itineraryitem_set', many=True)
