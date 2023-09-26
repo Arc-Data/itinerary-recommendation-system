@@ -5,11 +5,10 @@ import dayjs from "dayjs"
 
 const Day = ({day}) => {
     const [open, setOpen] = useState(false)
-    const [locations, setLocations] = useState([])
     const [searchData, setSearchData] = useState(null)
     
-    // debounces search results by 3 seconds
-    let debounceTimeout = 3000 
+    // debounces search results by 2 seconds
+    let debounceTimeout = 2000 
     let timeout;
 
     const toggleOpen = () => {
@@ -37,6 +36,14 @@ const Day = ({day}) => {
         }, debounceTimeout)
     }
 
+    console.log(day)
+
+    const itineraryItems = () => {
+        return day.itinerary_items.map(location => {
+            return (<LocationItem key={location.id} location={location}/>)
+        })
+    }
+
     return (
         <div className="plan--itinerary">
             <p onClick={toggleOpen} className="">
@@ -48,9 +55,9 @@ const Day = ({day}) => {
                 <p>Need help with your itinerary? Try our AI assistant</p>
                 <button className="plan--ai-btn">AI Assistant</button>
             </div>
-            <LocationItem />
-            <LocationItem />
-            <LocationItem />
+
+            {itineraryItems()}
+
             <div className="plan--search">
                 <input 
                     type="search"
@@ -60,11 +67,11 @@ const Day = ({day}) => {
                     className="plan--search-input"
                     onChange={handleChange}
                 />
-                <TripSearchResults 
+                {/* <TripSearchResults 
                     searchData={searchData} 
                     dayId={day.id} 
                     locations={locations} 
-                    setLocations={setLocations} />
+                    setLocations={setLocations} /> */}
             </div>
             </>
             }

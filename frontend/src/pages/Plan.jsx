@@ -45,7 +45,7 @@ const Plan = () => {
 			setItinerary(data.itinerary)
 			setDays(data.days)
 			setLoading(false)
-			console.log(data.itinerary)
+			console.log(data.days)
 		}
 
 		fetchItineraryData()
@@ -67,11 +67,6 @@ const Plan = () => {
 	if (isLoading) return (
 		<div>Loading Please Wait</div>
 	)
-
-	const active = {
-		background: "#184e77",
-    	color: "white"
-	}
 
 	return (
     	<div className="plan--layout">
