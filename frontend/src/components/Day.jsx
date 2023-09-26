@@ -5,6 +5,7 @@ import dayjs from "dayjs"
 
 const Day = ({day}) => {
     const [open, setOpen] = useState(false)
+    const [items, setItems] = useState(day.itinerary_items)
     const [searchData, setSearchData] = useState(null)
     
     // debounces search results by 2 seconds
@@ -16,7 +17,6 @@ const Day = ({day}) => {
     }
 
     const searchLocations = async (search) => {
-        console.log(search)
         const response = await fetch(`http://127.0.0.1:8000/api/location/?query=${search}`)
         const data = await response.json()
         setSearchData(data)
@@ -36,10 +36,8 @@ const Day = ({day}) => {
         }, debounceTimeout)
     }
 
-    console.log(day)
-
     const itineraryItems = () => {
-        return day.itinerary_items.map(location => {
+        return items.map(location => {
             return (<LocationItem key={location.id} location={location}/>)
         })
     }
@@ -67,11 +65,12 @@ const Day = ({day}) => {
                     className="plan--search-input"
                     onChange={handleChange}
                 />
-                {/* <TripSearchResults 
-                    searchData={searchData} 
+                <TripSearchResults 
+                    searchData={searchData}
+                    setSearchData={setSearchData} 
                     dayId={day.id} 
-                    locations={locations} 
-                    setLocations={setLocations} /> */}
+                    locations={items} 
+                    setLocations={setItems} />
             </div>
             </>
             }

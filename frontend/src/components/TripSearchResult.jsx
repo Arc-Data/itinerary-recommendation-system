@@ -2,11 +2,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 
 const TripSearchResults = ({searchData, setSearchData, dayId, locations, setLocations}) => {
+    
+    console.log(locations)
+
     const addLocation = (item) => {
         const arr = [...locations]
         arr.push(item)
         setLocations(arr)
-        console.log(locations)
     }
     
     const handleClick = async (locationId) => {
