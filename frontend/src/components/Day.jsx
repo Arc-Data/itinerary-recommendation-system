@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import LocationItem from "./LocationItem"
 import TripSearchResults from "./TripSearchResult"
 import dayjs from "dayjs"
@@ -7,7 +7,7 @@ const Day = ({day}) => {
     const [open, setOpen] = useState(false)
     const [items, setItems] = useState(day.itinerary_items)
     const [searchData, setSearchData] = useState(null)
-    
+
     // debounces search results by 2 seconds
     let debounceTimeout = 2000 
     let timeout;

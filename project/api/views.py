@@ -96,26 +96,22 @@ def create_itinerary(request):
     itinerary_serializer = ItinerarySerializers(data=itinerary_data)
 
     if itinerary_serializer.is_valid():
+        print("valid")
         itinerary = itinerary_serializer.save()
 
         current_date = datetime.datetime.strptime(start_date, '%Y-%m-%d').date()
         end_date = datetime.datetime.strptime(end_date, '%Y-%m-%d').date()
         
         while current_date <= end_date:
-            day_data = {
-                'date': current_date,
-                'itinerary': itinerary.id,
-            }
-            day_serializer = DaySerializers(data=day_data)
-
-            if day_serializer.is_valid():
-                day_serializer.save()
-            else:
-                return Response(day_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            Day.objects.create(
+                date=current_date,
+                itinerary=itinerary
+            )
 
             current_date += timedelta(days=1)
         
         return Response({'id': itinerary.id}, status=status.HTTP_201_CREATED)
+    
 
     return Response(itinerary_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
