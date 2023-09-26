@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom"
 
 const Itinerary = ({itinerary}) => {
-    console.log(itinerary)
-
     return (
         <div className="itinerary">
             <Link to ={`/plan/${itinerary.id}`}>

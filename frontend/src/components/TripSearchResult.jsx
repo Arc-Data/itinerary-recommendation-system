@@ -3,8 +3,6 @@ import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 
 const TripSearchResults = ({searchData, setSearchData, dayId, locations, setLocations}) => {
     
-    console.log(locations)
-
     const addLocation = (item) => {
         const arr = [...locations]
         arr.push(item)
@@ -33,7 +31,6 @@ const TripSearchResults = ({searchData, setSearchData, dayId, locations, setLoca
             }
 
             const item = await response.json()
-            console.log(item)
             addLocation(item)
         }
         catch (error) {
