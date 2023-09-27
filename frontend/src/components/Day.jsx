@@ -2,6 +2,9 @@ import { useMemo, useState } from "react"
 import LocationItem from "./LocationItem"
 import TripSearchResults from "./TripSearchResult"
 import dayjs from "dayjs"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faWandMagicSparkles, faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
+
 
 const Day = ({day}) => {
     const [open, setOpen] = useState(false)
@@ -44,34 +47,37 @@ const Day = ({day}) => {
 
     return (
         <div className="plan--itinerary">
-            <p onClick={toggleOpen} className="">
-                {dayjs(day.date).format("dddd, MMM D")} 
+            <p onClick={toggleOpen} className="plan--itinerary-day">
+                {dayjs(day.date).format("dddd, MMM D")}
+                <FontAwesomeIcon className="icon--chevron" icon={open ? faChevronUp : faChevronDown} size="2xs" />           
             </p>
             { open && 
             <>
-            <div className="plan--itinerary-result">
-                <p>Need help with your itinerary? Try our AI assistant</p>
-                <button className="plan--ai-btn">AI Assistant</button>
-            </div>
+                <div className="plan--ai-banner">
+                    <p>Need help with your itinerary? Try our AI assistant</p>
+                    <button className="plan--ai-btn"> 
+                        <FontAwesomeIcon icon={faWandMagicSparkles} /> AI Assistant
+                    </button>
+                </div>
 
-            {itineraryItems()}
+                {itineraryItems()}
 
-            <div className="plan--search">
-                <input 
-                    type="search"
-                    placeholder="Add a location"
-                    name="location"
-                    id="location"
-                    className="plan--search-input"
-                    onChange={handleChange}
-                />
-                <TripSearchResults 
-                    searchData={searchData}
-                    setSearchData={setSearchData} 
-                    dayId={day.id} 
-                    locations={items} 
-                    setLocations={setItems} />
-            </div>
+                <div className="plan--search">
+                    <input 
+                        type="search"
+                        placeholder="Add a location"
+                        name="location"
+                        id="location"
+                        className="plan--search-input"
+                        onChange={handleChange}
+                    />
+                    <TripSearchResults 
+                        searchData={searchData}
+                        setSearchData={setSearchData} 
+                        dayId={day.id} 
+                        locations={items} 
+                        setLocations={setItems} />
+                </div>
             </>
             }
         </div>

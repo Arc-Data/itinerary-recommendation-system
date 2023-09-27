@@ -1125,29 +1125,29 @@ input[type="text"] {
 }
 
 
-.plan--itinerary-result {
+.plan--ai-banner {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 30px;
+    padding: 20px;
     background-color: #D5EFBD;background: rgba(199, 249, 204, 0.50);
     border-radius: 10px;
     gap: 10px;
 }
 
 .plan--ai-btn {
-    padding: 6px 12px;
+    padding: 10px 15px;
     color: white;
     background: linear-gradient(to left, #57CC99 0%, #38A3A5 50%, #184E77 100%);
-    border-radius: 10px;
+    border-radius: 5px;
     cursor: pointer;
-    font-size: 20px;
+    font-size: 18px;
 }
 
 .plan--itinerary-item {
     display: grid;
     grid-template-columns: 1fr 140px;
-    gap: 20px;
+    gap: 10px;
 }
 
 .plan--item {
@@ -1229,4 +1229,13 @@ input[type="text"] {
     .plan--expense-form {
         display: block;
     }
+}
+
+.icon--chevron {
+    margin-left: 0.3rem;
+    font-weight: lighter;
+}
+
+.plan--itinerary-day {
+    cursor: pointer;
 }
