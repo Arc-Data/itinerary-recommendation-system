@@ -21,6 +21,8 @@ export default function DetailPage() {
     const [location, setLocation] = useState(null)
     const { id } = useParams()
     const [loading, setLoading] = useState(true)
+    const [selectedImage, setSelectedImage] = useState(null);
+    
 
     useEffect(() => {
         const getLocationData = async () => {
@@ -39,6 +41,7 @@ export default function DetailPage() {
             console.log("Loading over")
             setLoading(false)
             setLocation(data)
+            setSelectedImage(data.images[0]);
         } 
 
         getLocationData();
@@ -46,14 +49,11 @@ export default function DetailPage() {
     }, [id])
 
 
+    const handleThumbnailClick = (image) => {
+        setSelectedImage(image);
+      }
 
     const details = detailsData[0];
-
-    const [currentImage, setCurrentImage] = useState(details.images[0]);
-    const handleThumbnailClick = (image) => {
-        setCurrentImage(image);
-    };
-
 
     if(loading) {
         return (
@@ -61,11 +61,24 @@ export default function DetailPage() {
         )
     }
 
+    const thumbnails = location.images.map((image, index) => (
+        <img
+          key={index}
+          className="thumbnail"
+          src={`http://127.0.0.1:8000${image}`}
+          alt={`Thumbnail ${index}`}
+          onClick={() => handleThumbnailClick(image)}
+        />
+      ));
+
+
+
     const limitedCardData = cardData.slice(0, 4);
 
     const detailCards = limitedCardData.map((item) => (
     <DetailCard key={item.id} {...item} />
     ));
+    
 
     const limitedCardDataReview = reviewData.slice(0, 4);
 
@@ -112,18 +125,11 @@ export default function DetailPage() {
                 </div>
                 <div className="detailPage--pictures">
                     <div className="detailPage--images">
-                        <img className='detailPage--main-image' src={currentImage} />
+                        <img className='detailPage--main-image' src={`http://127.0.0.1:8000${selectedImage}`} alt="Main" />
                         <div className="detailPage--thumbnail">
-                            {details.images.map((image, index) => (
-                                <img
-                                    key={index}
-                                    className="thumbnail"
-                                    src={image}
-                                    alt={`Thumbnail ${index + 1}`}
-                                    onClick={() => handleThumbnailClick(image)}
-                                />
-                            ))}
+                        {thumbnails}
                         </div>
+                        
                     </div>
                 </div>
             </div>
