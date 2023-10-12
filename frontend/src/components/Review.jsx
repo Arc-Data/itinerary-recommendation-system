@@ -19,6 +19,7 @@ export default function Review (props) {
                 </div>
             </div>
                 <p>{props.review}</p>
+                
         </>
     )
 }

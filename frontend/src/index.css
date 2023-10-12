@@ -374,7 +374,7 @@ input[type="text"] {
 }
 .title > h1 {
     font-weight: 800;
-    margin: 0;
+    margin: 0 0 20px 0;
 }
 .title > p {
     font-size: clamp(12px, 5vw, 30px);
@@ -386,6 +386,7 @@ input[type="text"] {
     font-size: 20px;
     border-radius: 10px;
     text-decoration: none;
+    margin-top: 20px;
 }
 
 .hero--guide {
@@ -855,6 +856,31 @@ input[type="radio"] {
     color: #333333;
     margin-left: 10px;
 }
+
+
+.pagination {
+    text-align: center;
+  }
+  
+  #pagination--button {
+    display: inline-block;
+    margin: 0.5rem;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    color: var(--1, #184E77);
+    width: 30px;
+    border-radius: 20px;
+    height: 30px;
+    padding: 5px;
+    font-size: 10px;
+  }
+  
+  #pagination--button.active {
+    background-color: #184E77;
+    color: #ccc;
+    border: 1px solid #007bff;
+  }
 
 /*SEARCH PAGE*/
 

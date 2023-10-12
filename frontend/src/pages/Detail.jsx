@@ -14,6 +14,7 @@ import bookmarkIcon from "/images/bookmark.png";
 import star from "/images/star.png";
 import { useParams } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'; // Import arrow icons
 
 
 
@@ -24,6 +25,10 @@ export default function DetailPage() {
     const [loading, setLoading] = useState(true)
     const [selectedImage, setSelectedImage] = useState(null);
     const [rating, setRating] = useState(null); // Add rating state
+
+    // Pagination state
+    const [currentPage, setCurrentPage] = useState(1);
+    const reviewsPerPage = 3; // Number of reviews to display per page
     
 
     useEffect(() => {
@@ -82,11 +87,26 @@ export default function DetailPage() {
     ));
 
 
-
-    const limitedCardDataReview = reviewData.slice(0, 4);
-
-    const reviews = limitedCardDataReview.map(item => (
-        <Review key={item.id} {...item} />
+    // PAGINATION 
+    const indexOfLastReview = currentPage * reviewsPerPage;
+    const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
+    const paginatedReviews = reviewData.slice(indexOfFirstReview, indexOfLastReview);
+  
+    // Create navigation buttons for changing the current page
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(reviewData.length / reviewsPerPage); i++) {
+      pageNumbers.push(i);
+    }
+  
+    const renderPageNumbers = pageNumbers.map((number) => (
+      <button
+        id="pagination--button"
+        key={number}
+        onClick={() => setCurrentPage(number)}
+        className={currentPage === number ? "active" : ""}
+      >
+        {number}
+      </button>
     ));
 
     return (
@@ -188,9 +208,42 @@ export default function DetailPage() {
                     </div>
                 </div>    
             </div>
-            <div className="user--review"> 
-                {reviews}
+        <div className="user--review">
+            {paginatedReviews.map((item) => (
+            <Review key={item.id} {...item} />
+            ))}
+            <hr></hr>
+            <div className="pagination">
+                {currentPage > 1 && (
+                    <button
+                    id="pagination--button"
+                    onClick={() => setCurrentPage(currentPage - 1)}
+                    >
+                    <FaChevronLeft /> {/* Left arrow */}
+                    </button>
+                )}
+
+                {pageNumbers.map((number) => (
+                    <button
+                    id="pagination--button"
+                    key={number}
+                    onClick={() => setCurrentPage(number)}
+                    className={currentPage === number ? "active" : ""}
+                    >
+                    {number}
+                    </button>
+                ))}
+
+                {currentPage < pageNumbers.length && (
+                    <button
+                    id="pagination--button"
+                    onClick={() => setCurrentPage(currentPage + 1)}
+                    >
+                    <FaChevronRight /> {/* Right arrow */}
+                    </button>
+                )}
             </div>
         </div>
+    </div>
     )
 }   
