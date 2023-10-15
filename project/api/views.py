@@ -2,12 +2,10 @@ from django.shortcuts import get_object_or_404, render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status, viewsets, filters
-from rest_framework.views import APIView
 from rest_framework.filters import SearchFilter
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import IsAuthenticated
-from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from .models import *
 from .serializers import *
@@ -52,6 +50,27 @@ def get_user_itineraries(request):
     serializer = ItineraryListSerializers(itineraries, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def get_itinerary(request, itinerary_id):
+    if request.method == "GET":
+        try:
+            itinerary = Itinerary.objects.get(id=itinerary_id, user=request.user)
+            itinerary_serializer = ItinerarySerializers(itinerary)
+
+            days = Day.objects.filter(itinerary=itinerary)
+            day_serializers = DaySerializers(days, many=True)  # Use many=True here
+
+            response_data = {
+                'itinerary': itinerary_serializer.data,
+                'days': day_serializers.data
+            }
+
+            return Response(response_data, status=status.HTTP_200_OK)
+
+        except Itinerary.DoesNotExist:
+            return Response({'message': 'Itinerary not found'}, status=status.HTTP_404_NOT_FOUND)
+
 @api_view(['GET'])
 def get_location(request, id):
     try:
@@ -77,28 +96,39 @@ def create_itinerary(request):
     itinerary_serializer = ItinerarySerializers(data=itinerary_data)
 
     if itinerary_serializer.is_valid():
+        print("valid")
         itinerary = itinerary_serializer.save()
 
         current_date = datetime.datetime.strptime(start_date, '%Y-%m-%d').date()
         end_date = datetime.datetime.strptime(end_date, '%Y-%m-%d').date()
         
         while current_date <= end_date:
-            day_data = {
-                'date': current_date,
-                'itinerary': itinerary.id,
-            }
-            day_serializer = DaySerializers(data=day_data)
-
-            if day_serializer.is_valid():
-                day_serializer.save()
-            else:
-                return Response(day_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            Day.objects.create(
+                date=current_date,
+                itinerary=itinerary
+            )
 
             current_date += timedelta(days=1)
         
         return Response({'id': itinerary.id}, status=status.HTTP_201_CREATED)
+    
 
     return Response(itinerary_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(["POST"])
+def create_itinerary_item(request):
+    day_id = request.data.get("day")
+    location_id = request.data.get("location")
+
+    try:
+        location = Location.objects.get(pk=location_id)
+    except Location.DoesNotExist:
+        return Response({"error": "Location not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    itinerary_item = ItineraryItem.objects.create(day_id=day_id, location=location)
+    serializer = ItineraryItemSerializer(itinerary_item)
+
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 @api_view(["GET"])
 def popular_spots(request):
