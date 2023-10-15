@@ -1,6 +1,5 @@
 import { useState } from "react"
 import LocationItem from "./LocationItem"
-import TripSearchResults from "./TripSearchResult"
 import dayjs from "dayjs"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWandMagicSparkles, faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
