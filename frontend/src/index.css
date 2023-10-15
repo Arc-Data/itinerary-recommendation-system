@@ -1325,3 +1325,19 @@ input[type="text"] {
     background: rgba(0,0,0,0.5);
     z-index: 50;
 }
+
+.add-location-modal--search {
+    display:flex;
+    flex-direction: column;
+}
+
+.add-location-modal--search-item {
+    justify-content: space-between;
+    display: flex;
+    padding: 10px;
+}
+
+.add-location-modal--search-item > button {
+    color: white;
+    background: #3498db;
+}

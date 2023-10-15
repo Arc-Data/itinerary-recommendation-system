@@ -1,6 +1,5 @@
 import { faLocation, faLocationDot } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import dayjs from "dayjs"
 
 const LocationItem = ({location}) => {
 

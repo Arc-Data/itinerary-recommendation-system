@@ -15,6 +15,7 @@ const Day = ({day}) => {
     // debounces search results by 2 seconds
     let debounceTimeout = 2000 
     let timeout;
+    console.log(items)
 
     const toggleOpen = () => {
         setOpen(prev => !prev)
@@ -61,42 +62,30 @@ const Day = ({day}) => {
             </p>
             { open && 
             <>  
-                <div className="plan--itinerary-items">
+            <div className="plan--itinerary-items">
                 {itineraryItems()}
+            </div>
+            <div className="plan--btn-container">
+                <div className="plan--btn-list">
+                    <button
+                        onClick={toggleLocationModal} 
+                        className="plan--btn btn-primary">
+                            Add Location
+                    </button>
+                    <button className="plan--btn btn-secondary">
+                        <span className="ai-assistant">AI Assistant</span>
+                    </button>
                 </div>
-                <div className="plan--btn-container">
-                    <div className="plan--btn-list">
-                        <button
-                            onClick={toggleLocationModal} 
-                            className="plan--btn btn-primary">
-                                Add Location
-                        </button>
-                        <button className="plan--btn btn-secondary">
-                            <span className="ai-assistant">AI Assistant</span>
-                        </button>
-                    </div>
-                    <button className="btn-link">Edit</button>
-                </div>
-
-                <div className="plan--search">
-                    <input 
-                        type="search"
-                        placeholder="Add a location"
-                        name="location"
-                        id="location"
-                        className="plan--search-input"
-                        onChange={handleChange}
-                    />
-                    <TripSearchResults 
-                        searchData={searchData}
-                        setSearchData={setSearchData} 
-                        dayId={day.id} 
-                        locations={items} 
-                        setLocations={setItems} />
-                </div>
+                <button className="btn-link">Edit</button>
+            </div>
             </>
             }
-            {openLocationModal && <AddLocationModal onClose={toggleLocationModal}/>}
+            {openLocationModal && 
+            <AddLocationModal 
+                onClose={toggleLocationModal} 
+                locations={items}
+                setLocations={setItems}
+                dayId={day.id}/>}
         </div>
     )
 }
