@@ -1,22 +1,30 @@
-import { useMemo, useState } from "react"
+import { useState } from "react"
 import LocationItem from "./LocationItem"
 import TripSearchResults from "./TripSearchResult"
 import dayjs from "dayjs"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWandMagicSparkles, faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import AddLocationModal from "./AddLocationModal";
 
 
 const Day = ({day}) => {
     const [open, setOpen] = useState(false)
     const [items, setItems] = useState(day.itinerary_items)
     const [searchData, setSearchData] = useState(null)
-
+    const [openLocationModal, setLocationModal] = useState(false)
     // debounces search results by 2 seconds
     let debounceTimeout = 2000 
     let timeout;
 
     const toggleOpen = () => {
         setOpen(prev => !prev)
+    }
+
+    const toggleLocationModal = (event) => {
+        if(event) {
+            event.stopPropagation()
+        }
+        setLocationModal(prev => !prev)
     }
 
     const searchLocations = async (search) => {
@@ -58,7 +66,11 @@ const Day = ({day}) => {
                 </div>
                 <div className="plan--btn-container">
                     <div className="plan--btn-list">
-                        <button className="plan--btn btn-primary">Add Location</button>
+                        <button
+                            onClick={toggleLocationModal} 
+                            className="plan--btn btn-primary">
+                                Add Location
+                        </button>
                         <button className="plan--btn btn-secondary">
                             <span className="ai-assistant">AI Assistant</span>
                         </button>
@@ -84,6 +96,7 @@ const Day = ({day}) => {
                 </div>
             </>
             }
+            {openLocationModal && <AddLocationModal onClose={toggleLocationModal}/>}
         </div>
     )
 }

@@ -4,13 +4,15 @@ import CreateNav from '../components/CreateNav'
 
 const CreateTripLayout = () => {
   return (
-    <div className="create--layout">
-        <div>
-          <CreateNav />
-          <Outlet />
-        </div>
-        <Map />
-    </div>
+    <>
+      <div className="create--layout">
+          <div>
+            <CreateNav />
+            <Outlet />
+          </div>
+          <Map />
+      </div>
+    </>
   )
 }
 

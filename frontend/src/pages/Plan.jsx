@@ -17,12 +17,10 @@ const Plan = () => {
 	const { id } = useParams()
 	
 	const toggleExpense = () => {
-		console.log("hello?")
 		setExpenseOpen(prev => !prev)
 	}
 	
 	const toggleItinerary = () => {
-		console.log("What")
 		setItineraryOpen(prev => !prev)
 	}
 
