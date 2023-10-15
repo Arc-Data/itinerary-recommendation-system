@@ -1135,16 +1135,51 @@ input[type="text"] {
     gap: 10px;
 }
 
-.plan--ai-btn {
-    padding: 10px 15px;
-    color: white;
-    background: linear-gradient(to left, #57CC99 0%, #38A3A5 50%, #184E77 100%);
+.plan--btn-container {
+    display:flex;
+    gap:20px;
+}
+
+.plan--btn-list {
+    display: flex;
+    gap: 10px;
+}
+
+.plan--btn {
+    padding: 15px 14px;
     border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.btn-primary {
+    background: #184E77;
+}
+
+.btn-secondary {
+    border: 2px solid #184E77;
+    background: #fcfcfc;
+}
+
+.btn-link {
+    all: unset;
     cursor: pointer;
     font-size: 18px;
 }
 
-.plan--itinerary-item {
+.btn-link:hover {
+    text-decoration: underline;
+}
+
+.ai-assistant {
+    background: linear-gradient(90deg, #184E77 0%, #38A3A5 99.99%, #57CC99 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.plan-item {
     display: grid;
     grid-template-columns: 1fr 140px;
     gap: 10px;
@@ -1238,4 +1273,16 @@ input[type="text"] {
 
 .plan--itinerary-day {
     cursor: pointer;
+}
+
+.plan--itinerary-items {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.plan--itinerary-item {
+    display: grid;
+    grid-template-columns: 1fr 140px;
+    gap: 10px;
 }

@@ -10,6 +10,8 @@ const LocationItem = ({location}) => {
         backgroundPosition: 'center'
     }
 
+    console.log(locationImage.backgroundImage)
+
     const fee = location.details.max_cost === location.details.min_cost ?
         "Free" : `${location.details.min_cost} - ${location.details.max_cost}`;
 

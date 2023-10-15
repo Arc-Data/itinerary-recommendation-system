@@ -52,15 +52,19 @@ const Day = ({day}) => {
                 <FontAwesomeIcon className="icon--chevron" icon={open ? faChevronUp : faChevronDown} size="2xs" />           
             </p>
             { open && 
-            <>
-                <div className="plan--ai-banner">
-                    <p>Need help with your itinerary? Try our AI assistant</p>
-                    <button className="plan--ai-btn"> 
-                        <FontAwesomeIcon icon={faWandMagicSparkles} /> AI Assistant
-                    </button>
-                </div>
-
+            <>  
+                <div className="plan--itinerary-items">
                 {itineraryItems()}
+                </div>
+                <div className="plan--btn-container">
+                    <div className="plan--btn-list">
+                        <button className="plan--btn btn-primary">Add Location</button>
+                        <button className="plan--btn btn-secondary">
+                            <span className="ai-assistant">AI Assistant</span>
+                        </button>
+                    </div>
+                    <button className="btn-link">Edit</button>
+                </div>
 
                 <div className="plan--search">
                     <input 
