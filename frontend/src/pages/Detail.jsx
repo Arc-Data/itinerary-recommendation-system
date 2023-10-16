@@ -21,6 +21,8 @@ export default function DetailPage() {
     const [location, setLocation] = useState(null)
     const { id } = useParams()
     const [loading, setLoading] = useState(true)
+    const [images, setImages] = useState(null)
+    const [currentImage, setCurrentImage] = useState(null);
 
     useEffect(() => {
         const getLocationData = async () => {
@@ -36,9 +38,10 @@ export default function DetailPage() {
             }
 
             const data = await response.json()
-            console.log("Loading over")
             setLoading(false)
             setLocation(data)
+            setImages(data.images)
+            setCurrentImage(`http://127.0.0.1:8000` + data.images[0])
         } 
 
         getLocationData();
@@ -49,9 +52,8 @@ export default function DetailPage() {
 
     const details = detailsData[0];
 
-    const [currentImage, setCurrentImage] = useState(details.images[0]);
     const handleThumbnailClick = (image) => {
-        setCurrentImage(image);
+        setCurrentImage(`http://127.0.0.1:8000` + image);
     };
 
 
@@ -114,11 +116,11 @@ export default function DetailPage() {
                     <div className="detailPage--images">
                         <img className='detailPage--main-image' src={currentImage} />
                         <div className="detailPage--thumbnail">
-                            {details.images.map((image, index) => (
+                            {images.map((image, index) => (
                                 <img
                                     key={index}
                                     className="thumbnail"
-                                    src={image}
+                                    src={`http://127.0.0.1:8000${image}`}
                                     alt={`Thumbnail ${index + 1}`}
                                     onClick={() => handleThumbnailClick(image)}
                                 />

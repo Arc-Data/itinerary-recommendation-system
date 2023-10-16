@@ -5,7 +5,6 @@ const AddLocationModal = ({onClose, dayId, locations, setLocations}) => {
     const modalRef = useRef(null)
     const [searchData, setSearchData] = useState(null)
     const [openBookmarks, setOpenBookmarks] = useState(false)
-    console.log(locations)
 
     let debounceTimeout = 1500
     let timeout;
@@ -15,7 +14,6 @@ const AddLocationModal = ({onClose, dayId, locations, setLocations}) => {
     }
 
     const addLocation = (item) => {
-        console.log("Updating UI Locations")
         const arr = [...locations]
         arr.push(item)
         setLocations(arr)
