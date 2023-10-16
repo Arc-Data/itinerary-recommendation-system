@@ -1,16 +1,22 @@
 import { faLocation, faLocationDot } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import dayjs from "dayjs";
 
 const LocationItem = ({location}) => {
-
     const locationImage = {
         backgroundImage: `url(http://127.0.0.1:8000${location.details.primary_image})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center'
     }
 
-    const fee = location.details.max_cost === location.details.min_cost ?
-        "Free" : `${location.details.min_cost} - ${location.details.max_cost}`;
+    const fee = location.details.max_cost === "0" ?  
+        "Free" : location.details.max_cost === location.details.min_cost ?
+        location.details.min_cost : `${location.details.min_cost} - ${location.details.max_cost}`;
+
+    const opening_string = location.details.opening.split(":")
+    const closing_string = location.details.closing.split(":")
+    const opening = dayjs(new Date(2045, 1, 1, ...opening_string)).format("h:mm A")
+    const closing = dayjs(new Date(2045, 1, 1, ...closing_string)).format("h:mm A")
 
     return (
         <div className="plan--itinerary-item">
@@ -20,7 +26,7 @@ const LocationItem = ({location}) => {
                     <p className="plan--location-name">{location.details.name}</p>
                     <div>
                         <p>{location.details.address}</p>
-                        <p>Open {location.details.opening} - {location.details.closing}</p>
+                        <p>Opens {opening} - {closing}</p>
                         <p>Entrance fee: {fee}</p>
                     </div>
                 </div>
