@@ -2,8 +2,9 @@ import { useEffect, useRef, useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons"
 import { Link } from "react-router-dom"
+import dayjs from "dayjs"
 
-const AddLocationModal = ({onClose, dayId, locations, setLocations}) => {
+const AddLocationModal = ({onClose, day, locations, setLocations}) => {
     const modalRef = useRef(null)
     const [searchData, setSearchData] = useState(null)
     const [openBookmarks, setOpenBookmarks] = useState(false)
@@ -34,7 +35,7 @@ const AddLocationModal = ({onClose, dayId, locations, setLocations}) => {
         try {
             const requestBody = {
                 'location': locationId,
-                'day': dayId,
+                'day': day.id,
             }
 
             const response = await fetch("http://127.0.0.1:8000/api/day-item", {
@@ -77,7 +78,14 @@ const AddLocationModal = ({onClose, dayId, locations, setLocations}) => {
     }
 
     const displaySearchItems = searchData && searchData.map(location => {
-        console.log(location)
+        const fee = location.fee.min === 0 ? 
+            "Free" : location.fee.min === location.fee.max ? location.fee.min : `${location.fee.min} - ${location.fee.max}`;
+
+        const opening_string = location.schedule.opening.split(":")
+        const closing_string = location.schedule.closing.split(":")
+        const opening = dayjs(new Date(2045, 1, 1, ...opening_string)).format('h:mm A')
+        const closing = dayjs(new Date(2045, 1, 1, ...closing_string)).format('h:mm A')
+
         return (
             <div key={location.id} location={location} className="add-location-modal--search-item">
                 <FontAwesomeIcon icon={faLocationDot}></FontAwesomeIcon>
@@ -86,7 +94,7 @@ const AddLocationModal = ({onClose, dayId, locations, setLocations}) => {
                     <p className="add-location-modal--title">{location.name}</p>
                     </Link>
                     <p className="add-location-modal--subtext">{location.address}</p>
-                    <p className="add-location-modal--subtext"><span>Opens </span>•<span> Entrance Fee: </span></p>
+                    <p className="add-location-modal--subtext"><span>Opens {opening} - {closing} </span>•<span> Entrance Fee: {fee} </span></p>
                 </div>
                 <button className="add-location-modal--add-btn" onClick={() => handleClick(location.id)}>+</button>
             </div>

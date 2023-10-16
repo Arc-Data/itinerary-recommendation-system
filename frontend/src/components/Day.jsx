@@ -58,7 +58,7 @@ const Day = ({day}) => {
                 onClose={toggleLocationModal} 
                 locations={items}
                 setLocations={setItems}
-                dayId={day.id}/>
+                day={day}/>
             }
         </div>
     )
