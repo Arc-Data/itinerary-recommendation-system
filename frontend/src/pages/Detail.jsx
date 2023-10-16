@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 /*Components*/
-import Footer from '../components/Footer';
 import Review from '../components/Review';
 import DetailCard from '../components/DetailCard';
 /*Data*/
-import detailsData from "../detailsData";
 import reviewData from "../reviewData";
 import cardData from '../cardData';
 /*Icon*/
@@ -43,19 +41,15 @@ export default function DetailPage() {
             setImages(data.images)
             setCurrentImage(`http://127.0.0.1:8000` + data.images[0])
         } 
-
         getLocationData();
 
     }, [id])
 
-
-
-    const details = detailsData[0];
+    console.log(location)
 
     const handleThumbnailClick = (image) => {
         setCurrentImage(`http://127.0.0.1:8000` + image);
     };
-
 
     if(loading) {
         return (
@@ -109,7 +103,6 @@ export default function DetailPage() {
                 <div className="detailPage--about">
                     <h1 className="detailPage--title1">About</h1>
                     <p>{location.description}</p> 
-                    <p>{details.about}</p> 
                     <p className="font15 bold">Entrance Fee: <span className="bold1"> {location.details.max_fee} </span></p> 
                 </div>
                 <div className="detailPage--pictures">
@@ -143,8 +136,8 @@ export default function DetailPage() {
                     <div className="detailPage--star">
                         {[1, 2, 3, 4, 5].map((index) => (
                         <img key={index} src={star} alt="Star" className="star" />))}
-                        <span> • {details.rating}</span>
-                        <span> • {details.reviewCount} </span>
+                        <span> • 3 Reviews</span>
+                        <span> • 4.0 </span>
                     </div>
                     <div className="progress--bars">
                         {[1, 2, 3, 4, 5].map((index) => (
