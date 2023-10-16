@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import Footer from '../components/Footer';
 import Review from '../components/Review';
 /*Data*/
-import detailsData from "../detailsData";
 import reviewData from "../reviewData";
+import cardData from '../cardData';
 /*Icon*/
 import addressIcon from "/images/maps-and-flags.png";
 import timeIcon from "/images/clock.png";
@@ -18,6 +18,8 @@ export default function DetailPage() {
     const [location, setLocation] = useState(null)
     const { id } = useParams()
     const [loading, setLoading] = useState(true)
+    const [images, setImages] = useState(null)
+    const [currentImage, setCurrentImage] = useState(null);
 
     useEffect(() => {
         const getLocationData = async () => {
@@ -33,33 +35,36 @@ export default function DetailPage() {
             }
 
             const data = await response.json()
-            console.log("Loading over")
             setLoading(false)
             setLocation(data)
+            setImages(data.images)
+            setCurrentImage(`http://127.0.0.1:8000` + data.images[0])
         } 
-
         getLocationData();
 
     }, [id])
 
-
-
-    const details = detailsData[0];
-
-    const [currentImage, setCurrentImage] = useState(details.images[0]);
     const handleThumbnailClick = (image) => {
-        setCurrentImage(image);
+        setCurrentImage(`http://127.0.0.1:8000` + image);
     };
-
-    const reviews = reviewData.map(item => (
-        <Review key={item.id} {...item} />
-    ));
 
     if(loading) {
         return (
             <div>Loading</div>
         )
     }
+
+    const limitedCardData = cardData.slice(0, 4);
+
+    const detailCards = limitedCardData.map((item) => (
+    <DetailCard key={item.id} {...item} />
+    ));
+
+    const limitedCardDataReview = reviewData.slice(0, 4);
+
+    const reviews = limitedCardDataReview.map(item => (
+        <Review key={item.id} {...item} />
+    ));
 
     return (
         <div className='detailPage'>
@@ -70,15 +75,9 @@ export default function DetailPage() {
                         {location.address}
                     </p>
                     <p> <img className="detailPage--icon" src={timeIcon}  />
-                        {details.time} {/* OPEN AND CLOSE FOR THE SPOT*/}
+                        <span>Open at {location.details.opening_time} | Closes at {location.details.closing_time} </span>
                     </p> 
             
-                    <div className="detailPage--rating-category">
-                        <span>  {[1, 2, 3, 4, 5].map((index) => (
-                        <span key={index} className="detailPage--star">⭐</span> ))}</span>
-                        <span> • {details.rating}</span> {/* RATING FOR THE SPOT*/}
-                        <span> • {details.categories} </span> {/* CATEGORY FOR THE SPOT*/}
-                    </div>
                 </div>
                 <button className="detailPage--bookmark">
                     <img src={bookmarkIcon} alt="Bookmark" />
@@ -87,19 +86,18 @@ export default function DetailPage() {
             <div className="detailPage--sections">
                 <div className="detailPage--about">
                     <h1 className="detailPage--title1">About</h1>
-                    <p>{location.description}</p> {/* ABOUT FOR THE SPOT*/}
-                    <p>{details.about}</p> {/* ABOUT FOR THE SPOT*/}
-                    <p className="entrance--free bold">Entrance Fee: <span className="bold1">25 </span></p> {/* FEE FOR THE SPOT*/}
+                    <p>{location.description}</p> 
+                    <p className="font15 bold">Entrance Fee: <span className="bold1"> {location.details.max_fee} </span></p> 
                 </div>
                 <div className="detailPage--pictures">
                     <div className="detailPage--images">
                         <img className='detailPage--main-image' src={currentImage} />
                         <div className="detailPage--thumbnail">
-                            {details.images.map((image, index) => (
+                            {images.map((image, index) => (
                                 <img
                                     key={index}
                                     className="thumbnail"
-                                    src={image}
+                                    src={`http://127.0.0.1:8000${image}`}
                                     alt={`Thumbnail ${index + 1}`}
                                     onClick={() => handleThumbnailClick(image)}
                                 />
@@ -109,27 +107,17 @@ export default function DetailPage() {
                 </div>
             </div>
 
-            <div>
-                <h1>Also Popular with travelers</h1>
-                <h1>Also kineme</h1>
-                
+            <div className="detailPage--popular">
+                <h2>Also Popular with travelers</h2>
+                <div className='detailPage--cards'>
+					{detailCards}
+                </div>
             </div>
 
-
-
-
-
-
-            
             <div className='detailPage--review'>
-                <div className="detailPage--review-stars">
+                <div className="detailPage--reviews">
                     <h1>Reviews</h1>
-                    <div className="detailPage--star">
-                        {[1, 2, 3, 4, 5].map((index) => (
-                        <span key={index} className="star">⭐</span> ))}
-                        <span> • {details.rating}</span>
-                        <span> • {details.reviewCount} </span>
-                    </div>
+                    
                     <div className="progress--bars">
                         {[1, 2, 3, 4, 5].map((index) => (
                             <div key={index} className="progress--bar">
@@ -140,13 +128,10 @@ export default function DetailPage() {
                     </div>
                 </div>
                 <div className="write--review">
-                    <input className="input--review" placeholder="How do you find this place?" rows="5"></input>
+                    <textarea className="input--review" placeholder="How do you find this place?" rows="5"></textarea>
                     <div className="button--stars"> 
-                        <button className='add--review'>Submit Review</button> 
-                        <div className="detailPage--star">
-                            {[1, 2, 3, 4, 5].map((index) => (
-                            <span key={index} className="star">⭐</span> ))}
-                        </div>
+                        <button className='submit--review'>Submit Review</button> 
+                        
                     </div>
                 </div>    
             </div>

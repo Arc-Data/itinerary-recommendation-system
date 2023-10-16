@@ -1326,18 +1326,62 @@ input[type="text"] {
     z-index: 50;
 }
 
-.add-location-modal--search {
+.add-location-modal--results-container {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.add-location-modal--results-container > p {
+    font-weight: 600;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.add-location-modal--results {
     display:flex;
     flex-direction: column;
+    max-height: 500px;
+    overflow-y: scroll;
 }
 
 .add-location-modal--search-item {
-    justify-content: space-between;
     display: flex;
     padding: 10px;
+    gap: 10px;
 }
 
-.add-location-modal--search-item > button {
-    color: white;
-    background: #3498db;
+.add-location-modal--search-item ~ *{
+    border-top: 1px solid #e7e7e7;
+}
+
+.add-location-modal--title {
+    color: #333333;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 14px;
+    text-decoration: underline;
+}
+
+.add-location-modal--subtext {
+    color: #333333;
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.add-location-modal--subtext > span{
+    color: #686868;
+}
+
+.add-location-modal--add-btn {
+    align-self: center;
+    text-align:center;
+    margin-left: auto;
+    color: #7c7c7c;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    background: #e7e7e7;
+    font-size: 18px;
 }

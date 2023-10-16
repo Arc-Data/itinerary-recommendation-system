@@ -1,13 +1,15 @@
 import { useEffect, useRef, useState } from "react"
-import LocationItem from "./LocationItem"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faLocationDot } from "@fortawesome/free-solid-svg-icons"
+import { Link } from "react-router-dom"
 
 const AddLocationModal = ({onClose, dayId, locations, setLocations}) => {
     const modalRef = useRef(null)
     const [searchData, setSearchData] = useState(null)
     const [openBookmarks, setOpenBookmarks] = useState(false)
-    console.log(locations)
+    const [searchString, setSearchString] = useState("")
 
-    let debounceTimeout = 1500
+    let debounceTimeout = 1500;
     let timeout;
 
     const toggleBookmarkSection = () => {
@@ -43,7 +45,6 @@ const AddLocationModal = ({onClose, dayId, locations, setLocations}) => {
                 body: JSON.stringify(requestBody)
             })
 
-
             if (!response.ok) {
                 console.log("Itinerary Item Creation Failed")
                 return
@@ -62,6 +63,7 @@ const AddLocationModal = ({onClose, dayId, locations, setLocations}) => {
 
     const handleChange = (e) => {
         const searchQuery = e.target.value;
+        setSearchString(searchQuery)
 
         if(!searchQuery) {
             setSearchData(null)
@@ -75,10 +77,18 @@ const AddLocationModal = ({onClose, dayId, locations, setLocations}) => {
     }
 
     const displaySearchItems = searchData && searchData.map(location => {
+        console.log(location)
         return (
             <div key={location.id} location={location} className="add-location-modal--search-item">
-                <p>{location.name}</p>
-                <button onClick={() => handleClick(location.id)}>+</button>
+                <FontAwesomeIcon icon={faLocationDot}></FontAwesomeIcon>
+                <div>
+                    <Link to={`/location/${location.id}`}>
+                    <p className="add-location-modal--title">{location.name}</p>
+                    </Link>
+                    <p className="add-location-modal--subtext">{location.address}</p>
+                    <p className="add-location-modal--subtext"><span>Opens </span>•<span> Entrance Fee: </span></p>
+                </div>
+                <button className="add-location-modal--add-btn" onClick={() => handleClick(location.id)}>+</button>
             </div>
         )
     })
@@ -120,11 +130,15 @@ const AddLocationModal = ({onClose, dayId, locations, setLocations}) => {
                         id="location"
                         className="plan--search-input add-location--search-input"
                         onChange={handleChange}
+                        value={searchString}
                         />
                 </div>
                 {searchData !== null ? 
-                <div className="add-location-modal--search">
-                    {displaySearchItems}
+                <div className="add-location-modal--results-container">
+                    <p>Search Results for "{searchString}"</p>
+                    <div className="add-location-modal--results">
+                        {displaySearchItems}
+                    </div> 
                 </div> : null}
             </div> 
             }
