@@ -11,16 +11,20 @@ import timeIcon from "/images/clock.png";
 import bookmarkIcon from "/images/bookmark.png";
 import star from "/images/star.png";
 import { useParams } from "react-router-dom";
-
-
+import { FaStar } from "react-icons/fa";
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'; // Import arrow icons
 
 export default function DetailPage() {
  
     const [location, setLocation] = useState(null)
     const { id } = useParams()
     const [loading, setLoading] = useState(true)
-    const [images, setImages] = useState(null)
-    const [currentImage, setCurrentImage] = useState(null);
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [rating, setRating] = useState(null); // Add rating state
+
+    // Pagination state
+    const [currentPage, setCurrentPage] = useState(1);
+    const reviewsPerPage = 3; // Number of reviews to display per page
 
     useEffect(() => {
         const getLocationData = async () => {
@@ -38,33 +42,59 @@ export default function DetailPage() {
             const data = await response.json()
             setLoading(false)
             setLocation(data)
-            setImages(data.images)
-            setCurrentImage(`http://127.0.0.1:8000` + data.images[0])
+            setSelectedImage(data.images[0]);
         } 
         getLocationData();
 
     }, [id])
 
-    const handleThumbnailClick = (image) => {
-        setCurrentImage(`http://127.0.0.1:8000` + image);
-    };
 
+    const handleThumbnailClick = (image) => {
+        setSelectedImage(image);
+      }
+    
     if(loading) {
         return (
             <div>Loading</div>
         )
     }
 
+    const thumbnails = location.images.map((image, index) => (
+        <img
+          key={index}
+          className="thumbnail"
+          src={`http://127.0.0.1:8000${image}`}
+          alt={`Thumbnail ${index}`}
+          onClick={() => handleThumbnailClick(image)}
+        />
+      ));
+
     const limitedCardData = cardData.slice(0, 4);
 
-    const detailCards = limitedCardData.map((item) => (
-    <DetailCard key={item.id} {...item} />
+    const detailCards = limitedCardData.map((location) => (
+    <DetailCard key={location.id} {...location} />
     ));
 
-    const limitedCardDataReview = reviewData.slice(0, 4);
-
-    const reviews = limitedCardDataReview.map(item => (
-        <Review key={item.id} {...item} />
+    // PAGINATION 
+    const indexOfLastReview = currentPage * reviewsPerPage;
+    const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
+    const paginatedReviews = reviewData.slice(indexOfFirstReview, indexOfLastReview);
+  
+    // Create navigation buttons for changing the current page
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(reviewData.length / reviewsPerPage); i++) {
+      pageNumbers.push(i);
+    }
+  
+    const renderPageNumbers = pageNumbers.map((number) => (
+      <button
+        id="pagination--button"
+        key={number}
+        onClick={() => setCurrentPage(number)}
+        className={currentPage === number ? "active" : ""}
+      >
+        {number}
+      </button>
     ));
 
     return (
@@ -80,7 +110,7 @@ export default function DetailPage() {
                     </p> 
             
                     <div className="detailPage--rating-category">
-                        {[1, 2, 3, 4, 5].map((index) => (
+                        {[...Array(5)].map((index) => (
                         <img key={index} src={star} alt="Star" className="star" />))}
                         <span> • 4.0 •</span> {/* RATING FOR THE SPOT*/}
                         <span className="tags">
@@ -105,17 +135,9 @@ export default function DetailPage() {
                 </div>
                 <div className="detailPage--pictures">
                     <div className="detailPage--images">
-                        <img className='detailPage--main-image' src={currentImage} />
+                        <img className='detailPage--main-image' src={`http://127.0.0.1:8000${selectedImage}`} alt="Main" />
                         <div className="detailPage--thumbnail">
-                            {images.map((image, index) => (
-                                <img
-                                    key={index}
-                                    className="thumbnail"
-                                    src={`http://127.0.0.1:8000${image}`}
-                                    alt={`Thumbnail ${index + 1}`}
-                                    onClick={() => handleThumbnailClick(image)}
-                                />
-                            ))}
+                        {thumbnails}
                         </div>
                     </div>
                 </div>
@@ -132,7 +154,7 @@ export default function DetailPage() {
                 <div className="detailPage--reviews">
                     <h1>Reviews</h1>
                     <div className="detailPage--star">
-                        {[1, 2, 3, 4, 5].map((index) => (
+                        {[...Array(5)].map((index) => (
                         <img key={index} src={star} alt="Star" className="star" />))}
                         <span> • 3 Reviews</span>
                         <span> • 4.0 </span>
@@ -151,15 +173,63 @@ export default function DetailPage() {
                     <div className="button--stars"> 
                         <button className='submit--review'>Submit Review</button> 
                         <div className="detailPage--star">
-                            {[1, 2, 3, 4, 5].map((index) => (
-                            <img key={index} src={star} alt="Star" className="star" />))}
+                            {[...Array(5)].map((star , i) => {
+                            const ratingValue = i + 1;
+                            return (
+                                <label key={i}>
+                                <input
+                                    type="radio"
+                                    name="rating"
+                                    value={ratingValue}
+                                    onClick={() => setRating(ratingValue)} 
+                                />
+                                <FaStar
+                                    className="star"
+                                    color={ratingValue <= rating ? "#ffc107" : "#e4e5e9"} 
+                                />
+                                </label>
+                            );
+                            })}
                         </div>
                     </div>
                 </div>    
             </div>
-            <div className="user--review"> 
-                {reviews}
+        <div className="user--review">
+            {paginatedReviews.map((item) => (
+            <Review key={item.id} {...item} />
+            ))}
+            <hr></hr>
+            <div className="pagination">
+                {currentPage > 1 && (
+                    <button
+                    id="pagination--button"
+                    onClick={() => setCurrentPage(currentPage - 1)}
+                    >
+                    <FaChevronLeft /> {/* Left arrow */}
+                    </button>
+                )}
+
+                {pageNumbers.map((number) => (
+                    <button
+                    id="pagination--button"
+                    key={number}
+                    onClick={() => setCurrentPage(number)}
+                    className={currentPage === number ? "active" : ""}
+                    >
+                    {number}
+                    </button>
+                ))}
+
+                {currentPage < pageNumbers.length && (
+                    <button
+                    id="pagination--button"
+                    onClick={() => setCurrentPage(currentPage + 1)}
+                    >
+                    <FaChevronRight /> {/* Right arrow */}
+                    </button>
+                )}
             </div>
         </div>
+    </div>
     )
 }   
