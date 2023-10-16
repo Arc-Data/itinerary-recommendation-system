@@ -45,8 +45,6 @@ export default function DetailPage() {
 
     }, [id])
 
-    console.log(location)
-
     const handleThumbnailClick = (image) => {
         setCurrentImage(`http://127.0.0.1:8000` + image);
     };
@@ -84,7 +82,7 @@ export default function DetailPage() {
                     <div className="detailPage--rating-category">
                         {[1, 2, 3, 4, 5].map((index) => (
                         <img key={index} src={star} alt="Star" className="star" />))}
-                        <span> • {details.rating} •</span> {/* RATING FOR THE SPOT*/}
+                        <span> • 4.0 •</span> {/* RATING FOR THE SPOT*/}
                         <span className="tags">
                             {location.details.tags.map((tag, index) => (
                             <span key={index} className="tag">
