@@ -69,10 +69,34 @@ class AccommodationSerializers(serializers.ModelSerializer):
 class LocationQuerySerializers(serializers.ModelSerializer):
     tags = serializers.SerializerMethodField()
     primary_image = serializers.SerializerMethodField()
+    schedule = serializers.SerializerMethodField()
+    fee = serializers.SerializerMethodField()
 
     class Meta:
         model = Location
-        fields = ('tags', 'id', 'name', 'primary_image', 'address')
+        fields = ('tags', 'id', 'name', 'primary_image', 'address', 'schedule', 'fee')
+
+    def get_schedule(self, obj):
+        spot = Spot.objects.get(pk=obj.id)
+
+        if spot:
+            return {
+                "opening": spot.opening_time,
+                "closing": spot.closing_time 
+            }
+
+        return None    
+    
+    def get_fee(self, obj):
+        spot = Spot.objects.get(pk=obj.id)
+
+        if spot:
+            return {
+                "min": spot.get_min_cost,
+                "max": spot.get_max_cost
+            } 
+
+        return None
 
     def get_tags(self, obj):
         spot = Spot.objects.get(pk=obj.id)
