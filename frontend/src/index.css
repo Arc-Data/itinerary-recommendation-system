@@ -1,15 +1,20 @@
-@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@200;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@200;300;400;500;600;700&display=swap');
 
 /*GENERAL STYLE*/
 :root {
 	font-family: 'Work Sans', sans-serif;
     font-size: 16px;
-	font-weight: 400;
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	-webkit-text-size-adjust: 100%;
+}
+
+input[type="search"]::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    appearance: none;
+    display: none;
 }
 
 p {
@@ -68,7 +73,7 @@ a:-webkit-any-link {
     margin-right: 2px; 
 }
 
-  
+
 /*DISPLAY GRID FOR LANDING PAGE*/
 .d-Grid {
     display: grid;
@@ -249,6 +254,7 @@ a:-webkit-any-link {
     .container--sign-log {
         overflow:visible;
     }
+    
    
 }
 
@@ -530,23 +536,6 @@ input[type="text"] {
     
 }
 
-/*FOR IPAD*/
-@media screen and (max-width: 880px) {
-    .hero--cards {
-        grid-template-columns: repeat(1, 1fr); 
-	}
-
-    .home---page-content {
-        padding:0;
-    }
-}
-
-@media screen and (min-width: 768px) and (max-width: 880px) {
-	.hero--cards {
-	    grid-template-columns: repeat(2, 1fr);
-	}
-}
-
 /* DETAIL PAGES */
 
 /*DETAIL PAGE TITLE & ADDRESS & TIME  */
@@ -651,7 +640,7 @@ input[type="text"] {
     width: 35px;
   }
 
-/*PICTURES OF DESTINATION*/
+  /*PICTURES OF DESTINATION*/
 .detailPage--pictures {
     flex: 1; 
     display: flex;
@@ -973,16 +962,16 @@ input[type="text"] {
     padding: 30px 0px;
 }
 
-.create {
+/* .create {
     border: 1px solid #e7e7e7;
     box-shadow: 4px 4px 4px 4px rgba(0, 0, 0, 0.25);
-}
+} */
 
 .create--layout {
     display:grid;
     grid-template-columns: 2fr 1fr;
     height:100vh;
-    overflow-y:hidden;
+    overflow:hidden;
 }
 
 .create--map-wrap {
@@ -1036,7 +1025,7 @@ input[type="text"] {
     grid-gap: 30px;
 }
 
-.create--form-row {
+.form-row {
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -1087,13 +1076,315 @@ input[type="text"] {
     transform: translateY(-50%);
 }
 
-.itinerary {
+.plan--layout {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    overflow: hidden;
+}
+
+.plan--side-panel {
+    display: flex;
+    flex-direction: column;
+    padding: 40px 10px;
+    background: #fcfcfc;
+    border-right: 1px solid #e7e7e7;
+    font-size: 1rem;
+    color: rgba(51, 51, 51, 0.99);
+}
+
+.plan--title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #333333;
+}
+
+.plan--expense-form {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+}
+
+.plan--expense-form span {
+    color: #767676;
+}
+
+.plan--expense-form input {
+    padding: 6px 12px;
+    border-radius: 10px;
+    border: 1px solid #dedede;
+    background: #fcfcfc;
+    font-size: 16px;
+}
+
+.plan--accordion-header {
+    border-radius: 10px;
+}
+
+.plan--accordion-header:hover, .plan--accordion-header.active {
+    background: #184e77;
+    color:white;
+}
+
+.plan--accordion-content > div, .plan--accordion-header {
+    display: grid;
+    grid-template-columns: 20px 1fr;
+    gap: 10px;
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+.plan--main-panel {
+    height: calc(100vh - 100px);
+    overflow-y: scroll;
+    overflow-x: hidden;
+    background: #fcfcfc;
+}
+
+.plan--main-panel > * {
+    padding: 40px 48px;
+}
+
+.plan--expense-section {
+    background-color: #f6f6f6;
+}
+
+.accordion-header {
+  padding: 25px 20px;
+  background-color: transparent;
+  cursor: pointer;
+  border: 2px solid #E7E7E7;
+  border-radius: 10px;
+  transition: border-color 0.3s ease;
+}
+
+.accordion-header:hover {
+  border: 2px solid #184E77;
+}
+
+.plan--itinerary {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+.plan--ai-banner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #D5EFBD;background: rgba(199, 249, 204, 0.50);
+    border-radius: 10px;
+    gap: 10px;
+}
+
+.plan--btn-container {
+    display:flex;
+    gap:20px;
+}
+
+.plan--btn-list {
+    display: flex;
+    gap: 10px;
+}
+
+.plan--btn {
+    padding: 15px 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.btn-primary {
+    background: #184E77;
+}
+
+.btn-secondary {
+    border: 2px solid #184E77;
+    background: #fcfcfc;
+}
+
+.btn-link {
+    all: unset;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.btn-link:hover {
+    text-decoration: underline;
+}
+
+.ai-assistant {
+    background: linear-gradient(90deg, #184E77 0%, #38A3A5 99.99%, #57CC99 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.plan-item {
+    display: grid;
+    grid-template-columns: 1fr 140px;
+    gap: 10px;
+}
+
+.plan--item {
+    display: flex;
+    gap: 10px;
+    padding: 15px 12px 30px;
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.location-icon {
+    color: #38A3A5;
+    font-size: 40px;
+    margin: 10px;
+}
+
+.plan--location-details {
+    color: #333333;
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
-.itinerary--image {
-    object-fit: cover;
+.plan--location-details > div {
+    display: flex;
+    gap: 7px;
+    flex-direction: column;
+    color: #686868;
+}
+
+.plan--location-name {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+
+.plan--search-input {
+    border: 2px solid #E7E7E7;
+    background-color: #F5F5F5;
+    width: 100%;
+    padding: 1.05rem;
     border-radius: 10px;
+    font-size: 1.05rem;
+    transition: border-color 0.3s ease;
+    margin-bottom: 0.5rem;
+}
+
+.plan--search-input:focus {
+    border: 2px solid #333333;
+    outline: none;
+}
+
+.plan--search-result {
+    padding: 1.05rem 0;
+    font-weight: 500;
+}
+
+.search-location-icon {
+    margin-right: 0.5rem;
+}
+
+/*FOR IPAD*/
+@media screen and (max-width: 880px) {
+    .hero--cards {
+        grid-template-columns: repeat(1, 1fr); 
+    }
+
+    .home---page-content {
+        padding:0;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 880px) {
+    .hero--cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    
+    .plan--expense-form {
+        display: block;
+    }
+}
+
+.icon--chevron {
+    margin-left: 0.3rem;
+    font-weight: lighter;
+}
+
+.plan--itinerary-day {
+    cursor: pointer;
+}
+
+.plan--itinerary-items {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.plan--itinerary-item {
+    display: grid;
+    grid-template-columns: 1fr 140px;
+    gap: 10px;
+}
+
+.add-location-modal {
+    background: #fcfcfc;
+    padding: 40px 20px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+}
+
+.add-location-modal--tabs {
+    border-block-end: 1px solid #e7e7e7;
+    display: flex;
+    width: 920px;
+}
+
+.add-location-modal--tabs > div {
+    padding: 15px;
+    cursor: pointer;
+}
+
+.add-location-modal--tabs > div.active {
+    color: #38A3A5;
+    border-block-end: 3px solid #38A3A5;
+}
+
+.add-location-modal--content {
+    margin-top: 37px;
+}
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height:100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 50;
+}
+
+.add-location-modal--search {
+    display:flex;
+    flex-direction: column;
+}
+
+.add-location-modal--search-item {
+    justify-content: space-between;
+    display: flex;
+    padding: 10px;
+}
+
+.add-location-modal--search-item > button {
+    color: white;
+    background: #3498db;
 }

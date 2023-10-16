@@ -1,11 +1,9 @@
 import { Link } from "react-router-dom"
 
 const Itinerary = ({itinerary}) => {
-    console.log(itinerary)
-
     return (
         <div className="itinerary">
-            <Link to = "/home">
+            <Link to ={`/plan/${itinerary.id}`}>
                 <img 
                     src={`http://127.0.0.1:8000${itinerary.image}`} 
                     height={245}

@@ -11,8 +11,7 @@ const Map = () => {
 
 	maptilersdk.config.apiKey = apiKey
 
-    // [123.91813, 10.31042], [123.888, 10.3342]
-    // Temple of leah, cebu taoist temple
+    console.log("Map re-rendered")
 
     useEffect(() => {
         if(map.current) return; 
