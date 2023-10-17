@@ -2,7 +2,6 @@ import React, { useContext, useState } from 'react';
 import AuthContext from '../context/AuthContext';
 import { Link, createSearchParams, useNavigate } from 'react-router-dom';
 import searchIcon from '/images/search.png';
-import userIcon from '/images/user.png';
 
 const UserNav = () => {
     const [dropdown, setDropdown] = useState(false);
@@ -46,7 +45,9 @@ const UserNav = () => {
             </form>
 
             <div className='user--links'>
-                <button className='user--create-trip'>Create a new trip</button>
+                <Link to="/create">
+                    <button className='user--create-trip'>Create a new trip</button>
+                </Link>
                 <div className='user--profile' onClick={toggleDropdown}>
                     <p>{letter}</p>
                     {dropdown && 

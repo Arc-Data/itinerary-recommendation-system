@@ -4,7 +4,6 @@ import Footer from '../components/Footer';
 import Review from '../components/Review';
 import DetailCard from '../components/DetailCard';
 /*Data*/
-import detailsData from "../detailsData";
 import reviewData from "../reviewData";
 import cardData from '../cardData';
 /*Icon*/
@@ -45,21 +44,22 @@ export default function DetailPage() {
             }
 
             const data = await response.json()
-            console.log("Loading over")
             setLoading(false)
             setLocation(data)
             setSelectedImage(data.images[0]);
+            setImages(data.images)
+            setCurrentImage(`http://127.0.0.1:8000` + data.images[0])
         } 
-
         getLocationData();
 
     }, [id])
-
 
     const handleThumbnailClick = (image) => {
         setSelectedImage(image);
       }
     
+        setCurrentImage(`http://127.0.0.1:8000` + image);
+    };
 
     if(loading) {
         return (
@@ -150,6 +150,15 @@ export default function DetailPage() {
                     <div className="detailPage--images">
                         <img className='detailPage--main-image' src={`http://127.0.0.1:8000${selectedImage}`} alt="Main" />
                         <div className="detailPage--thumbnail">
+                            {images.map((image, index) => (
+                                <img
+                                    key={index}
+                                    className="thumbnail"
+                                    src={`http://127.0.0.1:8000${image}`}
+                                    alt={`Thumbnail ${index + 1}`}
+                                    onClick={() => handleThumbnailClick(image)}
+                                />
+                            ))}
                         {thumbnails}
                         </div>
                         
@@ -163,6 +172,7 @@ export default function DetailPage() {
 					{detailCards}
                 </div>
             </div>
+
 
             <div className='detailPage--review'>
                 <div className="detailPage--reviews">

@@ -69,10 +69,34 @@ class AccommodationSerializers(serializers.ModelSerializer):
 class LocationQuerySerializers(serializers.ModelSerializer):
     tags = serializers.SerializerMethodField()
     primary_image = serializers.SerializerMethodField()
+    schedule = serializers.SerializerMethodField()
+    fee = serializers.SerializerMethodField()
 
     class Meta:
         model = Location
-        fields = ('tags', 'id', 'name', 'primary_image', 'address')
+        fields = ('tags', 'id', 'name', 'primary_image', 'address', 'schedule', 'fee')
+
+    def get_schedule(self, obj):
+        spot = Spot.objects.get(pk=obj.id)
+
+        if spot:
+            return {
+                "opening": spot.opening_time,
+                "closing": spot.closing_time 
+            }
+
+        return None    
+    
+    def get_fee(self, obj):
+        spot = Spot.objects.get(pk=obj.id)
+
+        if spot:
+            return {
+                "min": spot.get_min_cost,
+                "max": spot.get_max_cost
+            } 
+
+        return None
 
     def get_tags(self, obj):
         spot = Spot.objects.get(pk=obj.id)
@@ -89,6 +113,50 @@ class LocationQuerySerializers(serializers.ModelSerializer):
             return primary_image.image.url
 
         return None
+    
+class LocationPlanSerializers(serializers.ModelSerializer):
+    primary_image = serializers.SerializerMethodField()
+    max_cost = serializers.SerializerMethodField()
+    min_cost = serializers.SerializerMethodField()
+    opening = serializers.SerializerMethodField()
+    closing = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Location
+        fields = ['name', 'primary_image', 'address', 'longitude', 'latitude', 'min_cost', 'max_cost', 'opening', 'closing']
+
+    def get_primary_image(self, obj):
+        primary_image = obj.images.filter(is_primary_image=True).first()
+
+        if primary_image:
+            return primary_image.image.url
+
+        return None
+    
+    def get_max_cost(self, obj):
+        spot = Spot.objects.get(pk=obj.id)
+
+        if spot:
+            return spot.get_max_cost
+
+    def get_min_cost(self, obj):
+        spot = Spot.objects.get(pk=obj.id)
+
+        if spot:
+            return spot.get_min_cost
+
+    def get_opening(self, obj):
+        spot = Spot.objects.get(pk=obj.id)
+
+        if spot:
+            return spot.opening_time
+        
+    def get_closing(self, obj):
+        spot = Spot.objects.get(pk=obj.id)
+
+        if spot:
+            return spot.closing_time
+
 
 class LocationSerializers(serializers.ModelSerializer):
     images = serializers.SerializerMethodField()
@@ -114,6 +182,17 @@ class LocationSerializers(serializers.ModelSerializer):
     def get_images(self, obj):
         return [image.image.url for image in obj.images.all()]
 
+class SpotDetailSerializers(serializers.ModelSerializer):
+    location_reviews = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Spot
+        exclude = []
+
+    def get_location_reviews(self, obj):
+        location_reviews = obj.review_set.all()
+        return ReviewSerializers(location_reviews, many=True).data
+
 class ReviewSerializers(serializers.ModelSerializer):
     user = UserSerializers()
     class Meta:
@@ -135,22 +214,28 @@ class ItinerarySerializers(serializers.ModelSerializer):
         model = Itinerary
         fields = ['id', 'budget', 'number_of_people', 'user']
 
-class DaySerializers(serializers.ModelSerializer):
+
+class DayDetailSerializers(serializers.ModelSerializer):
     class Meta:
         model = Day
         fields = '__all__'
             
-class SpotDetailSerializers(serializers.ModelSerializer):
-    location_reviews = serializers.SerializerMethodField()
+    
+class ItineraryItemSerializer(serializers.ModelSerializer):
+    details = LocationPlanSerializers(source='location', read_only=True)
 
     class Meta:
-        model = Spot
-        exclude = []
+        model = ItineraryItem
+        fields = ['id', 'location', 'day', 'details']
 
-    def get_location_reviews(self, obj):
-        location_reviews = obj.review_set.all()
-        return ReviewSerializers(location_reviews, many=True).data
-    
+class DaySerializers(serializers.ModelSerializer):
+    itinerary_items = ItineraryItemSerializer(source='itineraryitem_set', many=True)
+
+    class Meta:
+        model = Day
+        fields = '__all__'
+
+
 class SpotPopularSerializers(serializers.ModelSerializer):
 
     class Meta:
