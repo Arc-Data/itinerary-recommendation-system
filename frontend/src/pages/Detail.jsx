@@ -19,12 +19,16 @@ export default function DetailPage() {
     const [location, setLocation] = useState(null)
     const { id } = useParams()
     const [loading, setLoading] = useState(true)
-    const [selectedImage, setSelectedImage] = useState(null);
+    const [selectedImage, setSelectedImage] = useState("");
+    const [images, setImages] = useState(null)
     const [rating, setRating] = useState(null); // Add rating state
 
     // Pagination state
     const [currentPage, setCurrentPage] = useState(1);
     const reviewsPerPage = 3; // Number of reviews to display per page
+    const [totalReviews, setTotalReviews] = useState(0);
+
+    console.log(selectedImage)
 
     useEffect(() => {
         const getLocationData = async () => {
@@ -42,17 +46,17 @@ export default function DetailPage() {
             const data = await response.json()
             setLoading(false)
             setLocation(data)
-            setSelectedImage(data.images[0]);
             setImages(data.images)
-            setCurrentImage(`http://127.0.0.1:8000` + data.images[0])
+            setTotalReviews(reviewData.length)
+            setSelectedImage(`http://127.0.0.1:8000` + data.images[0])
         } 
         getLocationData();
 
     }, [id])
 
     const handleThumbnailClick = (image) => {
-        setSelectedImage(image);
-      }
+        setSelectedImage(image); // Set the selected image to the clicked thumbnail image
+    }
     
     if(loading) {
         return (
@@ -60,16 +64,18 @@ export default function DetailPage() {
         )
     }
 
-    const thumbnails = location.images.map((image, index) => (
+    const thumbnails = images.map((image, index) => (
         <img
           key={index}
           className="thumbnail"
           src={`http://127.0.0.1:8000${image}`}
           alt={`Thumbnail ${index}`}
-          onClick={() => handleThumbnailClick(image)}
+          onClick={() => handleThumbnailClick(`http://127.0.0.1:8000${image}`)}
         />
-      ));
+    ));
 
+
+      
     const limitedCardData = cardData.slice(0, 4);
 
     const detailCards = limitedCardData.map((location) => (
@@ -80,6 +86,8 @@ export default function DetailPage() {
     const indexOfLastReview = currentPage * reviewsPerPage;
     const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
     const paginatedReviews = reviewData.slice(indexOfFirstReview, indexOfLastReview);
+    const showingResultsText = `Showing results ${indexOfFirstReview + 1}-${indexOfLastReview} of ${totalReviews}`;
+
   
     // Create navigation buttons for changing the current page
     const pageNumbers = [];
@@ -136,17 +144,8 @@ export default function DetailPage() {
                 </div>
                 <div className="detailPage--pictures">
                     <div className="detailPage--images">
-                        <img className='detailPage--main-image' src={`http://127.0.0.1:8000${selectedImage}`} alt="Main" />
+                        <img className='detailPage--main-image' src={selectedImage} alt="Main" />
                         <div className="detailPage--thumbnail">
-                            {images.map((image, index) => (
-                                <img
-                                    key={index}
-                                    className="thumbnail"
-                                    src={`http://127.0.0.1:8000${image}`}
-                                    alt={`Thumbnail ${index + 1}`}
-                                    onClick={() => handleThumbnailClick(image)}
-                                />
-                            ))}
                         {thumbnails}
                         </div>
                     </div>
@@ -239,7 +238,9 @@ export default function DetailPage() {
                     <FaChevronRight /> {/* Right arrow */}
                     </button>
                 )}
+                <p className="pagination--result">{showingResultsText}</p>
             </div>
+            
         </div>
     </div>
     )

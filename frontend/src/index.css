@@ -559,7 +559,7 @@ input[type="text"] {
 .detailPage--title {
     font-size: 30px;
     font-weight: 900;
-    margin: 0 0 12px 0;
+    margin: 0 0 15px 0;
     color: black;
 }
 
@@ -570,7 +570,7 @@ input[type="text"] {
 }
 
 .detailPage--address-time > p { 
-    margin: 5px auto;
+    margin: 8px auto;
 }
 
 .detailPage--icon {
@@ -589,7 +589,7 @@ input[type="text"] {
     display: flex;
     align-items: center; 
     font-size: 15px;
-    margin: 10px 0;
+    margin: 25px 0;
 }
 
 .star {
@@ -611,7 +611,7 @@ input[type="text"] {
     display: flex;
     justify-content: space-between;
     align-items: flex-start; 
-    margin: 70px 120px;
+    margin: 10px 120px;
 }
 
 .detailPage--about {
@@ -715,7 +715,7 @@ input[type="text"] {
 .detailPage--review {
     display: grid;
     grid-template-columns: 40% 60%;
-    margin: 0 120px;
+    margin: 0;
 }
 
 /* REVIEW WITH STARS and PROGRESS BAR */
@@ -725,6 +725,7 @@ input[type="text"] {
     width: 60%;
     height: auto;
     margin: 50px;
+    margin-left: 120px;
 }
 
 .progress--bars {
@@ -753,7 +754,9 @@ input[type="text"] {
 /* USER AND ADD REVIEW BUTTON*/
 .write--review {
     padding: 5px; 
-    margin: 150px 150px 0 0;
+    margin-top: 150px;
+    margin-left: -50px;
+    width: 93%;
 }
 
 .input--review{
@@ -794,11 +797,6 @@ input[type="radio"] {
 }
 
 
-
-
-
-
-
 /*USER LOGO AND USER NAME*/
 .user--details {
     display: flex;
@@ -825,13 +823,14 @@ input[type="radio"] {
     text-align: justify;
     text-justify: auto;
     margin-bottom: 30px;
-    line-height: 27px;
+    line-height: 20px;
 }
 
 .review--row {
     display: flex;
     justify-content: space-between;
     width: 100%;
+    margin-bottom: 10px;
 }
 
 .user--logo-and-name,
@@ -846,7 +845,7 @@ input[type="radio"] {
     margin-left: 10px;
 }
 
-
+/* PAGINATION */
 .pagination {
     text-align: center;
   }
@@ -869,6 +868,12 @@ input[type="radio"] {
     background-color: #184E77;
     color: #ccc;
     border: 1px solid #007bff;
+  }
+
+  .pagination--result {
+    text-align: center;
+    font-size: 12px;
+    margin-top: 10px;
   }
 
 /*SEARCH PAGE*/
