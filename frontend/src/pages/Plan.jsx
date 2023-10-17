@@ -13,6 +13,7 @@ const Plan = () => {
 	const [days, setDays] = useState(null)
 	const [isExpenseOpen, setExpenseOpen] = useState(true)
 	const [isItineraryOpen, setItineraryOpen] = useState(true)
+	const [includedLocations, setIncludedLocations] = useState([])
 	const { authTokens } = useContext(AuthContext)
 	const { id } = useParams()
 	
@@ -26,6 +27,7 @@ const Plan = () => {
 
 	useEffect(() => {
 		const fetchItineraryData = async (e) => {
+			const locations = []
 			const userToken = String(authTokens.access)
 			const response = await fetch(`http://127.0.0.1:8000/api/plan/${id}/`, {
 				'method' : 'GET',
@@ -43,14 +45,24 @@ const Plan = () => {
 			setItinerary(data.itinerary)
 			setDays(data.days)
 			setLoading(false)
-			console.log(data.days)
+			
+			data.days.forEach(day => {
+				locations.push(...day.itinerary_items)
+			})
+
+			setIncludedLocations(locations)
 		}
 
 		fetchItineraryData()
 	}, [ id ])
 
 	const getDays = days && days.map(day => {
-		return <Day key={day.id} day={day}/>
+		return <Day 
+			key={day.id} 
+			day={day} 
+			days={days} 
+			includedLocations={includedLocations}
+			setIncludedLocations={setIncludedLocations}/>
 	})
 
 	const getDayTabs = days && days.map(day => {

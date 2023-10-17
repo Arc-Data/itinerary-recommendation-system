@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWandMagicSparkles, faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import AddLocationModal from "./AddLocationModal";
 
-const Day = ({day}) => {
+const Day = ({day, includedLocations, setIncludedLocations}) => {
     const [open, setOpen] = useState(false)
     const [items, setItems] = useState(day.itinerary_items)
     const [openLocationModal, setLocationModal] = useState(false)
@@ -58,7 +58,9 @@ const Day = ({day}) => {
                 onClose={toggleLocationModal} 
                 locations={items}
                 setLocations={setItems}
-                day={day}/>
+                day={day}
+                includedLocations={includedLocations}
+                setIncludedLocations={setIncludedLocations}/>
             }
         </div>
     )

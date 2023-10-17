@@ -4,11 +4,12 @@ import { faLocationDot } from "@fortawesome/free-solid-svg-icons"
 import { Link } from "react-router-dom"
 import dayjs from "dayjs"
 
-const AddLocationModal = ({onClose, day, locations, setLocations}) => {
+const AddLocationModal = ({onClose, day, locations, setLocations, includedLocations, setIncludedLocations}) => {
     const modalRef = useRef(null)
     const [searchData, setSearchData] = useState(null)
     const [openBookmarks, setOpenBookmarks] = useState(false)
     const [searchString, setSearchString] = useState("")
+    const [displayedSearchItems, setDisplayedSearchItems] = useState(null)
 
     let debounceTimeout = 1500;
     let timeout;
@@ -19,16 +20,16 @@ const AddLocationModal = ({onClose, day, locations, setLocations}) => {
 
     const addLocation = (item) => {
         console.log("Updating UI Locations")
-        const arr = [...locations]
-        arr.push(item)
-        setLocations(arr)
+        const arr1 = [...locations, item]
+        const arr2 = [...includedLocations, item]
+        setLocations(arr1)
+        setIncludedLocations(arr2)
     }
 
     const searchLocations = async (search) => {
         const response = await fetch(`http://127.0.0.1:8000/api/location/?query=${search}`)
         const data = await response.json()
         setSearchData(data)
-        console.log(searchData)
     }
 
     const handleClick = async (locationId) => {
@@ -53,13 +54,11 @@ const AddLocationModal = ({onClose, day, locations, setLocations}) => {
 
             const item = await response.json()
             addLocation(item)
-            
         }
         catch (error) {
             console.log("Error. " + error)
         }
 
-        setSearchData(null)
     }
 
     const handleChange = (e) => {
@@ -68,6 +67,7 @@ const AddLocationModal = ({onClose, day, locations, setLocations}) => {
 
         if(!searchQuery) {
             setSearchData(null)
+            setDisplayedSearchItems(null)
             return
         }
 
@@ -77,29 +77,14 @@ const AddLocationModal = ({onClose, day, locations, setLocations}) => {
         }, debounceTimeout)
     }
 
-    const displaySearchItems = searchData && searchData.map(location => {
-        const fee = location.fee.min === 0 ? 
-            "Free" : location.fee.min === location.fee.max ? location.fee.min : `${location.fee.min} - ${location.fee.max}`;
+    const checkDuplicateLocation = (locationId) => {
+        return includedLocations.some(i => i.location == locationId)
+    }
 
-        const opening_string = location.schedule.opening.split(":")
-        const closing_string = location.schedule.closing.split(":")
-        const opening = dayjs(new Date(2045, 1, 1, ...opening_string)).format('h:mm A')
-        const closing = dayjs(new Date(2045, 1, 1, ...closing_string)).format('h:mm A')
-
-        return (
-            <div key={location.id} location={location} className="add-location-modal--search-item">
-                <FontAwesomeIcon icon={faLocationDot}></FontAwesomeIcon>
-                <div>
-                    <Link to={`/location/${location.id}`}>
-                    <p className="add-location-modal--title">{location.name}</p>
-                    </Link>
-                    <p className="add-location-modal--subtext">{location.address}</p>
-                    <p className="add-location-modal--subtext"><span>Opens {opening} - {closing} </span>•<span> Entrance Fee: {fee} </span></p>
-                </div>
-                <button className="add-location-modal--add-btn" onClick={() => handleClick(location.id)}>+</button>
-            </div>
-        )
-    })
+    const getTimeString = (time) => {
+        const timeString = time.split(":")
+        return dayjs(new Date(2045, 1, 1, ...timeString)).format("h:mm A")
+    }
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -113,6 +98,36 @@ const AddLocationModal = ({onClose, day, locations, setLocations}) => {
             document.body.removeEventListener("click", handleClickOutside)
         }
     }, [onClose])
+
+    useEffect(() => {
+        if (searchData) {
+            const results = searchData.map(location => {
+                const fee = location.fee.min === 0 ? 
+                "Free" : location.fee.min === location.fee.max ? location.fee.min : `${location.fee.min} - ${location.fee.max}`;
+    
+                const opening_time = getTimeString(location.schedule.opening)
+                const closing_time = getTimeString(location.schedule.closing) 
+                
+                return (
+                    <div key={location.id} location={location} className="add-location-modal--search-item">
+                        <FontAwesomeIcon icon={faLocationDot}></FontAwesomeIcon>
+                        <div>
+                            <Link to={`/location/${location.id}`}>
+                            <p className="add-location-modal--title">{location.name}</p>
+                            </Link>
+                            <p className="add-location-modal--subtext">{location.address}</p>
+                            <p className="add-location-modal--subtext"><span>Opens {opening_time} - {closing_time} </span>•<span> Entrance Fee: {fee} </span></p>
+                        </div>
+                        {!checkDuplicateLocation(location.id) && 
+                        <button className="add-location-modal--add-btn" onClick={() => handleClick(location.id)}>+</button>
+                        }
+                    </div>
+                )
+            })
+            setDisplayedSearchItems(results)
+        }
+
+    }, [searchData, includedLocations])
 
     return (
         <>
@@ -145,7 +160,7 @@ const AddLocationModal = ({onClose, day, locations, setLocations}) => {
                 <div className="add-location-modal--results-container">
                     <p>Search Results for "{searchString}"</p>
                     <div className="add-location-modal--results">
-                        {displaySearchItems}
+                        {displayedSearchItems}
                     </div> 
                 </div> : null}
             </div> 
