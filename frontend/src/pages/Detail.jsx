@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 /*Components*/
-import Footer from '../components/Footer';
 import Review from '../components/Review';
 import DetailCard from '../components/DetailCard';
 /*Data*/
@@ -15,8 +14,6 @@ import { useParams } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'; // Import arrow icons
 
-
-
 export default function DetailPage() {
  
     const [location, setLocation] = useState(null)
@@ -28,7 +25,6 @@ export default function DetailPage() {
     // Pagination state
     const [currentPage, setCurrentPage] = useState(1);
     const reviewsPerPage = 3; // Number of reviews to display per page
-    
 
     useEffect(() => {
         const getLocationData = async () => {
@@ -58,9 +54,6 @@ export default function DetailPage() {
         setSelectedImage(image);
       }
     
-        setCurrentImage(`http://127.0.0.1:8000` + image);
-    };
-
     if(loading) {
         return (
             <div>Loading</div>
@@ -77,15 +70,11 @@ export default function DetailPage() {
         />
       ));
 
-
-    const details = detailsData[0];
-
     const limitedCardData = cardData.slice(0, 4);
 
     const detailCards = limitedCardData.map((location) => (
     <DetailCard key={location.id} {...location} />
     ));
-
 
     // PAGINATION 
     const indexOfLastReview = currentPage * reviewsPerPage;
@@ -124,7 +113,7 @@ export default function DetailPage() {
                     <div className="detailPage--rating-category">
                         {[...Array(5)].map((index) => (
                         <img key={index} src={star} alt="Star" className="star" />))}
-                        <span> • {details.rating} •</span> {/* RATING FOR THE SPOT*/}
+                        <span> • 4.0 •</span> {/* RATING FOR THE SPOT*/}
                         <span className="tags">
                             {location.details.tags.map((tag, index) => (
                             <span key={index} className="tag">
@@ -143,7 +132,6 @@ export default function DetailPage() {
                 <div className="detailPage--about">
                     <h1 className="detailPage--title1">About</h1>
                     <p>{location.description}</p> 
-                    <p>{details.about}</p> 
                     <p className="font15 bold">Entrance Fee: <span className="bold1"> {location.details.max_fee} </span></p> 
                 </div>
                 <div className="detailPage--pictures">
@@ -161,7 +149,6 @@ export default function DetailPage() {
                             ))}
                         {thumbnails}
                         </div>
-                        
                     </div>
                 </div>
             </div>
@@ -180,8 +167,8 @@ export default function DetailPage() {
                     <div className="detailPage--star">
                         {[...Array(5)].map((index) => (
                         <img key={index} src={star} alt="Star" className="star" />))}
-                        <span> • {details.rating}</span>
-                        <span> • {details.reviewCount} </span>
+                        <span> • 3 Reviews</span>
+                        <span> • 4.0 </span>
                     </div>
                     <div className="progress--bars">
                         {[1, 2, 3, 4, 5].map((index) => (
