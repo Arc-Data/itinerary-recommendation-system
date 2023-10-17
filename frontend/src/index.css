@@ -589,7 +589,7 @@ input[type="text"] {
     display: flex;
     align-items: center; 
     font-size: 15px;
-    margin: 25px 0;
+    margin: 20px 0;
 }
 
 .star {
@@ -949,6 +949,11 @@ input[type="radio"] {
 
 .searchPage--star {
     margin-top: 15px;
+    display: flex;
+}
+
+.rating {
+    margin-top: 2px;
 }
 
 /*Home page*/
