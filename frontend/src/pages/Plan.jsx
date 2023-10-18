@@ -41,27 +41,30 @@ const Plan = () => {
 				})
 				
 				if (response.status === 403) {
+					console.log("Access Denied")
 					setLoading(false)
 					setError("Access Denied")
 				} else if (response.status === 404) {
+					console.log("Itinerary Does Not Exist")
 					setLoading(false)
 					setError("Itinerary Does not Exist")
 				} else if (!response.ok) {
 					throw new Error("Something wrong happened")
-				}
-
-				const data = await response.json();
-				setItinerary(data.itinerary)
-				setDays(data.days)
-				setLoading(false)
-				
-				data.days.forEach(day => {
-					locations.push(...day.itinerary_items)
-				})
+				} else {
 	
-				setIncludedLocations(locations)
+					const data = await response.json();
+					setItinerary(data.itinerary)
+					setDays(data.days)
+					setLoading(false)
+					
+					data.days.forEach(day => {
+						locations.push(...day.itinerary_items)
+					})
+		
+					setIncludedLocations(locations)
+				}
 			}
-			catch (error){
+			catch (e){
 				setLoading(false)
 				setError("Something went wrong")
 			}
@@ -93,6 +96,10 @@ const Plan = () => {
 		<div>Loading Please Wait</div>
 	)
 
+	if (error) return (
+		<div>{error}</div>
+	)
+ 
 	return (
     	<div className="plan--layout">
 			<aside className="plan--side-panel">
