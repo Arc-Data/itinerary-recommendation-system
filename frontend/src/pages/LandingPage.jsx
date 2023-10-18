@@ -13,7 +13,6 @@ export default function LandingPage() {
 	const { user } = useContext(AuthContext)
 
 	if(user) {
-		console.log("Should be")
 		return (user.is_staff ? <Navigate to = "/admin"/> : <Navigate to ="/home" />)
 	}
 

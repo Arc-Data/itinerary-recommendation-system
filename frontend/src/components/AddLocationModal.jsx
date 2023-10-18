@@ -18,7 +18,6 @@ const AddLocationModal = ({onClose, day, locations, setLocations}) => {
     }
 
     const addLocation = (item) => {
-        console.log("Updating UI Locations")
         const arr = [...locations]
         arr.push(item)
         setLocations(arr)

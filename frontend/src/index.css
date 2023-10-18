@@ -57,6 +57,23 @@ a:-webkit-any-link {
     font-weight: 400;
 }
 
+.font15 {
+    font-size: 15px;
+}
+
+.font12 {
+    font-size: 12px;
+}
+
+.tag {
+    margin-right: 5px; 
+}
+
+.tag-separator {
+    margin-right: 2px; 
+}
+
+
 /*DISPLAY GRID FOR LANDING PAGE*/
 .d-Grid {
     display: grid;
@@ -363,7 +380,7 @@ input[type="text"] {
 }
 .title > h1 {
     font-weight: 800;
-    margin: 0;
+    margin: 0 0 20px 0;
 }
 .title > p {
     font-size: clamp(12px, 5vw, 30px);
@@ -375,6 +392,7 @@ input[type="text"] {
     font-size: 20px;
     border-radius: 10px;
     text-decoration: none;
+    margin-top: 20px;
 }
 
 .hero--guide {
@@ -474,11 +492,11 @@ input[type="text"] {
     overflow-x: auto;
 }
 
-.card--dest-image {
+.card--dest-image { /*Same to detailPage Popular*/
     width: 100%;
 }
 
-.card--image {
+.card--image { /*Same to detailPage Popular*/
     border-radius: 9px;
     object-fit: cover;
     object-position: center;
@@ -491,7 +509,7 @@ input[type="text"] {
 }
 
 .card--title {
-    overflow: hidden;
+    
     font-size: 25px;
     margin: 0 0 10px 0;
 }
@@ -522,9 +540,13 @@ input[type="text"] {
 /* DETAIL PAGES */
 
 /*DETAIL PAGE TITLE & ADDRESS & TIME  */
-.detailPages {
+.detailPage {
     display: flex;
     flex-direction: column;
+    max-width: 1600px;
+    height:100%;
+    width:100%;
+    margin: 10px auto;
 }
 
 .detailPage--text {
@@ -537,7 +559,7 @@ input[type="text"] {
 .detailPage--title {
     font-size: 30px;
     font-weight: 900;
-    margin: 0 0 12px 0;
+    margin: 0 0 15px 0;
     color: black;
 }
 
@@ -548,7 +570,7 @@ input[type="text"] {
 }
 
 .detailPage--address-time > p { 
-    margin: 0;
+    margin: 8px auto;
 }
 
 .detailPage--icon {
@@ -564,15 +586,24 @@ input[type="text"] {
 }
 
 .detailPage--star {
+    display: flex;
+    align-items: center; 
     font-size: 15px;
-    margin-top: 10px;
+    margin: 20px 0;
 }
 
+.star {
+    width: 18px; 
+    height: auto; 
+    margin-right: 4px; 
+  }
+
 .detailPage--rating-category {
-    display: relative;
-    font-size: 15px;
-    margin-top: 10px;
+    display: flex;
+    text-align: center;
+    font-size: 17px;
     color: black;
+    margin: 10px 0;
 }
 
 /*DETAIL PAGE - ABOUT & PICTURE */
@@ -580,15 +611,14 @@ input[type="text"] {
     display: flex;
     justify-content: space-between;
     align-items: flex-start; 
-    margin: 70px 120px 0 120px;
+    margin: 10px 120px;
 }
 
 .detailPage--about {
     text-align: justify;
     text-justify: auto;
     background-color: #E3E3E3;
-    border: 2px solid #E7E7E7;
-    width: 35%;
+    width: 40%;
     padding: 20px;
     border-radius: 10px;
     font-size: 17px;
@@ -596,27 +626,19 @@ input[type="text"] {
 
 .detailPage--about > h1,
 .detailPage--about > p {
-   padding: 10px;
+    padding: 10px;
+    line-height: 22px;
 }
   
 .detailPage--bookmark {
-    background-color: #F2C44F;
+    background-color: #D9D9D9;
     padding: 5px 10px;
     border-radius: 10px;
     margin: 15px 0 0 auto;
-}
-
+  }
+  
 .detailPage--bookmark > img {
-    width: 40px;
-}
-
-.entrance--free {
-    background-color: #366181;
-    margin: 10px;
-    border-radius: 10px;
-    color: white;
-    font-size: 13px;
-    letter-spacing: 0.1em;
+    width: 35px;
   }
 
   /*PICTURES OF DESTINATION*/
@@ -664,6 +686,25 @@ input[type="text"] {
     border-color: #3498db;
 }
 
+/*DETAIL PAGE - POPULAR LOCATION*/
+
+.detailPage--popular {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 20px 120px;
+}
+
+.detailPage--cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+}
+
+.detailPage--popDescription {
+    text-align: start;
+}
+
 /*DETAIL PAGE - REVIEW SECTION*/
 
 .user--logo {
@@ -674,15 +715,17 @@ input[type="text"] {
 .detailPage--review {
     display: grid;
     grid-template-columns: 40% 60%;
-    height: auto;
+    margin: 0;
 }
 
 /* REVIEW WITH STARS and PROGRESS BAR */
-.detailPage--review-stars {
+
+.detailPage--reviews{
     justify-content: center;
-    width: 40%;
+    width: 60%;
     height: auto;
     margin: 50px;
+    margin-left: 120px;
 }
 
 .progress--bars {
@@ -711,15 +754,18 @@ input[type="text"] {
 /* USER AND ADD REVIEW BUTTON*/
 .write--review {
     padding: 5px; 
-    margin: 150px 150px 0 0;
+    margin-top: 150px;
+    margin-left: -50px;
+    width: 93%;
 }
 
 .input--review{
     width: 100%;
-    height: 50px;
+    height: 55px;
     border-radius: 20px;
     margin-bottom: 20px;
-    padding: 25px; 
+    padding: 20px; 
+    overflow: hidden;
 }
 
 .button--stars{
@@ -728,13 +774,28 @@ input[type="text"] {
 }
 
 /* ADD REVIEW BUTTON */
-.add--review {
-    border: 3px solid #184E77;
-    background-color: #184E77;
+.submit--review {
+    display: flex;
+    border-radius: 30px;
+    background: var(--1, #184E77);
+    height: 35px;
     font-size: 15px;
-    border-radius: 20px;
-    padding: 15px;
+    font-weight: 400;
+    padding: 17px 13px;
+    justify-content: center;
+    align-items: center;
 }
+
+
+input[type="radio"] {
+    display: none;
+}
+
+.star {
+    cursor: pointer;
+    transition: color 200ms;
+}
+
 
 /*USER LOGO AND USER NAME*/
 .user--details {
@@ -762,12 +823,14 @@ input[type="text"] {
     text-align: justify;
     text-justify: auto;
     margin-bottom: 30px;
+    line-height: 20px;
 }
 
 .review--row {
     display: flex;
     justify-content: space-between;
     width: 100%;
+    margin-bottom: 10px;
 }
 
 .user--logo-and-name,
@@ -781,6 +844,37 @@ input[type="text"] {
     color: #333333;
     margin-left: 10px;
 }
+
+/* PAGINATION */
+.pagination {
+    text-align: center;
+  }
+  
+  #pagination--button {
+    display: inline-block;
+    margin: 0.5rem;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    color: var(--1, #184E77);
+    width: 30px;
+    border-radius: 20px;
+    height: 30px;
+    padding: 5px;
+    font-size: 10px;
+  }
+  
+  #pagination--button.active {
+    background-color: #184E77;
+    color: #ccc;
+    border: 1px solid #007bff;
+  }
+
+  .pagination--result {
+    text-align: center;
+    font-size: 12px;
+    margin-top: 10px;
+  }
 
 /*SEARCH PAGE*/
 
@@ -853,8 +947,13 @@ input[type="text"] {
     font-size: 0.99rem;
 }
 
-.seachPage--star {
+.searchPage--star {
     margin-top: 15px;
+    display: flex;
+}
+
+.rating {
+    margin-top: 2px;
 }
 
 /*Home page*/
