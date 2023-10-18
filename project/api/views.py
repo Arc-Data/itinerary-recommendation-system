@@ -53,9 +53,16 @@ def get_user_itineraries(request):
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def get_itinerary(request, itinerary_id):
+    try:
+        itinerary = Itinerary.objects.get(id=itinerary_id)
+    except Itinerary.DoesNotExist:
+        return Response(response_data, status=status.HTTP_404_NOT_FOUND)
+
+    if request.user != itinerary.user:
+        return Response({'message': "Access Denied"}, status=status.HTTP_403_FORBIDDEN)
+
     if request.method == "GET":
         try:
-            itinerary = Itinerary.objects.get(id=itinerary_id, user=request.user)
             itinerary_serializer = ItinerarySerializers(itinerary)
 
             days = Day.objects.filter(itinerary=itinerary)
@@ -68,8 +75,8 @@ def get_itinerary(request, itinerary_id):
 
             return Response(response_data, status=status.HTTP_200_OK)
 
-        except Itinerary.DoesNotExist:
-            return Response({'message': 'Itinerary not found'}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'message': 'Internal Server Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(['GET'])
 def get_location(request, id):
