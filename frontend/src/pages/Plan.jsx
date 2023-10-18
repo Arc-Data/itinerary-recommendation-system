@@ -14,6 +14,7 @@ const Plan = () => {
 	const [isExpenseOpen, setExpenseOpen] = useState(true)
 	const [isItineraryOpen, setItineraryOpen] = useState(true)
 	const [includedLocations, setIncludedLocations] = useState([])
+	const [error, setError] = useState(null)
 	const { authTokens } = useContext(AuthContext)
 	const { id } = useParams()
 	
@@ -29,28 +30,42 @@ const Plan = () => {
 		const fetchItineraryData = async (e) => {
 			const locations = []
 			const userToken = String(authTokens.access)
-			const response = await fetch(`http://127.0.0.1:8000/api/plan/${id}/`, {
-				'method' : 'GET',
-				'headers': {
-					"Content-Type" : "application/json",
-					"Authorization": `Bearer ${userToken}`, 
-				}
-			})
-
-			if (!response.ok) {
-				throw new Error("Error fetching itinerary data");
-			} 
-	  
-			const data = await response.json();
-			setItinerary(data.itinerary)
-			setDays(data.days)
-			setLoading(false)
 			
-			data.days.forEach(day => {
-				locations.push(...day.itinerary_items)
-			})
+			try {
+				const response = await fetch(`http://127.0.0.1:8000/api/plan/${id}/`, {
+					'method' : 'GET',
+					'headers': {
+						"Content-Type" : "application/json",
+						"Authorization": `Bearer ${userToken}`, 
+					}
+				})
+				
+				if (response.status === 403) {
+					setLoading(false)
+					setError("Access Denied")
+				} else if (response.status === 404) {
+					setLoading(false)
+					setError("Itinerary Does not Exist")
+				} else if (!response.ok) {
+					throw new Error("Something wrong happened")
+				}
 
-			setIncludedLocations(locations)
+				const data = await response.json();
+				setItinerary(data.itinerary)
+				setDays(data.days)
+				setLoading(false)
+				
+				data.days.forEach(day => {
+					locations.push(...day.itinerary_items)
+				})
+	
+				setIncludedLocations(locations)
+			}
+			catch (error){
+				setLoading(false)
+				setError("Something went wrong")
+			}
+
 		}
 
 		fetchItineraryData()
