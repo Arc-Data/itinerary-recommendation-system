@@ -36,9 +36,9 @@ const SearchPage = () => {
                 <p className="searchPage--result">{locations ? locations.length : "0"} of {locations ? locations.length : "0"} Results</p>
                 <div className="searchPage--navbar">
                     <a href="#">All Results</a>
-                    <Link to="/destination"><a>Destination</a></Link>
-                    <Link to="/accommodation"><a>Accommodation</a></Link>
-                    <Link to="/food"><a>Restaurant</a></Link>
+                    <Link to="/destination">Destination</Link>
+                    <Link to="/accommodation">Accommodation</Link>
+                    <Link to="/food">Restaurant</Link>
                 </div>
                 <div className="searchPage--card">
                     {locationResults}

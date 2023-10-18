@@ -27,8 +27,6 @@ export default function DetailPage() {
   const reviewsPerPage = 3; // Number of reviews to display per page
   const [totalReviews, setTotalReviews] = useState(0);
 
-  console.log(selectedImage);
-
   useEffect(() => {
     const getLocationData = async () => {
       const response = await fetch(`http://127.0.0.1:8000/api/location/${id}`, {
@@ -124,7 +122,7 @@ export default function DetailPage() {
           </p>
 
           <div className="detailPage--rating-category">
-            {[...Array(5)].map((index) => (
+            {[...Array(5)].map((i, index) => (
               <img key={index} src={star} alt="Star" className="star" />
             ))}
             <span> • 4.0 •</span> {/* RATING FOR THE SPOT*/}
@@ -174,14 +172,14 @@ export default function DetailPage() {
         <div className="detailPage--reviews">
           <h1>Reviews</h1>
           <div className="detailPage--star">
-            {[...Array(5)].map((index) => (
+            {[...Array(5)].map((i, index) => (
               <img key={index} src={star} alt="Star" className="star" />
             ))}
             <span> • 3 Reviews</span>
             <span> • 4.0 </span>
           </div>
           <div className="progress--bars">
-            {[1, 2, 3, 4, 5].map((index) => (
+            {[1, 2, 3, 4, 5].map((i, index) => (
               <div key={index} className="progress--bar">
                 <div key={index} className="progress--number">
                   {6 - index}
