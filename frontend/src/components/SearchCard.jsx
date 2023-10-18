@@ -1,5 +1,6 @@
 import React from "react"
 import { Link } from 'react-router-dom';
+import star from "/images/star.png";
 
 export default function SearchCard (props) {
     return (
@@ -11,10 +12,11 @@ export default function SearchCard (props) {
             <div className="searchPage--info">
                 <h2 className="searchPage--info-title">{props.name}</h2>
                 <span className="searchPage--info-address">{props.address}</span>
-                <div className="seachPage--star">
-                    {[1, 2, 3, 4, 5].map((index) => (
-                    <span key={index} className="star">⭐</span> ))}
-                    <span> • {props.rating}</span> {/* Rate of the location*/}
+                <div className="searchPage--star">
+                    {[...Array(5)].map((i, index) => (
+                        <img key={index} src={star} alt="Star" className="star" />
+                    ))}
+                    <span className="rating"> • 4.0 {props.rating}</span>
                 </div>
             </div>
         </div>
