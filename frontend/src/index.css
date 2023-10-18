@@ -1315,6 +1315,9 @@ input[type="text"] {
 
 .add-location-modal--content {
     margin-top: 37px;
+    display:flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .overlay {
