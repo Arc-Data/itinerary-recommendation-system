@@ -17,7 +17,8 @@ urlpatterns = [
     path('plan/<int:itinerary_id>/', get_itinerary, name="itinerary"),
     path('location/<int:id>/', get_location, name='location-detail'),
     path('itineraries/', get_user_itineraries, name="itinerary-list"),
-    path('day-item', create_itinerary_item, name="create-itinerary-item"),
+    path('day-item/', create_itinerary_item, name="create-itinerary-item"),
+    path('day-item/<int:id>/delete', delete_day_item, name="delete-day-item"),
     # path('location/<int:pk>/', LocationDetailView.as_view(), name='location-detail')
     # provides a spot information given you send the id
     path('spot/<int:pk>/', spot),

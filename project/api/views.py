@@ -115,6 +115,16 @@ def create_itinerary(request):
 
     return Response(itinerary_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(["DELETE"])
+@permission_classes([IsAuthenticated])
+def delete_day_item(request, id):
+    try:
+        item = ItineraryItem.objects.get(pk=id)
+        item.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    except ItineraryItem.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
 @api_view(["POST"])
 def create_itinerary_item(request):
     day_id = request.data.get("day")
