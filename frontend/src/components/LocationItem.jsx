@@ -1,8 +1,8 @@
-import { faLocation, faLocationDot } from "@fortawesome/free-solid-svg-icons"
+import { faLocation, faLocationDot, faTrash } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import dayjs from "dayjs";
 
-const LocationItem = ({location}) => {
+const LocationItem = ({location, onClick}) => {
     const locationImage = {
         backgroundImage: `url(http://127.0.0.1:8000${location.details.primary_image})`,
         backgroundSize: 'cover',
@@ -25,10 +25,13 @@ const LocationItem = ({location}) => {
                 <div className="plan--location-details">
                     <p className="plan--location-name">{location.details.name}</p>
                     <div>
-                        <p>{location.details.address}</p>
                         <p>Opens {opening} - {closing}</p>
                         <p>Entrance fee: {fee}</p>
                     </div>
+                </div>
+                <div className="plan--location-settings" onClick={onClick}>
+                    <span>Delete</span> 
+                    <FontAwesomeIcon icon={faTrash} className="trash-icon" />
                 </div>
             </div>
             <div style={locationImage}></div>

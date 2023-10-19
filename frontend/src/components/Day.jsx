@@ -4,14 +4,26 @@ import dayjs from "dayjs"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWandMagicSparkles, faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import AddLocation from "./AddLocation";
+import ConfirmDeleteItem from "./ConfirmDeleteItem";
 
 const Day = ({day, includedLocations, setIncludedLocations}) => {
     const [open, setOpen] = useState(false)
     const [items, setItems] = useState(day.itinerary_items)
     const [openLocationModal, setLocationModal] = useState(false)
+    const [openDeleteModal, setDeleteModal] = useState(false)
+    const [selectedItemId, setSelectedItemId] = useState(null)
 
     const toggleOpen = () => {
         setOpen(prev => !prev)
+    }
+
+    const toggleDeleteModal = (event, itemId) => {
+        if(event) {
+            event.stopPropagation()
+        }
+
+        setDeleteModal(prev => !prev)
+        setSelectedItemId(itemId)
     }
 
     const toggleLocationModal = (event) => {
@@ -23,7 +35,12 @@ const Day = ({day, includedLocations, setIncludedLocations}) => {
 
     const itineraryItems = () => {
         return items.map(location => {
-            return (<LocationItem key={location.id} location={location}/>)
+            return (
+                <LocationItem 
+                    key={location.id} 
+                    location={location} 
+                    onClick={(e) => toggleDeleteModal(e, location.id)} />
+            )
         })
     }
 
@@ -59,6 +76,13 @@ const Day = ({day, includedLocations, setIncludedLocations}) => {
                 locations={items}
                 setLocations={setItems}
                 day={day}
+                includedLocations={includedLocations}
+                setIncludedLocations={setIncludedLocations}/>
+            }
+            {openDeleteModal && 
+            <ConfirmDeleteItem 
+                onClose={toggleDeleteModal}
+                itemId={selectedItemId} 
                 includedLocations={includedLocations}
                 setIncludedLocations={setIncludedLocations}/>
             }
