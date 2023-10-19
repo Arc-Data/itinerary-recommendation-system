@@ -1290,6 +1290,7 @@ input[type="radio"] {
     padding: 15px 12px 30px;
     background: #f1f1f1;
     border-radius: 10px;
+    position:relative;
 }
 
 .location-icon {
@@ -1382,11 +1383,42 @@ input[type="radio"] {
 
 .plan--itinerary-item {
     display: grid;
-    grid-template-columns: 1fr 140px;
+    grid-template-columns: 1fr 120px;
     gap: 10px;
 }
 
-.add-location-modal {
+.plan--itinerary-item:hover .plan--location-settings {
+    pointer-events: all;
+    visibility: visible;
+}
+
+.plan--location-settings {
+    visibility: hidden;
+    pointer-events: none;
+    position: absolute;
+    top: 10px;
+    right:10px;
+    z-index: 2;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-transform: uppercase;
+    padding: 12px;
+    color: red;
+    border-radius: 2px;
+    box-shadow: 0, 0, 0.5em rgba(0,0,0,0.5);
+}
+
+.plan--location-settings:hover {
+    cursor: pointer;
+}
+
+.plan--location-settings > i {
+    vertical-align: middle;
+}
+
+.modal {
     background: #fcfcfc;
     padding: 40px 20px;
     position: fixed;
@@ -1405,6 +1437,10 @@ input[type="radio"] {
 .add-location-modal--tabs > div {
     padding: 15px;
     cursor: pointer;
+}
+
+.trash-icon {
+    font-size: 8px;
 }
 
 .add-location-modal--tabs > div.active {

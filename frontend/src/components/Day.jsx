@@ -3,7 +3,7 @@ import LocationItem from "./LocationItem"
 import dayjs from "dayjs"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWandMagicSparkles, faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
-import AddLocationModal from "./AddLocationModal";
+import AddLocation from "./AddLocation";
 
 const Day = ({day, includedLocations, setIncludedLocations}) => {
     const [open, setOpen] = useState(false)
@@ -54,7 +54,7 @@ const Day = ({day, includedLocations, setIncludedLocations}) => {
             </>
             }
             {openLocationModal && 
-            <AddLocationModal 
+            <AddLocation 
                 onClose={toggleLocationModal} 
                 locations={items}
                 setLocations={setItems}

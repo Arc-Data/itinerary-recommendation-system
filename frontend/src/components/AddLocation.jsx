@@ -4,9 +4,9 @@ import { faLocationDot } from "@fortawesome/free-solid-svg-icons"
 import { Link } from "react-router-dom"
 import dayjs from "dayjs"
 import AuthContext from "../context/AuthContext"
+import Modal from "./Modal"
 
-const AddLocationModal = ({onClose, day, locations, setLocations, includedLocations, setIncludedLocations}) => {
-    const modalRef = useRef(null)
+const AddLocation = ({onClose, day, locations, setLocations, includedLocations, setIncludedLocations}) => {
     const { authTokens } = useContext(AuthContext)
     const [searchData, setSearchData] = useState(null)
     const [openBookmarks, setOpenBookmarks] = useState(false)
@@ -150,19 +150,6 @@ const AddLocationModal = ({onClose, day, locations, setLocations, includedLocati
             </div>
         )
     })
-    
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if(!modalRef.current.contains(event.target)) {
-                onClose()
-            }
-        }
-        document.body.addEventListener("click", handleClickOutside)
-        
-        return () => {
-            document.body.removeEventListener("click", handleClickOutside)
-        }
-    }, [onClose])
 
     useEffect(() => {
         if (searchData) {
@@ -194,46 +181,43 @@ const AddLocationModal = ({onClose, day, locations, setLocations, includedLocati
     }, [searchData, recentlyAddedLocations])
 
     return (
-        <div>
-            <div className="overlay"></div>
-            <div ref={modalRef} className="add-location-modal">
-                <div className="add-location-modal--tabs">
-                    <div className={`${openBookmarks ? "" : "active"}` } onClick={toggleBookmarkSection}>Location</div>
-                    <div className={`${openBookmarks ? "active" : ""}`} onClick={toggleBookmarkSection}>Bookmarks</div>
-                </div>
-                {openBookmarks ?
-                <div>
-                    <div className="add-location-modal--content">
-                    Bookmarks
-                    </div>
-                </div> 
-                : 
-                <div className="add-location-modal--content">
-                    <input 
-                        type="search"
-                        placeholder="Add a location"
-                        name="location"
-                        id="location"
-                        className="plan--search-input add-location--search-input"
-                        onChange={handleChange}
-                        value={searchString}
-                        />
-                    {recentlyAddedLocations.length !== 0 && 
-                    <div>
-                        {displayRecentlyAdded}
-                    </div> }
-                    {searchString.length !== 0 ? 
-                    <div className="add-location-modal--results-container">
-                        <p>Search Results for "{searchString}"</p>
-                        <div className="add-location-modal--results">
-                            {displayedSearchItems}
-                        </div> 
-                    </div> : null}
-                </div>
-                }
+        <Modal onClose={onClose}>
+            <div className="add-location-modal--tabs">
+                <div className={`${openBookmarks ? "" : "active"}` } onClick={toggleBookmarkSection}>Location</div>
+                <div className={`${openBookmarks ? "active" : ""}`} onClick={toggleBookmarkSection}>Bookmarks</div>
             </div>
-        </div>
+            {openBookmarks ?
+            <div>
+                <div className="add-location-modal--content">
+                Bookmarks
+                </div>
+            </div> 
+            : 
+            <div className="add-location-modal--content">
+                <input 
+                    type="search"
+                    placeholder="Add a location"
+                    name="location"
+                    id="location"
+                    className="plan--search-input add-location--search-input"
+                    onChange={handleChange}
+                    value={searchString}
+                    />
+                {recentlyAddedLocations.length !== 0 && 
+                <div>
+                    {displayRecentlyAdded}
+                </div> }
+                {searchString.length !== 0 ? 
+                <div className="add-location-modal--results-container">
+                    <p>Search Results for "{searchString}"</p>
+                    <div className="add-location-modal--results">
+                        {displayedSearchItems}
+                    </div> 
+                </div> : null}
+            </div>
+            }
+        </Modal>
     )
 }
 
-export default AddLocationModal
+export default AddLocation
