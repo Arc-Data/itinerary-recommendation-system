@@ -14,6 +14,9 @@ const AddLocation = ({onClose, day, locations, setLocations, includedLocations, 
     const [displayedSearchItems, setDisplayedSearchItems] = useState(null)
     const [recentlyAddedLocations, setRecentlyAddedLocations] = useState([])
 
+    console.log(locations)
+    console.log(includedLocations)
+
     let debounceTimeout = 2000;
     let timeout;
 

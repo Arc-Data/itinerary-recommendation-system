@@ -13,6 +13,9 @@ const Day = ({day, includedLocations, setIncludedLocations}) => {
     const [openDeleteModal, setDeleteModal] = useState(false)
     const [selectedItemId, setSelectedItemId] = useState(null)
 
+    console.log("Items")
+    console.log(items)
+
     const toggleOpen = () => {
         setOpen(prev => !prev)
     }
@@ -82,7 +85,9 @@ const Day = ({day, includedLocations, setIncludedLocations}) => {
             {openDeleteModal && 
             <ConfirmDeleteItem 
                 onClose={toggleDeleteModal}
-                itemId={selectedItemId} 
+                itemId={selectedItemId}
+                locations={items}
+                setLocations={setItems} 
                 includedLocations={includedLocations}
                 setIncludedLocations={setIncludedLocations}/>
             }
