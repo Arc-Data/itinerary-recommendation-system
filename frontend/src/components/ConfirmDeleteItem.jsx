@@ -4,13 +4,8 @@ import AuthContext from "../context/AuthContext"
 
 const ConfirmDeleteItem = ({onClose, itemId, locations, setLocations, includedLocations, setIncludedLocations}) => {
     const { authTokens } = useContext(AuthContext)
-    console.log(locations)
-    console.log(includedLocations)
 
     const deleteItem = () => {
-        console.log("Deleting item")
-
-
         const updatedLocations = locations.filter(i => i.id !== itemId)
         const updatedIncludedLocations = includedLocations.filter(i => i.id !== itemId)
 
