@@ -1523,3 +1523,47 @@ input[type="radio"] {
     background: #e7e7e7;
     font-size: 18px;
 }
+
+.confirm-delete {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    transition: all 0.2s ease;
+}
+
+.confirm-delete--title {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.confirm-delete--subtext {
+    font-size: 16px;
+}
+
+.modal-btn {
+    font-size: 18px;
+    border-radius: 8px;
+    padding: 12px 14px;
+    box-shadow: 0, 0, 1em rgba(0,0,0,0.5);
+}
+
+.modal-btn--options {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.modal-btn:hover{
+    opacity: 0.9;
+}
+
+.modal--cancel {
+    color: black;
+}
+
+.modal--delete {
+    background-color: red;
+    text-transform: uppercase;
+    color: white;
+}

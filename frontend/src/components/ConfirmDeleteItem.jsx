@@ -37,11 +37,13 @@ const ConfirmDeleteItem = ({onClose, itemId, locations, setLocations, includedLo
 
     return (
         <Modal onClose={onClose}>
-            <div>
+            <div className="confirm-delete">
                 <p className="confirm-delete--title">Deleting Item</p>
                 <p className="confirm-delete--subtext">This action will delete the item, are you sure?</p>
-                <button onClick={onClose}>Cancel</button>
-                <button onClick={handleDelete}>Delete</button>
+                <div className="modal-btn--options">
+                    <button onClick={onClose} className="modal-btn modal--cancel">Cancel</button>
+                    <button onClick={handleDelete} className="modal-btn modal--delete">Delete</button>
+                </div>
             </div>
         </Modal>
     )
