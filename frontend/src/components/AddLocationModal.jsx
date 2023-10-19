@@ -1,11 +1,13 @@
-import { useEffect, useRef, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons"
 import { Link } from "react-router-dom"
 import dayjs from "dayjs"
+import AuthContext from "../context/AuthContext"
 
 const AddLocationModal = ({onClose, day, locations, setLocations, includedLocations, setIncludedLocations}) => {
     const modalRef = useRef(null)
+    const { authTokens } = useContext(AuthContext)
     const [searchData, setSearchData] = useState(null)
     const [openBookmarks, setOpenBookmarks] = useState(false)
     const [searchString, setSearchString] = useState("")
@@ -20,7 +22,6 @@ const AddLocationModal = ({onClose, day, locations, setLocations, includedLocati
     }
 
     const addLocation = (item) => {
-        console.log("Updating UI Locations")
         const arr1 = [...locations, item]
         const arr2 = [...includedLocations, item]
         const arr3 = [...recentlyAddedLocations, item]
@@ -40,14 +41,46 @@ const AddLocationModal = ({onClose, day, locations, setLocations, includedLocati
         setSearchData(data)
     }
 
-    const handleClick = async (locationId) => {
+    const deleteLocation = (itemId) => {
+        const updatedLocations = locations.filter(i => i.id !== itemId)
+        const updatedIncludedLocations = includedLocations.filter(i => i.id !== itemId)
+        const updatedRecentlyAddedLocations = recentlyAddedLocations.filter(i => i.id !== itemId)
+
+        setLocations(updatedLocations)
+        setIncludedLocations(updatedIncludedLocations)
+        setRecentlyAddedLocations(updatedRecentlyAddedLocations)
+    }
+
+    const handleDeleteLocation = async (itemId) => {
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/api/day-item/${itemId}/delete`, {
+                method: "DELETE",
+                headers: {
+                    'Content-Type': "application/json",
+                    'Authorization': `Bearer ${String(authTokens.access)}`,
+                }
+            })
+
+            if(!response.ok) {
+                throw new Error('Something happened')
+            }
+            
+            deleteLocation(itemId)
+            
+        }
+        catch (error) {
+            console.log("Errror While Deleting Itinerary Item: ", error)
+        }
+    }
+
+    const handleAddLocation = async (locationId) => {
         try {
             const requestBody = {
                 'location': locationId,
                 'day': day.id,
             }
 
-            const response = await fetch("http://127.0.0.1:8000/api/day-item", {
+            const response = await fetch("http://127.0.0.1:8000/api/day-item/", {
                 method: "POST",
                 headers: {
                     'Content-Type': "application/json"
@@ -70,18 +103,17 @@ const AddLocationModal = ({onClose, day, locations, setLocations, includedLocati
     }
 
     const handleChange = (e) => {
-        const searchQuery = e.target.value;
-        setSearchString(searchQuery)
+        clearTimeout(timeout)
+        setSearchString(e.target.value)
 
-        if(!searchQuery) {
+        if(searchString.length === 0) {
             setSearchData(null)
             setDisplayedSearchItems(null)
             return
         }
-
-        clearTimeout(timeout)
+        
         timeout = setTimeout(() => {
-            searchLocations(searchQuery)
+            searchLocations(e.target.value)
         }, debounceTimeout)
     }
 
@@ -114,12 +146,11 @@ const AddLocationModal = ({onClose, day, locations, setLocations, includedLocati
                     <p className="add-location-modal--subtext">{address}</p>
                     <p className="add-location-modal--subtext"><span>Opens {opening_time} - {closing_time} </span>•<span> Entrance Fee: {fee} </span></p>
                 </div>
-                <button className="add-location-modal--add-btn" >x</button>
+                <button className="add-location-modal--add-btn" onClick={() => handleDeleteLocation(location.id)}>x</button>
             </div>
         )
     })
     
-      
     useEffect(() => {
         const handleClickOutside = (event) => {
             if(!modalRef.current.contains(event.target)) {
@@ -152,7 +183,7 @@ const AddLocationModal = ({onClose, day, locations, setLocations, includedLocati
                             <p className="add-location-modal--subtext">{location.address}</p>
                             <p className="add-location-modal--subtext"><span>Opens {opening_time} - {closing_time} </span>•<span> Entrance Fee: {fee} </span></p>
                         </div>
-                        <button className="add-location-modal--add-btn" onClick={() => handleClick(location.id)}>+</button>
+                        <button className="add-location-modal--add-btn" onClick={() => handleAddLocation(location.id)}>+</button>
                     </div>
                 )
             })
@@ -191,7 +222,7 @@ const AddLocationModal = ({onClose, day, locations, setLocations, includedLocati
                     <div>
                         {displayRecentlyAdded}
                     </div> }
-                    {searchData !== null ? 
+                    {searchString.length !== 0 ? 
                     <div className="add-location-modal--results-container">
                         <p>Search Results for "{searchString}"</p>
                         <div className="add-location-modal--results">

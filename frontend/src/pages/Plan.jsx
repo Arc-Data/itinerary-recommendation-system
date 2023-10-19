@@ -29,29 +29,28 @@ const Plan = () => {
 	useEffect(() => {
 		const fetchItineraryData = async (e) => {
 			const locations = []
-			const userToken = String(authTokens.access)
 			
 			try {
 				const response = await fetch(`http://127.0.0.1:8000/api/plan/${id}/`, {
 					'method' : 'GET',
 					'headers': {
 						"Content-Type" : "application/json",
-						"Authorization": `Bearer ${userToken}`, 
+						"Authorization": `Bearer ${String(authTokens.access)}`, 
 					}
 				})
 				
 				if (response.status === 403) {
-					console.log("Access Denied")
 					setLoading(false)
 					setError("Access Denied")
+
 				} else if (response.status === 404) {
-					console.log("Itinerary Does Not Exist")
 					setLoading(false)
 					setError("Itinerary Does not Exist")
+				
 				} else if (!response.ok) {
 					throw new Error("Something wrong happened")
+				
 				} else {
-	
 					const data = await response.json();
 					setItinerary(data.itinerary)
 					setDays(data.days)
