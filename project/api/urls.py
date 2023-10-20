@@ -19,6 +19,7 @@ urlpatterns = [
     path('itineraries/', get_user_itineraries, name="itinerary-list"),
     path('day-item/', create_itinerary_item, name="create-itinerary-item"),
     path('day-item/<int:id>/delete', delete_day_item, name="delete-day-item"),
+    path('update-ordering/', update_ordering, name="update-item-ordering"),
     # path('location/<int:pk>/', LocationDetailView.as_view(), name='location-detail')
     # provides a spot information given you send the id
     path('spot/<int:pk>/', spot),
