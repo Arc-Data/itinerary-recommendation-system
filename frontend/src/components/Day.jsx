@@ -48,6 +48,10 @@ const Day = ({day, includedLocations, setIncludedLocations}) => {
         )
     )
 
+    const onSaveOrdering = () => {
+
+    }
+
     const onDragEnd = (result) => {
         if(!result.destination) {
             return;
@@ -107,17 +111,35 @@ const Day = ({day, includedLocations, setIncludedLocations}) => {
             </div>
             }
             <div className="plan--btn-container">
+                
                 <div className="plan--btn-list">
-                    <button
-                        onClick={toggleLocationModal} 
-                        className="plan--btn btn-primary">
-                        Add Location
-                    </button>
-                    <button className="plan--btn btn-secondary">
-                        <span className="ai-assistant">AI Assistant</span>
-                    </button>
+                    {ordering ? 
+                    <>
+                        <button
+                            onClick={toggleOrdering} 
+                            className="plan--btn btn-secondary">
+                            Cancel
+                        </button>
+                        <button
+                            onClick={onSaveOrdering} 
+                            className="plan--btn btn-primary">
+                            Done
+                        </button>
+                    </>
+                    :
+                    <>
+                        <button
+                            onClick={toggleLocationModal} 
+                            className="plan--btn btn-primary">
+                            Add Location
+                        </button>
+                        <button className="plan--btn btn-secondary">
+                            <span className="ai-assistant">AI Assistant</span>
+                        </button>
+                        <button className="btn-link" onClick={toggleOrdering}>Edit</button>
+                    </>
+                    }                    
                 </div>
-                <button className="btn-link" onClick={toggleOrdering}>Edit</button>
             </div>
             </>
             }
