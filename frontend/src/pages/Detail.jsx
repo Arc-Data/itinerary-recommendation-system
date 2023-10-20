@@ -182,7 +182,7 @@ export default function DetailPage() {
             {[1, 2, 3, 4, 5].map((i, index) => (
               <div key={index} className="progress--bar">
                 <div key={index} className="progress--number">
-                  {6 - index}
+                  {5 - index}
                 </div>
                 <div className="progress--fill"></div>
               </div>

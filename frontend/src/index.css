@@ -714,7 +714,7 @@ input[type="text"] {
 }
 .detailPage--review {
     display: grid;
-    grid-template-columns: 40% 60%;
+    grid-template-columns: 35% 60%;
     margin: 0;
 }
 
@@ -724,8 +724,7 @@ input[type="text"] {
     justify-content: center;
     width: 60%;
     height: auto;
-    margin: 50px;
-    margin-left: 120px;
+    margin: 50px 0 0 120px;
 }
 
 .progress--bars {
@@ -754,16 +753,16 @@ input[type="text"] {
 /* USER AND ADD REVIEW BUTTON*/
 .write--review {
     padding: 5px; 
-    margin-top: 150px;
-    margin-left: -50px;
-    width: 93%;
+    margin-top: 120px;
+    width: 100%;
 }
 
 .input--review{
-    width: 100%;
+    width: 93%;
     height: 55px;
     border-radius: 20px;
-    margin-bottom: 20px;
+    margin: 25px;
+    margin-bottom: 0;
     padding: 20px; 
     overflow: hidden;
 }
@@ -771,6 +770,10 @@ input[type="text"] {
 .button--stars{
     display: flex;
     justify-content: space-between;
+    width: 93%;   
+    margin: 25px;
+    margin-bottom: 10px;
+    
 }
 
 /* ADD REVIEW BUTTON */
@@ -778,12 +781,13 @@ input[type="text"] {
     display: flex;
     border-radius: 30px;
     background: var(--1, #184E77);
-    height: 35px;
-    font-size: 15px;
+    height: 45px;
+    font-size: 14px;
     font-weight: 400;
-    padding: 17px 13px;
+    padding: 10px 10px;
     justify-content: center;
     align-items: center;
+    margin-top: 12px;
 }
 
 
