@@ -15,6 +15,7 @@ const Day = ({day, includedLocations, setIncludedLocations}) => {
     const [openDeleteModal, setDeleteModal] = useState(false)
     const [selectedItemId, setSelectedItemId] = useState(null)
     const [ordering, setOrdering] = useState(false)
+    const [itemOrdering, setItemOrdering] = useState([])
 
     const toggleOpen = () => {
         setOpen(prev => !prev)
@@ -37,7 +38,14 @@ const Day = ({day, includedLocations, setIncludedLocations}) => {
     }
 
     const toggleOrdering = () => {
+        const isOrderingActive = !ordering
+        console.log(isOrderingActive) 
         setOrdering(prev => !prev)
+
+        if(isOrderingActive) {
+            const arr = [...items]
+            setItemOrdering(arr)
+        }
     }
 
     const itineraryItems = () => items.map(location => (
@@ -49,7 +57,9 @@ const Day = ({day, includedLocations, setIncludedLocations}) => {
     )
 
     const onSaveOrdering = () => {
-
+        const arr = [...itemOrdering]
+        setItems(arr)
+        toggleOrdering()
     }
 
     const onDragEnd = (result) => {
@@ -57,11 +67,11 @@ const Day = ({day, includedLocations, setIncludedLocations}) => {
             return;
         }
 
-        const reorderedItems = [...items]
+        const reorderedItems = [...itemOrdering]
         const [reorderedItem] = reorderedItems.splice(result.source.index, 1)
         reorderedItems.splice(result.destination.index, 0, reorderedItem)
     
-        setItems(reorderedItems)
+        setItemOrdering(reorderedItems)
     }
 
 
@@ -81,7 +91,7 @@ const Day = ({day, includedLocations, setIncludedLocations}) => {
                             ref={provided.innerRef}
                             {...provided.droppableProps}
                             className="plan--order-container">
-                                {items.map((location, index) => (
+                                {itemOrdering.map((location, index) => (
                                     <Draggable 
                                         key={location.id}
                                         index={index}
