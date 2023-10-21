@@ -41,6 +41,27 @@ const AddLocation = ({onClose, day, locations, setLocations, includedLocations, 
         setSearchData(data)
     }
 
+    const updateOrdering = async (locations) => {
+        console.log("Updating ordering")
+        console.log(locations)
+
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/api/update-ordering/`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${String(authTokens.access)}`
+                },
+                body: JSON.stringify({ items:locations }),
+            })
+
+            const data = await response.json()
+        }
+        catch (error) {
+            console.log(error)
+        }
+    }
+
     const deleteLocation = (itemId) => {
         const updatedLocations = locations.filter(i => i.id !== itemId)
         const updatedIncludedLocations = includedLocations.filter(i => i.id !== itemId)
@@ -49,6 +70,8 @@ const AddLocation = ({onClose, day, locations, setLocations, includedLocations, 
         setLocations(updatedLocations)
         setIncludedLocations(updatedIncludedLocations)
         setRecentlyAddedLocations(updatedRecentlyAddedLocations)
+
+        updateOrdering(updatedLocations)
     }
 
     const handleDeleteLocation = async (itemId) => {
@@ -78,7 +101,7 @@ const AddLocation = ({onClose, day, locations, setLocations, includedLocations, 
             const requestBody = {
                 'location': locationId,
                 'day': day.id,
-                'order': locations.length + 1
+                'order': locations.length
             }
 
             const response = await fetch("http://127.0.0.1:8000/api/day-item/", {

@@ -193,6 +193,9 @@ class ItineraryItem(models.Model):
 
     class Meta:
         ordering = ['order']
+    
+    def __str__(self):
+        return f"{self.day.date} - {self.location.name} - {self.order}"
 
 class ModelItinerary(models.Model):
     locations = models.ManyToManyField("Spot")
