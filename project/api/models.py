@@ -189,6 +189,13 @@ class Day(models.Model):
 class ItineraryItem(models.Model):
     day = models.ForeignKey(Day, on_delete=models.CASCADE, null=True)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
+    order = models.IntegerField(default=0)
+
+    class Meta:
+        ordering = ['order']
+    
+    def __str__(self):
+        return f"{self.day.date} - {self.location.name} - {self.order}"
 
 class ModelItinerary(models.Model):
     locations = models.ManyToManyField("Spot")

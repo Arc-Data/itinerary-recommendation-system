@@ -50,6 +50,18 @@ def get_user_itineraries(request):
     serializer = ItineraryListSerializers(itineraries, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+@api_view(['PATCH'])
+@permission_classes([IsAuthenticated])
+def update_ordering(request):
+    items = request.data.get("items")
+
+    for order, item in enumerate(items):
+        itinerary_item = ItineraryItem.objects.get(id=item["id"])
+        itinerary_item.order = order
+        itinerary_item.save()
+
+    return Response({'message': 'Ordering Updated Successfully'}, status=status.HTTP_200_OK)
+
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def get_itinerary(request, itinerary_id):
@@ -136,13 +148,14 @@ def delete_day_item(request, id):
 def create_itinerary_item(request):
     day_id = request.data.get("day")
     location_id = request.data.get("location")
+    order = request.data.get("order")
 
     try:
         location = Location.objects.get(pk=location_id)
     except Location.DoesNotExist:
         return Response({"error": "Location not found"}, status=status.HTTP_404_NOT_FOUND)
 
-    itinerary_item = ItineraryItem.objects.create(day_id=day_id, location=location)
+    itinerary_item = ItineraryItem.objects.create(day_id=day_id, location=location, order=order)
     serializer = ItineraryItemSerializer(itinerary_item)
 
     return Response(serializer.data, status=status.HTTP_201_CREATED)

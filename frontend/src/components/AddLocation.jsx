@@ -5,6 +5,7 @@ import { Link } from "react-router-dom"
 import dayjs from "dayjs"
 import AuthContext from "../context/AuthContext"
 import Modal from "./Modal"
+import updateItemOrdering from "../utils/updateItemOrdering"
 
 const AddLocation = ({onClose, day, locations, setLocations, includedLocations, setIncludedLocations}) => {
     const { authTokens } = useContext(AuthContext)
@@ -13,9 +14,6 @@ const AddLocation = ({onClose, day, locations, setLocations, includedLocations, 
     const [searchString, setSearchString] = useState("")
     const [displayedSearchItems, setDisplayedSearchItems] = useState(null)
     const [recentlyAddedLocations, setRecentlyAddedLocations] = useState([])
-
-    console.log(locations)
-    console.log(includedLocations)
 
     let debounceTimeout = 2000;
     let timeout;
@@ -52,6 +50,8 @@ const AddLocation = ({onClose, day, locations, setLocations, includedLocations, 
         setLocations(updatedLocations)
         setIncludedLocations(updatedIncludedLocations)
         setRecentlyAddedLocations(updatedRecentlyAddedLocations)
+
+        updateItemOrdering(authTokens, updatedLocations)
     }
 
     const handleDeleteLocation = async (itemId) => {
@@ -81,6 +81,7 @@ const AddLocation = ({onClose, day, locations, setLocations, includedLocations, 
             const requestBody = {
                 'location': locationId,
                 'day': day.id,
+                'order': locations.length
             }
 
             const response = await fetch("http://127.0.0.1:8000/api/day-item/", {

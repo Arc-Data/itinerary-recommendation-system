@@ -1,17 +1,10 @@
 import { useContext } from "react"
 import Modal from "./Modal"
 import AuthContext from "../context/AuthContext"
+import updateItemOrdering from "../utils/updateItemOrdering"
 
 const ConfirmDeleteItem = ({onClose, itemId, locations, setLocations, includedLocations, setIncludedLocations}) => {
     const { authTokens } = useContext(AuthContext)
-
-    const deleteItem = () => {
-        const updatedLocations = locations.filter(i => i.id !== itemId)
-        const updatedIncludedLocations = includedLocations.filter(i => i.id !== itemId)
-
-        setLocations(updatedLocations)
-        setIncludedLocations(updatedIncludedLocations)
-    }
 
     const handleDelete = async () => {
         try {
@@ -27,7 +20,13 @@ const ConfirmDeleteItem = ({onClose, itemId, locations, setLocations, includedLo
                 throw new Error("Something happened")
             }
 
-            deleteItem(itemId)
+            const updatedLocations = locations.filter(i => i.id !== itemId)
+            const updatedIncludedLocations = includedLocations.filter(i => i.id !== itemId)
+    
+            setLocations(updatedLocations)
+            setIncludedLocations(updatedIncludedLocations)
+            updateItemOrdering(authTokens, updatedLocations)
+
             onClose()
         }
         catch (error) {
