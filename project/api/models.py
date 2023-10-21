@@ -191,6 +191,9 @@ class ItineraryItem(models.Model):
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     order = models.IntegerField(default=0)
 
+    class Meta:
+        ordering = ['order']
+
 class ModelItinerary(models.Model):
     locations = models.ManyToManyField("Spot")
 
