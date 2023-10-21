@@ -14,9 +14,6 @@ const AddLocation = ({onClose, day, locations, setLocations, includedLocations, 
     const [displayedSearchItems, setDisplayedSearchItems] = useState(null)
     const [recentlyAddedLocations, setRecentlyAddedLocations] = useState([])
 
-    console.log(locations)
-    console.log(includedLocations)
-
     let debounceTimeout = 2000;
     let timeout;
 
@@ -81,6 +78,7 @@ const AddLocation = ({onClose, day, locations, setLocations, includedLocations, 
             const requestBody = {
                 'location': locationId,
                 'day': day.id,
+                'order': locations.length + 1
             }
 
             const response = await fetch("http://127.0.0.1:8000/api/day-item/", {

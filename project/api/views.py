@@ -50,6 +50,10 @@ def get_user_itineraries(request):
     serializer = ItineraryListSerializers(itineraries, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+@api_view(['POST'])
+def update_ordering(request):
+    pass
+
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def get_itinerary(request, itinerary_id):
@@ -136,6 +140,7 @@ def delete_day_item(request, id):
 def create_itinerary_item(request):
     day_id = request.data.get("day")
     location_id = request.data.get("location")
+    order = request.data.get("order")
 
     try:
         location = Location.objects.get(pk=location_id)

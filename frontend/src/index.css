@@ -1571,3 +1571,17 @@ input[type="radio"] {
     text-transform: uppercase;
     color: white;
 }
+
+.order-item {
+    display: flex;
+    gap: 10px;
+    padding: 10px 5px;
+    border-radius: 8px;
+    box-shadow: 0 0 0.2em rgba(0, 0, 0, 0.5);
+}
+
+.plan--order-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
