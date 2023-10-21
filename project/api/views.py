@@ -52,7 +52,9 @@ def get_user_itineraries(request):
 
 @api_view(['POST'])
 def update_ordering(request):
-    pass
+    items = request.get.PATCH("items")
+
+    return Response(None, status=status.HTTP_200_OK)
 
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
@@ -147,7 +149,7 @@ def create_itinerary_item(request):
     except Location.DoesNotExist:
         return Response({"error": "Location not found"}, status=status.HTTP_404_NOT_FOUND)
 
-    itinerary_item = ItineraryItem.objects.create(day_id=day_id, location=location)
+    itinerary_item = ItineraryItem.objects.create(day_id=day_id, location=location, order=order)
     serializer = ItineraryItemSerializer(itinerary_item)
 
     return Response(serializer.data, status=status.HTTP_201_CREATED)
