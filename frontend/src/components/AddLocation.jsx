@@ -5,6 +5,7 @@ import { Link } from "react-router-dom"
 import dayjs from "dayjs"
 import AuthContext from "../context/AuthContext"
 import Modal from "./Modal"
+import updateItemOrdering from "../utils/updateItemOrdering"
 
 const AddLocation = ({onClose, day, locations, setLocations, includedLocations, setIncludedLocations}) => {
     const { authTokens } = useContext(AuthContext)
@@ -41,27 +42,6 @@ const AddLocation = ({onClose, day, locations, setLocations, includedLocations, 
         setSearchData(data)
     }
 
-    const updateOrdering = async (locations) => {
-        console.log("Updating ordering")
-        console.log(locations)
-
-        try {
-            const response = await fetch(`http://127.0.0.1:8000/api/update-ordering/`, {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${String(authTokens.access)}`
-                },
-                body: JSON.stringify({ items:locations }),
-            })
-
-            const data = await response.json()
-        }
-        catch (error) {
-            console.log(error)
-        }
-    }
-
     const deleteLocation = (itemId) => {
         const updatedLocations = locations.filter(i => i.id !== itemId)
         const updatedIncludedLocations = includedLocations.filter(i => i.id !== itemId)
@@ -71,7 +51,7 @@ const AddLocation = ({onClose, day, locations, setLocations, includedLocations, 
         setIncludedLocations(updatedIncludedLocations)
         setRecentlyAddedLocations(updatedRecentlyAddedLocations)
 
-        updateOrdering(updatedLocations)
+        updateItemOrdering(authTokens, updatedLocations)
     }
 
     const handleDeleteLocation = async (itemId) => {

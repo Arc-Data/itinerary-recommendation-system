@@ -1,12 +1,13 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import LocationItem from "./LocationItem"
 import dayjs from "dayjs"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWandMagicSparkles, faChevronDown, faChevronUp, faBars } from "@fortawesome/free-solid-svg-icons";
 import AddLocation from "./AddLocation";
 import ConfirmDeleteItem from "./ConfirmDeleteItem";
-import OrderItem from "./OrderItem";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import updateItemOrdering from "../utils/updateItemOrdering";
+import AuthContext from "../context/AuthContext";
 
 const Day = ({day, includedLocations, setIncludedLocations}) => {
     const [open, setOpen] = useState(false)
@@ -16,6 +17,7 @@ const Day = ({day, includedLocations, setIncludedLocations}) => {
     const [selectedItemId, setSelectedItemId] = useState(null)
     const [ordering, setOrdering] = useState(false)
     const [itemOrdering, setItemOrdering] = useState([])
+    const { authTokens } = useContext(AuthContext)
 
     const toggleOpen = () => {
         setOpen(prev => !prev)
@@ -56,9 +58,11 @@ const Day = ({day, includedLocations, setIncludedLocations}) => {
         )
     )
 
-    const onSaveOrdering = () => {
-        const arr = [...itemOrdering]
-        setItems(arr)
+    const onSaveOrdering = async () => {
+        const items = [...itemOrdering]
+        setItems(items)
+
+        updateItemOrdering(authTokens, items)
         toggleOrdering()
     }
 
@@ -73,7 +77,6 @@ const Day = ({day, includedLocations, setIncludedLocations}) => {
     
         setItemOrdering(reorderedItems)
     }
-
 
     return (
         <div className="plan--itinerary">
