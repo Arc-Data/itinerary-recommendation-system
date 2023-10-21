@@ -50,11 +50,17 @@ def get_user_itineraries(request):
     serializer = ItineraryListSerializers(itineraries, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
-@api_view(['POST'])
+@api_view(['PATCH'])
+@permission_classes([IsAuthenticated])
 def update_ordering(request):
-    items = request.get.PATCH("items")
+    items = request.data.get("items")
 
-    return Response(None, status=status.HTTP_200_OK)
+    for order, item in enumerate(items):
+        itinerary_item = ItineraryItem.objects.get(id=item["id"])
+        itinerary_item.order = order
+        itinerary_item.save()
+
+    return Response({'message': 'Ordering Updated Successfully'}, status=status.HTTP_200_OK)
 
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
