@@ -52,8 +52,8 @@ function App() {
               </Route> 
               <Route element={<CreateTripLayout/>}>
                 <Route path="/create" element={<CreateTrip />} /> 
-                <Route path="/plan/:id/" element={<Plan />}/>
               </Route>
+              <Route path="/plan/:id/" element={<Plan />}/>
  
               <Route path="/admin" element={<Layout />}>
                 <Route path = "/admin/" index element={<Users users={data[0].users}/>} />

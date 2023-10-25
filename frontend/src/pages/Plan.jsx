@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom"
 import AuthContext from "../context/AuthContext"
 import Day from "../components/Day"
 import dayjs from "dayjs"
+import CreateNav from "../components/CreateNav"
+import Map from "../components/Map"
 
 const Plan = () => {
   	const [itinerary, setItinerary] = useState({
@@ -100,66 +102,73 @@ const Plan = () => {
 	)
  
 	return (
-    	<div className="plan--layout">
-			<aside className="plan--side-panel">
-				<div 
-					className="plan--accordion-header" 
-					onClick={toggleExpense}>
-					<p></p>
-					<p>Expense</p>
-				</div>
-				{isExpenseOpen && 
-				<div className="plan--accordion-content">
-					<div >
-						<p></p>
-						<p>Budget</p>
-					</div>
-					<div >
-						<p></p>
-						<p>Group Size</p>
-					</div>
-				</div>}
-				<div 
-					className="plan--accordion-header" 
-					onClick={toggleItinerary}>
-					<p></p>
-					<p>Itinerary</p>
-				</div>
-				{isItineraryOpen && 
-				<div className="plan--accordion-content">
-					{ getDayTabs }
-				</div>
-				}
-			</aside>
-			<main className="plan--main-panel">
-				<section className="plan--expense-section">
-					<p className="plan--title">Expenses</p>
-					<div className="plan--expense-form">
-						<div className="form-row">
-							<label htmlFor="number_of_people">Groupsize</label>
-							<input 
-								type="number" 
-								name="number_of_people"
-								id="number_of_people"
-								defaultValue={itinerary.number_of_people}/>
-								
+		<div className="create--layout">
+			<div>
+				<CreateNav />
+				<div className="plan--layout">
+					<aside className="plan--side-panel">
+						<div 
+							className="plan--accordion-header" 
+							onClick={toggleExpense}>
+							<p></p>
+							<p>Expense</p>
 						</div>
-						<div className="form-row">
-							<label htmlFor="budget">Budget <span>(per person)</span></label>
-							<input 
-								type="number" 
-								name="budget" 
-								id="budget"
-								defaultValue={itinerary.budget}/>							
+						{isExpenseOpen && 
+						<div className="plan--accordion-content">
+							<div >
+								<p></p>
+								<p>Budget</p>
+							</div>
+							<div >
+								<p></p>
+								<p>Group Size</p>
+							</div>
+						</div>}
+						<div 
+							className="plan--accordion-header" 
+							onClick={toggleItinerary}>
+							<p></p>
+							<p>Itinerary</p>
 						</div>
-					</div>
-				</section>
-				<section className="plan--itinerary-section">
-					<p className="plan--title">Itinerary</p>
-					{getDays}
-				</section>
-			</main>
+						{isItineraryOpen && 
+						<div className="plan--accordion-content">
+							{ getDayTabs }
+						</div>
+						}
+					</aside>
+					<main className="plan--main-panel">
+						<section className="plan--expense-section">
+							<p className="plan--title">Expenses</p>
+							<div className="plan--expense-form">
+								<div className="form-row">
+									<label htmlFor="number_of_people">Groupsize</label>
+									<input 
+										type="number" 
+										name="number_of_people"
+										id="number_of_people"
+										defaultValue={itinerary.number_of_people}/>
+										
+								</div>
+								<div className="form-row">
+									<label htmlFor="budget">Budget <span>(per person)</span></label>
+									<input 
+										type="number" 
+										name="budget" 
+										id="budget"
+										defaultValue={itinerary.budget}/>							
+								</div>
+							</div>
+						</section>
+						<section className="plan--itinerary-section">
+							<p className="plan--title">Itinerary</p>
+							{getDays}
+						</section>
+					</main>
+				</div>
+			</div>
+			<Map />
 		</div>
+    	
   	)
 }
 
