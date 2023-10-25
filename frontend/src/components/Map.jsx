@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import * as maptilersdk from '@maptiler/sdk'
 import "@maptiler/sdk/dist/maptiler-sdk.css"
 
-const Map = () => {
+const Map = ({markers}) => {
     const apiKey = import.meta.env.VITE_MAPTILER_API_KEY
     const mapContainer = useRef(null)
     const map = useRef(null)

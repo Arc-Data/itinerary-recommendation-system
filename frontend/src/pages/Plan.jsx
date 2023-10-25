@@ -11,6 +11,7 @@ const Plan = () => {
 		number_of_people: '1',
 		budget: ''
 	})
+	const [markers, setMarkers] = useState([])
 	const [isLoading, setLoading] = useState(true)
 	const [days, setDays] = useState(null)
 	const [isExpenseOpen, setExpenseOpen] = useState(true)
@@ -19,6 +20,18 @@ const Plan = () => {
 	const [error, setError] = useState(null)
 	const { authTokens } = useContext(AuthContext)
 	const { id } = useParams()
+
+	const addMarker = (latitude, longitude, name) => {
+		console.log("Adding Marker for ", name)
+		const mapMarkers = [...markers]
+		mapMarkers.push({
+			lng: longitude,
+			lat: latitude
+		})
+
+		setMarkers(mapMarkers)
+	}
+
 	
 	const toggleExpense = () => {
 		setExpenseOpen(prev => !prev)
@@ -57,11 +70,15 @@ const Plan = () => {
 					setItinerary(data.itinerary)
 					setDays(data.days)
 					setLoading(false)
-					
+
 					data.days.forEach(day => {
 						locations.push(...day.itinerary_items)
+						
+						day.itinerary_items.forEach(location => {
+							addMarker(location.details.latitude, location.details.longitude, location.details.name)
+						})
 					})
-		
+					
 					setIncludedLocations(locations)
 				}
 			}
@@ -163,10 +180,13 @@ const Plan = () => {
 							<p className="plan--title">Itinerary</p>
 							{getDays}
 						</section>
+						<section>
+							{markers.length}
+						</section>
 					</main>
 				</div>
 			</div>
-			<Map />
+			<Map markers={markers}/>
 		</div>
     	
   	)
