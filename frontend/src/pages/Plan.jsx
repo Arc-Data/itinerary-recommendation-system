@@ -21,8 +21,7 @@ const Plan = () => {
 	const { authTokens } = useContext(AuthContext)
 	const { id } = useParams()
 
-	const addMarker = (latitude, longitude, name) => {
-		console.log("Adding Marker for ", name)
+	const addMarker = (latitude, longitude) => {
 		const mapMarkers = [...markers]
 		mapMarkers.push({
 			lng: longitude,
@@ -31,7 +30,6 @@ const Plan = () => {
 
 		setMarkers(mapMarkers)
 	}
-
 	
 	const toggleExpense = () => {
 		setExpenseOpen(prev => !prev)
@@ -67,19 +65,25 @@ const Plan = () => {
 				
 				} else {
 					const data = await response.json();
+					const mapMarkers = []
 					setItinerary(data.itinerary)
 					setDays(data.days)
-					setLoading(false)
+					
+					console.log(data.days)
 
 					data.days.forEach(day => {
-						locations.push(...day.itinerary_items)
-						
 						day.itinerary_items.forEach(location => {
-							addMarker(location.details.latitude, location.details.longitude, location.details.name)
+							locations.push(...day.itinerary_items)
+							mapMarkers.push({
+								lng: location.details.longitude,
+								lat: location.details.latitude,
+							})
 						})
 					})
-					
+
 					setIncludedLocations(locations)
+					setMarkers(mapMarkers)
+					setLoading(false)
 				}
 			}
 			catch (e){

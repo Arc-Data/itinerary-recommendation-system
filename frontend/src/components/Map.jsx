@@ -8,8 +8,24 @@ const Map = ({markers}) => {
     const map = useRef(null)
     const cebu = { lng: 123.8854, lat: 10.3157 }
     const [zoom] = useState(11)
+    const markerRefs = useRef([])
 
 	maptilersdk.config.apiKey = apiKey
+
+    const addMarkersToMap = () => {
+        if(!map.current || !markers) return;
+
+        markerRefs.current.forEach(marker => marker.remove())
+        markerRefs.current = [];
+
+        markers.forEach((markerCoords) => {
+            const newMarker = new maptilersdk.Marker({ color: '#FF0000' })
+                .setLngLat(markerCoords)
+                .addTo(map.current);
+
+            markerRefs.current.push(newMarker);
+        })
+    }
 
     console.log("Map re-rendered")
 
@@ -22,6 +38,8 @@ const Map = ({markers}) => {
             center: [cebu.lng, cebu.lat],
             zoom: zoom
         })
+
+        addMarkersToMap()
 
     }, [cebu.lng, cebu.lat, zoom])
     
