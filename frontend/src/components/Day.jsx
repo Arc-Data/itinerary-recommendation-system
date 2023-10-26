@@ -2,7 +2,7 @@ import { useContext, useState } from "react"
 import LocationItem from "./LocationItem"
 import dayjs from "dayjs"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faWandMagicSparkles, faChevronDown, faChevronUp, faBars } from "@fortawesome/free-solid-svg-icons";
+import { faWandMagicSparkles, faChevronDown, faChevronUp, faBars, faPlus } from "@fortawesome/free-solid-svg-icons";
 import AddLocation from "./AddLocation";
 import ConfirmDeleteItem from "./ConfirmDeleteItem";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
@@ -144,10 +144,10 @@ const Day = ({day, addMarker, deleteMarker, includedLocations, setIncludedLocati
                         <button
                             onClick={toggleLocationModal} 
                             className="plan--btn btn-primary">
-                            Add Location
+                            <span><FontAwesomeIcon icon={faPlus}/>Add Location</span>
                         </button>
                         <button className="plan--btn btn-secondary">
-                            <span className="ai-assistant">AI Assistant</span>
+                            <span className="ai-assistant"><FontAwesomeIcon icon={faWandMagicSparkles}/>AI Assistant</span>
                         </button>
                         <button className="btn-link" onClick={toggleOrdering}>Edit</button>
                     </>

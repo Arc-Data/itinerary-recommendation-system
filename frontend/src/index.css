@@ -1221,7 +1221,7 @@ input[type="radio"] {
 }
 
 .plan--itinerary {
-    margin-top: 20px;
+    margin-top: 40px;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -1239,6 +1239,7 @@ input[type="radio"] {
 }
 
 .plan--btn-container {
+    margin: 40px 0;
     display:flex;
     gap:20px;
 }
@@ -1254,6 +1255,14 @@ input[type="radio"] {
     cursor: pointer;
     font-size: 18px;
     font-weight: 400;
+}
+
+.plan--btn svg {
+    margin-right: 8px;
+}
+
+.plan--btn.btn-secondary {
+    color: #184E77;
 }
 
 .btn-primary {

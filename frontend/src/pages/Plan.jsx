@@ -5,6 +5,8 @@ import Day from "../components/Day"
 import dayjs from "dayjs"
 import CreateNav from "../components/CreateNav"
 import Map from "../components/Map"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDirections, faMap, faMoneyBill, faMoneyBills } from "@fortawesome/free-solid-svg-icons"
 
 const Plan = () => {
   	const [itinerary, setItinerary] = useState({
@@ -135,7 +137,7 @@ const Plan = () => {
 						<div 
 							className="plan--accordion-header" 
 							onClick={toggleExpense}>
-							<p></p>
+							<FontAwesomeIcon icon={faMoneyBill}/>
 							<p>Expense</p>
 						</div>
 						{isExpenseOpen && 
@@ -152,7 +154,7 @@ const Plan = () => {
 						<div 
 							className="plan--accordion-header" 
 							onClick={toggleItinerary}>
-							<p></p>
+							<FontAwesomeIcon icon={faMap} />
 							<p>Itinerary</p>
 						</div>
 						{isItineraryOpen && 
@@ -187,9 +189,6 @@ const Plan = () => {
 						<section className="plan--itinerary-section">
 							<p className="plan--title">Itinerary</p>
 							{getDays}
-						</section>
-						<section>
-							{markers.length}
 						</section>
 					</main>
 				</div>
