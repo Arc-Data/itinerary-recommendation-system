@@ -25,6 +25,7 @@ import Layout from './components/Layout'
 import UserLayout from './layout/UserLayout';
 import CreateTripLayout from './layout/CreateTripLayout';
 import Plan from './pages/Plan';
+import Preferences from './pages/Preferences';
 /*css*/
  
 
@@ -37,14 +38,12 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/forgotpass" element={<ForgotPassword />} />
-
-
             <Route path="/destination" element={<Destination />} />
             <Route path="/accommodation" element={<Accommodation />} />
             <Route path="/food" element={<Food />} />
 
             <Route element={<PrivateRoutes />} >
- 
+              <Route path="/preferences" element={<Preferences/>}/>
               <Route element={<UserLayout />}>
                 <Route path="/location/:id" element={<Detail/>}/>
                 <Route path="/home" element={<HomePage />} />
