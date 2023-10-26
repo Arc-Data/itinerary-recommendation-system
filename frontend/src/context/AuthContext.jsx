@@ -33,7 +33,6 @@ export const AuthProvider = ({children}) => {
             setUser(userData)
             localStorage.setItem('authTokens', JSON.stringify(data))
             
-            console.log(userData)
             if(userData.is_staff) {
                 console.log("Okay")
                 navigate('/admin')
