@@ -171,6 +171,7 @@ const Day = ({day, addMarker, deleteMarker, includedLocations, setIncludedLocati
             <ConfirmDeleteItem 
                 onClose={toggleDeleteModal}
                 itemId={selectedItemId}
+                deleteMarker={deleteMarker}
                 locations={items}
                 setLocations={setItems} 
                 includedLocations={includedLocations}
