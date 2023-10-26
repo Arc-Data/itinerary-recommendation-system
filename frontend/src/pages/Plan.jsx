@@ -30,6 +30,11 @@ const Plan = () => {
 
 		setMarkers(mapMarkers)
 	}
+
+	const deleteMarker = (latitude, longitude) => {
+		const mapMarkers = markers.filter(i => i.lng !== longitude && i.lat !== latitude)
+		setMarkers(mapMarkers)
+	}
 	
 	const toggleExpense = () => {
 		setExpenseOpen(prev => !prev)
@@ -69,8 +74,6 @@ const Plan = () => {
 					setItinerary(data.itinerary)
 					setDays(data.days)
 					
-					console.log(data.days)
-
 					data.days.forEach(day => {
 						day.itinerary_items.forEach(location => {
 							locations.push(...day.itinerary_items)
@@ -101,6 +104,7 @@ const Plan = () => {
 			key={day.id} 
 			day={day} 
 			addMarker={addMarker}
+			deleteMarker={deleteMarker}
 			includedLocations={includedLocations}
 			setIncludedLocations={setIncludedLocations}/>
 	})

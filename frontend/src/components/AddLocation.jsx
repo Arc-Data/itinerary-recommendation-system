@@ -7,7 +7,7 @@ import AuthContext from "../context/AuthContext"
 import Modal from "./Modal"
 import updateItemOrdering from "../utils/updateItemOrdering"
 
-const AddLocation = ({onClose, day, locations, setLocations, includedLocations, setIncludedLocations, addMarker}) => {
+const AddLocation = ({onClose, day, locations, setLocations, includedLocations, setIncludedLocations, addMarker, deleteMarker}) => {
     const { authTokens } = useContext(AuthContext)
     const [searchData, setSearchData] = useState(null)
     const [openBookmarks, setOpenBookmarks] = useState(false)
@@ -43,7 +43,9 @@ const AddLocation = ({onClose, day, locations, setLocations, includedLocations, 
         setSearchData(data)
     }
 
-    const deleteLocation = (itemId) => {
+    const deleteLocation = (itemId, latitude, longitude) => {
+        console.log(latitude, longitude)
+        
         const updatedLocations = locations.filter(i => i.id !== itemId)
         const updatedIncludedLocations = includedLocations.filter(i => i.id !== itemId)
         const updatedRecentlyAddedLocations = recentlyAddedLocations.filter(i => i.id !== itemId)
@@ -53,9 +55,10 @@ const AddLocation = ({onClose, day, locations, setLocations, includedLocations, 
         setRecentlyAddedLocations(updatedRecentlyAddedLocations)
 
         updateItemOrdering(authTokens, updatedLocations)
+        deleteMarker(latitude, longitude)
     }
 
-    const handleDeleteLocation = async (itemId) => {
+    const handleDeleteLocation = async (itemId, location) => {
         try {
             const response = await fetch(`http://127.0.0.1:8000/api/day-item/${itemId}/delete`, {
                 method: "DELETE",
@@ -69,8 +72,7 @@ const AddLocation = ({onClose, day, locations, setLocations, includedLocations, 
                 throw new Error('Something happened')
             }
             
-            deleteLocation(itemId)
-            
+            deleteLocation(itemId, location.details.latitude, location.details.longitude)
         }
         catch (error) {
             console.log("Errror While Deleting Itinerary Item: ", error)
@@ -151,7 +153,7 @@ const AddLocation = ({onClose, day, locations, setLocations, includedLocations, 
                     <p className="add-location-modal--subtext">{address}</p>
                     <p className="add-location-modal--subtext"><span>Opens {opening_time} - {closing_time} </span>•<span> Entrance Fee: {fee} </span></p>
                 </div>
-                <button className="add-location-modal--add-btn" onClick={() => handleDeleteLocation(location.id)}>x</button>
+                <button className="add-location-modal--add-btn" onClick={() => handleDeleteLocation(location.id, location)}>x</button>
             </div>
         )
     })
