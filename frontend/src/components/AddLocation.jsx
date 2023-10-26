@@ -7,7 +7,7 @@ import AuthContext from "../context/AuthContext"
 import Modal from "./Modal"
 import updateItemOrdering from "../utils/updateItemOrdering"
 
-const AddLocation = ({onClose, day, locations, setLocations, includedLocations, setIncludedLocations}) => {
+const AddLocation = ({onClose, day, locations, setLocations, includedLocations, setIncludedLocations, addMarker}) => {
     const { authTokens } = useContext(AuthContext)
     const [searchData, setSearchData] = useState(null)
     const [openBookmarks, setOpenBookmarks] = useState(false)
@@ -26,7 +26,7 @@ const AddLocation = ({onClose, day, locations, setLocations, includedLocations, 
         const arr1 = [...locations, item]
         const arr2 = [...includedLocations, item]
         const arr3 = [...recentlyAddedLocations, item]
-
+        
         // adds the location for the current Day object to display
         setLocations(arr1)
         // adding the location for the add modal to keep track of all existing locations within all days
@@ -34,6 +34,7 @@ const AddLocation = ({onClose, day, locations, setLocations, includedLocations, 
         setIncludedLocations(arr2)
         // adding the location based on whether the user has added an item within the lifespan of the modal
         setRecentlyAddedLocations(arr3)
+        addMarker(item.details.latitude, item.details.longitude)
     }
 
     const searchLocations = async (search) => {

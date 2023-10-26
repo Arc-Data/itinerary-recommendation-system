@@ -100,7 +100,7 @@ const Plan = () => {
 		return <Day 
 			key={day.id} 
 			day={day} 
-			days={days} 
+			addMarker={addMarker}
 			includedLocations={includedLocations}
 			setIncludedLocations={setIncludedLocations}/>
 	})

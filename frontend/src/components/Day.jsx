@@ -9,7 +9,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import updateItemOrdering from "../utils/updateItemOrdering";
 import AuthContext from "../context/AuthContext";
 
-const Day = ({day, includedLocations, setIncludedLocations}) => {
+const Day = ({day, addMarker, includedLocations, setIncludedLocations}) => {
     const [open, setOpen] = useState(false)
     const [items, setItems] = useState(day.itinerary_items)
     const [openLocationModal, setLocationModal] = useState(false)
@@ -163,7 +163,8 @@ const Day = ({day, includedLocations, setIncludedLocations}) => {
                 setLocations={setItems}
                 day={day}
                 includedLocations={includedLocations}
-                setIncludedLocations={setIncludedLocations}/>
+                setIncludedLocations={setIncludedLocations}
+                addMarker={addMarker} />
             }
             {openDeleteModal && 
             <ConfirmDeleteItem 
