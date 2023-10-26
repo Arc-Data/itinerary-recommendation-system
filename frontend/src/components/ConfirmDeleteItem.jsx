@@ -20,10 +20,7 @@ const ConfirmDeleteItem = ({onClose, itemId, deleteMarker, locations, setLocatio
                 throw new Error("Something happened")
             }
 
-
             const item = locations.find(i => i.id == itemId)
-            console.log(item.details)
-
 
             const updatedLocations = locations.filter(i => i.id !== itemId)
             const updatedIncludedLocations = includedLocations.filter(i => i.id !== itemId)
