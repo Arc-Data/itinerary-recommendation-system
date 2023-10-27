@@ -20,12 +20,12 @@
 	import ForgotPassword from './pages/ForgotPassword'
 	import Destination from './pages/Destination'
 	/*Components*/
-	import Layout from './components/Layout'
 	/*Layout*/
-	import UserLayout from './layout/UserLayout';
+	import BaseLayout from './layout/BaseLayout';
 	import CreateTripLayout from './layout/CreateTripLayout';
 	import Plan from './pages/Plan';
 	import Preferences from './pages/Preferences';
+	import AdminRoutes from './utils/AdminRoutes';
 	/*css*/
 	
 
@@ -45,7 +45,7 @@
 				<Route path="/preferences" element={<Preferences/>}/>
 				<Route element={<PrivateRoutes />} >
 					
-					<Route element={<UserLayout />}>
+					<Route element={<BaseLayout />}>
 						<Route path="/location/:id" element={<Detail/>}/>
 						<Route path="/home" element={<HomePage />} />
 						<Route path="/search" element={<SearchPage />} />
@@ -57,15 +57,14 @@
 
 					<Route path="/plan/:id/" element={<Plan />} />
 
-					<Route path="/admin" element={<Layout />}>
-						<Route path = "/admin/" index element={<Users users={data[0].users}/>} />
-						<Route path="/admin/location" element={<Location locations={data[0].locations}/>} />
-						<Route path="/admin/accommodation" element={<Accommodation />} />
-						<Route path="/admin/activity" element={<Activity />} />
-						<Route path="/admin/food" element={<Food />} />
-						<Route path="/admin/add-location" element={<AddLocation />} />
-					</Route>
-
+				</Route>
+				<Route path="/admin" element={<AdminRoutes />}>
+					<Route path = "/admin/" index element={<Users users={data[0].users}/>} />
+					<Route path="/admin/location" element={<Location locations={data[0].locations}/>} />
+					<Route path="/admin/accommodation" element={<Accommodation />} />
+					<Route path="/admin/activity" element={<Activity />} />
+					<Route path="/admin/food" element={<Food />} />
+					<Route path="/admin/add-location" element={<AddLocation />} />
 				</Route>
 			</Routes>
 		</AuthProvider>

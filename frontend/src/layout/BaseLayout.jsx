@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom';
 import Footer from '../components/Footer';
 import UserNav from '../components/UserNav';
 
-const UserLayout = () => {
+const BaseLayout = () => {
     return (
         <>
         <UserNav />
@@ -12,4 +12,4 @@ const UserLayout = () => {
     );
 }
 
-export default UserLayout
+export default BaseLayout
