@@ -6,7 +6,7 @@ const PrivateRoutes = () => {
     let { user } = useContext(AuthContext)
 
     return (
-        !user ? <Navigate to="/" /> : user.preferences ? <Outlet /> : <Navigate to="/preferences" /> 
+        !user ? <Navigate to="/" /> : user.set_preferences ? <Outlet /> : <Navigate to="/preferences" /> 
     )
 }
 
