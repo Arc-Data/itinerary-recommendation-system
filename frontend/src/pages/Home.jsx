@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "../context/AuthContext";
 import Itinerary from "../components/Itinerary";
-import { Link } from "react-router-dom";
 
 const HomePage = () => {
 	const { authTokens } = useContext(AuthContext)
@@ -28,6 +27,7 @@ const HomePage = () => {
 
 		getUserItineraries();
 	}, [])
+
 
 	const displayItineraries = trips && trips.map(trip => {
 		return (

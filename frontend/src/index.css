@@ -17,7 +17,7 @@ input[type="search"]::-webkit-search-cancel-button {
     display: none;
 }
 
-p {
+h1, p {
     margin: 0;
 }
 
@@ -1593,4 +1593,70 @@ input[type="radio"] {
     display: flex;
     flex-direction: column;
     gap: 5px;
+}
+
+.preferences {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: grid;
+    gap: 20px;
+    place-items: center;
+}
+
+.preferences--selection-container {
+    display: grid;
+    flex-wrap: wrap;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 30px 20px;
+    width: 600px;
+}
+
+.preferences--option img {
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    background-position: center;
+}
+
+.preferences--option > p {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.preferences--image-container {
+    position: relative;
+    width: 100px;
+    height:100px;
+}
+
+.preferences--overlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    border-radius: 20px;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+}
+
+.preferences--overlay > svg {
+    color: white;
+    font-size: 40px;
+}
+
+.preferences--btn {
+    width: 100%;
+    background: #184E77;
+    font-size: 18px;
+    padding: 8px;
+    border-radius: 10px;
+}
+
+.preferences--btn:disabled {
+    background: rgba(0,0,0,0.6);
+    cursor: auto;
 }

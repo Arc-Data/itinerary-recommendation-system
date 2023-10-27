@@ -1,13 +1,17 @@
 import { useContext, useState } from "react"
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import AuthContext from "../context/AuthContext"
 
 /*Images*/
 import herobackground from "/public/herobackground.jpeg";
 
 const Login = () => {
-    const { loginUser } = useContext(AuthContext)
+    const { loginUser, user } = useContext(AuthContext)
     const [showPassword, setShowPassword] = useState(false)
+
+    if (user) {
+        return (user.is_staff ? <Navigate to="/admin" /> : <Navigate to="/home" />)
+    }
 
     const togglePasswordVisibility = () => {
         setShowPassword(prevState => !prevState)

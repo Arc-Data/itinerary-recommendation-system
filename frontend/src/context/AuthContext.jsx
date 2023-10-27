@@ -33,12 +33,9 @@ export const AuthProvider = ({children}) => {
             setUser(userData)
             localStorage.setItem('authTokens', JSON.stringify(data))
             
-            console.log(userData)
             if(userData.is_staff) {
-                console.log("Okay")
                 navigate('/admin')
             } else {
-                console.log("Huh")
                 navigate('/home')
             }
         } else {
@@ -108,12 +105,20 @@ export const AuthProvider = ({children}) => {
         navigate('/')
     }
 
+    const userSetPreference = () => {
+        setUser(prevUser => ({
+            ...prevUser,
+            set_preferences: true
+        }))
+    }
+
     const contextData = {
         user: user,
         authTokens: authTokens,
         loginUser: loginUser,    
         logoutUser: logoutUser,    
         registerUser: registerUser,
+        userSetPreference: userSetPreference,
     }
 
     useEffect(() => {

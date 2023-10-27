@@ -180,3 +180,24 @@ def spot(request, pk):
         spot = get_object_or_404(Spot, id=pk)
         serializer = SpotDetailSerializers(spot)
         return Response(serializer.data)
+
+@api_view(["PATCH"]) 
+@permission_classes([IsAuthenticated])
+def update_preferences(request):
+    user = request.user
+    preferences = user.preferences
+
+    preferences.art = request.data.get("Art")
+    preferences.activity = request.data.get("Activity")
+    preferences.culture = request.data.get("Culture")
+    preferences.entertainment = request.data.get("Entertainment")
+    preferences.history = request.data.get("History")
+    preferences.nature = request.data.get("Nature")
+    preferences.religion = request.data.get("Religion")
+
+    preferences.save()
+
+    user.set_preferences = True
+    user.save()
+
+    return Response({'message': "Preferences Updated Successfully"}, status=status.HTTP_200_OK)
