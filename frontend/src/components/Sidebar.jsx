@@ -1,67 +1,84 @@
-import React from 'react'
-import { useContext } from 'react'
-import { NavLink } from 'react-router-dom'
-import AuthContext from '../context/AuthContext'
+import React from 'react';
+import { useContext } from 'react';
+import { NavLink } from 'react-router-dom';
+import AuthContext from '../context/AuthContext';
+import { FaMapMarkerAlt, FaUser, FaAngleUp, FaAngleDown } from 'react-icons/fa'; // Import arrow icons
 
 function Sidebar() {
-    const { logoutUser } = useContext(AuthContext)
-    const [dropdown, setDropdown] = React.useState(false)
+    const { logoutUser } = useContext(AuthContext);
+    const [dropdown, setDropdown] = React.useState(false);
 
     function toggleLocationDropdown() {
-        setDropdown(prev => !prev)
+        setDropdown((prev) => !prev);
     }
 
     return (
         <div className="sidebar">
-            <h1>Hello, admin!</h1>
+            <div className="admin--icon">
+                <div className="user-icon-circle">
+                    <FaUser />
+                </div>
+                <h1 className="admin--text">
+                    Hello, admin <span className="admin14">!</span>
+                </h1>
+            </div>
             <div className="sidebar--menu">
-                <NavLink  
-                    className={({isActive}) => isActive ? 'active' : 'link'}
+                <NavLink
+                    className={({ isActive }) => isActive ? 'active' : 'link'}
                     to="/"
                 >
-                    Users
+                    <h4 className="users">
+                        <FaUser /> Users
+                    </h4>
                 </NavLink>
                 <NavLink
-                    className={({isActive}) => isActive ? 'active' : 'link'}
-                    to="/location"
+                    className={({ isActive }) => isActive ? 'active' : 'link'}
+                    to="/admin/location"
                     onClick={toggleLocationDropdown}
                 >
-                    Locations
+                    <h4 className="locations">
+                        <FaMapMarkerAlt /> Locations{' '}
+                        <div className='arrow--icon'>
+                        {dropdown ? <FaAngleUp /> : <FaAngleDown />} 
+                        </div>
+                        
+                    </h4>
                 </NavLink>
                 {dropdown && (
                     <>
                         <NavLink
                             className={({ isActive }) => (isActive ? 'active-drp dropdown' : 'link dropdown')}
-                            to="/location"
+                            to="/admin/location"
                         >
                             Tour
                         </NavLink>
                         <NavLink
                             className={({ isActive }) => (isActive ? 'active-drp dropdown' : 'link dropdown')}
-                            to="/accommodation"
+                            to="/admin/accommodation"
                         >
                             Accommodation
                         </NavLink>
                         <NavLink
                             className={({ isActive }) => (isActive ? 'active-drp dropdown' : 'link dropdown')}
-                            to="/activity"
+                            to="/admin/activity"
                         >
                             Activity
                         </NavLink>
                         <NavLink
                             className={({ isActive }) => (isActive ? 'active-drp dropdown' : 'link dropdown')}
-                            to="/food"
+                            to="/admin/food"
                         >
                             Food
                         </NavLink>
                     </>
                 )}
             </div>
-            <button className="btn logout" onClick={logoutUser}> 
+            <button className="btn logout" onClick={logoutUser}>
                 Logout
             </button>
+            <a className="admin--copyright">© 2023 CebuRoute. All rights reserved.</a>
         </div>
-    )
+    );
 }
 
-export default Sidebar
+export default Sidebar;
