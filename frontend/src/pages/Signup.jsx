@@ -1,11 +1,11 @@
 import { useContext, useState } from "react"
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import AuthContext from "../context/AuthContext"
 /*Images*/
 import herobackground from "/public/herobackground.jpeg";
 
 const Signup = () => {
-    const { registerUser } = useContext(AuthContext)
+    const { registerUser, user } = useContext(AuthContext)
     const [passwordMatch, setPasswordMatch] = useState(false)
     const [formData, setFormData] = useState({
         'firstname': '',
@@ -15,7 +15,11 @@ const Signup = () => {
         'confirm': '',
     })
     const [showPassword, setShowPassword] = useState(false)
-
+    
+    if(user) {
+        return (user.is_staff ? <Navigate to="/admin" /> : <Navigate to="/home" />)
+    }
+    
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData(prevData => ({
