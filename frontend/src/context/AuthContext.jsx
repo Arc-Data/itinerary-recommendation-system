@@ -106,10 +106,12 @@ export const AuthProvider = ({children}) => {
     }
 
     const userSetPreference = () => {
-        setUser(prevUser => ({
-            ...prevUser,
-            set_preferences: true
-        }))
+        if (user) {
+            setUser(prevUser => ({
+                ...prevUser,
+                set_preferences: true
+            }))
+        }
     }
 
     const contextData = {
