@@ -23,8 +23,11 @@ const Preferences = () => {
 
     ]
 
-    const toggleClick = (name) =>  {
-        console.log("Toggling ", name)
+    const onClick = () => {
+
+    }
+
+    const toggleOption = (name) =>  {
         setData(prevData => ({
             ...prevData,
             [name]: !prevData[name]
@@ -36,24 +39,30 @@ const Preferences = () => {
         navigate('/home')
     }
 
+    const selectedCount = Object.values(data).filter((value) => value).length
+    const isButtonDisabled = selectedCount < 2
+
     console.log(data)
 
     return (
         <div className="preferences">
             <h1>What are you looking forward to your next trip to Cebu?</h1>
-            <p>Select at least three</p>
+            <p>Select at least two</p>
             <div className="preferences--selection-container">
             {Object.keys(data).map((key, index) => (
                 <PreferenceOption 
                     key={index}
                     url={'/beach.jpg'}
                     name={key}
-                    onClick={() => toggleClick(key)}
+                    onClick={() => toggleOption(key)}
                     isSelected={data[key]}
                 />
             ))}
             </div>
-            <button className="preferences--btn">Done</button>
+            <button 
+                className="preferences--btn"
+                disabled={isButtonDisabled}
+                >Done</button>
         </div>
     )
 }

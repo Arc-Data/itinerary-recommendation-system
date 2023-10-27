@@ -1655,3 +1655,8 @@ input[type="radio"] {
     padding: 8px;
     border-radius: 10px;
 }
+
+.preferences--btn:disabled {
+    background: rgba(0,0,0,0.6);
+    cursor: auto;
+}
