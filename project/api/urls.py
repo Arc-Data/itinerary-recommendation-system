@@ -23,4 +23,5 @@ urlpatterns = [
     # path('location/<int:pk>/', LocationDetailView.as_view(), name='location-detail')
     # provides a spot information given you send the id
     path('spot/<int:pk>/', spot),
+    path('preferences/', update_preferences, name="update-preferences"),
 ]

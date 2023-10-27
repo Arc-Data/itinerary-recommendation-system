@@ -30,14 +30,14 @@ class User(AbstractUser):
 
 
 class Preferences(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    historical = models.BooleanField(default=False)
-    nature = models.BooleanField(default=False)
-    religious = models.BooleanField(default=False)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="preferences")
     art = models.BooleanField(default=False)
     activity = models.BooleanField(default=False)
+    culture = models.BooleanField(default=False)
     entertainment = models.BooleanField(default=False)
-    outdoors = models.BooleanField(default=False)
+    history = models.BooleanField(default=False)
+    nature = models.BooleanField(default=False)
+    religion = models.BooleanField(default=False)
 
     def __str__(self):
         return self.user.email
