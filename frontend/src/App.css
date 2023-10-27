@@ -1,7 +1,5 @@
 * {
     box-sizing: border-box;
-    margin: 0;
-    padding: 0;
     font-family: 'Work Sans', sans-serif;
 }
 html, body {
@@ -159,6 +157,8 @@ select {
   color: white;
   font-family: Work Sans;
   line-height: 25.5px;
+  margin: 0;
+  padding: 0;
 }
 .admin--search--icon{
   position: absolute;

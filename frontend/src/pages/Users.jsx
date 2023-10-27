@@ -15,7 +15,7 @@ function Users(props) {
         <>
             <div>
                 <form className="admin--container">
-                    <img className='admin--search--icon' src={searchIcon} alt="Search Icon" />
+                    <img className='search--icon' src={searchIcon} alt="Search Icon" />
                     <input 
                         type="text"
                         placeholder="Search for user..."
