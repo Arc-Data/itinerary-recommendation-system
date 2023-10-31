@@ -7,6 +7,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import IsAuthenticated
 
+from .managers import *
 from .models import *
 from .serializers import *
 
@@ -201,3 +202,25 @@ def update_preferences(request):
     user.save()
 
     return Response({'message': "Preferences Updated Successfully"}, status=status.HTTP_200_OK)
+
+@api_view(["POST"])
+def get_content_recommendations(request):
+    # find static user id for now, change the id according 
+    # to users who already have set their preferences
+    user = User.objects.get(id=2)
+    preferences = [
+        user.preferences.art, 
+        user.preferences.activity,
+        user.preferences.culture,
+        user.preferences.entertainment,
+        user.preferences.history,
+        user.preferences.nature,
+        user.preferences.religion
+    ]
+
+    # get the manager for recommendations
+    manager = RecommendationsManager()
+    recommendations = manager.get_content_recommendations(preferences)
+
+
+    return Response({'recommendations': recommendations}, status=status.HTTP_200_OK)

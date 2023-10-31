@@ -24,4 +24,5 @@ urlpatterns = [
     # provides a spot information given you send the id
     path('spot/<int:pk>/', spot),
     path('preferences/', update_preferences, name="update-preferences"),
+    path('recommendations/content/', get_content_recommendations, name='content-recommendations'),
 ]

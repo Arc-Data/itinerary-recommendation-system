@@ -23,3 +23,12 @@ class CustomUserManager(BaseUserManager):
             raise ValueError('Superuser must have is_superuser=True')
 
         return self.create_user(email, password, **extra_fields)
+    
+class RecommendationsManager():
+    def get_content_recommendations(self, preferences):
+        # this function should return an array of modelitinerary ids
+        print(preferences)
+        return [1, 2, 3]
+    
+    def get_hybrid_recommendations(self):
+        return None
