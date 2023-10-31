@@ -15,19 +15,14 @@ class Command(BaseCommand):
             for idx, row in enumerate(reader, start=1):
                 locations = [loc.strip() for loc in row[0].split(',') if loc.strip()]
                 spots = []
-                print(idx)
 
-                for idx, location in enumerate(locations):
+                for location in locations:
                     try:
                         spot = Spot.objects.get(name=location)
+                        spots.append(spot)
                     except Spot.DoesNotExist:
                         print("Location not detected: ", location)
-    
-                # for location in locations:
-                #     print(location)
-                #     spots.append(spot)
-                    
-                # print(idx, spots)
-
-                # model_itinerary = ModelItinerary.objects.create(id=idx)
-                # model_itinerary.locations.set(spots)
+           
+                print(idx, spots)
+                model_itinerary = ModelItinerary.objects.create(id=idx)
+                model_itinerary.locations.set(spots)
