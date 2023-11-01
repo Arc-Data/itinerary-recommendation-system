@@ -5,9 +5,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWandMagicSparkles, faChevronDown, faChevronUp, faBars, faPlus } from "@fortawesome/free-solid-svg-icons";
 import AddLocation from "./AddLocation";
 import ConfirmDeleteItem from "./ConfirmDeleteItem";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { DragDropContext,  Draggable } from "react-beautiful-dnd";
 import updateItemOrdering from "../utils/updateItemOrdering";
 import AuthContext from "../context/AuthContext";
+import StrictModeDroppable from "../components/StrictModeDroppable"
 
 const Day = ({day, addMarker, deleteMarker, includedLocations, setIncludedLocations}) => {
     const [open, setOpen] = useState(false)
@@ -41,7 +42,6 @@ const Day = ({day, addMarker, deleteMarker, includedLocations, setIncludedLocati
 
     const toggleOrdering = () => {
         const isOrderingActive = !ordering
-        console.log(isOrderingActive) 
         setOrdering(prev => !prev)
 
         if(isOrderingActive) {
@@ -88,7 +88,7 @@ const Day = ({day, addMarker, deleteMarker, includedLocations, setIncludedLocati
             <>  
             { ordering ? (
             <DragDropContext onDragEnd={onDragEnd}>
-                <Droppable droppableId="droppable">
+                <StrictModeDroppable droppableId="droppable">
                     {(provided) => (
                         <div 
                             ref={provided.innerRef}
@@ -115,7 +115,7 @@ const Day = ({day, addMarker, deleteMarker, includedLocations, setIncludedLocati
                                 {provided.placeholder}
                             </div>
                     )}
-                </Droppable>
+                </StrictModeDroppable>
             </DragDropContext>
             )
             :
