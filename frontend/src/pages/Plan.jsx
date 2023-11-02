@@ -6,7 +6,7 @@ import dayjs from "dayjs"
 import CreateNav from "../components/CreateNav"
 import Map from "../components/Map"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDirections, faMap, faMoneyBill, faMoneyBills } from "@fortawesome/free-solid-svg-icons"
+import { faCalendar, faCalendarAlt, faCalendarDay, faDirections, faMap, faMoneyBill, faMoneyBills } from "@fortawesome/free-solid-svg-icons"
 
 const Plan = () => {
   	const [itinerary, setItinerary] = useState({
@@ -187,7 +187,20 @@ const Plan = () => {
 							</div>
 						</section>
 						<section className="plan--itinerary-section">
-							<p className="plan--title">Itinerary</p>
+							<div className="plan--itinerary-header">
+								<p className="plan--title">Itinerary</p>
+								<div className="plan--calendar-settings">
+									<div className="calendar-info">
+										<FontAwesomeIcon icon={faCalendarAlt} />
+										<p>
+											{dayjs(days[0].date).format('MMM DD')} to {dayjs(days[days.length - 1].date).format('MMM DD')}
+										</p>
+									</div>
+									<div className="calendar-icon" >
+										<FontAwesomeIcon icon={faCalendarAlt}/>
+									</div>
+								</div>
+							</div>
 							{getDays}
 						</section>
 					</main>

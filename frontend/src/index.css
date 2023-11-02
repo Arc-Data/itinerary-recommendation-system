@@ -1389,6 +1389,8 @@ input[type="radio"] {
     font-size: 20px;
     color: #333333;
     font-weight: 500;
+    display: flex;
+    justify-content: space-between;
 }
 
 .plan--itinerary-items {
@@ -1407,6 +1409,46 @@ input[type="radio"] {
 .plan--itinerary-item:hover .plan--location-settings {
     pointer-events: all;
     visibility: visible;
+}
+
+.plan--itinerary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.plan--calendar-settings {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.calendar-icon  {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    background: #38A3A5;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.2);
+}
+
+.calendar-icon:hover {
+    box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.5);
+}
+
+.calendar-info {
+    display: flex;
+    color: #333;
+}
+
+.calendar-info > p {
+    margin-left: 10px;
+}
+
+.calendar-icon > svg {
+    color: white;
 }
 
 .plan--location-settings {
