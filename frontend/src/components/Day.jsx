@@ -1,4 +1,4 @@
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import LocationItem from "./LocationItem"
 import dayjs from "dayjs"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -18,6 +18,10 @@ const Day = ({day, addMarker, deleteMarker, includedLocations, setIncludedLocati
     const [selectedItemId, setSelectedItemId] = useState(null)
     const [ordering, setOrdering] = useState(false)
     const [itemOrdering, setItemOrdering] = useState([])
+
+    const [minTotal, setMinTotal] = useState(0)
+    const [maxTotal, setMaxTotal] = useState(0)
+
     const { authTokens } = useContext(AuthContext)
 
     const toggleOpen = () => {
@@ -50,13 +54,14 @@ const Day = ({day, addMarker, deleteMarker, includedLocations, setIncludedLocati
         }
     }
 
-    const itineraryItems = () => items.map(location => (
-        <LocationItem 
-            key={location.id} 
-            location={location} 
-            onClick={(e) => toggleDeleteModal(e, location.id)} />
+    const itineraryItems = () => items.map(location => {
+        return (
+            <LocationItem 
+                key={location.id} 
+                location={location} 
+                onClick={(e) => toggleDeleteModal(e, location.id)} />
         )
-    )
+    })
 
     const onSaveOrdering = async () => {
         const items = [...itemOrdering]
@@ -78,14 +83,32 @@ const Day = ({day, addMarker, deleteMarker, includedLocations, setIncludedLocati
         setItemOrdering(reorderedItems)
     }
 
+    useEffect(() => {
+
+        console.log(items)
+        let max = 0;
+        let min = 0;
+        
+        min = items.reduce((total, item) => item.details.min_cost + total, 0)
+        max = items.reduce((total, item) => item.details.max_cost + total, 0)
+
+        setMinTotal(min)
+        setMaxTotal(max)
+    }, [items])
+
     return (
         <div className="plan--itinerary">
             <p onClick={toggleOpen} className="plan--itinerary-day">
                 {dayjs(day.date).format("dddd, MMM D")}
                 <FontAwesomeIcon className="icon--chevron" icon={open ? faChevronUp : faChevronDown} size="2xs" />           
             </p>
+            <p>
+                <span>Total Places : {items.length}</span>
+                <span>Min: {minTotal} - Max: {maxTotal}</span>
+            </p>
             { open && 
             <>  
+
             { ordering ? (
             <DragDropContext onDragEnd={onDragEnd}>
                 <StrictModeDroppable droppableId="droppable">
