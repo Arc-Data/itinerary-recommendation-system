@@ -1710,3 +1710,36 @@ input[type="radio"] {
     background: rgba(0,0,0,0.6);
     cursor: auto;
 }
+
+.datesettings--form-input {
+    padding: 12px 14px;
+    border: 1px solid #DEDEDE;
+    border-radius: 10px;
+    font-family: 'Work Sans', sans-serif;
+}
+
+.datesettings--modal {
+    position: absolute;
+    background: white;
+    padding: 20px;
+    left: 50%;
+    height: 400px;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+    box-shadow: 0 0 0.5em rgba(0,0,0,0.2);
+    border-radius: 8px;
+}
+
+.datesettings--modal-title {
+    color: #333333;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.datesettings--container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding-bottom: 200px;
+}
