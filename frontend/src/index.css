@@ -1250,11 +1250,15 @@ input[type="radio"] {
 }
 
 .plan--btn {
-    padding: 15px 14px;
+    padding: 10px 12px;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 400;
+}
+
+.plan--btn:hover {
+    box-shadow: 0 0 0.5em rgba(0,0,0,0.5);
 }
 
 .plan--btn svg {
