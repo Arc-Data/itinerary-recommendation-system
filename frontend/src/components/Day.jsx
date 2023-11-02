@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react"
 import LocationItem from "./LocationItem"
 import dayjs from "dayjs"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faWandMagicSparkles, faChevronDown, faChevronUp, faBars, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faWandMagicSparkles, faChevronDown, faChevronUp, faBars, faPlus, faDotCircle, faCircle } from "@fortawesome/free-solid-svg-icons";
 import AddLocation from "./AddLocation";
 import ConfirmDeleteItem from "./ConfirmDeleteItem";
 import { DragDropContext,  Draggable } from "react-beautiful-dnd";
@@ -84,13 +84,8 @@ const Day = ({day, addMarker, deleteMarker, includedLocations, setIncludedLocati
     }
 
     useEffect(() => {
-
-        console.log(items)
-        let max = 0;
-        let min = 0;
-        
-        min = items.reduce((total, item) => item.details.min_cost + total, 0)
-        max = items.reduce((total, item) => item.details.max_cost + total, 0)
+        let min = items.reduce((total, item) => item.details.min_cost + total, 0)
+        let max = items.reduce((total, item) => item.details.max_cost + total, 0)
 
         setMinTotal(min)
         setMaxTotal(max)
@@ -102,10 +97,7 @@ const Day = ({day, addMarker, deleteMarker, includedLocations, setIncludedLocati
                 {dayjs(day.date).format("dddd, MMM D")}
                 <FontAwesomeIcon className="icon--chevron" icon={open ? faChevronUp : faChevronDown} size="2xs" />           
             </p>
-            <p>
-                <span>Total Places : {items.length}</span>
-                <span>Min: {minTotal} - Max: {maxTotal}</span>
-            </p>
+            
             { open && 
             <>  
 
@@ -143,6 +135,10 @@ const Day = ({day, addMarker, deleteMarker, includedLocations, setIncludedLocati
             )
             :
             <div className="plan--itinerary-items">
+                <p>
+                    <span>Total places: {items.length} </span>
+                    <span>Cost estimate: {minTotal} - {maxTotal} PHP</span>
+                </p>
                 {itineraryItems()}
             </div>
             }
