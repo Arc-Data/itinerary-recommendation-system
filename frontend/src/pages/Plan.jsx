@@ -6,7 +6,8 @@ import dayjs from "dayjs"
 import CreateNav from "../components/CreateNav"
 import Map from "../components/Map"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCalendar, faCalendarAlt, faCalendarDay, faDirections, faMap, faMoneyBill, faMoneyBills } from "@fortawesome/free-solid-svg-icons"
+import { faCalendarAlt, faMap, faMoneyBill } from "@fortawesome/free-solid-svg-icons"
+import DateSettings from "../components/DateSettings"
 
 const Plan = () => {
   	const [itinerary, setItinerary] = useState({
@@ -18,6 +19,7 @@ const Plan = () => {
 	const [days, setDays] = useState(null)
 	const [isExpenseOpen, setExpenseOpen] = useState(true)
 	const [isItineraryOpen, setItineraryOpen] = useState(true)
+	const [isCalendarOpen, setCalendarOpen] = useState(false)
 	const [includedLocations, setIncludedLocations] = useState([])
 	const [error, setError] = useState(null)
 	const { authTokens } = useContext(AuthContext)
@@ -36,6 +38,16 @@ const Plan = () => {
 	const deleteMarker = (latitude, longitude) => {
 		const mapMarkers = markers.filter(i => i.lng !== longitude && i.lat !== latitude)
 		setMarkers(mapMarkers)
+	}
+
+	const toggleCalendar = (e) => {
+		if(e) {
+			e.stopPropagation()
+		}
+
+		const status = !isCalendarOpen
+		setCalendarOpen(status)
+		console.log(status)
 	}
 	
 	const toggleExpense = () => {
@@ -129,6 +141,7 @@ const Plan = () => {
 	)
  
 	return (
+		<>
 		<div className="create--layout">
 			<div>
 				<CreateNav />
@@ -196,7 +209,7 @@ const Plan = () => {
 											{dayjs(days[0].date).format('MMM DD')} to {dayjs(days[days.length - 1].date).format('MMM DD')}
 										</p>
 									</div>
-									<div className="calendar-icon" >
+									<div className="calendar-icon" onClick={toggleCalendar}>
 										<FontAwesomeIcon icon={faCalendarAlt}/>
 									</div>
 								</div>
@@ -208,6 +221,8 @@ const Plan = () => {
 			</div>
 			<Map markers={markers}/>
 		</div>
+		{isCalendarOpen && <DateSettings onClose={toggleCalendar}/>}
+		</>
     	
   	)
 }
