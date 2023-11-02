@@ -5,34 +5,44 @@ import DatePicker from 'react-datepicker';
 const DateSettings = ({onClose}) => {
     const [startDate, setStartDate] = useState()
     const [endDate, setEndDate] = useState()
+    const [loading, setLoading] = useState(false)
 
     return (
         <Modal onClose={onClose}>
-            <div className="datesettings--modal">
-                <p class="datesettings--modal-title">Trip Date</p>
-                <form>
-                    <div className="datesettings--container">
-                    <DatePicker
-                        selected={startDate}
-                        onChange={(date) => setStartDate(date)}
-                        selectsStart
-                        className="datesettings--form-input"
-                        startDate={startDate}
-                        endDate={endDate}
-                    />
-                    <DatePicker
-                        selected={endDate}
-                        onChange={(date) => setEndDate(date)}
-                        selectsEnd
-                        className="datesettings--form-input"
-
-                        startDate={startDate}
-                        endDate={endDate}
-                        minDate={startDate}
-                    />
+            <div>
+                <p className="datesettings--modal-title">Trip Date</p>
+                <div className="datesettings--container">
+                    <div className="datesettings--input-group">
+                        <label htmlFor="startDate">Start date</label>
+                        <DatePicker
+                            selected={startDate}
+                            onChange={(date) => setStartDate(date)}
+                            selectsStart
+                            className="datesettings--form-input"
+                            startDate={startDate}
+                            endDate={endDate}
+                            isClearable
+                        />
                     </div>
-                    <button className="plan--btn">Save</button>
-                </form>
+                    <div className="datesettings--input-group">
+                        <label htmlFor="endDate">End date</label>
+                        <DatePicker
+                            selected={endDate}
+                            onChange={(date) => setEndDate(date)}
+                            selectsEnd
+                            className="datesettings--form-input"
+                            startDate={startDate}
+                            endDate={endDate}
+                            minDate={startDate}
+                            isClearable
+                        />
+
+                    </div>
+                </div>
+                
+                <button 
+                    className="plan--btn btn-primary" 
+                    disabled={!startDate || !endDate}>Save</button>
             </div>
         </Modal>
     )
