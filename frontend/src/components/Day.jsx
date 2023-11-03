@@ -1,8 +1,8 @@
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import LocationItem from "./LocationItem"
 import dayjs from "dayjs"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faWandMagicSparkles, faChevronDown, faChevronUp, faBars, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faWandMagicSparkles, faChevronDown, faChevronUp, faBars, faPlus, faDotCircle, faCircle } from "@fortawesome/free-solid-svg-icons";
 import AddLocation from "./AddLocation";
 import ConfirmDeleteItem from "./ConfirmDeleteItem";
 import { DragDropContext,  Draggable } from "react-beautiful-dnd";
@@ -18,6 +18,10 @@ const Day = ({day, addMarker, deleteMarker, includedLocations, setIncludedLocati
     const [selectedItemId, setSelectedItemId] = useState(null)
     const [ordering, setOrdering] = useState(false)
     const [itemOrdering, setItemOrdering] = useState([])
+
+    const [minTotal, setMinTotal] = useState(0)
+    const [maxTotal, setMaxTotal] = useState(0)
+
     const { authTokens } = useContext(AuthContext)
 
     const toggleOpen = () => {
@@ -50,13 +54,14 @@ const Day = ({day, addMarker, deleteMarker, includedLocations, setIncludedLocati
         }
     }
 
-    const itineraryItems = () => items.map(location => (
-        <LocationItem 
-            key={location.id} 
-            location={location} 
-            onClick={(e) => toggleDeleteModal(e, location.id)} />
+    const itineraryItems = () => items.map(location => {
+        return (
+            <LocationItem 
+                key={location.id} 
+                location={location} 
+                onClick={(e) => toggleDeleteModal(e, location.id)} />
         )
-    )
+    })
 
     const onSaveOrdering = async () => {
         const items = [...itemOrdering]
@@ -78,14 +83,24 @@ const Day = ({day, addMarker, deleteMarker, includedLocations, setIncludedLocati
         setItemOrdering(reorderedItems)
     }
 
+    useEffect(() => {
+        let min = items.reduce((total, item) => item.details.min_cost + total, 0)
+        let max = items.reduce((total, item) => item.details.max_cost + total, 0)
+
+        setMinTotal(min)
+        setMaxTotal(max)
+    }, [items])
+
     return (
         <div className="plan--itinerary">
             <p onClick={toggleOpen} className="plan--itinerary-day">
                 {dayjs(day.date).format("dddd, MMM D")}
                 <FontAwesomeIcon className="icon--chevron" icon={open ? faChevronUp : faChevronDown} size="2xs" />           
             </p>
+            
             { open && 
             <>  
+
             { ordering ? (
             <DragDropContext onDragEnd={onDragEnd}>
                 <StrictModeDroppable droppableId="droppable">
@@ -120,6 +135,10 @@ const Day = ({day, addMarker, deleteMarker, includedLocations, setIncludedLocati
             )
             :
             <div className="plan--itinerary-items">
+                <p>
+                    <span>Total places: {items.length} </span>
+                    <span>Cost estimate: {minTotal} - {maxTotal} PHP</span>
+                </p>
                 {itineraryItems()}
             </div>
             }

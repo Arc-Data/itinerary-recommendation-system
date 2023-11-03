@@ -1386,12 +1386,16 @@ input[type="radio"] {
 
 .plan--itinerary-day {
     cursor: pointer;
+    font-size: 20px;
+    color: #333333;
+    font-weight: 500;
 }
 
 .plan--itinerary-items {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    color: #333;
 }
 
 .plan--itinerary-item {
