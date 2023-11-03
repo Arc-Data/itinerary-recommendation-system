@@ -11,6 +11,8 @@ from .managers import *
 from .models import *
 from .serializers import *
 
+import numpy as np
+
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
 
@@ -203,24 +205,27 @@ def update_preferences(request):
 
     return Response({'message': "Preferences Updated Successfully"}, status=status.HTTP_200_OK)
 
+
 @api_view(["POST"])
 def get_content_recommendations(request):
     # find static user id for now, change the id according 
     # to users who already have set their preferences
     user = User.objects.get(id=2)
+
     preferences = [
-        user.preferences.art, 
-        user.preferences.activity,
-        user.preferences.culture,
-        user.preferences.entertainment,
         user.preferences.history,
         user.preferences.nature,
-        user.preferences.religion
+        user.preferences.religion,
+        user.preferences.art, 
+        user.preferences.activity,
+        user.preferences.entertainment,
+        user.preferences.culture
     ]
+
+    preferences = np.array(preferences, dtype=int)
 
     # get the manager for recommendations
     manager = RecommendationsManager()
     recommendations = manager.get_content_recommendations(preferences)
-
 
     return Response({'recommendations': recommendations}, status=status.HTTP_200_OK)
