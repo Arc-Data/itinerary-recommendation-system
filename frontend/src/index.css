@@ -94,7 +94,7 @@ a:-webkit-any-link {
     width: 100%;
     z-index: 1000;
     padding: 12px 24px;
-    border-bottom: 1px solid black;
+    border-bottom: 2px solid rgba(185, 185, 185, 0.493);
 }
 
 .user--search {
@@ -186,6 +186,7 @@ a:-webkit-any-link {
     align-items: center;
     width: 100%;
     z-index: 1000; 
+    
 }
 
 .cebu--route {
@@ -885,11 +886,13 @@ input[type="radio"] {
 .searchPage--container {
     margin: 150px auto; 
     width: 60%;
-    background-color: #FFFFFF;
+    
+    background: #FCFCFC;
 }
 
 .searchPage--title {
     color:#333333;
+    background: #FCFCFC;
     font-size: 20px;
 }
 
@@ -913,16 +916,19 @@ input[type="radio"] {
 
 .searchPage--result{
     color: gray;
+    background: #FCFCFC;
     font-size: 16px;
+    margin-top: 10px;
     margin-bottom: 10px;
 }
 
 .searchPage--navbar {
     display: flex;
     justify-content: space-around;
-    border: 1px solid gray;
+    border: 1px solid #E7E7E7;
     border-radius: 10px 10px 0 0;
     flex-wrap: wrap; 
+    background: #FCFCFC;
 }
 
 .searchPage--navbar > a {
@@ -935,7 +941,8 @@ input[type="radio"] {
 .searchPage--details {
     display: flex;
     text-align: left;
-    border: 1px solid gray;
+    border: 1px solid #E7E7E7;
+    background: #FCFCFC;
 }
 
 .searchPage--pic {
