@@ -236,6 +236,44 @@ class DaySerializers(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class LocationRecommenderSerializers(serializers.ModelSerializer):
+    fee = serializers.SerializerMethodField()
+    schedule = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Location
+        fields = ['id', 'name', 'fee', 'schedule']
+    
+    def get_fee(self, obj):
+        spot = Spot.objects.get(pk=obj.id)
+
+        if spot:
+            return {
+                "min": spot.get_min_cost,
+                "max": spot.get_max_cost
+            } 
+
+        return None
+    
+    def get_schedule(self, obj):
+        spot = Spot.objects.get(pk=obj.id)
+
+        if spot:
+            return {
+                "opening": spot.opening_time,
+                "closing": spot.closing_time 
+            }
+
+        return None    
+
+class ModelItinerarySerializers(serializers.ModelSerializer):
+    locations = LocationRecommenderSerializers(many=True)
+
+    class Meta:
+        model = ModelItinerary
+        fields = '__all__'
+
+
 class SpotPopularSerializers(serializers.ModelSerializer):
 
     class Meta:
