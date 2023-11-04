@@ -186,6 +186,9 @@ class Day(models.Model):
     date = models.DateField()
     itinerary = models.ForeignKey(Itinerary, on_delete=models.CASCADE)
 
+    class Meta:
+        ordering = ['date']
+
 class ItineraryItem(models.Model):
     day = models.ForeignKey(Day, on_delete=models.CASCADE, null=True)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)

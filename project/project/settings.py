@@ -133,6 +133,9 @@ DATABASES = {
         'PASSWORD': 'irspass',
         'HOST': 'localhost',
         'PORT': '3306',
+        'OPTIONS': {
+            'init_command': "SET time_zone='+8:00';"
+        }
     }
 }
 
@@ -161,7 +164,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Manila'
 
 USE_I18N = True
 

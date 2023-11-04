@@ -1250,11 +1250,15 @@ input[type="radio"] {
 }
 
 .plan--btn {
-    padding: 15px 14px;
+    padding: 10px 12px;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 400;
+}
+
+.plan--btn:hover {
+    box-shadow: 0 0 0.5em rgba(33, 20, 20, 0.5);
 }
 
 .plan--btn svg {
@@ -1389,6 +1393,8 @@ input[type="radio"] {
     font-size: 20px;
     color: #333333;
     font-weight: 500;
+    display: flex;
+    justify-content: space-between;
 }
 
 .plan--itinerary-items {
@@ -1407,6 +1413,46 @@ input[type="radio"] {
 .plan--itinerary-item:hover .plan--location-settings {
     pointer-events: all;
     visibility: visible;
+}
+
+.plan--itinerary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.plan--calendar-settings {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.calendar-icon  {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    background: #38A3A5;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.2);
+}
+
+.calendar-icon:hover {
+    box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.5);
+}
+
+.calendar-info {
+    display: flex;
+    color: #333;
+}
+
+.calendar-info > p {
+    margin-left: 10px;
+}
+
+.calendar-icon > svg {
+    color: white;
 }
 
 .plan--location-settings {
@@ -1663,4 +1709,30 @@ input[type="radio"] {
 .preferences--btn:disabled {
     background: rgba(0,0,0,0.6);
     cursor: auto;
+}
+
+.datesettings--form-input {
+    padding: 12px 14px;
+    border: 1px solid #DEDEDE;
+    border-radius: 10px;
+    font-family: 'Work Sans', sans-serif;
+}
+
+.datesettings--modal-title {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.datesettings--container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-top: 40px;
+    padding-bottom: 200px;
+}
+
+.datesettings--input-group{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }

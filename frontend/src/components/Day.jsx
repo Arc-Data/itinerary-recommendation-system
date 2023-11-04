@@ -135,10 +135,12 @@ const Day = ({day, addMarker, deleteMarker, includedLocations, setIncludedLocati
             )
             :
             <div className="plan--itinerary-items">
+                {items.length !== 0 && 
                 <p>
                     <span>Total places: {items.length} </span>
                     <span>Cost estimate: {minTotal} - {maxTotal} PHP</span>
                 </p>
+                }
                 {itineraryItems()}
             </div>
             }

@@ -1,5 +1,5 @@
 ### itinerary-recommendation-system
-Built using Django + React + Tensorflow Recommenders
+Built using Django + React
 
 ## Installation Instructions ##
 
