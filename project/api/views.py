@@ -201,3 +201,32 @@ def update_preferences(request):
     user.save()
 
     return Response({'message': "Preferences Updated Successfully"}, status=status.HTTP_200_OK)
+
+@api_view(["POST"])
+def update_itinerary_calendar(request, itinerary_id):
+    start_date = request.data.get("startDate")
+    end_date = request.data.get("endDate")
+
+    itinerary = Itinerary.objects.get(pk=itinerary_id)
+    Day.objects.filter(itinerary=itinerary).delete()
+
+    current_date = datetime.datetime.strptime(start_date, '%Y-%m-%d').date()
+    end_date = datetime.datetime.strptime(end_date, '%Y-%m-%d').date()
+    
+    days = []
+
+    while current_date <= end_date:
+        day = Day.objects.create(
+            date=current_date,
+            itinerary=itinerary
+        )
+
+        days.append(day)
+
+        current_date += timedelta(days=1)
+
+    day_serializers = DaySerializers(days, many=True)
+
+    return Response({
+        'message': "Calendar Updated Successfully",
+        'days': day_serializers.data}, status=status.HTTP_200_OK)
