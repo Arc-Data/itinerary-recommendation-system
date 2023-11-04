@@ -6,6 +6,9 @@ from rest_framework.filters import SearchFilter
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import IsAuthenticated
+from django.utils.timezone import make_aware
+
+import pytz
 
 from .models import *
 from .serializers import *
@@ -210,23 +213,27 @@ def update_itinerary_calendar(request, itinerary_id):
     itinerary = Itinerary.objects.get(pk=itinerary_id)
     Day.objects.filter(itinerary=itinerary).delete()
 
-    current_date = datetime.datetime.strptime(start_date, '%Y-%m-%d').date()
-    end_date = datetime.datetime.strptime(end_date, '%Y-%m-%d').date()
-    
+    start_date = datetime.datetime.strptime(start_date, '%Y-%m-%dT%H:%M:%S.%fZ').date()
+    end_date = datetime.datetime.strptime(end_date, '%Y-%m-%dT%H:%M:%S.%fZ').date()
+
+    print(start_date, end_date)
+
     days = []
 
-    while current_date <= end_date:
+    while start_date <= end_date:
         day = Day.objects.create(
-            date=current_date,
+            date=start_date,
             itinerary=itinerary
         )
 
         days.append(day)
 
-        current_date += timedelta(days=1)
+        start_date += timedelta(days=1)
+
 
     day_serializers = DaySerializers(days, many=True)
 
     return Response({
         'message': "Calendar Updated Successfully",
-        'days': day_serializers.data}, status=status.HTTP_200_OK)
+        'days': day_serializers.data
+        }, status=status.HTTP_200_OK)
