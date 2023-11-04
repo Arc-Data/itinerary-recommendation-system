@@ -58,6 +58,10 @@ const Plan = () => {
 		setItineraryOpen(prev => !prev)
 	}
 
+	const updateDays = (days) => {
+		setDays(days)
+	}
+
 	useEffect(() => {
 		const fetchItineraryData = async (e) => {
 			const locations = []
@@ -84,22 +88,11 @@ const Plan = () => {
 				
 				} else {
 					const data = await response.json();
-					const mapMarkers = []
+
+					console.log(data)
 					setItinerary(data.itinerary)
 					setDays(data.days)
-					
-					data.days.forEach(day => {
-						day.itinerary_items.forEach(location => {
-							locations.push(...day.itinerary_items)
-							mapMarkers.push({
-								lng: location.details.longitude,
-								lat: location.details.latitude,
-							})
-						})
-					})
 
-					setIncludedLocations(locations)
-					setMarkers(mapMarkers)
 					setLoading(false)
 				}
 			}
@@ -112,6 +105,29 @@ const Plan = () => {
 
 		fetchItineraryData()
 	}, [ id ])
+
+	useEffect(() => {
+		console.log("Renders on day changes")
+
+		const locations = []
+		const mapMarkers = []
+					
+		if (days) {
+			days.forEach(day => {
+				day.itinerary_items.forEach(location => {
+					locations.push(...day.itinerary_items)
+					mapMarkers.push({
+						lng: location.details.longitude,
+						lat: location.details.latitude,
+					})
+				})
+			})
+			
+			setIncludedLocations(locations)
+			setMarkers(mapMarkers)
+		}
+
+	}, [days])
 
 	const getDays = days && days.map(day => {
 		return <Day 
@@ -221,7 +237,7 @@ const Plan = () => {
 			</div>
 			<Map markers={markers}/>
 		</div>
-		{isCalendarOpen && <DateSettings onClose={toggleCalendar}/>}
+		{isCalendarOpen && <DateSettings onClose={toggleCalendar} updateDays={updateDays}/>}
 		</>
     	
   	)
