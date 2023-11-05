@@ -1746,7 +1746,7 @@ input[type="radio"] {
 }
 
 .assistant > div {
-    padding: 24px 20px;
+    padding: 24px 40px;
 }
 
 .assistant--header {
@@ -1801,21 +1801,46 @@ input[type="radio"] {
 }
 
 .assistant--recommendation {
-    border: 1px solid gray;
+    border: 2px solid #e7e7e7;
     padding: 10px;
+    border-radius: 8px;
     display: flex;
     flex-direction: column;
     gap: 6px;
 }
 
 .assistant--recommendation:hover {
-    border: 1px solid blue;
+    cursor: pointer;
+}
+
+.assistant--recommendation:hover {
+    border: 2px solid #184E77;
 }
 
 .assistant--recommendation-item {
     display: flex;
+    gap: 10px;
     padding: 8px 12px;
+    border-radius: 4px;
     font-size: 14px;
     width: 240px;
-    background: #333;
+    background: #efefef;
+    color: #686868;
+    font-weight: 400;
+    box-shadow: 0 0 0.1em rgba(0, 0, 0, 0.1);
+}
+
+.assistant--recommendation-item-title {
+    font-weight: 500;
+    color: black;
+}
+
+.assistant--recommendation-item-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.assistant--location-icon {
+    color:#38A3A5;
 }

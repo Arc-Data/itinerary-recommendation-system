@@ -47,7 +47,6 @@ const Plan = () => {
 
 		const status = !isCalendarOpen
 		setCalendarOpen(status)
-		console.log(status)
 	}
 	
 	const toggleExpense = () => {
@@ -87,7 +86,6 @@ const Plan = () => {
 				} else {
 					const data = await response.json();
 
-					console.log(data)
 					setItinerary(data.itinerary)
 					setDays(data.days)
 
@@ -105,8 +103,6 @@ const Plan = () => {
 	}, [ id ])
 
 	useEffect(() => {
-		console.log("Renders on day changes")
-
 		const locations = []
 		const mapMarkers = []
 					

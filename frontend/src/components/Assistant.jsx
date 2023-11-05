@@ -29,7 +29,6 @@ const Assistant = ({onClose, day}) => {
             })
 
             const data = await response.json()
-            console.log(data.recommendations)
             setRecommendations(data.recommendations)
         }
         catch(error) {
