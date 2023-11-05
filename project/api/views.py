@@ -205,11 +205,10 @@ def update_preferences(request):
 
     return Response({'message': "Preferences Updated Successfully"}, status=status.HTTP_200_OK)
 
-@api_view(["POST"])
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
 def get_content_recommendations(request):
-    # find static user id for now, change the id according 
-    # to users who already have set their preferences
-    user = User.objects.get(id=2)
+    user = request.user
 
     preferences = [
         user.preferences.history,
@@ -223,7 +222,6 @@ def get_content_recommendations(request):
 
     preferences = np.array(preferences, dtype=int)
 
-    # get the manager for recommendations
     manager = RecommendationsManager()
     recommendation_ids = manager.get_content_recommendations(preferences)
 
@@ -234,7 +232,9 @@ def get_content_recommendations(request):
 
     recommendation_serializers = ModelItinerarySerializers(recommendations, many=True)
 
-    return Response({'recommendations': recommendation_serializers.data}, status=status.HTTP_200_OK)
+    return Response({
+        'recommendations': recommendation_serializers.data
+        }, status=status.HTTP_200_OK)
 
 @api_view(["POST"])
 def update_itinerary_calendar(request, itinerary_id):
