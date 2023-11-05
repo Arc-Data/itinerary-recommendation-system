@@ -2,7 +2,7 @@ import { useContext, useState } from "react"
 import { Link } from 'react-router-dom';
 import AuthContext from "../context/AuthContext"
 /*Images*/
-import herobackground from "/public/herobackground.jpeg";
+import herobackground from "herobackground.jpeg";
 
 const ForgotPassword = () => {
     const { loginUser } = useContext(AuthContext)
