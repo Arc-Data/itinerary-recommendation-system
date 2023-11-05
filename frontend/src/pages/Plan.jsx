@@ -105,7 +105,6 @@ const Plan = () => {
 	useEffect(() => {
 		const locations = []
 		const mapMarkers = []
-		console.log("markers changing")
 					
 		if (days) {
 			days.forEach(day => {

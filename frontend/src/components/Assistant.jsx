@@ -3,8 +3,9 @@ import { useContext, useEffect, useState } from "react"
 import AuthContext from "../context/AuthContext"
 import Recommendation from "./Recommendation"
 
-const Assistant = ({onClose, day, updateDays, setItems}) => {
+const Assistant = ({onClose, day, updateDays}) => {
     const [loading, setLoading] = useState(true)
+    const [status, setStatus] = useState("")
     const [recommendations, setRecommendations] = useState([])
     const { authTokens } = useContext(AuthContext)
     const [selectedItem, setSelectedItem] = useState() 
@@ -26,6 +27,7 @@ const Assistant = ({onClose, day, updateDays, setItems}) => {
     }
 
     const applyRecommendation = async (e) => {
+        setStatus("Applying Recommendations...")
         setLoading(true)
 
         try {
@@ -49,11 +51,13 @@ const Assistant = ({onClose, day, updateDays, setItems}) => {
         finally {
             setLoading(false)
             onClose();
+            setStatus("");
         }
 
     }
 
     const fetchRecommendations = async (e) => {
+        setStatus("Loading Recommendations")
         setLoading(true)
 
         try {
@@ -73,6 +77,7 @@ const Assistant = ({onClose, day, updateDays, setItems}) => {
         }
         finally {
             setLoading(false)
+            setStatus("")
         }
     }
 
@@ -90,13 +95,15 @@ const Assistant = ({onClose, day, updateDays, setItems}) => {
                     <p>Use AI Assistant to generate your itinerary</p>
                 </div>
                 <div className="assistant--content">
-                    <p>Choose 1 from the list genereated. Note that this will replace the itinerary you created in <span className="assistant--date">{formatDate(day.date)}</span>.</p>
                     { loading ? 
-                    <div>Loading Recommendations...</div>
+                    <div>{status}</div>
                     :
+                    <>
+                    <p>Choose 1 from the list genereated. Note that this will replace the itinerary you created in <span className="assistant--date">{formatDate(day.date)}</span>.</p>
                     <div className="assistant--content-grid">
                         {displayRecommendations}
                     </div>
+                    </>
                     }
                 </div>
 
