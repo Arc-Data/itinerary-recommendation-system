@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import getTimeDetails from "../utils/getTimeDetails"
 import getFeeDetails from "../utils/getFeeDetails"
 
-const Recommendation = ({recommendation}) => {
+const Recommendation = ({recommendation, onClick, selected}) => {
 
     const displayItem = recommendation && recommendation.locations.map(item => {
         return (
@@ -19,7 +19,7 @@ const Recommendation = ({recommendation}) => {
     })
     
     return (
-        <div className="assistant--recommendation">
+        <div className={`assistant--recommendation ${selected ? "selected" : ""}` } onClick={onClick}>
             {displayItem}
         </div>
     )

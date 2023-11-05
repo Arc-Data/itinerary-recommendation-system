@@ -268,3 +268,17 @@ def update_itinerary_calendar(request, itinerary_id):
         'message': "Calendar Updated Successfully",
         'days': day_serializers.data
         }, status=status.HTTP_200_OK)
+
+@api_view(["POST"]) 
+def apply_recommendation(request, model_id):
+    day_id = request.data.get("day_id")
+    day = Day.objects.get(id=day_id)
+
+    ItineraryItem.objects.filter(day=day).delete()
+
+    model = ModelItinerary.objects.get(id=model_id)
+
+    for location in model.locations:
+        print(location)
+
+    return Response({'message': 'Successfully applied recommendation'}, status=status.HTTP_200_OK)

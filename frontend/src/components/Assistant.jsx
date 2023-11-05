@@ -7,14 +7,38 @@ const Assistant = ({onClose, day}) => {
     const [loading, setLoading] = useState(true)
     const [recommendations, setRecommendations] = useState([])
     const { authTokens } = useContext(AuthContext)
+    const [selectedItem, setSelectedItem] = useState() 
 
     const formatDate = (day) => {
         return dayjs(day.date).format("MMM D YYYY, dddd")
     }
 
     const displayRecommendations = recommendations && recommendations.map((recommendation, idx) => {
-        return <Recommendation recommendation={recommendation} key={idx}/>
+        return <Recommendation 
+                recommendation={recommendation} 
+                onClick={() => handleClick(recommendation.id)}
+                selected={selectedItem === recommendation.id}
+                key={recommendation.id}/>
     })
+
+    const handleClick = (id) => {
+        setSelectedItem(id)
+    }
+
+    const applyRecommendation = async (e) => {
+        setLoading(true)
+
+        try {
+            
+        }
+        catch(error) {
+            console.log("An error occured: ", error)
+        }
+        finally {
+            setLoading(false)
+        }
+
+    }
 
     const fetchRecommendations = async (e) => {
         setLoading(true)
@@ -65,7 +89,11 @@ const Assistant = ({onClose, day}) => {
 
                 <div className="assistant--footer">
                     <button className="assistant--btn btn-secondary" onClick={onClose}>Cancel</button>
-                    <button className="assistant--btn btn-primary">Done</button>
+                    <button
+                        disabled={!selectedItem ? true : false} 
+                        className="assistant--btn btn-primary">
+                            Done
+                    </button>
                 </div>
             </div>
         </>

@@ -1800,6 +1800,11 @@ input[type="radio"] {
     box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.5);
 }
 
+.assistant--btn:disabled {
+    opacity: .5;
+    cursor: unset;
+}
+
 .assistant--recommendation {
     border: 2px solid #e7e7e7;
     padding: 10px;
@@ -1809,13 +1814,15 @@ input[type="radio"] {
     gap: 6px;
 }
 
+.assistant--recommendation.selected {
+    border: 2px solid #184E77;
+}
+
 .assistant--recommendation:hover {
     cursor: pointer;
 }
 
-.assistant--recommendation:hover {
-    border: 2px solid #184E77;
-}
+
 
 .assistant--recommendation-item {
     display: flex;
