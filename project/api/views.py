@@ -278,11 +278,18 @@ def apply_recommendation(request, model_id):
 
     model = ModelItinerary.objects.get(id=model_id)
 
+    items = []
     for idx, location in enumerate(model.locations.all()):
-        ItineraryItem.objects.create(
+        item = ItineraryItem.objects.create(
             day=day,
             location=location,
             order=idx
         )
+        items.append(item)
 
-    return Response({'message': 'Successfully applied recommendation'}, status=status.HTTP_200_OK)
+    item_serializer = ItineraryItemSerializer(items, many=True)
+
+    return Response({
+        'message': 'Successfully applied recommendation',
+        'items': item_serializer.data
+    }, status=status.HTTP_200_OK)

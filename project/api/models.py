@@ -8,7 +8,6 @@ from .managers import CustomUserManager
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 
-import datetime
 import os
 
 class User(AbstractUser):

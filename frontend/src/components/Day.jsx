@@ -212,7 +212,8 @@ const Day = ({day, addMarker, deleteMarker, includedLocations, setIncludedLocati
             {openAssistantModal &&
             <Assistant 
                 onClose={toggleAssistantModal}
-                day={day}/>
+                day={day}
+                setItems={setItems}/>
             }
         </div>
     )

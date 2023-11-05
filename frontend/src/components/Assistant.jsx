@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react"
 import AuthContext from "../context/AuthContext"
 import Recommendation from "./Recommendation"
 
-const Assistant = ({onClose, day}) => {
+const Assistant = ({onClose, day, setItems}) => {
     const [loading, setLoading] = useState(true)
     const [recommendations, setRecommendations] = useState([])
     const { authTokens } = useContext(AuthContext)
@@ -29,7 +29,18 @@ const Assistant = ({onClose, day}) => {
         setLoading(true)
 
         try {
-            
+            const response = await fetch(`http://127.0.0.1:8000/api/recommendations/${selectedItem}/apply/`, {
+                'method' : 'POST',
+                'headers': {
+                    "Content-Type" : "application/json",
+                },
+                'body': JSON.stringify({
+                    'day_id': day.id
+                })
+            })
+
+            const data = await response.json();
+            setItems(data.items)
         }
         catch(error) {
             console.log("An error occured: ", error)
@@ -91,7 +102,8 @@ const Assistant = ({onClose, day}) => {
                     <button className="assistant--btn btn-secondary" onClick={onClose}>Cancel</button>
                     <button
                         disabled={!selectedItem ? true : false} 
-                        className="assistant--btn btn-primary">
+                        className="assistant--btn btn-primary"
+                        onClick={applyRecommendation}>
                             Done
                     </button>
                 </div>
