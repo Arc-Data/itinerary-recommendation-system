@@ -9,12 +9,14 @@ import { DragDropContext,  Draggable } from "react-beautiful-dnd";
 import updateItemOrdering from "../utils/updateItemOrdering";
 import AuthContext from "../context/AuthContext";
 import StrictModeDroppable from "../components/StrictModeDroppable"
+import Assistant from "./Assistant";
 
 const Day = ({day, addMarker, deleteMarker, includedLocations, setIncludedLocations}) => {
     const [open, setOpen] = useState(false)
     const [items, setItems] = useState(day.itinerary_items)
     const [openLocationModal, setLocationModal] = useState(false)
     const [openDeleteModal, setDeleteModal] = useState(false)
+    const [openAssistantModal, setAssistantModal] = useState(false)
     const [selectedItemId, setSelectedItemId] = useState(null)
     const [ordering, setOrdering] = useState(false)
     const [itemOrdering, setItemOrdering] = useState([])
@@ -42,6 +44,13 @@ const Day = ({day, addMarker, deleteMarker, includedLocations, setIncludedLocati
             event.stopPropagation()
         }
         setLocationModal(prev => !prev)
+    }
+
+    const toggleAssistantModal = (event) => {
+        if(event) {
+            event.stopPropagation()
+        }
+        setAssistantModal(prev => !prev)
     }
 
     const toggleOrdering = () => {
@@ -167,7 +176,9 @@ const Day = ({day, addMarker, deleteMarker, includedLocations, setIncludedLocati
                             className="plan--btn btn-primary">
                             <span><FontAwesomeIcon icon={faPlus}/>Add Location</span>
                         </button>
-                        <button className="plan--btn btn-secondary">
+                        <button 
+                            onClick={toggleAssistantModal}
+                            className="plan--btn btn-secondary">
                             <span className="ai-assistant"><FontAwesomeIcon icon={faWandMagicSparkles}/>AI Assistant</span>
                         </button>
                         <button className="btn-link" onClick={toggleOrdering}>Edit</button>
@@ -197,6 +208,10 @@ const Day = ({day, addMarker, deleteMarker, includedLocations, setIncludedLocati
                 setLocations={setItems} 
                 includedLocations={includedLocations}
                 setIncludedLocations={setIncludedLocations}/>
+            }
+            {openAssistantModal &&
+            <Assistant 
+                onClose={toggleAssistantModal}/>
             }
         </div>
     )
