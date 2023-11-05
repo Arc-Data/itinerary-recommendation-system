@@ -1,17 +1,17 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework import status, viewsets, filters
+from rest_framework import status, viewsets
 from rest_framework.filters import SearchFilter
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import IsAuthenticated
-from django.utils.timezone import make_aware
 
-import pytz
-
+from .managers import *
 from .models import *
 from .serializers import *
+
+import numpy as np
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
@@ -204,6 +204,37 @@ def update_preferences(request):
     user.save()
 
     return Response({'message': "Preferences Updated Successfully"}, status=status.HTTP_200_OK)
+
+@api_view(["POST"])
+def get_content_recommendations(request):
+    # find static user id for now, change the id according 
+    # to users who already have set their preferences
+    user = User.objects.get(id=2)
+
+    preferences = [
+        user.preferences.history,
+        user.preferences.nature,
+        user.preferences.religion,
+        user.preferences.art, 
+        user.preferences.activity,
+        user.preferences.entertainment,
+        user.preferences.culture
+    ]
+
+    preferences = np.array(preferences, dtype=int)
+
+    # get the manager for recommendations
+    manager = RecommendationsManager()
+    recommendation_ids = manager.get_content_recommendations(preferences)
+
+    recommendations = []
+    for id in recommendation_ids:
+        recommendation = ModelItinerary.objects.get(pk=id)
+        recommendations.append(recommendation)
+
+    recommendation_serializers = ModelItinerarySerializers(recommendations, many=True)
+
+    return Response({'recommendations': recommendation_serializers.data}, status=status.HTTP_200_OK)
 
 @api_view(["POST"])
 def update_itinerary_calendar(request, itinerary_id):
