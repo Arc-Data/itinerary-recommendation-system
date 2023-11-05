@@ -278,7 +278,11 @@ def apply_recommendation(request, model_id):
 
     model = ModelItinerary.objects.get(id=model_id)
 
-    for location in model.locations:
-        print(location)
+    for idx, location in enumerate(model.locations.all()):
+        ItineraryItem.objects.create(
+            day=day,
+            location=location,
+            order=idx
+        )
 
     return Response({'message': 'Successfully applied recommendation'}, status=status.HTTP_200_OK)

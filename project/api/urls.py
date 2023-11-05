@@ -26,4 +26,5 @@ urlpatterns = [
 
     path('preferences/', update_preferences, name="update-preferences"),
     path('recommendations/content/', get_content_recommendations, name='content-recommendations'),
+    path('recommendations/<int:model_id>/apply/', apply_recommendation, name='apply-recommendation'),
 ]
