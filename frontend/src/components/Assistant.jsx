@@ -1,6 +1,7 @@
 import dayjs from "dayjs"
 import { useContext, useEffect, useState } from "react"
 import AuthContext from "../context/AuthContext"
+import Recommendation from "./Recommendation"
 
 const Assistant = ({onClose, day}) => {
     const [loading, setLoading] = useState(true)
@@ -11,7 +12,11 @@ const Assistant = ({onClose, day}) => {
         return dayjs(day.date).format("MMM D YYYY, dddd")
     }
 
-    const getRecommendations = async (e) => {
+    const displayRecommendations = recommendations && recommendations.map((recommendation, idx) => {
+        return <Recommendation recommendation={recommendation} key={idx}/>
+    })
+
+    const fetchRecommendations = async (e) => {
         setLoading(true)
 
         try {
@@ -36,7 +41,7 @@ const Assistant = ({onClose, day}) => {
     }
 
     useEffect(() => {
-        getRecommendations()
+        fetchRecommendations()
         setLoading(false)
     }, [])
 
@@ -54,9 +59,7 @@ const Assistant = ({onClose, day}) => {
                     <div>Loading Recommendations...</div>
                     :
                     <div className="assistant--content-grid">
-                        <div>1</div>
-                        <div>2</div>
-                        <div>3</div>
+                        {displayRecommendations}
                     </div>
                     }
                 </div>
