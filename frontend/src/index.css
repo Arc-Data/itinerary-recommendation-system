@@ -1265,17 +1265,15 @@ input[type="radio"] {
     margin-right: 8px;
 }
 
-.plan--btn.btn-secondary {
-    color: #184E77;
-}
-
 .btn-primary {
+    border: 2px solid #184E77;
     background: #184E77;
 }
 
 .btn-secondary {
     border: 2px solid #184E77;
     background: #fcfcfc;
+    color: #184E77;
 }
 
 .btn-link {
@@ -1783,4 +1781,23 @@ input[type="radio"] {
 
 .assistant--content-grid > div {
     text-align: center;
+}
+
+.assistant--footer {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.assistant--btn {
+    width: 100px;
+    padding: 10px 12px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 400;
+    box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.2);
+}
+
+.assistant--btn:hover {
+    box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.5);
 }

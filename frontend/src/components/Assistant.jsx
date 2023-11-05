@@ -21,6 +21,10 @@ const Assistant = ({onClose, day}) => {
                         <div>3</div>
                     </div>
                 </div>
+                <div className="assistant--footer">
+                    <button className="assistant--btn btn-secondary" onClick={onClose}>Cancel</button>
+                    <button className="assistant--btn btn-primary">Done</button>
+                </div>
             </div>
         </>
     )
