@@ -4,8 +4,11 @@ import getTimeDetails from "../utils/getTimeDetails";
 import getFeeDetails from "../utils/getFeeDetails";
 
 const LocationItem = ({location, onClick}) => {
+    
+    const string = `http://127.0.0.1:8000${location.details.primary_image.replace(/'/g, "\\'")}` 
+
     const locationImage = {
-        backgroundImage: `url(http://127.0.0.1:8000${location.details.primary_image})`,
+        backgroundImage: `url(${string})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center'
     }
