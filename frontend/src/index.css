@@ -1744,4 +1744,43 @@ input[type="radio"] {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    border-radius: 10px;
+}
+
+.assistant > div {
+    padding: 24px 20px;
+}
+
+.assistant--header {
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    background: linear-gradient(270deg, #184E77 0.05%, #38A3A5 36.19%, #57CC99 69.75%, #80ED99 99.18%);
+    color: white;
+    display: grid;
+    place-items: center;
+    font-size: 14px;
+}
+
+.assistant--header-title {
+    font-weight: 500;
+    font-size: 20px;
+    margin-bottom: 4px;
+}
+
+.assistant--content > p {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.assistant--date {
+    color: #38A3A5;
+}
+
+.assistant--content-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.assistant--content-grid > div {
+    text-align: center;
 }
