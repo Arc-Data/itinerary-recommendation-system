@@ -57,7 +57,7 @@ const Plan = () => {
 		setItineraryOpen(prev => !prev)
 	}
 
-	const updateDays = (days) => {
+	const updateCalendarDays = (days) => {
 		setDays(days)
 	}
 
@@ -105,6 +105,7 @@ const Plan = () => {
 	useEffect(() => {
 		const locations = []
 		const mapMarkers = []
+		console.log("markers changing")
 					
 		if (days) {
 			days.forEach(day => {
@@ -123,10 +124,23 @@ const Plan = () => {
 
 	}, [days])
 
+	const updateDays = (dayId, replacement) => {
+		const currentDays = days.map(day => {
+			if (day.id === dayId) {
+				return replacement
+			}
+
+			return day
+		})
+		
+		setDays(currentDays)
+	}
+
 	const getDays = days && days.map(day => {
 		return <Day 
 			key={day.id} 
 			day={day} 
+			updateDays={updateDays}
 			addMarker={addMarker}
 			deleteMarker={deleteMarker}
 			includedLocations={includedLocations}
@@ -231,7 +245,7 @@ const Plan = () => {
 			</div>
 			<Map markers={markers}/>
 		</div>
-		{isCalendarOpen && <DateSettings onClose={toggleCalendar} updateDays={updateDays}/>}
+		{isCalendarOpen && <DateSettings onClose={toggleCalendar} updateDays={updateCalendarDays}/>}
 		</>
     	
   	)

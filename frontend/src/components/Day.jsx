@@ -11,9 +11,12 @@ import AuthContext from "../context/AuthContext";
 import StrictModeDroppable from "../components/StrictModeDroppable"
 import Assistant from "./Assistant";
 
-const Day = ({day, addMarker, deleteMarker, includedLocations, setIncludedLocations}) => {
+const Day = ({
+    day, updateDays, addMarker, 
+    deleteMarker, includedLocations, setIncludedLocations}) => {
+    
     const [open, setOpen] = useState(false)
-    const [items, setItems] = useState(day.itinerary_items)
+    const [items, setItems] = useState([])
     const [openLocationModal, setLocationModal] = useState(false)
     const [openDeleteModal, setDeleteModal] = useState(false)
     const [openAssistantModal, setAssistantModal] = useState(false)
@@ -25,6 +28,10 @@ const Day = ({day, addMarker, deleteMarker, includedLocations, setIncludedLocati
     const [maxTotal, setMaxTotal] = useState(0)
 
     const { authTokens } = useContext(AuthContext)
+
+    useEffect(() => {
+        setItems(day.itinerary_items)
+    }, [day])
 
     const toggleOpen = () => {
         setOpen(prev => !prev)
@@ -213,7 +220,7 @@ const Day = ({day, addMarker, deleteMarker, includedLocations, setIncludedLocati
             <Assistant 
                 onClose={toggleAssistantModal}
                 day={day}
-                setItems={setItems}/>
+                updateDays={updateDays}/>
             }
         </div>
     )

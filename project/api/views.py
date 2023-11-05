@@ -11,6 +11,7 @@ from .managers import *
 from .models import *
 from .serializers import *
 
+import datetime
 import numpy as np
 
 class MyTokenObtainPairView(TokenObtainPairView):
@@ -287,9 +288,9 @@ def apply_recommendation(request, model_id):
         )
         items.append(item)
 
-    item_serializer = ItineraryItemSerializer(items, many=True)
+    day_serializer = DaySerializers(day)
 
     return Response({
         'message': 'Successfully applied recommendation',
-        'items': item_serializer.data
+        'day': day_serializer.data
     }, status=status.HTTP_200_OK)

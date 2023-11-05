@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react"
 import AuthContext from "../context/AuthContext"
 import Recommendation from "./Recommendation"
 
-const Assistant = ({onClose, day, setItems}) => {
+const Assistant = ({onClose, day, updateDays, setItems}) => {
     const [loading, setLoading] = useState(true)
     const [recommendations, setRecommendations] = useState([])
     const { authTokens } = useContext(AuthContext)
@@ -40,13 +40,15 @@ const Assistant = ({onClose, day, setItems}) => {
             })
 
             const data = await response.json();
-            setItems(data.items)
+
+            updateDays(day.id, data.day)
         }
         catch(error) {
             console.log("An error occured: ", error)
         }
         finally {
             setLoading(false)
+            onClose();
         }
 
     }
