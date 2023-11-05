@@ -1770,18 +1770,16 @@ input[type="radio"] {
     text-align: center;
 }
 
+.assistant--content-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
 .assistant--date {
     color: #38A3A5;
 }
 
-.assistant--content-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-}
-
-.assistant--content-grid > div {
-    text-align: center;
-}
 
 .assistant--footer {
     display: flex;
@@ -1804,12 +1802,20 @@ input[type="radio"] {
 
 .assistant--recommendation {
     border: 1px solid gray;
-}
-
-.assistant--recommenation:hover {
-    border: 1px solid blue;
     padding: 10px;
     display: flex;
     flex-direction: column;
     gap: 6px;
+}
+
+.assistant--recommendation:hover {
+    border: 1px solid blue;
+}
+
+.assistant--recommendation-item {
+    display: flex;
+    padding: 8px 12px;
+    font-size: 14px;
+    width: 240px;
+    background: #333;
 }
