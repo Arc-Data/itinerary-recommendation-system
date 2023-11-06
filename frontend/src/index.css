@@ -1136,7 +1136,7 @@ input[type="radio"] {
     width: 100%;
     height: 100%;
     display: grid;
-    grid-template-columns: 250px 1fr;
+    grid-template-columns: 200px 1fr;
     overflow: hidden;
 }
 
@@ -1392,8 +1392,79 @@ input[type="radio"] {
     color: #333333;
     font-weight: 500;
     display: flex;
+    align-items: center;
     justify-content: space-between;
+    background: white;
+    padding: 12px 18px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 0.2em rgba(0, 0, 0, 0.2);
 }
+
+.plan--itinerary-day:hover {
+    border: 1px solid #3498db;
+}
+
+.plan--itinerary-day svg {
+    margin-right: 10px;
+}
+
+.plan--day-settings {
+    position: relative;
+}
+
+.plan--day-dropcontent {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    width: 140px;
+    background: white;
+    font-weight: 400;
+    font-size: 14px;
+    text-align: right;
+    z-index: 20;
+    box-shadow: 0 0 0.5em rgba(105, 100, 100, 0.5);
+    border-radius: 8px;
+}
+
+.plan--day-dropcontent-item {
+    padding: 12px 14px;
+}
+
+.plan--day-dropcontent-item:first-child {
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+}
+
+.plan--day-dropcontent-item:last-child {
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.plan--day-dropcontent-item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+}
+
+.plan--day-dropcontent > div:hover {
+    background: #ccc;
+}
+
+.plan--day-settings > svg {
+    font-size: 16px;
+    border: 1px solid transparent;
+    padding: 12px;
+    border-radius: 50%;
+}
+
+.plan--day-settings > svg:hover {
+    box-shadow: 0 0 0.1em rgba(0, 0, 0, 0.5);
+    background: #ccc;
+}
+/* .plan--day-settings:hover {
+    border: 1px solid blue;
+} */
 
 .plan--itinerary-items {
     display: flex;

@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react"
 import LocationItem from "./LocationItem"
 import dayjs from "dayjs"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faWandMagicSparkles, faChevronDown, faChevronUp, faBars, faPlus, faDotCircle, faCircle } from "@fortawesome/free-solid-svg-icons";
+import { faWandMagicSparkles, faChevronDown, faChevronUp, faBars, faPlus, faDotCircle, faCircle, faEllipsis, faPalette, faEdit, faRemove } from "@fortawesome/free-solid-svg-icons";
 import AddLocation from "./AddLocation";
 import ConfirmDeleteItem from "./ConfirmDeleteItem";
 import { DragDropContext,  Draggable } from "react-beautiful-dnd";
@@ -20,6 +20,7 @@ const Day = ({
     const [openLocationModal, setLocationModal] = useState(false)
     const [openDeleteModal, setDeleteModal] = useState(false)
     const [openAssistantModal, setAssistantModal] = useState(false)
+    const [openDaySettings, setOpenDaySettings] = useState(false)
     const [selectedItemId, setSelectedItemId] = useState(null)
     const [ordering, setOrdering] = useState(false)
     const [itemOrdering, setItemOrdering] = useState([])
@@ -79,6 +80,20 @@ const Day = ({
         )
     })
 
+    const preventSettingsPropagation = (e) => {
+        e.stopPropagation()
+    }
+
+    const toggleDaySettingsClick = () => {
+        setOpenDaySettings(prev => !prev)
+    }
+
+    const handleMouseOut = () => {
+        if (openDaySettings) {
+            setOpenDaySettings(false)
+        }
+    }
+
     const onSaveOrdering = async () => {
         const items = [...itemOrdering]
         setItems(items)
@@ -109,10 +124,27 @@ const Day = ({
 
     return (
         <div className="plan--itinerary">
-            <p onClick={toggleOpen} className="plan--itinerary-day">
-                {dayjs(day.date).format("dddd, MMM D")}
-                <FontAwesomeIcon className="icon--chevron" icon={open ? faChevronUp : faChevronDown} size="2xs" />           
-            </p>
+            <div onClick={toggleOpen} className="plan--itinerary-day">
+                <p>
+                    <FontAwesomeIcon className="icon--chevron" icon={open ? faChevronUp : faChevronDown} size="2xs" />           
+                    <span>{dayjs(day.date).format("dddd, MMM D")}</span>
+                </p>
+                <div className="plan--day-settings" onClick={preventSettingsPropagation}>
+                    <FontAwesomeIcon icon={faEllipsis} onClick={toggleDaySettingsClick}/>
+                    { openDaySettings && 
+                    <div className="plan--day-dropcontent"> 
+                        <div className="plan--day-dropcontent-item">
+                            <FontAwesomeIcon icon={faRemove} />
+                            <p>Delete day</p>
+                        </div>
+                        <div className="plan--day-dropcontent-item">
+                            <FontAwesomeIcon icon={faPalette} />
+                            <p>Edit color</p>
+                        </div>
+                    </div>
+                    }
+                </div>
+            </div>
             
             { open && 
             <>  
