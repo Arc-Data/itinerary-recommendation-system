@@ -19,9 +19,6 @@ const Color = ({onClose, day, updateDays}) => {
 
             const data = await response.json()
             
-            console.log(data)
-
-            console.log(day.id, data.day)
             updateDays(day.id, data.day)
         }
         catch (error) {
