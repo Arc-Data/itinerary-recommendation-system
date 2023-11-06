@@ -1,5 +1,5 @@
 ### itinerary-recommendation-system
-Built using Django + React
+Travel Planning Website with Itinerary Recommendation Capabilities based on tourist spots around Cebu. Built using React + Django.
 
 ## Installation Instructions ##
 
