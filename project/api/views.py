@@ -293,4 +293,18 @@ def apply_recommendation(request, model_id):
     return Response({
         'message': 'Successfully applied recommendation',
         'day': day_serializer.data
-    }, status=status.HTTP_200_OK)
+        }, status=status.HTTP_200_OK)
+
+@api_view(["POST"])
+def edit_day_color(request, day_id):
+    color = request.data.get("color")
+    day = Day.objects.get(id=day_id)
+    day.color = color
+    day.save()
+
+    day_serializer = DaySerializers(day)
+
+    return Response({
+        'message': "Updated Day Color Successfully",
+        'day': day_serializer.data
+        }, status=status.HTTP_200_OK)
