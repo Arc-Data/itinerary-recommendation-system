@@ -184,7 +184,7 @@ class Itinerary(models.Model):
 class Day(models.Model):
     date = models.DateField()
     itinerary = models.ForeignKey(Itinerary, on_delete=models.CASCADE)
-    color = models.CharField(max_length=7, blank=True)
+    color = models.CharField(max_length=7, default="#184E77")
 
     class Meta:
         ordering = ['date']
