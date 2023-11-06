@@ -201,10 +201,21 @@ class ReviewSerializers(serializers.ModelSerializer):
 
 class ItineraryListSerializers(serializers.ModelSerializer):
     image = serializers.SerializerMethodField()
-    
+    trip_duration = serializers.SerializerMethodField()
+    title = serializers.SerializerMethodField()
+
     class Meta:
         model = Itinerary 
         fields = '__all__'
+
+    def get_title(self, object):
+        days = Day.objects.filter(itinerary=object)
+
+        for day in days:
+            items = ItineraryItem.objects.filter(day=day)
+
+            if items:
+                return items[0].location.name
 
     def get_image(self, object):
         days = Day.objects.filter(itinerary=object)
@@ -218,6 +229,14 @@ class ItineraryListSerializers(serializers.ModelSerializer):
                 return url
 
         return "/media/location_images/Background.jpg"
+
+    def get_trip_duration(self, object):
+        days = Day.objects.filter(itinerary=object)
+        first_day = days.first();
+        last_day = days.last();
+
+        return f"{first_day.date} - {last_day.date}"
+
 
 class ItinerarySerializers(serializers.ModelSerializer):
     class Meta:
