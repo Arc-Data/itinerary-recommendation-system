@@ -1,9 +1,35 @@
 import { useState } from "react"
 import Modal from "./Modal"
 
-const Color = ({onClose}) => {
+const Color = ({onClose, day, updateDays}) => {
     const [selectedColor, setSelectedColor] = useState()
     const colors = ['#184E77', '#38A3A5', '#57CC99', '#80ED99', '#C7F9CC', '#5FD9F3']
+
+    const handleSubmit = async (e) => {
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/api/day/${day.id}/color/`, {
+                "method": "POST",
+                "headers": {
+                    'Content-Type': "application/json",
+                },
+                "body": JSON.stringify({
+                    "color": selectedColor
+                })
+            })
+
+            const data = await response.json()
+            
+            console.log(data)
+
+            console.log(day.id, data.day)
+            updateDays(day.id, data.day)
+        }
+        catch (error) {
+            console.log("An error occured: ", error)
+        }
+
+        onClose()
+    }
 
     return (
         <Modal onClose={onClose}>
@@ -27,8 +53,12 @@ const Color = ({onClose}) => {
                     })}
                 </div>
                 <div>
-                    <button className="assistant--btn btn-secondary" onClick={onClose}>Cancel</button>
-                    <button className="assistant--btn btn-primary">Done</button>
+                    <button 
+                        className="assistant--btn btn-secondary" onClick={onClose}>Cancel</button>
+                    <button 
+                        onClick={handleSubmit}
+                        disabled={!selectedColor}
+                        className="assistant--btn btn-primary">Done</button>
                 </div>
             </div>
         </Modal>

@@ -50,8 +50,8 @@ const Assistant = ({onClose, day, updateDays}) => {
         }
         finally {
             setLoading(false)
-            onClose();
-            setStatus("");
+            onClose()
+            setStatus("")
         }
 
     }

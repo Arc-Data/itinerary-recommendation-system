@@ -1893,8 +1893,6 @@ input[type="radio"] {
     cursor: pointer;
 }
 
-
-
 .assistant--recommendation-item {
     display: flex;
     gap: 10px;

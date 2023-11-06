@@ -25,11 +25,12 @@ const Plan = () => {
 	const { authTokens } = useContext(AuthContext)
 	const { id } = useParams()
 
-	const addMarker = (latitude, longitude) => {
+	const addMarker = (latitude, longitude, color) => {
 		const mapMarkers = [...markers]
 		mapMarkers.push({
 			lng: longitude,
-			lat: latitude
+			lat: latitude,
+			color: color,
 		})
 
 		setMarkers(mapMarkers)
@@ -113,6 +114,7 @@ const Plan = () => {
 					mapMarkers.push({
 						lng: location.details.longitude,
 						lat: location.details.latitude,
+						color: day.color,
 					})
 				})
 			})

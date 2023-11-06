@@ -15,7 +15,7 @@ import Color from "./Color";
 const Day = ({
     day, updateDays, addMarker, 
     deleteMarker, includedLocations, setIncludedLocations}) => {
-    
+
     const [open, setOpen] = useState(false)
     const [items, setItems] = useState([])
     const [openLocationModal, setLocationModal] = useState(false)
@@ -260,7 +260,9 @@ const Day = ({
             }
             {openColorModal &&
             <Color 
-                onClose={toggleOpenColorModal}/>
+                onClose={toggleOpenColorModal}
+                day={day}
+                updateDays={updateDays}/>
             }
         </div>
     )

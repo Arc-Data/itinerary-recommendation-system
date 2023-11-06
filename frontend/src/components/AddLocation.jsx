@@ -36,7 +36,7 @@ const AddLocation = ({onClose, day, locations, setLocations, includedLocations, 
         setIncludedLocations(arr2)
         // adding the location based on whether the user has added an item within the lifespan of the modal
         setRecentlyAddedLocations(arr3)
-        addMarker(item.details.latitude, item.details.longitude)
+        addMarker(item.details.latitude, item.details.longitude, day.color)
     }
 
     const searchLocations = async (search) => {
@@ -46,8 +46,6 @@ const AddLocation = ({onClose, day, locations, setLocations, includedLocations, 
     }
 
     const deleteLocation = (itemId, latitude, longitude) => {
-        console.log(latitude, longitude)
-        
         const updatedLocations = locations.filter(i => i.id !== itemId)
         const updatedIncludedLocations = includedLocations.filter(i => i.id !== itemId)
         const updatedRecentlyAddedLocations = recentlyAddedLocations.filter(i => i.id !== itemId)
