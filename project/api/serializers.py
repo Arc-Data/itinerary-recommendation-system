@@ -207,6 +207,16 @@ class ItineraryListSerializers(serializers.ModelSerializer):
         fields = '__all__'
 
     def get_image(self, object):
+        days = Day.objects.filter(itinerary=object)
+
+        for day in days:
+            items = ItineraryItem.objects.filter(day=day)
+
+            if items:
+                location = items[0].location
+                url = LocationImage.objects.get(is_primary_image=True, location=location).image.url
+                return url
+
         return "/media/location_images/Background.jpg"
 
 class ItinerarySerializers(serializers.ModelSerializer):
