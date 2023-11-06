@@ -37,7 +37,7 @@ class Preferences(models.Model):
     history = models.BooleanField(default=False)
     nature = models.BooleanField(default=False)
     religion = models.BooleanField(default=False)
-
+         
     def __str__(self):
         return self.user.email
 
@@ -184,6 +184,7 @@ class Itinerary(models.Model):
 class Day(models.Model):
     date = models.DateField()
     itinerary = models.ForeignKey(Itinerary, on_delete=models.CASCADE)
+    color = models.CharField(max_length=7, blank=True)
 
     class Meta:
         ordering = ['date']
