@@ -8,7 +8,6 @@ from .managers import CustomUserManager
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 
-import datetime
 import os
 
 class User(AbstractUser):
@@ -38,7 +37,7 @@ class Preferences(models.Model):
     history = models.BooleanField(default=False)
     nature = models.BooleanField(default=False)
     religion = models.BooleanField(default=False)
-
+         
     def __str__(self):
         return self.user.email
 
@@ -185,6 +184,10 @@ class Itinerary(models.Model):
 class Day(models.Model):
     date = models.DateField()
     itinerary = models.ForeignKey(Itinerary, on_delete=models.CASCADE)
+    color = models.CharField(max_length=7, default="#184E77")
+
+    class Meta:
+        ordering = ['date']
 
 class ItineraryItem(models.Model):
     day = models.ForeignKey(Day, on_delete=models.CASCADE, null=True)

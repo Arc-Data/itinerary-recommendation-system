@@ -201,13 +201,44 @@ class ReviewSerializers(serializers.ModelSerializer):
 
 class ItineraryListSerializers(serializers.ModelSerializer):
     image = serializers.SerializerMethodField()
-    
+    trip_duration = serializers.SerializerMethodField()
+    title = serializers.SerializerMethodField()
+
     class Meta:
         model = Itinerary 
         fields = '__all__'
 
+    def get_title(self, object):
+        days = Day.objects.filter(itinerary=object)
+
+        for day in days:
+            items = ItineraryItem.objects.filter(day=day)
+
+            if items:
+                return items[0].location.name
+
+        return "Untitled Trip"
+
     def get_image(self, object):
+        days = Day.objects.filter(itinerary=object)
+
+        for day in days:
+            items = ItineraryItem.objects.filter(day=day)
+
+            if items:
+                location = items[0].location
+                url = LocationImage.objects.get(is_primary_image=True, location=location).image.url
+                return url
+
         return "/media/location_images/Background.jpg"
+
+    def get_trip_duration(self, object):
+        days = Day.objects.filter(itinerary=object)
+        first_day = days.first();
+        last_day = days.last();
+
+        return f"{first_day.date} - {last_day.date}"
+
 
 class ItinerarySerializers(serializers.ModelSerializer):
     class Meta:
@@ -233,6 +264,44 @@ class DaySerializers(serializers.ModelSerializer):
 
     class Meta:
         model = Day
+        fields = '__all__'
+
+
+class LocationRecommenderSerializers(serializers.ModelSerializer):
+    fee = serializers.SerializerMethodField()
+    schedule = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Location
+        fields = ['id', 'name', 'fee', 'schedule']
+    
+    def get_fee(self, obj):
+        spot = Spot.objects.get(pk=obj.id)
+
+        if spot:
+            return {
+                "min": spot.get_min_cost,
+                "max": spot.get_max_cost
+            } 
+
+        return None
+    
+    def get_schedule(self, obj):
+        spot = Spot.objects.get(pk=obj.id)
+
+        if spot:
+            return {
+                "opening": spot.opening_time,
+                "closing": spot.closing_time 
+            }
+
+        return None    
+
+class ModelItinerarySerializers(serializers.ModelSerializer):
+    locations = LocationRecommenderSerializers(many=True)
+
+    class Meta:
+        model = ModelItinerary
         fields = '__all__'
 
 

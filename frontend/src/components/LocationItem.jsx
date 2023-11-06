@@ -1,22 +1,21 @@
-import { faLocation, faLocationDot, faTrash } from "@fortawesome/free-solid-svg-icons"
+import { faLocationDot, faTrash } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import dayjs from "dayjs";
+import getTimeDetails from "../utils/getTimeDetails";
+import getFeeDetails from "../utils/getFeeDetails";
 
 const LocationItem = ({location, onClick}) => {
+    
+    const string = `http://127.0.0.1:8000${location.details.primary_image.replace(/'/g, "\\'")}` 
+
     const locationImage = {
-        backgroundImage: `url(http://127.0.0.1:8000${location.details.primary_image})`,
+        backgroundImage: `url(${string})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center'
     }
 
-    const fee = location.details.max_cost === "0" ?  
-        "Free" : location.details.max_cost === location.details.min_cost ?
-        location.details.min_cost : `${location.details.min_cost} - ${location.details.max_cost}`;
-
-    const opening_string = location.details.opening.split(":")
-    const closing_string = location.details.closing.split(":")
-    const opening = dayjs(new Date(2045, 1, 1, ...opening_string)).format("h:mm A")
-    const closing = dayjs(new Date(2045, 1, 1, ...closing_string)).format("h:mm A")
+    const fee = getFeeDetails(location.details.min_cost, location.details.max_cost)
+    const opening = getTimeDetails(location.details.opening)
+    const closing = getTimeDetails(location.details.closing)
 
     return (
         <div className="plan--itinerary-item">

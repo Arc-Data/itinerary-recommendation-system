@@ -6,7 +6,8 @@ import dayjs from "dayjs"
 import CreateNav from "../components/CreateNav"
 import Map from "../components/Map"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDirections, faMap, faMoneyBill, faMoneyBills } from "@fortawesome/free-solid-svg-icons"
+import { faCalendarAlt, faMap, faMoneyBill } from "@fortawesome/free-solid-svg-icons"
+import DateSettings from "../components/DateSettings"
 
 const Plan = () => {
   	const [itinerary, setItinerary] = useState({
@@ -18,16 +19,18 @@ const Plan = () => {
 	const [days, setDays] = useState(null)
 	const [isExpenseOpen, setExpenseOpen] = useState(true)
 	const [isItineraryOpen, setItineraryOpen] = useState(true)
+	const [isCalendarOpen, setCalendarOpen] = useState(false)
 	const [includedLocations, setIncludedLocations] = useState([])
 	const [error, setError] = useState(null)
 	const { authTokens } = useContext(AuthContext)
 	const { id } = useParams()
 
-	const addMarker = (latitude, longitude) => {
+	const addMarker = (latitude, longitude, color) => {
 		const mapMarkers = [...markers]
 		mapMarkers.push({
 			lng: longitude,
-			lat: latitude
+			lat: latitude,
+			color: color,
 		})
 
 		setMarkers(mapMarkers)
@@ -36,6 +39,15 @@ const Plan = () => {
 	const deleteMarker = (latitude, longitude) => {
 		const mapMarkers = markers.filter(i => i.lng !== longitude && i.lat !== latitude)
 		setMarkers(mapMarkers)
+	}
+
+	const toggleCalendar = (e) => {
+		if(e) {
+			e.stopPropagation()
+		}
+
+		const status = !isCalendarOpen
+		setCalendarOpen(status)
 	}
 	
 	const toggleExpense = () => {
@@ -46,10 +58,12 @@ const Plan = () => {
 		setItineraryOpen(prev => !prev)
 	}
 
+	const updateCalendarDays = (days) => {
+		setDays(days)
+	}
+
 	useEffect(() => {
 		const fetchItineraryData = async (e) => {
-			const locations = []
-			
 			try {
 				const response = await fetch(`http://127.0.0.1:8000/api/plan/${id}/`, {
 					'method' : 'GET',
@@ -72,22 +86,10 @@ const Plan = () => {
 				
 				} else {
 					const data = await response.json();
-					const mapMarkers = []
+
 					setItinerary(data.itinerary)
 					setDays(data.days)
-					
-					data.days.forEach(day => {
-						day.itinerary_items.forEach(location => {
-							locations.push(...day.itinerary_items)
-							mapMarkers.push({
-								lng: location.details.longitude,
-								lat: location.details.latitude,
-							})
-						})
-					})
 
-					setIncludedLocations(locations)
-					setMarkers(mapMarkers)
 					setLoading(false)
 				}
 			}
@@ -101,10 +103,45 @@ const Plan = () => {
 		fetchItineraryData()
 	}, [ id ])
 
+	useEffect(() => {
+		const locations = []
+		const mapMarkers = []
+					
+		if (days) {
+			days.forEach(day => {
+				day.itinerary_items.forEach(location => {
+					locations.push(...day.itinerary_items)
+					mapMarkers.push({
+						lng: location.details.longitude,
+						lat: location.details.latitude,
+						color: day.color,
+					})
+				})
+			})
+			
+			setIncludedLocations(locations)
+			setMarkers(mapMarkers)
+		}
+
+	}, [days])
+
+	const updateDays = (dayId, replacement) => {
+		const currentDays = days.map(day => {
+			if (day.id === dayId) {
+				return replacement
+			}
+
+			return day
+		})
+		
+		setDays(currentDays)
+	}
+
 	const getDays = days && days.map(day => {
 		return <Day 
 			key={day.id} 
 			day={day} 
+			updateDays={updateDays}
 			addMarker={addMarker}
 			deleteMarker={deleteMarker}
 			includedLocations={includedLocations}
@@ -129,6 +166,7 @@ const Plan = () => {
 	)
  
 	return (
+		<>
 		<div className="create--layout">
 			<div>
 				<CreateNav />
@@ -187,7 +225,20 @@ const Plan = () => {
 							</div>
 						</section>
 						<section className="plan--itinerary-section">
-							<p className="plan--title">Itinerary</p>
+							<div className="plan--itinerary-header">
+								<p className="plan--title">Itinerary</p>
+								<div className="plan--calendar-settings">
+									<div className="calendar-info">
+										<FontAwesomeIcon icon={faCalendarAlt} />
+										<p>
+											{dayjs(days[0].date).format('MMM DD')} to {dayjs(days[days.length - 1].date).format('MMM DD')}
+										</p>
+									</div>
+									<div className="calendar-icon" onClick={toggleCalendar}>
+										<FontAwesomeIcon icon={faCalendarAlt}/>
+									</div>
+								</div>
+							</div>
 							{getDays}
 						</section>
 					</main>
@@ -195,6 +246,8 @@ const Plan = () => {
 			</div>
 			<Map markers={markers}/>
 		</div>
+		{isCalendarOpen && <DateSettings onClose={toggleCalendar} updateDays={updateCalendarDays}/>}
+		</>
     	
   	)
 }

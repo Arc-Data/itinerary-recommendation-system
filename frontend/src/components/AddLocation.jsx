@@ -6,6 +6,8 @@ import dayjs from "dayjs"
 import AuthContext from "../context/AuthContext"
 import Modal from "./Modal"
 import updateItemOrdering from "../utils/updateItemOrdering"
+import getTimeDetails from "../utils/getTimeDetails"
+import getFeeDetails from "../utils/getFeeDetails"
 
 const AddLocation = ({onClose, day, locations, setLocations, includedLocations, setIncludedLocations, addMarker, deleteMarker}) => {
     const { authTokens } = useContext(AuthContext)
@@ -34,7 +36,7 @@ const AddLocation = ({onClose, day, locations, setLocations, includedLocations, 
         setIncludedLocations(arr2)
         // adding the location based on whether the user has added an item within the lifespan of the modal
         setRecentlyAddedLocations(arr3)
-        addMarker(item.details.latitude, item.details.longitude)
+        addMarker(item.details.latitude, item.details.longitude, day.color)
     }
 
     const searchLocations = async (search) => {
@@ -44,8 +46,6 @@ const AddLocation = ({onClose, day, locations, setLocations, includedLocations, 
     }
 
     const deleteLocation = (itemId, latitude, longitude) => {
-        console.log(latitude, longitude)
-        
         const updatedLocations = locations.filter(i => i.id !== itemId)
         const updatedIncludedLocations = includedLocations.filter(i => i.id !== itemId)
         const updatedRecentlyAddedLocations = recentlyAddedLocations.filter(i => i.id !== itemId)
@@ -128,20 +128,12 @@ const AddLocation = ({onClose, day, locations, setLocations, includedLocations, 
         return includedLocations.some(i => i.location == locationId)
     }
 
-    const getTimeString = (time) => {
-        const timeString = time.split(":")
-        return dayjs(new Date(2045, 1, 1, ...timeString)).format("h:mm A")
-    }
-
     const displayRecentlyAdded = recentlyAddedLocations && recentlyAddedLocations.map(location => {
-        const min = location.details.min_cost
-        const max = location.details.max_cost
         const name = location.details.name
         const address = location.details.address
-        const fee = min === 0 ? 
-                "Free" : max === min ? min : `${min} - ${max}`;
-        const opening_time = getTimeString(location.details.opening)
-        const closing_time = getTimeString(location.details.closing) 
+        const fee = getFeeDetails(location.details.min_cost, location.details.max_cost)
+        const opening_time = getTimeDetails(location.details.opening)
+        const closing_time = getTimeDetails(location.details.closing) 
         
         return (
             <div key={location.id} location={location} className="add-location-modal--search-item">
@@ -161,12 +153,9 @@ const AddLocation = ({onClose, day, locations, setLocations, includedLocations, 
     useEffect(() => {
         if (searchData) {
             const results = searchData.map(location => {
-                const fee = location.fee.min === 0 ? 
-                "Free" : location.fee.min === location.fee.max ? location.fee.min : `${location.fee.min} - ${location.fee.max}`;
-    
-                const opening_time = getTimeString(location.schedule.opening)
-                const closing_time = getTimeString(location.schedule.closing) 
-                
+                const fee = getFeeDetails(location.fee.min, location.fee.max)
+                const opening_time = getTimeDetails(location.schedule.opening)
+                const closing_time = getTimeDetails(location.schedule.closing) 
                 return !checkDuplicateLocation(location.id) && (
                     <div key={location.id} location={location} className="add-location-modal--search-item">
                         <FontAwesomeIcon icon={faLocationDot}></FontAwesomeIcon>

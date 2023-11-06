@@ -1,23 +1,40 @@
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import LocationItem from "./LocationItem"
 import dayjs from "dayjs"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faWandMagicSparkles, faChevronDown, faChevronUp, faBars, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faWandMagicSparkles, faChevronDown, faChevronUp, faBars, faPlus, faDotCircle, faCircle, faEllipsis, faPalette, faEdit, faRemove } from "@fortawesome/free-solid-svg-icons";
 import AddLocation from "./AddLocation";
 import ConfirmDeleteItem from "./ConfirmDeleteItem";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { DragDropContext,  Draggable } from "react-beautiful-dnd";
 import updateItemOrdering from "../utils/updateItemOrdering";
 import AuthContext from "../context/AuthContext";
+import StrictModeDroppable from "../components/StrictModeDroppable"
+import Assistant from "./Assistant";
+import Color from "./Color";
 
-const Day = ({day, addMarker, deleteMarker, includedLocations, setIncludedLocations}) => {
+const Day = ({
+    day, updateDays, addMarker, 
+    deleteMarker, includedLocations, setIncludedLocations}) => {
+
     const [open, setOpen] = useState(false)
-    const [items, setItems] = useState(day.itinerary_items)
+    const [items, setItems] = useState([])
     const [openLocationModal, setLocationModal] = useState(false)
     const [openDeleteModal, setDeleteModal] = useState(false)
+    const [openAssistantModal, setAssistantModal] = useState(false)
+    const [openDaySettings, setOpenDaySettings] = useState(false)
+    const [openColorModal, setOpenColorModal] = useState(false)
     const [selectedItemId, setSelectedItemId] = useState(null)
     const [ordering, setOrdering] = useState(false)
     const [itemOrdering, setItemOrdering] = useState([])
+
+    const [minTotal, setMinTotal] = useState(0)
+    const [maxTotal, setMaxTotal] = useState(0)
+
     const { authTokens } = useContext(AuthContext)
+
+    useEffect(() => {
+        setItems(day.itinerary_items)
+    }, [day])
 
     const toggleOpen = () => {
         setOpen(prev => !prev)
@@ -39,9 +56,23 @@ const Day = ({day, addMarker, deleteMarker, includedLocations, setIncludedLocati
         setLocationModal(prev => !prev)
     }
 
+    const toggleAssistantModal = (event) => {
+        if(event) {
+            event.stopPropagation()
+        }
+        setAssistantModal(prev => !prev)
+    }
+
+    const toggleOpenColorModal = (event) => {
+        if(event) {
+            event.stopPropagation()
+        }
+        setOpenDaySettings(false)
+        setOpenColorModal(prev => !prev)
+    }
+
     const toggleOrdering = () => {
         const isOrderingActive = !ordering
-        console.log(isOrderingActive) 
         setOrdering(prev => !prev)
 
         if(isOrderingActive) {
@@ -50,13 +81,22 @@ const Day = ({day, addMarker, deleteMarker, includedLocations, setIncludedLocati
         }
     }
 
-    const itineraryItems = () => items.map(location => (
-        <LocationItem 
-            key={location.id} 
-            location={location} 
-            onClick={(e) => toggleDeleteModal(e, location.id)} />
+    const itineraryItems = () => items.map(location => {
+        return (
+            <LocationItem 
+                key={location.id} 
+                location={location} 
+                onClick={(e) => toggleDeleteModal(e, location.id)} />
         )
-    )
+    })
+
+    const preventSettingsPropagation = (e) => {
+        e.stopPropagation()
+    }
+
+    const toggleDaySettingsClick = () => {
+        setOpenDaySettings(prev => !prev)
+    }
 
     const onSaveOrdering = async () => {
         const items = [...itemOrdering]
@@ -78,17 +118,44 @@ const Day = ({day, addMarker, deleteMarker, includedLocations, setIncludedLocati
         setItemOrdering(reorderedItems)
     }
 
+    useEffect(() => {
+        let min = items.reduce((total, item) => item.details.min_cost + total, 0)
+        let max = items.reduce((total, item) => item.details.max_cost + total, 0)
+
+        setMinTotal(min)
+        setMaxTotal(max)
+    }, [items])
+
     return (
         <div className="plan--itinerary">
-            <p onClick={toggleOpen} className="plan--itinerary-day">
-                {dayjs(day.date).format("dddd, MMM D")}
-                <FontAwesomeIcon className="icon--chevron" icon={open ? faChevronUp : faChevronDown} size="2xs" />           
-            </p>
+            <div onClick={toggleOpen} className="plan--itinerary-day">
+                <p>
+                    <FontAwesomeIcon className="icon--chevron" icon={open ? faChevronUp : faChevronDown} size="2xs" />           
+                    <span>{dayjs(day.date).format("dddd, MMM D")}</span>
+                </p>
+                <div className="plan--day-settings" onClick={preventSettingsPropagation}>
+                    <FontAwesomeIcon icon={faEllipsis} onClick={toggleDaySettingsClick}/>
+                    { openDaySettings && 
+                    <div className="plan--day-dropcontent"> 
+                        <div className="plan--day-dropcontent-item">
+                            <FontAwesomeIcon icon={faRemove} />
+                            <p>Delete day</p>
+                        </div>
+                        <div className="plan--day-dropcontent-item" onClick={toggleOpenColorModal}>
+                            <FontAwesomeIcon icon={faPalette} />
+                            <p>Edit color</p>
+                        </div>
+                    </div>
+                    }
+                </div>
+            </div>
+            
             { open && 
             <>  
+
             { ordering ? (
             <DragDropContext onDragEnd={onDragEnd}>
-                <Droppable droppableId="droppable">
+                <StrictModeDroppable droppableId="droppable">
                     {(provided) => (
                         <div 
                             ref={provided.innerRef}
@@ -115,11 +182,17 @@ const Day = ({day, addMarker, deleteMarker, includedLocations, setIncludedLocati
                                 {provided.placeholder}
                             </div>
                     )}
-                </Droppable>
+                </StrictModeDroppable>
             </DragDropContext>
             )
             :
             <div className="plan--itinerary-items">
+                {items.length !== 0 && 
+                <p>
+                    <span>Total places: {items.length} </span>
+                    <span>Cost estimate: {minTotal} - {maxTotal} PHP</span>
+                </p>
+                }
                 {itineraryItems()}
             </div>
             }
@@ -146,7 +219,9 @@ const Day = ({day, addMarker, deleteMarker, includedLocations, setIncludedLocati
                             className="plan--btn btn-primary">
                             <span><FontAwesomeIcon icon={faPlus}/>Add Location</span>
                         </button>
-                        <button className="plan--btn btn-secondary">
+                        <button 
+                            onClick={toggleAssistantModal}
+                            className="plan--btn btn-secondary">
                             <span className="ai-assistant"><FontAwesomeIcon icon={faWandMagicSparkles}/>AI Assistant</span>
                         </button>
                         <button className="btn-link" onClick={toggleOrdering}>Edit</button>
@@ -176,6 +251,18 @@ const Day = ({day, addMarker, deleteMarker, includedLocations, setIncludedLocati
                 setLocations={setItems} 
                 includedLocations={includedLocations}
                 setIncludedLocations={setIncludedLocations}/>
+            }
+            {openAssistantModal &&
+            <Assistant 
+                onClose={toggleAssistantModal}
+                day={day}
+                updateDays={updateDays}/>
+            }
+            {openColorModal &&
+            <Color 
+                onClose={toggleOpenColorModal}
+                day={day}
+                updateDays={updateDays}/>
             }
         </div>
     )

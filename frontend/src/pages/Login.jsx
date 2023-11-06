@@ -2,8 +2,7 @@ import { useContext, useState } from "react"
 import { Link, Navigate } from 'react-router-dom';
 import AuthContext from "../context/AuthContext"
 
-/*Images*/
-import herobackground from "/public/herobackground.jpeg";
+import herobackground from "/herobackground.jpeg";
 
 const Login = () => {
     const { loginUser, user } = useContext(AuthContext)
