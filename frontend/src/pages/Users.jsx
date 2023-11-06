@@ -1,3 +1,5 @@
+import searchIcon from '/images/search.png';
+
 function Users(props) {
     const userElements = Object.values(props.users).map(user => (
         <tr key={user.id}>
@@ -12,11 +14,12 @@ function Users(props) {
     return (
         <>
             <div>
-                <form className="container">
+                <form className="admin--container">
+                    <img className='search--icon' src={searchIcon} alt="Search Icon" />
                     <input 
                         type="text"
                         placeholder="Search for user..."
-                        className="search--bar" 
+                        className="admin--search--bar" 
                     />
                     <button 
                         className="btn search"
@@ -28,11 +31,11 @@ function Users(props) {
             </div>
             <table>
                 <tr>
-                    <th>ID</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Email</th>
-                    <th>Action</th>
+                    <th className="font16">ID</th>
+                    <th className="font16">First Name</th>
+                    <th className="font16">Last Name</th>
+                    <th className="font16">Email</th>
+                    <th className="font16">Action</th>
                 </tr>
                 {userElements}
             </table>

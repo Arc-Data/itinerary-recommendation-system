@@ -2,7 +2,6 @@ import { useState } from 'react'
 import image from '/image.png'
 
 function AddLocation() {
-
     const [locationData, setLocationData] = useState(
         {
             type: "",
@@ -19,7 +18,7 @@ function AddLocation() {
     console.log(locationData)
 
     function handleChange(event) {
-        const {name, value} = event.target
+        const { name, value } = event.target
         setLocationData(prevLocationData => {
             return {
                 ...prevLocationData,
@@ -31,12 +30,13 @@ function AddLocation() {
     return (
         <>
             <h1>Add Location</h1>
-            <form className="container">
+            <form className="admin--container">
                 <div className="input--form">
                     <select
                         value={locationData.type}
                         onChange={handleChange}
                         name="type"
+                        className="styled-input" 
                     >
                         <option value="">-- Location Type --</option>
                         <option value="tour">Tour</option>
@@ -45,93 +45,100 @@ function AddLocation() {
                         <option value="food">Food</option>
                     </select>
 
-                    <div className="input container">
+                    <div className="input admin--container">
                         <label htmlFor="name">Location Name</label>
-                        <input 
-                           type="text"
-                           onChange={handleChange}
-                           name="name"
-                           value={locationData.name}
+                        <input
+                            type="text"
+                            onChange={handleChange}
+                            name="name"
+                            value={locationData.name}
+                            className="styled-input" 
                         />
                     </div>
-                    <div className="container">
-                        <div className="input container">
+                    <div className="admin--container">
+                        <div className="input admin--container">
                             <label htmlFor="openingHours">Opening Hours</label>
-                            <input 
+                            <input
                                 type="time"
                                 onChange={handleChange}
                                 name="openingHours"
                                 value={locationData.openingHours}
+                                className="styled-input" 
                             />
                         </div>
-                        <div className="input container">
+                        <div className="input admin--container">
                             <label htmlFor="closingHours">Closing Hours</label>
-                            <input 
+                            <input
                                 type="time"
                                 onChange={handleChange}
                                 name="closingHours"
                                 value={locationData.closingHours}
+                                className="styled-input" 
                             />
                         </div>
                     </div>
-                    <div className="input container">
+                    <div className="input admin--container">
                         <label htmlFor="address">Address</label>
-                        <input 
+                        <input
                             type="text"
                             onChange={handleChange}
                             name="address"
                             value={locationData.address}
+                            className="styled-input" 
                         />
                     </div>
-                    <div className="container">
-                        <div className="input container">
+                    <div className="admin--container">
+                        <div className="input admin--container">
                             <label htmlFor="city">City</label>
-                            <input 
+                            <input
                                 type="text"
                                 onChange={handleChange}
                                 name="city"
                                 value={locationData.city}
+                                className="styled-input" 
                             />
                         </div>
-                        <div className="input container">
+                        <div className="input admin--container">
                             <label htmlFor="postalCode">Postal Code</label>
-                            <input 
+                            <input
                                 type="text"
                                 onChange={handleChange}
                                 name="postalCode"
                                 value={locationData.postalCode}
+                                className="styled-input" 
                             />
                         </div>
-                        
                     </div>
-                    <div className="input container">
+                    <div className="input admin--container">
                         <label htmlFor="description">Description</label>
-                        <textarea 
+                        <textarea
                             onChange={handleChange}
                             name="description"
                             value={locationData.description}
+                            
                         />
                     </div>
-                    <button 
+                    <button
                         type="button"
                         className="btn done"
                     >
-                        Done
+                        Upload
                     </button>
                 </div>
-                <div className="image--border center container">
+                <div className="image--border center admin--container">
                     <img src={image} />
-                    <label htmlFor="imgFile">Choose file to upload</label>
-                    <input 
-                        type="file" 
-                        id="imgFile" 
+                    <label htmlFor="imgFile"> <a className='choose--file'>Choose file</a> to upload</label>
+                    <input
+                        type="file"
+                        id="imgFile"
                         name="filename"
                         accept="image/*"
+                        style={{ display: 'none' }} // Hide the default file input
                     />
                 </div>
             </form>
         </>
-        
+
     )
 }
 

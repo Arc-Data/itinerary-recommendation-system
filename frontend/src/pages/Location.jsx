@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom'
+import searchIcon from '/images/search.png';
 
 function Location(props) {
 
@@ -17,11 +18,12 @@ function Location(props) {
     return (
         <>
             <div>
-                <form className="container">
+                <form className="admin--container">
+                    <img className='admin--search--icon' src={searchIcon} alt="Search Icon" />
                     <input 
                         type="text"
-                        placeholder="Search for user..."
-                        className="search--bar" 
+                        placeholder="Search for location"
+                        className="admin--search--bar" 
                     />
                     <button 
                         className="btn search"
@@ -34,7 +36,7 @@ function Location(props) {
                         type="button"
                     >
                         <NavLink 
-                            to="/add-location"
+                            to="/admin/add-location"
                             className="link"
                         >
                             Add Location
@@ -44,13 +46,13 @@ function Location(props) {
             </div>
             <table>
                 <tr>
-                    <th>ID</th>
-                    <th>Image</th>
-                    <th>Name</th>
-                    <th>Address</th>
-                    <th>Opening</th>
-                    <th>Closing</th>
-                    <th>Action</th>
+                    <th className="font16">ID</th>
+                    <th className="font16">Image</th>
+                    <th className="font16">Name</th>
+                    <th className="font16">Address</th>
+                    <th className="font16">Opening</th>
+                    <th className="font16">Closing</th>
+                    <th className="font16">Action</th>
                 </tr>
                 {locationElements}
             </table>

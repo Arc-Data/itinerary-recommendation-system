@@ -2,7 +2,7 @@ import { useContext, useEffect } from "react"
 import AuthContext from "../context/AuthContext"
 import { Outlet, useNavigate } from "react-router-dom"
 import Sidebar from "../components/Sidebar"
-
+import '../App.css'
 
 const AdminRoutes = () => {
     const { user } = useContext(AuthContext)    
