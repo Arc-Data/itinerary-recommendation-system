@@ -217,6 +217,8 @@ class ItineraryListSerializers(serializers.ModelSerializer):
             if items:
                 return items[0].location.name
 
+        return "Untitled Trip"
+
     def get_image(self, object):
         days = Day.objects.filter(itinerary=object)
 

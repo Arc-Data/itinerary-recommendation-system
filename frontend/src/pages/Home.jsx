@@ -30,7 +30,6 @@ const HomePage = () => {
 
 
 	const displayItineraries = trips && trips.map(trip => {
-		console.log(trip)
 		return (
 			<Itinerary key={trip.id} itinerary={trip}/>
 		)
