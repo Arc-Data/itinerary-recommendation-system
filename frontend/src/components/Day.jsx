@@ -10,6 +10,7 @@ import updateItemOrdering from "../utils/updateItemOrdering";
 import AuthContext from "../context/AuthContext";
 import StrictModeDroppable from "../components/StrictModeDroppable"
 import Assistant from "./Assistant";
+import Color from "./Color";
 
 const Day = ({
     day, updateDays, addMarker, 
@@ -21,6 +22,7 @@ const Day = ({
     const [openDeleteModal, setDeleteModal] = useState(false)
     const [openAssistantModal, setAssistantModal] = useState(false)
     const [openDaySettings, setOpenDaySettings] = useState(false)
+    const [openColorModal, setOpenColorModal] = useState(false)
     const [selectedItemId, setSelectedItemId] = useState(null)
     const [ordering, setOrdering] = useState(false)
     const [itemOrdering, setItemOrdering] = useState([])
@@ -61,6 +63,14 @@ const Day = ({
         setAssistantModal(prev => !prev)
     }
 
+    const toggleOpenColorModal = (event) => {
+        if(event) {
+            event.stopPropagation()
+        }
+        setOpenDaySettings(false)
+        setOpenColorModal(prev => !prev)
+    }
+
     const toggleOrdering = () => {
         const isOrderingActive = !ordering
         setOrdering(prev => !prev)
@@ -86,12 +96,6 @@ const Day = ({
 
     const toggleDaySettingsClick = () => {
         setOpenDaySettings(prev => !prev)
-    }
-
-    const handleMouseOut = () => {
-        if (openDaySettings) {
-            setOpenDaySettings(false)
-        }
     }
 
     const onSaveOrdering = async () => {
@@ -137,7 +141,7 @@ const Day = ({
                             <FontAwesomeIcon icon={faRemove} />
                             <p>Delete day</p>
                         </div>
-                        <div className="plan--day-dropcontent-item">
+                        <div className="plan--day-dropcontent-item" onClick={toggleOpenColorModal}>
                             <FontAwesomeIcon icon={faPalette} />
                             <p>Edit color</p>
                         </div>
@@ -253,6 +257,10 @@ const Day = ({
                 onClose={toggleAssistantModal}
                 day={day}
                 updateDays={updateDays}/>
+            }
+            {openColorModal &&
+            <Color 
+                onClose={toggleOpenColorModal}/>
             }
         </div>
     )

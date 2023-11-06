@@ -1415,7 +1415,7 @@ input[type="radio"] {
 
 .plan--day-dropcontent {
     position: absolute;
-    top: 40px;
+    top: 50px;
     right: 0;
     width: 140px;
     background: white;
