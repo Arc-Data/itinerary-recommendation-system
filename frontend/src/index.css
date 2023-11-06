@@ -790,10 +790,10 @@ input[type="text"] {
     margin-top: 12px;
 }
 
-
+/* 
 input[type="radio"] {
     display: none;
-}
+} */
 
 .star {
     cursor: pointer;
@@ -1922,3 +1922,25 @@ input[type="radio"] {
 .assistant--location-icon {
     color:#38A3A5;
 }
+
+.color--modal {
+    display: grid;
+    place-items:center;
+    gap: 20px;
+}
+
+.color--selection {
+    display: flex;
+    gap: 10px;
+}
+
+.color--selection-item {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.color--selection-item:hover {
+    cursor: pointer;
+}
+
