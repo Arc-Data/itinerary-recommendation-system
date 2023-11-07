@@ -1,7 +1,8 @@
 import { useContext, useEffect, useRef, useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faLocationDot } from "@fortawesome/free-solid-svg-icons"
+import { faClose, faLocationDot } from "@fortawesome/free-solid-svg-icons"
 import { Link } from "react-router-dom"
+import dayjs from "dayjs"
 import AuthContext from "../context/AuthContext"
 import Modal from "./Modal"
 import updateItemOrdering from "../utils/updateItemOrdering"
@@ -128,23 +129,16 @@ const AddLocation = ({onClose, day, locations, setLocations, includedLocations, 
     }
 
     const displayRecentlyAdded = recentlyAddedLocations && recentlyAddedLocations.map(location => {
-        const name = location.details.name
-        const address = location.details.address
-        const fee = getFeeDetails(location.details.min_cost, location.details.max_cost)
-        const opening_time = getTimeDetails(location.details.opening)
-        const closing_time = getTimeDetails(location.details.closing) 
-        
         return (
-            <div key={location.id} location={location} className="add-location-modal--search-item">
-                <FontAwesomeIcon icon={faLocationDot}></FontAwesomeIcon>
+            <div key={location.id} location={location} className="add-location-modal--recently-added">
+                <FontAwesomeIcon icon={faLocationDot} className="assistant--location-icon"/>
+                <p>{location.details.name}</p>
                 <div>
-                    <Link to={`/location/${location.id}`}>
-                    <p className="add-location-modal--title">{name}</p>
-                    </Link>
-                    <p className="add-location-modal--subtext">{address}</p>
-                    <p className="add-location-modal--subtext"><span>Opens {opening_time} - {closing_time} </span>•<span> Entrance Fee: {fee} </span></p>
+                    <FontAwesomeIcon 
+                        icon={faClose} 
+                        className="add-location-modal--remove"
+                        onClick={() => handleDeleteLocation(location.id, location)}/>                
                 </div>
-                <button className="add-location-modal--add-btn" onClick={() => handleDeleteLocation(location.id, location)}>x</button>
             </div>
         )
     })
@@ -199,7 +193,7 @@ const AddLocation = ({onClose, day, locations, setLocations, includedLocations, 
                     value={searchString}
                     />
                 {recentlyAddedLocations.length !== 0 && 
-                <div>
+                <div className="add-location-modal--recently-added-container">
                     {displayRecentlyAdded}
                 </div> }
                 {searchString.length !== 0 ? 

@@ -1558,12 +1558,14 @@ input[type="radio"] {
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 100;
+    border-radius: 8px;
+    box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.5);
 }
 
 .add-location-modal--tabs {
     border-block-end: 1px solid #e7e7e7;
     display: flex;
-    width: 920px;
+    width: 800px;
 }
 
 .add-location-modal--tabs > div {
@@ -1612,14 +1614,53 @@ input[type="radio"] {
 .add-location-modal--results {
     display:flex;
     flex-direction: column;
-    max-height: 500px;
+    max-height: 300px;
     overflow-y: scroll;
+}
+
+.add-location--search-input {
+    padding: 12px 16px;
+}
+
+.add-location-modal--recently-added-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
 }
 
 .add-location-modal--search-item {
     display: flex;
     padding: 10px;
-    gap: 10px;
+}
+
+.add-location-modal--remove {
+    margin-left: 10px;
+    border-radius: 50%;
+    padding: 6px;
+}
+
+.add-location-modal--remove:hover {
+    cursor: pointer;
+    color: red;
+}
+
+
+.add-location-modal--recently-added {
+    display: flex;
+    gap: 4px;
+    border-radius: 4px;
+    background: #d7eded;
+    padding: 10px 16px;
+    gap: 4px;
+    align-items: center;
+    max-width: 180px;
+    /* height: 16px; */
+}
+
+.add-location-modal--recently-added > p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .add-location-modal--search-item ~ *{
@@ -1630,14 +1671,14 @@ input[type="radio"] {
     color: #333333;
     font-size: 18px;
     font-weight: 600;
-    margin-bottom: 14px;
+    margin-bottom: 10px;
     text-decoration: underline;
 }
 
 .add-location-modal--subtext {
     color: #333333;
     font-size: 16px;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
 }
 
 .add-location-modal--subtext > span{
@@ -1654,6 +1695,13 @@ input[type="radio"] {
     border-radius: 50%;
     background: #e7e7e7;
     font-size: 18px;
+    box-shadow: 0 0 0.1em rgba(0, 0, 0, 0.8);
+}
+
+.add-location-modal--add-btn:hover {
+    background: #184E77;
+    color: white;
+    transition: 0.15s ease-in-out;
 }
 
 .confirm-delete {
