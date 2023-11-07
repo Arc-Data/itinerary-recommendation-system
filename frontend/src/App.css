@@ -5,7 +5,7 @@
 html, body {
   color: #333333;
 }
-main {
+.admin--main {
   margin-left: 250px;
   padding: 50px 80px;
   width: 100%;
@@ -67,10 +67,10 @@ main {
   padding: 10px 20px;
   text-decoration: none;
 }
-.active {
+/* .active {
   background-color: #184E77;
   color: white;
-}
+} */
 .dropdown {
   background-color: #30668F;
   color: white;
