@@ -89,8 +89,7 @@ const Day = ({
         return (
             <LocationItem 
                 key={location.id} 
-                location={location} 
-                onClick={(e) => toggleDeleteModal(e, location.id)} />
+                location={location} />
         )
     })
 

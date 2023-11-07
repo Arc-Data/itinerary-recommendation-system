@@ -1328,6 +1328,11 @@ input[type="radio"] {
     color: #686868;
 }
 
+.plan--location-details svg {
+    font-size: 12px;
+    vertical-align: middle;
+} 
+
 .plan--location-name {
     font-size: 18px;
     font-weight: 600;
@@ -1486,11 +1491,6 @@ input[type="radio"] {
     gap: 10px;
 }
 
-.plan--itinerary-item:hover .plan--location-settings {
-    pointer-events: all;
-    visibility: visible;
-}
-
 .plan--itinerary-header {
     display: flex;
     justify-content: space-between;
@@ -1529,32 +1529,6 @@ input[type="radio"] {
 
 .calendar-icon > svg {
     color: white;
-}
-
-.plan--location-settings {
-    visibility: hidden;
-    pointer-events: none;
-    position: absolute;
-    top: 10px;
-    right:10px;
-    z-index: 2;
-    background: #fff;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    text-transform: uppercase;
-    padding: 12px;
-    color: red;
-    border-radius: 2px;
-    box-shadow: 0, 0, 0.5em rgba(0,0,0,0.5);
-}
-
-.plan--location-settings:hover {
-    cursor: pointer;
-}
-
-.plan--location-settings > i {
-    vertical-align: middle;
 }
 
 .modal {
@@ -1638,6 +1612,7 @@ input[type="radio"] {
 .add-location-modal--search-item {
     display: flex;
     padding: 10px;
+    gap: 10px;
 }
 
 .add-location-modal--remove {
