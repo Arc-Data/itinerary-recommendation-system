@@ -12,15 +12,17 @@ import StrictModeDroppable from "../components/StrictModeDroppable"
 import Assistant from "./Assistant";
 import Color from "./Color";
 import getFeeDetails from "../utils/getFeeDetails";
+import ConfirmDeleteDay from "./ConfirmDeleteDay";
 
 const Day = ({
-    day, updateDays, addMarker, 
+    day, updateDays, removeDay, addMarker, 
     deleteMarker, includedLocations, setIncludedLocations}) => {
 
     const [open, setOpen] = useState(false)
     const [items, setItems] = useState([])
     const [openLocationModal, setLocationModal] = useState(false)
     const [openDeleteModal, setDeleteModal] = useState(false)
+    const [openDeleteDayModal, setOpenDeleteDayModal] = useState(false)
     const [openAssistantModal, setAssistantModal] = useState(false)
     const [openDaySettings, setOpenDaySettings] = useState(false)
     const [openColorModal, setOpenColorModal] = useState(false)
@@ -59,6 +61,15 @@ const Day = ({
         }
         setLocationModal(prev => !prev)
     }
+
+    const toggleDeleteDayModal = (event) => {
+        if (event) {
+            event.stopPropagation()
+        }
+        setOpenDaySettings(false)
+        setOpenDeleteDayModal(prev => !prev)
+    }
+
 
     const toggleAssistantModal = (event) => {
         if(event) {
@@ -165,7 +176,7 @@ const Day = ({
                     <FontAwesomeIcon icon={faEllipsis} onClick={toggleDaySettingsClick}/>
                     { openDaySettings && 
                     <div className="plan--day-dropcontent"> 
-                        <div className="plan--day-dropcontent-item">
+                        <div className="plan--day-dropcontent-item" onClick={toggleDeleteDayModal}>
                             <FontAwesomeIcon icon={faRemove} />
                             <p>Delete day</p>
                         </div>
@@ -309,6 +320,12 @@ const Day = ({
                 onClose={toggleOpenColorModal}
                 day={day}
                 updateDays={updateDays}/>
+            }
+            {openDeleteDayModal &&
+            <ConfirmDeleteDay 
+                onClose={toggleDeleteDayModal} 
+                removeDay={removeDay}
+                dayId={day.id}/>
             }
         </div>
     )

@@ -125,6 +125,11 @@ const Plan = () => {
 
 	}, [days])
 
+	const removeDay = (dayId) => {
+		const currentDays = days.filter(day => dayId !== day.id)
+		setDays(currentDays)
+	} 
+
 	const updateDays = (dayId, replacement) => {
 		const currentDays = days.map(day => {
 			if (day.id === dayId) {
@@ -142,6 +147,7 @@ const Plan = () => {
 			key={day.id} 
 			day={day} 
 			updateDays={updateDays}
+			removeDay={removeDay}
 			addMarker={addMarker}
 			deleteMarker={deleteMarker}
 			includedLocations={includedLocations}
@@ -228,12 +234,14 @@ const Plan = () => {
 							<div className="plan--itinerary-header">
 								<p className="plan--title">Itinerary</p>
 								<div className="plan--calendar-settings">
+									{days.length !== 0 && 
 									<div className="calendar-info">
 										<FontAwesomeIcon icon={faCalendarAlt} />
 										<p>
 											{dayjs(days[0].date).format('MMM DD')} to {dayjs(days[days.length - 1].date).format('MMM DD')}
 										</p>
 									</div>
+									}
 									<div className="calendar-icon" onClick={toggleCalendar}>
 										<FontAwesomeIcon icon={faCalendarAlt}/>
 									</div>
