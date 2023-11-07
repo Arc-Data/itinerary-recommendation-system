@@ -308,3 +308,15 @@ def edit_day_color(request, day_id):
         'message': "Updated Day Color Successfully",
         'day': day_serializer.data
         }, status=status.HTTP_200_OK)
+
+@api_view(["DELETE"])
+def delete_day(request, day_id):
+    try:
+        print("Im here")
+        day = Day.objects.get(id=day_id)
+        day.delete()
+        return Response({
+            'messsage': "Delete Success"
+        }, status=status.HTTP_204_NO_CONTENT)
+    except Day.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)

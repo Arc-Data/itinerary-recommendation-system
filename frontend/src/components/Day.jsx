@@ -188,7 +188,7 @@ const Day = ({
                     </div>                    
                     }
                 </div>
-                {items.length  && 
+                {items.length !== 0  && 
                 <p className="plan--day-details">
                     <span>Total places: {items.length} </span>
                     <span>Cost estimate: {costEstimate}</span>
