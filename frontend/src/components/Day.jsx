@@ -143,9 +143,7 @@ const Day = ({
     useEffect(() => {
         let min = items.reduce((total, item) => item.details.min_cost + total, 0)
         let max = items.reduce((total, item) => item.details.max_cost + total, 0)
-
         
-
         setMinTotal(min)
         setMaxTotal(max)
     }, [items])
@@ -214,7 +212,7 @@ const Day = ({
                                                 <div className="order-icon" onClick={() => moveItemDown(index)}>
                                                     <FontAwesomeIcon icon={faChevronDown} />
                                                 </div>
-                                                <div className="order-icon">
+                                                <div className="order-icon" onClick={(e) => toggleDeleteModal(e, location.id)}>
                                                     <FontAwesomeIcon icon={faTrash} />
                                                 </div>
                                             </div>
@@ -295,7 +293,8 @@ const Day = ({
                 locations={items}
                 setLocations={setItems} 
                 includedLocations={includedLocations}
-                setIncludedLocations={setIncludedLocations}/>
+                setIncludedLocations={setIncludedLocations}
+                setItemOrdering={setItemOrdering}/>
             }
             {openAssistantModal &&
             <Assistant 
