@@ -140,9 +140,9 @@ def create_itinerary(request):
 
 @api_view(["DELETE"])
 @permission_classes([IsAuthenticated])
-def delete_day_item(request, id):
+def delete_day_item(request, day_id):
     try:
-        item = ItineraryItem.objects.get(pk=id)
+        item = ItineraryItem.objects.get(pk=day_id)
         item.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     except ItineraryItem.DoesNotExist:
