@@ -1387,13 +1387,14 @@ input[type="radio"] {
 }
 
 .plan--itinerary-day {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
     cursor: pointer;
+
     font-size: 20px;
     color: #333333;
     font-weight: 500;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     background: white;
     padding: 12px 18px;
     border-radius: 8px;
@@ -1462,6 +1463,12 @@ input[type="radio"] {
     box-shadow: 0 0 0.1em rgba(0, 0, 0, 0.5);
     background: #ccc;
 }
+
+.plan--day-details {
+    font-size: 14px;
+    font-weight: 400;
+}
+
 /* .plan--day-settings:hover {
     border: 1px solid blue;
 } */

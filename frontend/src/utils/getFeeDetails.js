@@ -1,7 +1,7 @@
 const getFeeDetails = (min, max) => {
     const str = min == "0" ?
         "Free" : max == min ?
-        min : `${min} - ${max}` 
+        `${min} PHP` : `${min} - ${max} PHP` 
 
     return str
 }

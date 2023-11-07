@@ -11,6 +11,7 @@ import AuthContext from "../context/AuthContext";
 import StrictModeDroppable from "../components/StrictModeDroppable"
 import Assistant from "./Assistant";
 import Color from "./Color";
+import getFeeDetails from "../utils/getFeeDetails";
 
 const Day = ({
     day, updateDays, addMarker, 
@@ -29,8 +30,11 @@ const Day = ({
 
     const [minTotal, setMinTotal] = useState(0)
     const [maxTotal, setMaxTotal] = useState(0)
+    const [costEstimate, setCostEstimate] = useState(0)
 
     const { authTokens } = useContext(AuthContext)
+
+    let cost_estimate;
 
     useEffect(() => {
         setItems(day.itinerary_items)
@@ -146,6 +150,9 @@ const Day = ({
         
         setMinTotal(min)
         setMaxTotal(max)
+
+        const costString = getFeeDetails(min, max)
+        setCostEstimate(costString)
     }, [items])
 
     return (
@@ -167,9 +174,16 @@ const Day = ({
                             <FontAwesomeIcon icon={faPalette} />
                             <p>Edit color</p>
                         </div>
-                    </div>
+                        
+                    </div>                    
                     }
                 </div>
+                {items.length  && 
+                <p className="plan--day-details">
+                    <span>Total places: {items.length} </span>
+                    <span>Cost estimate: {costEstimate}</span>
+                </p>
+                }
             </div>
             
             { open && 
@@ -183,12 +197,7 @@ const Day = ({
                             ref={provided.innerRef}
                             {...provided.droppableProps}
                             className="plan--order-container">
-                                {items.length !== 0 && 
-                                <p>
-                                    <span>Total places: {items.length} </span>
-                                    <span>Cost estimate: {minTotal} - {maxTotal} PHP</span>
-                                </p>
-                                }
+                                
                                 <p>Drag the items around to influence their ordering.</p>
                                 {itemOrdering.map((location, index) => (
                                     <Draggable 
@@ -228,12 +237,6 @@ const Day = ({
             )
             :
             <div className="plan--itinerary-items">
-                {items.length !== 0 && 
-                <p>
-                    <span>Total places: {items.length} </span>
-                    <span>Cost estimate: {minTotal} - {maxTotal} PHP</span>
-                </p>
-                }
                 {itineraryItems()}
             </div>
             }
