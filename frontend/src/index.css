@@ -1302,7 +1302,7 @@ input[type="radio"] {
 .plan--item {
     display: flex;
     gap: 10px;
-    padding: 15px 12px 30px;
+    padding: 15px 12px;
     background: #f1f1f1;
     border-radius: 10px;
     position:relative;
@@ -1751,9 +1751,34 @@ input[type="radio"] {
 .order-item {
     display: flex;
     gap: 10px;
-    padding: 10px 5px;
+    align-items: center;
+    background: #f1f1f1;
+    padding: 14px 40px 14px 16px;
     border-radius: 8px;
     box-shadow: 0 0 0.2em rgba(0, 0, 0, 0.5);
+}
+
+.order-item:first-of-type {
+    margin-top:20px;
+}
+
+.order-icons {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.order-icon {
+    font-size: 12px;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+}
+
+.order-icon:hover {
+    cursor: pointer;
+    background: white;
 }
 
 .plan--order-container {

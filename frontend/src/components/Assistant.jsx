@@ -82,6 +82,7 @@ const Assistant = ({onClose, day, updateDays}) => {
     }
 
     useEffect(() => {
+        setLoading(true)
         fetchRecommendations()
         setLoading(false)
     }, [])

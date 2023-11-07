@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react"
 import LocationItem from "./LocationItem"
 import dayjs from "dayjs"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faWandMagicSparkles, faChevronDown, faChevronUp, faBars, faPlus, faDotCircle, faCircle, faEllipsis, faPalette, faEdit, faRemove } from "@fortawesome/free-solid-svg-icons";
+import { faWandMagicSparkles, faChevronDown, faChevronUp, faBars, faPlus, faDotCircle, faCircle, faEllipsis, faPalette, faEdit, faRemove, faTrash } from "@fortawesome/free-solid-svg-icons";
 import AddLocation from "./AddLocation";
 import ConfirmDeleteItem from "./ConfirmDeleteItem";
 import { DragDropContext,  Draggable } from "react-beautiful-dnd";
@@ -161,6 +161,12 @@ const Day = ({
                             ref={provided.innerRef}
                             {...provided.droppableProps}
                             className="plan--order-container">
+                                {items.length !== 0 && 
+                                <p>
+                                    <span>Total places: {items.length} </span>
+                                    <span>Cost estimate: {minTotal} - {maxTotal} PHP</span>
+                                </p>
+                                }
                                 {itemOrdering.map((location, index) => (
                                     <Draggable 
                                         key={location.id}
@@ -175,6 +181,17 @@ const Day = ({
                                         >
                                             <FontAwesomeIcon icon={faBars} />
                                             <p>{location.details.name}</p>
+                                            <div className="order-icons">
+                                                <div className="order-icon">
+                                                    <FontAwesomeIcon icon={faChevronUp} />
+                                                </div>
+                                                <div className="order-icon">
+                                                    <FontAwesomeIcon icon={faChevronDown} />
+                                                </div>
+                                                <div className="order-icon">
+                                                    <FontAwesomeIcon icon={faTrash} />
+                                                </div>
+                                            </div>
                                         </div>
                                     )}
                                     </Draggable>
@@ -224,7 +241,9 @@ const Day = ({
                             className="plan--btn btn-secondary">
                             <span className="ai-assistant"><FontAwesomeIcon icon={faWandMagicSparkles}/>AI Assistant</span>
                         </button>
+                        {items &&
                         <button className="btn-link" onClick={toggleOrdering}>Edit</button>
+                        }
                     </>
                     }                    
                 </div>
