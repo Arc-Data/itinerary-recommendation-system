@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react"
 import LocationItem from "./LocationItem"
 import dayjs from "dayjs"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faWandMagicSparkles, faChevronDown, faChevronUp, faBars, faPlus, faDotCircle, faCircle, faEllipsis, faPalette, faEdit, faRemove, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faWandMagicSparkles, faChevronDown, faChevronUp, faBars, faPlus, faDotCircle, faCircle, faEllipsis, faPalette, faEdit, faRemove, faTrash, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import AddLocation from "./AddLocation";
 import ConfirmDeleteItem from "./ConfirmDeleteItem";
 import { DragDropContext,  Draggable } from "react-beautiful-dnd";
@@ -98,6 +98,28 @@ const Day = ({
         setOpenDaySettings(prev => !prev)
     }
 
+    const moveItemUp = (index) => {
+        if (index === 0) return;
+    
+        const reorderedItems = [...itemOrdering];
+        const temp = reorderedItems[index];
+        reorderedItems[index] = reorderedItems[index - 1];
+        reorderedItems[index - 1] = temp;
+    
+        setItemOrdering(reorderedItems);
+    };
+    
+    const moveItemDown = (index) => {
+        if (index === items.length - 1) return;
+    
+        const reorderedItems = [...itemOrdering];
+        const temp = reorderedItems[index];
+        reorderedItems[index] = reorderedItems[index + 1];
+        reorderedItems[index + 1] = temp;
+    
+        setItemOrdering(reorderedItems);
+    };
+
     const onSaveOrdering = async () => {
         const items = [...itemOrdering]
         setItems(items)
@@ -121,6 +143,8 @@ const Day = ({
     useEffect(() => {
         let min = items.reduce((total, item) => item.details.min_cost + total, 0)
         let max = items.reduce((total, item) => item.details.max_cost + total, 0)
+
+        
 
         setMinTotal(min)
         setMaxTotal(max)
@@ -167,6 +191,7 @@ const Day = ({
                                     <span>Cost estimate: {minTotal} - {maxTotal} PHP</span>
                                 </p>
                                 }
+                                <p>Drag the items around to influence their ordering.</p>
                                 {itemOrdering.map((location, index) => (
                                     <Draggable 
                                         key={location.id}
@@ -180,12 +205,13 @@ const Day = ({
                                             {...provided.dragHandleProps}
                                         >
                                             <FontAwesomeIcon icon={faBars} />
+                                            <FontAwesomeIcon icon={faLocationDot} className="assistant--location-icon"/>
                                             <p>{location.details.name}</p>
                                             <div className="order-icons">
-                                                <div className="order-icon">
+                                                <div className="order-icon" onClick={() => moveItemUp(index)}>
                                                     <FontAwesomeIcon icon={faChevronUp} />
                                                 </div>
-                                                <div className="order-icon">
+                                                <div className="order-icon" onClick={() => moveItemDown(index)}>
                                                     <FontAwesomeIcon icon={faChevronDown} />
                                                 </div>
                                                 <div className="order-icon">

@@ -1758,6 +1758,10 @@ input[type="radio"] {
     box-shadow: 0 0 0.2em rgba(0, 0, 0, 0.5);
 }
 
+.order-item:hover {
+    background: white;
+}
+
 .order-item:first-of-type {
     margin-top:20px;
 }
@@ -1778,7 +1782,7 @@ input[type="radio"] {
 
 .order-icon:hover {
     cursor: pointer;
-    background: white;
+    border: 1px solid #184E77;
 }
 
 .plan--order-container {
