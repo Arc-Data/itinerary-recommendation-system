@@ -234,10 +234,14 @@ class ItineraryListSerializers(serializers.ModelSerializer):
 
     def get_trip_duration(self, object):
         days = Day.objects.filter(itinerary=object)
-        first_day = days.first();
-        last_day = days.last();
 
-        return f"{first_day.date} - {last_day.date}"
+        if not days:
+            return "No set duration yet"
+
+        first_day = days.first();
+        num_of_days = "days" if days.length > 1 else "day"
+
+        return f"{first_day.date} • {days.length} {num_of_days}"
 
 
 class ItinerarySerializers(serializers.ModelSerializer):
