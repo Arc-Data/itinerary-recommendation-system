@@ -13,11 +13,14 @@ urlpatterns = [
     path('location/', LocationViewSet.as_view({'get': 'list'}), name="locations"),
 
     path('create_itinerary/', create_itinerary, name='create_itinerary'),
-    path('plan/<int:itinerary_id>/', get_itinerary, name="itinerary"),
     path('plan/<int:itinerary_id>/calendar/', update_itinerary_calendar,name="update-itinerary-calendar"),
     
     path('location/<int:id>/', get_location, name='location-detail'),
     path('itineraries/', get_user_itineraries, name="itinerary-list"),
+    path('plan/<int:itinerary_id>/', get_itinerary, name="itinerary"),
+    
+    path('itinerary/<int:itinerary_id>/', get_itinerary_2, name="get_itinerary"),
+    path('itinerary/<int:itinerary_id>/days', get_related_days, name="get_related_days"),
     path('itinerary/<int:itinerary_id>/delete/', delete_itinerary, name="delete_itinerary"),
 
     path('day/<int:day_id>/color/', edit_day_color, name="edit-day-color"),

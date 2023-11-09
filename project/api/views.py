@@ -45,6 +45,15 @@ class LocationViewSet(viewsets.ReadOnlyModelViewSet):
             queryset = queryset.filter(name__istartswith=query)
 
         return queryset
+    
+@api_view(['GET'])
+def get_related_days(request, itinerary_id):
+    itinerary = Itinerary.objects.get(id=itinerary_id)
+
+    days = Day.objects.filter(itinerary=itinerary)
+    day_serializer = DaySerializers(days, many=True)
+
+    return Response(day_serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -53,6 +62,23 @@ def get_user_itineraries(request):
     itineraries = Itinerary.objects.filter(user=user)
     serializer = ItineraryListSerializers(itineraries, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_itinerary_2(request, itinerary_id):
+    try:
+        itinerary = Itinerary.objects.get(id=itinerary_id)
+    except Itinerary.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.user != itinerary.user:
+        return Response({'message': "Access Denied"}, status=status.HTTP_403_FORBIDDEN)
+
+    itinerary_serializer = ItinerarySerializers(itinerary)
+
+    return Response(itinerary_serializer.data, status=status.HTTP_200_OK)
+
+        
 
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
