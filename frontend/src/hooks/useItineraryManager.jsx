@@ -21,9 +21,23 @@ const useItineraryManager = (authTokens) => {
         setItineraries(data)
     }
 
+    const deleteUserItinerary = async (id) => {
+        await fetch(`http://127.0.0.1:8000/api/itinerary/${id}/delete/`, {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${access}`,
+            }
+        })
+
+        const updatedItineraries = itineraries.filter(itinerary => itinerary.id !== id)
+        setItineraries(updatedItineraries)
+    }
+
     return {
         itineraries,
         getUserItineraries,
+        deleteUserItinerary,
     }
 }
 

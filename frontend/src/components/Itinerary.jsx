@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendar, faClose, faEllipsis } from "@fortawesome/free-solid-svg-icons";
 
-const Itinerary = ({itinerary}) => {
+const Itinerary = ({itinerary, onClick}) => {
     return (
         <div className="itinerary">
             <div className="itinerary--image-container">
@@ -14,8 +14,8 @@ const Itinerary = ({itinerary}) => {
                         className="itinerary--image"
                         alt="" />
                 </Link>
-                <div className="itinerary--settings">
-                    <div className="itinerary--delete">Delete</div>
+                <div className="itinerary--settings" onClick={() => onClick(itinerary.id)}>
+                    <div className="itinerary--delete" >Delete</div>
                     <FontAwesomeIcon icon={faClose} />
                 </div>
             </div>

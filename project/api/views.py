@@ -62,10 +62,9 @@ def delete_itinerary(request, itinerary_id):
     if not itinerary:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    # itinerary.delete()
-    return Response({
-        'message': "Itinerary Deleted"
-    },status=status.HTTP_204_NO_CONTENT)
+    itinerary.delete()
+    
+    return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['PATCH'])
 @permission_classes([IsAuthenticated])
