@@ -1,8 +1,26 @@
 import { Link } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendar, faClose, faEllipsis } from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
+import ConfirmDelete from "../components/ConfirmDelete";
 
-const Itinerary = ({itinerary, onClick}) => {
+const Itinerary = ({itinerary, handleDelete}) => {
+    const [ openDelete, setOpenDelete ] = useState(false) 
+    
+    const toggleDeleteModal = (e) => {
+        console.log("Triggering")
+        if (e) {
+            e.stopPropagation()
+        }
+
+        setOpenDelete(prev => !prev)
+    }
+
+    const confirmDelete = () => {
+        handleDelete(itinerary.id)
+        toggleDeleteModal()
+    }
+
     return (
         <div className="itinerary">
             <div className="itinerary--image-container">
@@ -14,7 +32,7 @@ const Itinerary = ({itinerary, onClick}) => {
                         className="itinerary--image"
                         alt="" />
                 </Link>
-                <div className="itinerary--settings" onClick={() => onClick(itinerary.id)}>
+                <div className="itinerary--settings" onClick={toggleDeleteModal}>
                     <div className="itinerary--delete" >Delete</div>
                     <FontAwesomeIcon icon={faClose} />
                 </div>
@@ -26,6 +44,11 @@ const Itinerary = ({itinerary, onClick}) => {
                     <p>{itinerary.trip_duration }</p>
                 </div>
             </div>
+            {openDelete && 
+            <ConfirmDelete 
+                onClose={toggleDeleteModal}
+                handleDelete={confirmDelete}
+                />}
         </div>
     )
 }

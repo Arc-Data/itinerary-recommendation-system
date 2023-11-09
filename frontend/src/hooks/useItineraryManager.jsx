@@ -22,6 +22,8 @@ const useItineraryManager = (authTokens) => {
     }
 
     const deleteUserItinerary = async (id) => {
+        console.log("deleting")
+
         await fetch(`http://127.0.0.1:8000/api/itinerary/${id}/delete/`, {
             method: "DELETE",
             headers: {

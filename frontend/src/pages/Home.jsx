@@ -11,10 +11,9 @@ const HomePage = () => {
 		getUserItineraries();
 	}, [])
 
-
 	const displayItineraries = itineraries && itineraries.map(itinerary => {
 		return (
-			<Itinerary key={itinerary.id} itinerary={itinerary} onClick={deleteUserItinerary}/>
+			<Itinerary key={itinerary.id} itinerary={itinerary} handleDelete={deleteUserItinerary}/>
 		)
 	})
 
