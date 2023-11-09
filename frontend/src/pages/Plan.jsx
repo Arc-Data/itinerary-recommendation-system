@@ -8,46 +8,82 @@ import Map from "../components/Map"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarAlt, faMap, faMoneyBill } from "@fortawesome/free-solid-svg-icons"
 import DateSettings from "../components/DateSettings"
+import useItineraryManager from "../hooks/useItineraryManager"
+import useDayManager from "../hooks/useDayManager"
 
 const Plan = () => {
-  	const [itinerary, setItinerary] = useState({
+	const { authTokens } = useContext(AuthContext)
+	const [ itinerary, setItinerary ] = useState({
 		number_of_people: '1',
 		budget: ''
 	})
-	const [markers, setMarkers] = useState([])
-	const [isLoading, setLoading] = useState(true)
-	const [days, setDays] = useState(null)
+	const { id } = useParams()
+
+	const { 
+		loading,
+		error,
+		getItineraryById, 
+	} = useItineraryManager(authTokens)
+
+	const {
+		days,
+		getDays,
+	} = useDayManager(authTokens)
+
+	useEffect(() => {
+		const fetchData = async () => {
+			const userItinerary = await getItineraryById(id)
+			setItinerary(userItinerary)
+			await getDays(userItinerary.id)
+		}
+
+		fetchData()
+	}, [id])
+
+	useEffect(() => {
+
+	}, [days]) 
+
+	const handleNameSave = async () => {
+
+	}
+
+  	// const [itinerary, setItinerary] = useState({
+	// 	number_of_people: '1',
+	// 	budget: ''
+	// })
+	// const [markers, setMarkers] = useState([])
+	// const [isLoading, setLoading] = useState(true)
+	// const [days, setDays] = useState(null)
+	// const [includedLocations, setIncludedLocations] = useState([])
+	// const [error, setError] = useState(null)
+	
 	const [isExpenseOpen, setExpenseOpen] = useState(true)
 	const [isItineraryOpen, setItineraryOpen] = useState(true)
 	const [isCalendarOpen, setCalendarOpen] = useState(false)
-	const [includedLocations, setIncludedLocations] = useState([])
-	const [error, setError] = useState(null)
-	const { authTokens } = useContext(AuthContext)
-	const { id } = useParams()
 
-	const addMarker = (latitude, longitude, color) => {
-		const mapMarkers = [...markers]
-		mapMarkers.push({
-			lng: longitude,
-			lat: latitude,
-			color: color,
-		})
+	// const addMarker = (latitude, longitude, color) => {
+	// 	const mapMarkers = [...markers]
+	// 	mapMarkers.push({
+	// 		lng: longitude,
+	// 		lat: latitude,
+	// 		color: color,
+	// 	})
 
-		setMarkers(mapMarkers)
-	}
+	// 	setMarkers(mapMarkers)
+	// }
 
-	const deleteMarker = (latitude, longitude) => {
-		const mapMarkers = markers.filter(i => i.lng !== longitude && i.lat !== latitude)
-		setMarkers(mapMarkers)
-	}
+	// const deleteMarker = (latitude, longitude) => {
+	// 	const mapMarkers = markers.filter(i => i.lng !== longitude && i.lat !== latitude)
+	// 	setMarkers(mapMarkers)
+	// }
 
 	const toggleCalendar = (e) => {
 		if(e) {
 			e.stopPropagation()
 		}
 
-		const status = !isCalendarOpen
-		setCalendarOpen(status)
+		setCalendarOpen(prev => !prev)
 	}
 	
 	const toggleExpense = () => {
@@ -58,101 +94,61 @@ const Plan = () => {
 		setItineraryOpen(prev => !prev)
 	}
 
-	const updateCalendarDays = (days) => {
-		setDays(days)
-	}
+	// const updateCalendarDays = (days) => {
+	// 	setDays(days)
+	// }
 
-	useEffect(() => {
-		const fetchItineraryData = async (e) => {
-			try {
-				const response = await fetch(`http://127.0.0.1:8000/api/plan/${id}/`, {
-					'method' : 'GET',
-					'headers': {
-						"Content-Type" : "application/json",
-						"Authorization": `Bearer ${String(authTokens.access)}`, 
-					}
-				})
-				
-				if (response.status === 403) {
-					setLoading(false)
-					setError("Access Denied")
 
-				} else if (response.status === 404) {
-					setLoading(false)
-					setError("Itinerary Does not Exist")
-				
-				} else if (!response.ok) {
-					throw new Error("Something wrong happened")
-				
-				} else {
-					const data = await response.json();
-
-					setItinerary(data.itinerary)
-					setDays(data.days)
-
-					setLoading(false)
-				}
-			}
-			catch (e){
-				setLoading(false)
-				setError("Something went wrong")
-			}
-
-		}
-
-		fetchItineraryData()
-	}, [ id ])
-
-	useEffect(() => {
-		const locations = []
-		const mapMarkers = []
+	// useEffect(() => {
+		// const locations = []
+		// const mapMarkers = []
 					
-		if (days) {
-			days.forEach(day => {
-				day.itinerary_items.forEach(location => {
-					locations.push(...day.itinerary_items)
-					mapMarkers.push({
-						lng: location.details.longitude,
-						lat: location.details.latitude,
-						color: day.color,
-					})
-				})
-			})
+		// if (days) {
+		// 	days.forEach(day => {
+		// 		day.itinerary_items.forEach(location => {
+		// 			locations.push(...day.itinerary_items)
+		// 			mapMarkers.push({
+		// 				lng: location.details.longitude,
+		// 				lat: location.details.latitude,
+		// 				color: day.color,
+		// 			})
+		// 		})
+		// 	})
 			
-			setIncludedLocations(locations)
-			setMarkers(mapMarkers)
-		}
+		// 	setIncludedLocations(locations)
+		// 	setMarkers(mapMarkers)
+		// }
 
-	}, [days])
+	// }, [days])
 
-	const removeDay = (dayId) => {
-		const currentDays = days.filter(day => dayId !== day.id)
-		setDays(currentDays)
-	} 
+	// const removeDay = (dayId) => {
+	// 	const currentDays = days.filter(day => dayId !== day.id)
+	// 	setDays(currentDays)
+	// } 
 
-	const updateDays = (dayId, replacement) => {
-		const currentDays = days.map(day => {
-			if (day.id === dayId) {
-				return replacement
-			}
+	// const updateDays = (dayId, replacement) => {
+	// 	const currentDays = days.map(day => {
+	// 		if (day.id === dayId) {
+	// 			return replacement
+	// 		}
 
-			return day
-		})
+	// 		return day
+	// 	})
 		
-		setDays(currentDays)
-	}
+	// 	setDays(currentDays)
+	// }
 
-	const getDays = days && days.map(day => {
-		return <Day 
-			key={day.id} 
-			day={day} 
-			updateDays={updateDays}
-			removeDay={removeDay}
-			addMarker={addMarker}
-			deleteMarker={deleteMarker}
-			includedLocations={includedLocations}
-			setIncludedLocations={setIncludedLocations}/>
-	})
+	// const getDays = days && days.map(day => {
+	// 	return <Day 
+	// 		key={day.id} 
+	// 		day={day} 
+	// 		updateDays={updateDays}
+	// 		removeDay={removeDay}
+	// 		addMarker={addMarker}
+	// 		deleteMarker={deleteMarker}
+	// 		includedLocations={includedLocations}
+	// 		setIncludedLocations={setIncludedLocations}/>
+	// })
 
 	const getDayTabs = days && days.map(day => {
 		return (
@@ -163,7 +159,7 @@ const Plan = () => {
 		)
 	})
 
-	if (isLoading) return (
+	if (loading) return (
 		<div>Loading Please Wait</div>
 	)
 
@@ -234,25 +230,25 @@ const Plan = () => {
 							<div className="plan--itinerary-header">
 								<p className="plan--title">Itinerary</p>
 								<div className="plan--calendar-settings">
-									{days.length !== 0 && 
+									{/* {days.length !== 0 && 
 									<div className="calendar-info">
 										<FontAwesomeIcon icon={faCalendarAlt} />
 										<p>
 											{dayjs(days[0].date).format('MMM DD')} to {dayjs(days[days.length - 1].date).format('MMM DD')}
 										</p>
 									</div>
-									}
+									} */}
 									<div className="calendar-icon" onClick={toggleCalendar}>
 										<FontAwesomeIcon icon={faCalendarAlt}/>
 									</div>
 								</div>
 							</div>
-							{getDays}
+							{/* {getDays} */}
 						</section>
 					</main>
 				</div>
 			</div>
-			<Map markers={markers}/>
+			{/* <Map markers={markers}/> */}
 		</div>
 		{isCalendarOpen && <DateSettings onClose={toggleCalendar} updateDays={updateCalendarDays}/>}
 		</>
