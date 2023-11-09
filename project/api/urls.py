@@ -18,6 +18,7 @@ urlpatterns = [
     
     path('location/<int:id>/', get_location, name='location-detail'),
     path('itineraries/', get_user_itineraries, name="itinerary-list"),
+    path('itinerary/<int:itinerary_id>/delete/', delete_itinerary, name="delete_itinerary"),
 
     path('day/<int:day_id>/color/', edit_day_color, name="edit-day-color"),
     path('day/<int:day_id>/delete/', delete_day, name="delete-day"),

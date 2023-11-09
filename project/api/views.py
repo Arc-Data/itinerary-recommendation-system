@@ -54,6 +54,19 @@ def get_user_itineraries(request):
     serializer = ItineraryListSerializers(itineraries, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_itinerary(request, itinerary_id):
+    itinerary = Itinerary.objects.get(id=itinerary_id)
+
+    if not itinerary:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    # itinerary.delete()
+    return Response({
+        'message': "Itinerary Deleted"
+    },status=status.HTTP_204_NO_CONTENT)
+
 @api_view(['PATCH'])
 @permission_classes([IsAuthenticated])
 def update_ordering(request):

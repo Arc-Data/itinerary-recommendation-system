@@ -233,7 +233,6 @@ class ItineraryListSerializers(serializers.ModelSerializer):
 
         formatted_date = datetime.strptime(str(first_day.date), '%Y-%m-%d').strftime('%B %#d')
 
-
         return f"{formatted_date} • {len(days)} {num_of_days}"
 
 
