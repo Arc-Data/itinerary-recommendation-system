@@ -29,7 +29,9 @@ const Plan = () => {
 		loading: daysLoading,
 		error: daysError,
 		days,
+		markers,
 		getDays,
+		getMarkersData,
 	} = useDayManager(authTokens)
 
 	useEffect(() => {
@@ -43,7 +45,7 @@ const Plan = () => {
 	}, [id])
 
 	useEffect(() => {
-
+		getMarkersData()
 	}, [days]) 
 
 	const handleNameSave = async () => {
@@ -258,7 +260,7 @@ const Plan = () => {
 					</main>
 				</div>
 			</div>
-			{/* <Map markers={markers}/> */}
+			<Map markers={markers}/>
 		</div>
 		{isCalendarOpen && <DateSettings onClose={toggleCalendar} updateDays={updateCalendarDays}/>}
 		</>
