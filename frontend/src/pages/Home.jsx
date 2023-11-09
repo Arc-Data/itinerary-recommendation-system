@@ -5,15 +5,15 @@ import useItineraryManager from "../hooks/useItineraryManager";
 
 const HomePage = () => {
 	const { authTokens } = useContext(AuthContext)
-	const { itineraries, getUserItineraries, deleteUserItinerary } = useItineraryManager(authTokens)
+	const { itineraries, getItineraries, deleteItinerary } = useItineraryManager(authTokens)
 
 	useEffect(() => {
-		getUserItineraries();
+		getItineraries();
 	}, [])
 
 	const displayItineraries = itineraries && itineraries.map(itinerary => {
 		return (
-			<Itinerary key={itinerary.id} itinerary={itinerary} handleDelete={deleteUserItinerary}/>
+			<Itinerary key={itinerary.id} itinerary={itinerary} handleDelete={deleteItinerary}/>
 		)
 	})
 
