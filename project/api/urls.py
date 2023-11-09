@@ -20,7 +20,7 @@ urlpatterns = [
     path('plan/<int:itinerary_id>/', get_itinerary, name="itinerary"),
     
     path('itinerary/<int:itinerary_id>/', get_itinerary_2, name="get_itinerary"),
-    path('itinerary/<int:itinerary_id>/days', get_related_days, name="get_related_days"),
+    path('itinerary/<int:itinerary_id>/days/', get_related_days, name="get_related_days"),
     path('itinerary/<int:itinerary_id>/delete/', delete_itinerary, name="delete_itinerary"),
 
     path('day/<int:day_id>/color/', edit_day_color, name="edit-day-color"),
