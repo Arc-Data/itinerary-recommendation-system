@@ -20,12 +20,14 @@ const Plan = () => {
 	const { id } = useParams()
 
 	const { 
-		loading,
-		error,
+		loading: itineraryLoading,
+		error: itineraryError,
 		getItineraryById, 
 	} = useItineraryManager(authTokens)
 
 	const {
+		loading: daysLoading,
+		error: daysError,
 		days,
 		getDays,
 	} = useDayManager(authTokens)
@@ -159,12 +161,20 @@ const Plan = () => {
 		)
 	})
 
-	if (loading) return (
-		<div>Loading Please Wait</div>
+	if (itineraryLoading) return (
+		<div>Loading Itinerary Details</div>
 	)
 
-	if (error) return (
-		<div>{error}</div>
+	if(itineraryError) return (
+		<div>{itineraryError}</div>
+	)
+
+	if (daysLoading) return (
+		<div>Loading Related Days Information</div>
+	)
+
+	if (daysError) return (
+		<div>{daysError}</div>
 	)
  
 	return (
