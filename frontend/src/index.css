@@ -985,7 +985,7 @@ input[type="radio"] {
 }
 
 .home--banner > div {
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 700;
     border-radius: 10px;
     padding: 0px 36px;
@@ -1008,14 +1008,76 @@ input[type="radio"] {
 }
 
 .home--your-trips {
-    font-size: 24px;
+    font-size: 32px;
     font-weight: 700;
 }
 
 .home--trip-containers {
     display: flex;
     overflow-x: hidden;
+    gap: 20px;
     padding: 30px 0px;
+}
+
+.itinerary--image {
+    border-radius: 20px;
+    object-fit: cover;
+    box-shadow: 0 0 0.5em rgba(0,0,0,0.3);
+}
+
+.itinerary--image-container {
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.itinerary--image-container:hover .itinerary--settings {
+    pointer-events: all;
+    visibility: visible;
+}
+
+.itinerary--settings {
+    visibility: hidden;
+    pointer-events: none;
+    position: absolute;
+    top: 20px;
+    z-index: 50;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #323232;
+    color: #fcfcfc;
+    height: 30px;
+    border: 2px solid transparent;
+    padding: 16px 8px;
+    border-radius: 30px;
+    
+}
+
+.itinerary--delete {
+    display: none;
+    transition: 0.3s ease-in;
+}
+
+.itinerary--settings:hover {
+    border: 2px solid white;
+}
+
+.itinerary--settings:hover .itinerary--delete {
+    display: block;
+}
+
+.itinerary--title {
+    font-size: 18px;
+    font-weight: 600;
+    color: black;
+}
+
+.itinerary--details {
+    margin-top: 6px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 10px;
 }
 
 /* .create {
