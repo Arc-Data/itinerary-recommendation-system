@@ -6,7 +6,7 @@ const useDayManager = (authTokens) => {
     const [ error, setError ] = useState(false) 
     const [ loading, setLoading ] = useState(false) 
     const [ markers, setMarkers ] = useState([])
-    const [ includedLocations, setIncludedLocations ] = useState() 
+    const [ includedLocations, setIncludedLocations ] = useState([]) 
 
     const getDays = async (itinerary_id) => {
         setLoading(true)
@@ -50,15 +50,52 @@ const useDayManager = (authTokens) => {
         setIncludedLocations(locations)
         setMarkers(mapMarkers)
     }
+
+    const addMarker = (latitude, longitude, color) => {
+		const mapMarkers = [...markers]
+		mapMarkers.push({
+			lng: longitude,
+			lat: latitude,
+			color: color,
+		})
+
+		setMarkers(mapMarkers)
+	}
+
+    const deleteMarker = (latitude, longitude) => {
+		const mapMarkers = markers.filter(i => i.lng !== longitude && i.lat !== latitude)
+		setMarkers(mapMarkers)
+	}
+
+    const updateCalendarDays = (days) => {
+        setDays(days)
+    }
+
+    const updateDays = (dayId, replacement) => {
+		const currentDays = days.map(day => {
+			if (day.id === dayId) {
+				return replacement
+			}
+
+			return day
+		})
+		
+		setDays(currentDays)
+	}
     
     return {
         days,
         error,
         loading,
-        getDays,
-        getMarkersData,
         markers,
         includedLocations,
+        setIncludedLocations,
+        getDays,
+        updateDays,
+        updateCalendarDays,
+        getMarkersData,
+        addMarker,
+        deleteMarker,
     }
 }
 

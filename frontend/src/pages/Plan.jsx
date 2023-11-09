@@ -52,35 +52,9 @@ const Plan = () => {
 
 	}
 
-  	// const [itinerary, setItinerary] = useState({
-	// 	number_of_people: '1',
-	// 	budget: ''
-	// })
-	// const [markers, setMarkers] = useState([])
-	// const [isLoading, setLoading] = useState(true)
-	// const [days, setDays] = useState(null)
-	// const [includedLocations, setIncludedLocations] = useState([])
-	// const [error, setError] = useState(null)
-	
 	const [isExpenseOpen, setExpenseOpen] = useState(true)
 	const [isItineraryOpen, setItineraryOpen] = useState(true)
 	const [isCalendarOpen, setCalendarOpen] = useState(false)
-
-	// const addMarker = (latitude, longitude, color) => {
-	// 	const mapMarkers = [...markers]
-	// 	mapMarkers.push({
-	// 		lng: longitude,
-	// 		lat: latitude,
-	// 		color: color,
-	// 	})
-
-	// 	setMarkers(mapMarkers)
-	// }
-
-	// const deleteMarker = (latitude, longitude) => {
-	// 	const mapMarkers = markers.filter(i => i.lng !== longitude && i.lat !== latitude)
-	// 	setMarkers(mapMarkers)
-	// }
 
 	const toggleCalendar = (e) => {
 		if(e) {
@@ -98,49 +72,12 @@ const Plan = () => {
 		setItineraryOpen(prev => !prev)
 	}
 
-	// const updateCalendarDays = (days) => {
-	// 	setDays(days)
-	// }
-
-
-	// useEffect(() => {
-		// const locations = []
-		// const mapMarkers = []
-					
-		// if (days) {
-		// 	days.forEach(day => {
-		// 		day.itinerary_items.forEach(location => {
-		// 			locations.push(...day.itinerary_items)
-		// 			mapMarkers.push({
-		// 				lng: location.details.longitude,
-		// 				lat: location.details.latitude,
-		// 				color: day.color,
-		// 			})
-		// 		})
-		// 	})
-			
-		// 	setIncludedLocations(locations)
-		// 	setMarkers(mapMarkers)
-		// }
-
-	// }, [days])
-
 	// const removeDay = (dayId) => {
 	// 	const currentDays = days.filter(day => dayId !== day.id)
 	// 	setDays(currentDays)
 	// } 
 
-	// const updateDays = (dayId, replacement) => {
-	// 	const currentDays = days.map(day => {
-	// 		if (day.id === dayId) {
-	// 			return replacement
-	// 		}
-
-	// 		return day
-	// 	})
-		
-	// 	setDays(currentDays)
-	// }
+	
 
 	// const getDays = days && days.map(day => {
 	// 	return <Day 
@@ -153,6 +90,10 @@ const Plan = () => {
 	// 		includedLocations={includedLocations}
 	// 		setIncludedLocations={setIncludedLocations}/>
 	// })
+
+	const displayDays = days && days.map(day => {
+		return <Day key={day.id} day={day} />
+	})
 
 	const getDayTabs = days && days.map(day => {
 		return (
@@ -255,7 +196,7 @@ const Plan = () => {
 									</div>
 								</div>
 							</div>
-							{/* {getDays} */}
+							{displayDays}
 						</section>
 					</main>
 				</div>

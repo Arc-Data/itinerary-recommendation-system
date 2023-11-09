@@ -1,21 +1,29 @@
-import { useContext, useEffect, useRef, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faClose, faLocationDot } from "@fortawesome/free-solid-svg-icons"
 import { Link } from "react-router-dom"
-import dayjs from "dayjs"
 import AuthContext from "../context/AuthContext"
 import Modal from "./Modal"
 import updateItemOrdering from "../utils/updateItemOrdering"
 import getTimeDetails from "../utils/getTimeDetails"
 import getFeeDetails from "../utils/getFeeDetails"
+import useDayManager from "../hooks/useDayManager"
 
-const AddLocation = ({onClose, day, locations, setLocations, includedLocations, setIncludedLocations, addMarker, deleteMarker}) => {
+const AddLocation = ({onClose, day, items }) => {
     const { authTokens } = useContext(AuthContext)
+    const {
+        addMarker,
+        deleteMarker,
+        includedLocations,
+        setIncludedLocations,
+    } = useDayManager(authTokens)
+    
+    const [ locations, setLocations ] = useState(items)
+    const [recentlyAddedLocations, setRecentlyAddedLocations] = useState([])
     const [searchData, setSearchData] = useState(null)
     const [openBookmarks, setOpenBookmarks] = useState(false)
     const [searchString, setSearchString] = useState("")
     const [displayedSearchItems, setDisplayedSearchItems] = useState(null)
-    const [recentlyAddedLocations, setRecentlyAddedLocations] = useState([])
 
     let debounceTimeout = 2000;
     let timeout;

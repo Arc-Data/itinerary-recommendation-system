@@ -14,21 +14,21 @@ import Color from "./Color";
 import getFeeDetails from "../utils/getFeeDetails";
 import ConfirmDeleteDay from "./ConfirmDeleteDay";
 
-const Day = ({
-    day, updateDays, removeDay, addMarker, 
-    deleteMarker, includedLocations, setIncludedLocations}) => {
+const Day = ({ day }) => {
+
 
     const [open, setOpen] = useState(false)
-    const [items, setItems] = useState([])
+
+    const [locations, setlocations] = useState([])
+    const [selectedItemId, setSelectedItemId] = useState(null)
+    const [ordering, setOrdering] = useState(false)
+    const [itemOrdering, setItemOrdering] = useState([])
     const [openLocationModal, setLocationModal] = useState(false)
     const [openDeleteModal, setDeleteModal] = useState(false)
     const [openDeleteDayModal, setOpenDeleteDayModal] = useState(false)
     const [openAssistantModal, setAssistantModal] = useState(false)
     const [openDaySettings, setOpenDaySettings] = useState(false)
     const [openColorModal, setOpenColorModal] = useState(false)
-    const [selectedItemId, setSelectedItemId] = useState(null)
-    const [ordering, setOrdering] = useState(false)
-    const [itemOrdering, setItemOrdering] = useState([])
 
     const [minTotal, setMinTotal] = useState(0)
     const [maxTotal, setMaxTotal] = useState(0)
@@ -39,7 +39,7 @@ const Day = ({
     let cost_estimate;
 
     useEffect(() => {
-        setItems(day.itinerary_items)
+        setlocations(day.itinerary_items)
     }, [day])
 
     const toggleOpen = () => {
@@ -91,12 +91,12 @@ const Day = ({
         setOrdering(prev => !prev)
 
         if(isOrderingActive) {
-            const arr = [...items]
+            const arr = [...locations]
             setItemOrdering(arr)
         }
     }
 
-    const itineraryItems = () => items.map(location => {
+    const itineraryLocations = () => locations.map(location => {
         return (
             <LocationItem 
                 key={location.id} 
@@ -115,30 +115,30 @@ const Day = ({
     const moveItemUp = (index) => {
         if (index === 0) return;
     
-        const reorderedItems = [...itemOrdering];
-        const temp = reorderedItems[index];
-        reorderedItems[index] = reorderedItems[index - 1];
-        reorderedItems[index - 1] = temp;
+        const reorderedLocations = [...itemOrdering];
+        const temp = reorderedLocations[index];
+        reorderedlocations[index] = reorderedlocations[index - 1];
+        reorderedlocations[index - 1] = temp;
     
-        setItemOrdering(reorderedItems);
+        setItemOrdering(reorderedlocations);
     };
     
     const moveItemDown = (index) => {
-        if (index === items.length - 1) return;
+        if (index === locations.length - 1) return;
     
-        const reorderedItems = [...itemOrdering];
-        const temp = reorderedItems[index];
-        reorderedItems[index] = reorderedItems[index + 1];
-        reorderedItems[index + 1] = temp;
+        const reorderedlocations = [...itemOrdering];
+        const temp = reorderedlocations[index];
+        reorderedlocations[index] = reorderedlocations[index + 1];
+        reorderedlocations[index + 1] = temp;
     
-        setItemOrdering(reorderedItems);
+        setItemOrdering(reorderedlocations);
     };
 
     const onSaveOrdering = async () => {
-        const items = [...itemOrdering]
-        setItems(items)
+        const locations = [...itemOrdering]
+        setlocations(locations)
 
-        updateItemOrdering(authTokens, items)
+        updateItemOrdering(authTokens, locations)
         toggleOrdering()
     }
 
@@ -147,23 +147,23 @@ const Day = ({
             return;
         }
 
-        const reorderedItems = [...itemOrdering]
-        const [reorderedItem] = reorderedItems.splice(result.source.index, 1)
-        reorderedItems.splice(result.destination.index, 0, reorderedItem)
+        const reorderedlocations = [...itemOrdering]
+        const [reorderedItem] = reorderedlocations.splice(result.source.index, 1)
+        reorderedlocations.splice(result.destination.index, 0, reorderedItem)
     
-        setItemOrdering(reorderedItems)
+        setItemOrdering(reorderedlocations)
     }
 
     useEffect(() => {
-        let min = items.reduce((total, item) => item.details.min_cost + total, 0)
-        let max = items.reduce((total, item) => item.details.max_cost + total, 0)
+        let min = locations.reduce((total, item) => item.details.min_cost + total, 0)
+        let max = locations.reduce((total, item) => item.details.max_cost + total, 0)
         
         setMinTotal(min)
         setMaxTotal(max)
 
         const costString = getFeeDetails(min, max)
         setCostEstimate(costString)
-    }, [items])
+    }, [locations])
 
     return (
         <div className="plan--itinerary">
@@ -188,9 +188,9 @@ const Day = ({
                     </div>                    
                     }
                 </div>
-                {items.length !== 0  && 
+                {locations.length !== 0  && 
                 <p className="plan--day-details">
-                    <span>Total places: {items.length} </span>
+                    <span>Total places: {locations.length} </span>
                     <span>Cost estimate: {costEstimate}</span>
                 </p>
                 }
@@ -247,7 +247,7 @@ const Day = ({
             )
             :
             <div className="plan--itinerary-items">
-                {itineraryItems()}
+                {itineraryLocations()}
             </div>
             }
             <div className="plan--btn-container">
@@ -278,7 +278,7 @@ const Day = ({
                             className="plan--btn btn-secondary">
                             <span className="ai-assistant"><FontAwesomeIcon icon={faWandMagicSparkles}/>AI Assistant</span>
                         </button>
-                        {items &&
+                        {locations &&
                         <button className="btn-link" onClick={toggleOrdering}>Edit</button>
                         }
                     </>
@@ -286,19 +286,23 @@ const Day = ({
                 </div>
             </div>
             </>
+            // <AddLocation 
+            //     onClose={toggleLocationModal} 
+            //     locations={items}
+            //     setLocations={setItems}
+            //     day={day}
+            //     includedLocations={includedLocations}
+            //     setIncludedLocations={setIncludedLocations}
+            //     addMarker={addMarker} 
+            //     deleteMarker={deleteMarker}/>
             }
             {openLocationModal && 
             <AddLocation 
                 onClose={toggleLocationModal} 
-                locations={items}
-                setLocations={setItems}
                 day={day}
-                includedLocations={includedLocations}
-                setIncludedLocations={setIncludedLocations}
-                addMarker={addMarker} 
-                deleteMarker={deleteMarker}/>
+                />
             }
-            {openDeleteModal && 
+            {/* {openDeleteModal && 
             <ConfirmDeleteItem 
                 onClose={toggleDeleteModal}
                 itemId={selectedItemId}
@@ -326,7 +330,7 @@ const Day = ({
                 onClose={toggleDeleteDayModal} 
                 removeDay={removeDay}
                 dayId={day.id}/>
-            }
+            } */}
         </div>
     )
 }
