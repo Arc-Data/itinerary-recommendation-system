@@ -4,6 +4,8 @@ from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth.hashers import make_password
 
+from datetime import datetime
+
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
@@ -202,22 +204,10 @@ class ReviewSerializers(serializers.ModelSerializer):
 class ItineraryListSerializers(serializers.ModelSerializer):
     image = serializers.SerializerMethodField()
     trip_duration = serializers.SerializerMethodField()
-    title = serializers.SerializerMethodField()
 
     class Meta:
         model = Itinerary 
         fields = '__all__'
-
-    def get_title(self, object):
-        days = Day.objects.filter(itinerary=object)
-
-        for day in days:
-            items = ItineraryItem.objects.filter(day=day)
-
-            if items:
-                return items[0].location.name
-
-        return "Untitled Trip"
 
     def get_image(self, object):
         days = Day.objects.filter(itinerary=object)
@@ -238,10 +228,13 @@ class ItineraryListSerializers(serializers.ModelSerializer):
         if not days:
             return "No set duration yet"
 
-        first_day = days.first();
-        num_of_days = "days" if days.length > 1 else "day"
+        first_day = days.first()
+        num_of_days = "days" if len(days) > 1 else "day"
 
-        return f"{first_day.date} • {days.length} {num_of_days}"
+        formatted_date = datetime.strptime(str(first_day.date), '%Y-%m-%d').strftime('%B %#d')
+
+
+        return f"{formatted_date} • {len(days)} {num_of_days}"
 
 
 class ItinerarySerializers(serializers.ModelSerializer):

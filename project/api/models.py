@@ -180,6 +180,7 @@ class Itinerary(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     number_of_people = models.PositiveIntegerField(default=1)
     budget = models.FloatField(default=0)
+    name = models.CharField(max_length=60, default="My Trip")
 
 class Day(models.Model):
     date = models.DateField()
