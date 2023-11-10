@@ -14,7 +14,7 @@ const useItineraryManager = (authTokens) => {
                 'method' : 'GET',
                 'headers': {
                     "Content-Type" : "application/json",
-                    "Authorization": `Bearer ${String(authTokens.access)}`, 
+                    "Authorization": `Bearer ${access}`, 
                 }
             })
 

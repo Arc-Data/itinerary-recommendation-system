@@ -1,6 +1,4 @@
-const useItemLocationManager = (authTokens) => {
-    const access = String(authTokens.access)
-
+const useItemLocationManager = () => {
     const addItem = async (itemId, dayId, order) => {
         try {
             const requestBody = {
@@ -30,7 +28,9 @@ const useItemLocationManager = (authTokens) => {
         }
     }
 
-    const deleteItem = async (id) => {
+    const deleteItem = async (authTokens, id) => {
+        const access = String(authTokens.access)
+
         try {
             await fetch(`http://127.0.0.1:8000/api/day-item/${id}/delete`, {
                 method: "DELETE",
@@ -45,13 +45,15 @@ const useItemLocationManager = (authTokens) => {
         }
     }
 
-    const updateItemOrdering = async (locations) => {
+    const updateItemOrdering = async (authTokens, locations) => {
+        const access = String(authTokens.access)
+        
         try {
             const response = await fetch(`http://127.0.0.1:8000/api/update-ordering/`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${access}}`
+                    "Authorization": `Bearer ${access}`
                 },
                 body: JSON.stringify({ items:locations }),
             })

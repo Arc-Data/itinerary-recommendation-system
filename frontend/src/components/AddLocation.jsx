@@ -10,7 +10,7 @@ import useItemLocationManager from "../hooks/useItemLocationManager"
 
 const AddLocation = ({onClose, locations, setLocations, day, includedLocations, setIncludedLocations, addMarker, deleteMarker}) => {
     const { authTokens } = useContext(AuthContext)
-    const { addItem, deleteItem, updateItemOrdering } = useItemLocationManager()
+    const { addItem, deleteItem, updateItemOrdering } = useItemLocationManager(authTokens)
     const [recentlyAddedLocations, setRecentlyAddedLocations] = useState([])
     const [searchData, setSearchData] = useState(null)
     const [openBookmarks, setOpenBookmarks] = useState(false)

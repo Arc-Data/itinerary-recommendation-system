@@ -54,8 +54,10 @@ const Plan = () => {
 	}, [id])
 
 	useEffect(() => {
-		const locations = getMarkersData()
+		console.log("Shouldnt this trigger")
+		const locations = getMarkersData(days)
         setIncludedLocations(locations)
+		console.log(locations)
 	}, [days]) 
 
 	const [isExpenseOpen, setExpenseOpen] = useState(true)

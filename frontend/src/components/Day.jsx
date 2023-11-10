@@ -35,7 +35,7 @@ const Day = ({ day, updateDays, removeDay, addMarker, deleteMarker, includedLoca
     const [maxTotal, setMaxTotal] = useState(0)
     const [costEstimate, setCostEstimate] = useState(0)
 
-    const { updateItemOrdering } = useItemLocationManager(authTokens)
+    const { updateItemOrdering } = useItemLocationManager()
 
     let cost_estimate;
 

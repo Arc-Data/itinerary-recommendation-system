@@ -25,11 +25,9 @@ const useMarkerManager = () => {
 
         if(days) {
             days.forEach((day, idx) => {
-                console.log("Day ", idx)
                 console.log(day)
 
                 day.itinerary_items.forEach(location => {
-                    console.log("location", location)
                     locations.push(location)
                     mapMarkers.push({
                         lng: location.details.longitude,
@@ -43,7 +41,6 @@ const useMarkerManager = () => {
         setMarkers(mapMarkers)
 
         return locations
-
     }
 
 
