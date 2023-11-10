@@ -35,8 +35,7 @@ const Day = ({ day, updateDays, removeDay, addMarker, deleteMarker, includedLoca
     const [maxTotal, setMaxTotal] = useState(0)
     const [costEstimate, setCostEstimate] = useState(0)
 
-    const { updateItemOrdering } = useItemLocationManager()
-
+    const { updateItemOrdering } = useItemLocationManager(authTokens)
 
     let cost_estimate;
 
@@ -300,17 +299,18 @@ const Day = ({ day, updateDays, removeDay, addMarker, deleteMarker, includedLoca
                 addMarker={addMarker} 
                 deleteMarker={deleteMarker} />
             }
-            {/* {openDeleteModal && 
+            {openDeleteModal && 
             <ConfirmDeleteItem 
                 onClose={toggleDeleteModal}
                 itemId={selectedItemId}
                 deleteMarker={deleteMarker}
-                locations={items}
-                setLocations={setItems} 
+                locations={locations}
+                setLocations={setLocations} 
                 includedLocations={includedLocations}
                 setIncludedLocations={setIncludedLocations}
                 setItemOrdering={setItemOrdering}/>
             }
+            {/*
             {openAssistantModal &&
             <Assistant 
                 onClose={toggleAssistantModal}

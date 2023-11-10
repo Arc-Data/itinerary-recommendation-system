@@ -1,23 +1,15 @@
 import { useContext } from "react"
 import Modal from "./Modal"
 import AuthContext from "../context/AuthContext"
+import useItemLocationManager from "../hooks/useItemLocationManager"
 
 const ConfirmDeleteItem = ({onClose, itemId, deleteMarker, locations, setLocations, includedLocations, setIncludedLocations, setItemOrdering}) => {
     const { authTokens } = useContext(AuthContext)
+    const { deleteItem, updateItemOrdering } = useItemLocationManager(authTokens)
 
     const handleDelete = async () => {
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/day-item/${itemId}/delete`, {
-                method: "DELETE",
-                headers: {
-                    'Content-Type': "application/json",
-                    'Authorization': `Bearer ${String(authTokens.access)}`,
-                }
-            })
-
-            if(!response.ok) {
-                throw new Error("Something happened")
-            }
+            await deleteItem(itemId)
 
             const item = locations.find(i => i.id == itemId)
 
@@ -26,7 +18,8 @@ const ConfirmDeleteItem = ({onClose, itemId, deleteMarker, locations, setLocatio
     
             setLocations(updatedLocations)
             setIncludedLocations(updatedIncludedLocations)
-            updateItemOrdering(authTokens, updatedLocations)
+            
+            updateItemOrdering(updatedLocations)
             setItemOrdering(updatedLocations)
 
             deleteMarker(item.details.latitude, item.details.longitude)
