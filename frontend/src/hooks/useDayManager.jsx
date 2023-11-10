@@ -5,8 +5,6 @@ const useDayManager = (authTokens) => {
     const [ days, setDays ] = useState()
     const [ error, setError ] = useState(false) 
     const [ loading, setLoading ] = useState(false) 
-    const [ markers, setMarkers ] = useState([])
-    const [ includedLocations, setIncludedLocations ] = useState([]) 
 
     const getDays = async (itinerary_id) => {
         setLoading(true)
@@ -30,56 +28,14 @@ const useDayManager = (authTokens) => {
         }
     }
 
-    const getMarkersData = () => {
-        const locations = []
-        const mapMarkers = []
-
-        if(days) {
-            days.forEach((day, idx) => {
-                console.log("Day ", idx)
-                console.log(day)
-
-                day.itinerary_items.forEach(location => {
-                    console.log("location", location)
-                    locations.push(location)
-                    mapMarkers.push({
-                        lng: location.details.longitude,
-                        lat: location.details.latitude,
-                        color: day.color,
-                    })
-                })
-            })
-        }
-
-        console.log("Setting included locations to")
-        console.log(locations)
-        console.log(mapMarkers)
-
-        setIncludedLocations(locations)
-        setMarkers(mapMarkers)
-    }
-
-    const addMarker = (latitude, longitude, color) => {
-		const mapMarkers = [...markers]
-		mapMarkers.push({
-			lng: longitude,
-			lat: latitude,
-			color: color,
-		})
-
-
-        console.log(mapMarkers)
-		setMarkers(mapMarkers)
-	}
-
-    const deleteMarker = (latitude, longitude) => {
-		const mapMarkers = markers.filter(i => i.lng !== longitude && i.lat !== latitude)
-		setMarkers(mapMarkers)
-	}
-
     const updateCalendarDays = (days) => {
         setDays(days)
     }
+
+	const removeDay = (dayId) => {
+		const currentDays = days.filter(day => dayId !== day.id)
+		setDays(currentDays)
+	} 
 
     const updateDays = (dayId, replacement) => {
 		const currentDays = days.map(day => {
@@ -92,24 +48,15 @@ const useDayManager = (authTokens) => {
 		
 		setDays(currentDays)
 	}
-
-    const handleIncludedLocations = (locations) => {
-        setIncludedLocations(locations)
-    }
     
     return {
         days,
         error,
         loading,
-        markers,
-        includedLocations,
-        handleIncludedLocations,
         getDays,
+        removeDay,
         updateDays,
         updateCalendarDays,
-        getMarkersData,
-        addMarker,
-        deleteMarker,
     }
 }
 

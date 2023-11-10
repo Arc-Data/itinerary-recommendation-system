@@ -10,6 +10,7 @@ import { faCalendarAlt, faMap, faMoneyBill } from "@fortawesome/free-solid-svg-i
 import DateSettings from "../components/DateSettings"
 import useItineraryManager from "../hooks/useItineraryManager"
 import useDayManager from "../hooks/useDayManager"
+import useMarkerManager from "../hooks/useMarkerManager"
 
 const Plan = () => {
 	const { authTokens } = useContext(AuthContext)
@@ -18,6 +19,7 @@ const Plan = () => {
 		budget: ''
 	})
 	const { id } = useParams()
+	const [ includedLocations, setIncludedLocations ] = useState([])
 
 	const { 
 		loading: itineraryLoading,
@@ -25,14 +27,20 @@ const Plan = () => {
 		getItineraryById, 
 	} = useItineraryManager(authTokens)
 
+	const { 
+		markers, 
+		getMarkersData, 
+		deleteMarker, 
+		addMarker } = useMarkerManager()
+
 	const {
 		loading: daysLoading,
 		error: daysError,
 		days,
-		includedLocations,
-		markers,
+		removeDay,
+		updateDays,
+		updateCalendarDays,
 		getDays,
-		getMarkersData,
 	} = useDayManager(authTokens)
 
 	useEffect(() => {
@@ -46,13 +54,9 @@ const Plan = () => {
 	}, [id])
 
 	useEffect(() => {
-		console.log("Running markers data")
-		getMarkersData()
+		const locations = getMarkersData()
+        setIncludedLocations(locations)
 	}, [days]) 
-
-	const handleNameSave = async () => {
-
-	}
 
 	const [isExpenseOpen, setExpenseOpen] = useState(true)
 	const [isItineraryOpen, setItineraryOpen] = useState(true)
@@ -74,31 +78,24 @@ const Plan = () => {
 		setItineraryOpen(prev => !prev)
 	}
 
-	// const removeDay = (dayId) => {
-	// 	const currentDays = days.filter(day => dayId !== day.id)
-	// 	setDays(currentDays)
-	// } 
-
-	
+	const displayDays = days && days.map(day => {
+		return <Day 
+			key={day.id} 
+			day={day} 
+			updateDays={updateDays}
+			removeDay={removeDay}
+			addMarker={addMarker}
+			deleteMarker={deleteMarker}
+			includedLocations={includedLocations}
+			setIncludedLocations={setIncludedLocations}/>
+	})
 
 	// const displayDays = days && days.map(day => {
 	// 	return <Day 
 	// 		key={day.id} 
 	// 		day={day} 
-	// 		updateDays={updateDays}
-	// 		removeDay={removeDay}
-	// 		addMarker={addMarker}
-	// 		deleteMarker={deleteMarker}
-	// 		includedLocations={includedLocations}
-	// 		setIncludedLocations={setIncludedLocations}/>
+	// 		includedLocations={includedLocations}/>
 	// })
-
-	const displayDays = days && days.map(day => {
-		return <Day 
-			key={day.id} 
-			day={day} 
-			includedLocations={includedLocations}/>
-	})
 
 	const getDayTabs = days && days.map(day => {
 		return (

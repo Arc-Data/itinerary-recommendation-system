@@ -1,7 +1,6 @@
 import { useContext } from "react"
 import Modal from "./Modal"
 import AuthContext from "../context/AuthContext"
-import updateItemOrdering from "../utils/updateItemOrdering"
 
 const ConfirmDeleteItem = ({onClose, itemId, deleteMarker, locations, setLocations, includedLocations, setIncludedLocations, setItemOrdering}) => {
     const { authTokens } = useContext(AuthContext)

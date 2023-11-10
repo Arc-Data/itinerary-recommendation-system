@@ -6,7 +6,6 @@ import { faWandMagicSparkles, faChevronDown, faChevronUp, faBars, faPlus, faDotC
 import AddLocation from "./AddLocation";
 import ConfirmDeleteItem from "./ConfirmDeleteItem";
 import { DragDropContext,  Draggable } from "react-beautiful-dnd";
-import updateItemOrdering from "../utils/updateItemOrdering";
 import AuthContext from "../context/AuthContext";
 import StrictModeDroppable from "../components/StrictModeDroppable"
 import Assistant from "./Assistant";
@@ -14,13 +13,14 @@ import Color from "./Color";
 import getFeeDetails from "../utils/getFeeDetails";
 import ConfirmDeleteDay from "./ConfirmDeleteDay";
 import useDayManager from "../hooks/useDayManager";
+import useItemLocationManager from "../hooks/useItemLocationManager";
 
-const Day = ({ day, includedLocations }) => {
+const Day = ({ day, updateDays, removeDay, addMarker, deleteMarker, includedLocations, setIncludedLocations }) => {
     const { authTokens } = useContext(AuthContext)
 
     const [open, setOpen] = useState(false)
 
-    const [locations, setlocations] = useState([])
+    const [locations, setLocations] = useState([])
     const [selectedItemId, setSelectedItemId] = useState(null)
     const [ordering, setOrdering] = useState(false)
     const [itemOrdering, setItemOrdering] = useState([])
@@ -35,11 +35,13 @@ const Day = ({ day, includedLocations }) => {
     const [maxTotal, setMaxTotal] = useState(0)
     const [costEstimate, setCostEstimate] = useState(0)
 
+    const { updateItemOrdering } = useItemLocationManager()
+
 
     let cost_estimate;
 
     useEffect(() => {
-        setlocations(day.itinerary_items)
+        setLocations(day.itinerary_items)
     }, [day])
 
     const toggleOpen = () => {
@@ -136,7 +138,7 @@ const Day = ({ day, includedLocations }) => {
 
     const onSaveOrdering = async () => {
         const locations = [...itemOrdering]
-        setlocations(locations)
+        setLocations(locations)
 
         updateItemOrdering(authTokens, locations)
         toggleOrdering()
@@ -286,22 +288,17 @@ const Day = ({ day, includedLocations }) => {
                 </div>
             </div>
             </>
-            // <AddLocation 
-            //     onClose={toggleLocationModal} 
-            //     locations={items}
-            //     setLocations={setItems}
-            //     day={day}
-            //     includedLocations={includedLocations}
-            //     setIncludedLocations={setIncludedLocations}
-            //     addMarker={addMarker} 
-            //     deleteMarker={deleteMarker}/>
             }
             {openLocationModal && 
             <AddLocation 
                 onClose={toggleLocationModal} 
+                locations={locations}
+                setLocations={setLocations}
                 day={day}
                 includedLocations={includedLocations}
-                />
+                setIncludedLocations={setIncludedLocations}
+                addMarker={addMarker} 
+                deleteMarker={deleteMarker} />
             }
             {/* {openDeleteModal && 
             <ConfirmDeleteItem 

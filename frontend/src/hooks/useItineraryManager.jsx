@@ -18,8 +18,6 @@ const useItineraryManager = (authTokens) => {
                 }
             })
 
-            console.log(response)
-            
             if (response.status === 403) {
                 setError("Access Denied")
 
