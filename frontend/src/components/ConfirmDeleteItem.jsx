@@ -5,11 +5,11 @@ import useItemLocationManager from "../hooks/useItemLocationManager"
 
 const ConfirmDeleteItem = ({onClose, itemId, deleteMarker, locations, setLocations, includedLocations, setIncludedLocations, setItemOrdering}) => {
     const { authTokens } = useContext(AuthContext)
-    const { deleteItem, updateItemOrdering } = useItemLocationManager()
+    const { deleteItem, updateItemOrdering } = useItemLocationManager(authTokens)
 
     const handleDelete = async () => {
         try {
-            await deleteItem(authTokens, itemId)
+            await deleteItem(itemId)
 
             const item = locations.find(i => i.id == itemId)
 
