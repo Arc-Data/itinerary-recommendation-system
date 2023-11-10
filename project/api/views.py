@@ -1,14 +1,18 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework import status, viewsets, filters
+from rest_framework import status, viewsets
 from rest_framework.filters import SearchFilter
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import IsAuthenticated
 
+from .managers import *
 from .models import *
 from .serializers import *
+
+import datetime
+import numpy as np
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
@@ -41,6 +45,15 @@ class LocationViewSet(viewsets.ReadOnlyModelViewSet):
             queryset = queryset.filter(name__istartswith=query)
 
         return queryset
+    
+@api_view(['GET'])
+def get_related_days(request, itinerary_id):
+    itinerary = Itinerary.objects.get(id=itinerary_id)
+
+    days = Day.objects.filter(itinerary=itinerary)
+    day_serializer = DaySerializers(days, many=True)
+
+    return Response(day_serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -50,10 +63,40 @@ def get_user_itineraries(request):
     serializer = ItineraryListSerializers(itineraries, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_itinerary_2(request, itinerary_id):
+    try:
+        itinerary = Itinerary.objects.get(id=itinerary_id)
+    except Itinerary.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.user != itinerary.user:
+        return Response({'message': "Access Denied"}, status=status.HTTP_403_FORBIDDEN)
+
+    itinerary_serializer = ItinerarySerializers(itinerary)
+
+    return Response(itinerary_serializer.data, status=status.HTTP_200_OK)
+
+        
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_itinerary(request, itinerary_id):
+    itinerary = Itinerary.objects.get(id=itinerary_id)
+
+    if not itinerary:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    itinerary.delete()
+    
+    return Response(status=status.HTTP_204_NO_CONTENT)
+
 @api_view(['PATCH'])
 @permission_classes([IsAuthenticated])
 def update_ordering(request):
     items = request.data.get("items")
+    print(items)
 
     for order, item in enumerate(items):
         itinerary_item = ItineraryItem.objects.get(id=item["id"])
@@ -136,9 +179,9 @@ def create_itinerary(request):
 
 @api_view(["DELETE"])
 @permission_classes([IsAuthenticated])
-def delete_day_item(request, id):
+def delete_day_item(request, day_id):
     try:
-        item = ItineraryItem.objects.get(pk=id)
+        item = ItineraryItem.objects.get(pk=day_id)
         item.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     except ItineraryItem.DoesNotExist:
@@ -201,3 +244,118 @@ def update_preferences(request):
     user.save()
 
     return Response({'message': "Preferences Updated Successfully"}, status=status.HTTP_200_OK)
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def get_content_recommendations(request):
+    user = request.user
+
+    preferences = [
+        user.preferences.history,
+        user.preferences.nature,
+        user.preferences.religion,
+        user.preferences.art, 
+        user.preferences.activity,
+        user.preferences.entertainment,
+        user.preferences.culture
+    ]
+
+    preferences = np.array(preferences, dtype=int)
+
+    manager = RecommendationsManager()
+    recommendation_ids = manager.get_content_recommendations(preferences)
+
+    recommendations = []
+    for id in recommendation_ids:
+        recommendation = ModelItinerary.objects.get(pk=id)
+        recommendations.append(recommendation)
+
+    recommendation_serializers = ModelItinerarySerializers(recommendations, many=True)
+
+    return Response({
+        'recommendations': recommendation_serializers.data
+        }, status=status.HTTP_200_OK)
+
+@api_view(["POST"])
+def update_itinerary_calendar(request, itinerary_id):
+    start_date = request.data.get("startDate")
+    end_date = request.data.get("endDate")
+
+    itinerary = Itinerary.objects.get(pk=itinerary_id)
+    Day.objects.filter(itinerary=itinerary).delete()
+
+    start_date = datetime.datetime.strptime(start_date, '%Y-%m-%dT%H:%M:%S.%fZ').date()
+    end_date = datetime.datetime.strptime(end_date, '%Y-%m-%dT%H:%M:%S.%fZ').date()
+
+    print(start_date, end_date)
+
+    days = []
+
+    while start_date <= end_date:
+        day = Day.objects.create(
+            date=start_date,
+            itinerary=itinerary
+        )
+
+        days.append(day)
+
+        start_date += timedelta(days=1)
+
+
+    day_serializers = DaySerializers(days, many=True)
+
+    return Response({
+        'message': "Calendar Updated Successfully",
+        'days': day_serializers.data
+        }, status=status.HTTP_200_OK)
+
+@api_view(["POST"]) 
+def apply_recommendation(request, model_id):
+    day_id = request.data.get("day_id")
+    day = Day.objects.get(id=day_id)
+
+    ItineraryItem.objects.filter(day=day).delete()
+
+    model = ModelItinerary.objects.get(id=model_id)
+
+    items = []
+    for idx, location in enumerate(model.locations.all()):
+        item = ItineraryItem.objects.create(
+            day=day,
+            location=location,
+            order=idx
+        )
+        items.append(item)
+
+    day_serializer = DaySerializers(day)
+
+    return Response({
+        'message': 'Successfully applied recommendation',
+        'day': day_serializer.data
+        }, status=status.HTTP_200_OK)
+
+@api_view(["POST"])
+def edit_day_color(request, day_id):
+    color = request.data.get("color")
+    day = Day.objects.get(id=day_id)
+    day.color = color
+    day.save()
+
+    day_serializer = DaySerializers(day)
+
+    return Response({
+        'message': "Updated Day Color Successfully",
+        'day': day_serializer.data
+        }, status=status.HTTP_200_OK)
+
+@api_view(["DELETE"])
+def delete_day(request, day_id):
+    try:
+        print("Im here")
+        day = Day.objects.get(id=day_id)
+        day.delete()
+        return Response({
+            'messsage': "Delete Success"
+        }, status=status.HTTP_204_NO_CONTENT)
+    except Day.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)

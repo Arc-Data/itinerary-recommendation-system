@@ -791,10 +791,10 @@ input[type="text"] {
     margin-top: 12px;
 }
 
-
+/* 
 input[type="radio"] {
     display: none;
-}
+} */
 
 .star {
     cursor: pointer;
@@ -992,7 +992,7 @@ input[type="radio"] {
 }
 
 .home--banner > div {
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 700;
     border-radius: 10px;
     padding: 0px 36px;
@@ -1015,14 +1015,76 @@ input[type="radio"] {
 }
 
 .home--your-trips {
-    font-size: 24px;
+    font-size: 32px;
     font-weight: 700;
 }
 
 .home--trip-containers {
     display: flex;
     overflow-x: hidden;
+    gap: 20px;
     padding: 30px 0px;
+}
+
+.itinerary--image {
+    border-radius: 20px;
+    object-fit: cover;
+    box-shadow: 0 0 0.5em rgba(0,0,0,0.3);
+}
+
+.itinerary--image-container {
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.itinerary--image-container:hover .itinerary--settings {
+    pointer-events: all;
+    visibility: visible;
+}
+
+.itinerary--settings {
+    visibility: hidden;
+    pointer-events: none;
+    position: absolute;
+    top: 20px;
+    z-index: 50;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #323232;
+    color: #fcfcfc;
+    height: 30px;
+    border: 2px solid transparent;
+    padding: 16px 8px;
+    border-radius: 30px;
+    
+}
+
+.itinerary--delete {
+    display: none;
+    transition: 0.3s ease-in;
+}
+
+.itinerary--settings:hover {
+    border: 2px solid white;
+}
+
+.itinerary--settings:hover .itinerary--delete {
+    display: block;
+}
+
+.itinerary--title {
+    font-size: 18px;
+    font-weight: 600;
+    color: black;
+}
+
+.itinerary--details {
+    margin-top: 6px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 10px;
 }
 
 /* .create {
@@ -1143,7 +1205,7 @@ input[type="radio"] {
     width: 100%;
     height: 100%;
     display: grid;
-    grid-template-columns: 250px 1fr;
+    grid-template-columns: 200px 1fr;
     overflow: hidden;
 }
 
@@ -1257,28 +1319,30 @@ input[type="radio"] {
 }
 
 .plan--btn {
-    padding: 15px 14px;
+    padding: 10px 12px;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 400;
+}
+
+.plan--btn:hover {
+    box-shadow: 0 0 0.5em rgba(33, 20, 20, 0.5);
 }
 
 .plan--btn svg {
     margin-right: 8px;
 }
 
-.plan--btn.btn-secondary {
-    color: #184E77;
-}
-
 .btn-primary {
+    border: 2px solid #184E77;
     background: #184E77;
 }
 
 .btn-secondary {
     border: 2px solid #184E77;
     background: #fcfcfc;
+    color: #184E77;
 }
 
 .btn-link {
@@ -1307,7 +1371,7 @@ input[type="radio"] {
 .plan--item {
     display: flex;
     gap: 10px;
-    padding: 15px 12px 30px;
+    padding: 15px 12px;
     background: #f1f1f1;
     border-radius: 10px;
     position:relative;
@@ -1332,6 +1396,11 @@ input[type="radio"] {
     flex-direction: column;
     color: #686868;
 }
+
+.plan--location-details svg {
+    font-size: 12px;
+    vertical-align: middle;
+} 
 
 .plan--location-name {
     font-size: 18px;
@@ -1392,11 +1461,91 @@ input[type="radio"] {
 }
 
 .plan--itinerary-day {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
     cursor: pointer;
+
     font-size: 20px;
     color: #333333;
     font-weight: 500;
+    background: white;
+    padding: 12px 18px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 0.2em rgba(0, 0, 0, 0.2);
 }
+
+.plan--itinerary-day:hover {
+    border: 1px solid #3498db;
+}
+
+.plan--itinerary-day svg {
+    margin-right: 10px;
+}
+
+.plan--day-settings {
+    position: relative;
+}
+
+.plan--day-dropcontent {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    width: 140px;
+    background: white;
+    font-weight: 400;
+    font-size: 14px;
+    text-align: right;
+    z-index: 20;
+    box-shadow: 0 0 0.5em rgba(105, 100, 100, 0.5);
+    border-radius: 8px;
+}
+
+.plan--day-dropcontent-item {
+    padding: 12px 14px;
+}
+
+.plan--day-dropcontent-item:first-child {
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+}
+
+.plan--day-dropcontent-item:last-child {
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.plan--day-dropcontent-item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+}
+
+.plan--day-dropcontent > div:hover {
+    background: #ccc;
+}
+
+.plan--day-settings > svg {
+    font-size: 16px;
+    border: 1px solid transparent;
+    padding: 12px;
+    border-radius: 50%;
+}
+
+.plan--day-settings > svg:hover {
+    box-shadow: 0 0 0.1em rgba(0, 0, 0, 0.5);
+    background: #ccc;
+}
+
+.plan--day-details {
+    font-size: 14px;
+    font-weight: 400;
+}
+
+/* .plan--day-settings:hover {
+    border: 1px solid blue;
+} */
 
 .plan--itinerary-items {
     display: flex;
@@ -1411,35 +1560,44 @@ input[type="radio"] {
     gap: 10px;
 }
 
-.plan--itinerary-item:hover .plan--location-settings {
-    pointer-events: all;
-    visibility: visible;
-}
-
-.plan--location-settings {
-    visibility: hidden;
-    pointer-events: none;
-    position: absolute;
-    top: 10px;
-    right:10px;
-    z-index: 2;
-    background: #fff;
+.plan--itinerary-header {
     display: flex;
+    justify-content: space-between;
     align-items: center;
+}
+
+.plan--calendar-settings {
+    display: flex;
     gap: 10px;
-    text-transform: uppercase;
-    padding: 12px;
-    color: red;
-    border-radius: 2px;
-    box-shadow: 0, 0, 0.5em rgba(0,0,0,0.5);
+    align-items: center;
 }
 
-.plan--location-settings:hover {
+.calendar-icon  {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    background: #38A3A5;
+    display: grid;
+    place-items: center;
     cursor: pointer;
+    box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.2);
 }
 
-.plan--location-settings > i {
-    vertical-align: middle;
+.calendar-icon:hover {
+    box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.5);
+}
+
+.calendar-info {
+    display: flex;
+    color: #333;
+}
+
+.calendar-info > p {
+    margin-left: 10px;
+}
+
+.calendar-icon > svg {
+    color: white;
 }
 
 .modal {
@@ -1450,12 +1608,14 @@ input[type="radio"] {
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 100;
+    border-radius: 8px;
+    box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.5);
 }
 
 .add-location-modal--tabs {
     border-block-end: 1px solid #e7e7e7;
     display: flex;
-    width: 920px;
+    width: 800px;
 }
 
 .add-location-modal--tabs > div {
@@ -1485,7 +1645,7 @@ input[type="radio"] {
     width: 100%;
     height:100%;
     background: rgba(0,0,0,0.5);
-    z-index: 50;
+    z-index: 10;
 }
 
 .add-location-modal--results-container {
@@ -1504,14 +1664,54 @@ input[type="radio"] {
 .add-location-modal--results {
     display:flex;
     flex-direction: column;
-    max-height: 500px;
+    max-height: 300px;
     overflow-y: scroll;
+}
+
+.add-location--search-input {
+    padding: 12px 16px;
+}
+
+.add-location-modal--recently-added-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
 }
 
 .add-location-modal--search-item {
     display: flex;
     padding: 10px;
     gap: 10px;
+}
+
+.add-location-modal--remove {
+    margin-left: 10px;
+    border-radius: 50%;
+    padding: 6px;
+}
+
+.add-location-modal--remove:hover {
+    cursor: pointer;
+    color: red;
+}
+
+
+.add-location-modal--recently-added {
+    display: flex;
+    gap: 4px;
+    border-radius: 4px;
+    background: #d7eded;
+    padding: 10px 16px;
+    gap: 4px;
+    align-items: center;
+    max-width: 180px;
+    /* height: 16px; */
+}
+
+.add-location-modal--recently-added > p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .add-location-modal--search-item ~ *{
@@ -1522,14 +1722,14 @@ input[type="radio"] {
     color: #333333;
     font-size: 18px;
     font-weight: 600;
-    margin-bottom: 14px;
+    margin-bottom: 10px;
     text-decoration: underline;
 }
 
 .add-location-modal--subtext {
     color: #333333;
     font-size: 16px;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
 }
 
 .add-location-modal--subtext > span{
@@ -1546,6 +1746,13 @@ input[type="radio"] {
     border-radius: 50%;
     background: #e7e7e7;
     font-size: 18px;
+    box-shadow: 0 0 0.1em rgba(0, 0, 0, 0.8);
+}
+
+.add-location-modal--add-btn:hover {
+    background: #184E77;
+    color: white;
+    transition: 0.15s ease-in-out;
 }
 
 .confirm-delete {
@@ -1595,9 +1802,38 @@ input[type="radio"] {
 .order-item {
     display: flex;
     gap: 10px;
-    padding: 10px 5px;
+    align-items: center;
+    background: #f1f1f1;
+    padding: 14px 40px 14px 16px;
     border-radius: 8px;
     box-shadow: 0 0 0.2em rgba(0, 0, 0, 0.5);
+}
+
+.order-item:hover {
+    background: white;
+}
+
+.order-item:first-of-type {
+    margin-top:20px;
+}
+
+.order-icons {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.order-icon {
+    font-size: 12px;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+}
+
+.order-icon:hover {
+    cursor: pointer;
+    border: 1px solid #184E77;
 }
 
 .plan--order-container {
@@ -1671,3 +1907,166 @@ input[type="radio"] {
     background: rgba(0,0,0,0.6);
     cursor: auto;
 }
+
+.datesettings--form-input {
+    padding: 12px 14px;
+    border: 1px solid #DEDEDE;
+    border-radius: 10px;
+    font-family: 'Work Sans', sans-serif;
+}
+
+.datesettings--modal-title {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.datesettings--container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-top: 40px;
+    padding-bottom: 200px;
+}
+
+.datesettings--input-group{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.assistant {
+    position: absolute;
+    background: white;
+    z-index: 20;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 10px;
+}
+
+.assistant > div {
+    padding: 24px 40px;
+}
+
+.assistant--header {
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    background: linear-gradient(270deg, #184E77 0.05%, #38A3A5 36.19%, #57CC99 69.75%, #80ED99 99.18%);
+    color: white;
+    display: grid;
+    place-items: center;
+    font-size: 14px;
+}
+
+.assistant--header-title {
+    font-weight: 500;
+    font-size: 20px;
+    margin-bottom: 4px;
+}
+
+.assistant--content > p {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.assistant--content-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.assistant--date {
+    color: #38A3A5;
+}
+
+
+.assistant--footer {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.assistant--btn {
+    width: 100px;
+    padding: 10px 12px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 400;
+    box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.2);
+}
+
+.assistant--btn:hover {
+    box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.5);
+}
+
+.assistant--btn:disabled {
+    opacity: .5;
+    cursor: unset;
+}
+
+.assistant--recommendation {
+    border: 2px solid #e7e7e7;
+    padding: 10px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.assistant--recommendation.selected {
+    border: 2px solid #184E77;
+}
+
+.assistant--recommendation:hover {
+    cursor: pointer;
+}
+
+.assistant--recommendation-item {
+    display: flex;
+    gap: 10px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 240px;
+    background: #efefef;
+    color: #686868;
+    font-weight: 400;
+    box-shadow: 0 0 0.1em rgba(0, 0, 0, 0.1);
+}
+
+.assistant--recommendation-item-title {
+    font-weight: 500;
+    color: black;
+}
+
+.assistant--recommendation-item-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.assistant--location-icon {
+    color:#38A3A5;
+}
+
+.color--modal {
+    display: grid;
+    place-items:center;
+    gap: 20px;
+}
+
+.color--selection {
+    display: flex;
+    gap: 10px;
+}
+
+.color--selection-item {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.color--selection-item:hover {
+    cursor: pointer;
+}
+

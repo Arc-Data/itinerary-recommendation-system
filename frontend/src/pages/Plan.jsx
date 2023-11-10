@@ -6,36 +6,68 @@ import dayjs from "dayjs"
 import CreateNav from "../components/CreateNav"
 import Map from "../components/Map"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDirections, faMap, faMoneyBill, faMoneyBills } from "@fortawesome/free-solid-svg-icons"
+import { faCalendarAlt, faMap, faMoneyBill } from "@fortawesome/free-solid-svg-icons"
+import DateSettings from "../components/DateSettings"
+import useItineraryManager from "../hooks/useItineraryManager"
+import useDayManager from "../hooks/useDayManager"
+import useMarkerManager from "../hooks/useMarkerManager"
 
 const Plan = () => {
-  	const [itinerary, setItinerary] = useState({
+	const { authTokens } = useContext(AuthContext)
+	const [ itinerary, setItinerary ] = useState({
 		number_of_people: '1',
 		budget: ''
 	})
-	const [markers, setMarkers] = useState([])
-	const [isLoading, setLoading] = useState(true)
-	const [days, setDays] = useState(null)
+	const { id } = useParams()
+	const [ includedLocations, setIncludedLocations ] = useState([])
+
+	const { 
+		loading: itineraryLoading,
+		error: itineraryError,
+		getItineraryById, 
+	} = useItineraryManager(authTokens)
+
+	const { 
+		markers, 
+		getMarkersData, 
+		deleteMarker, 
+		addMarker } = useMarkerManager()
+
+	const {
+		loading: daysLoading,
+		error: daysError,
+		days,
+		removeDay,
+		updateDays,
+		updateCalendarDays,
+		getDays,
+	} = useDayManager(authTokens)
+
+	useEffect(() => {
+		const fetchData = async () => {
+			const userItinerary = await getItineraryById(id)
+			setItinerary(userItinerary)
+			await getDays(userItinerary.id)
+		}
+
+		fetchData()
+	}, [id])
+
+	useEffect(() => {
+		const locations = getMarkersData(days)
+        setIncludedLocations(locations)
+	}, [days]) 
+
 	const [isExpenseOpen, setExpenseOpen] = useState(true)
 	const [isItineraryOpen, setItineraryOpen] = useState(true)
-	const [includedLocations, setIncludedLocations] = useState([])
-	const [error, setError] = useState(null)
-	const { authTokens } = useContext(AuthContext)
-	const { id } = useParams()
+	const [isCalendarOpen, setCalendarOpen] = useState(false)
 
-	const addMarker = (latitude, longitude) => {
-		const mapMarkers = [...markers]
-		mapMarkers.push({
-			lng: longitude,
-			lat: latitude
-		})
+	const toggleCalendar = (e) => {
+		if(e) {
+			e.stopPropagation()
+		}
 
-		setMarkers(mapMarkers)
-	}
-
-	const deleteMarker = (latitude, longitude) => {
-		const mapMarkers = markers.filter(i => i.lng !== longitude && i.lat !== latitude)
-		setMarkers(mapMarkers)
+		setCalendarOpen(prev => !prev)
 	}
 	
 	const toggleExpense = () => {
@@ -46,65 +78,12 @@ const Plan = () => {
 		setItineraryOpen(prev => !prev)
 	}
 
-	useEffect(() => {
-		const fetchItineraryData = async (e) => {
-			const locations = []
-			
-			try {
-				const response = await fetch(`http://127.0.0.1:8000/api/plan/${id}/`, {
-					'method' : 'GET',
-					'headers': {
-						"Content-Type" : "application/json",
-						"Authorization": `Bearer ${String(authTokens.access)}`, 
-					}
-				})
-				
-				if (response.status === 403) {
-					setLoading(false)
-					setError("Access Denied")
-
-				} else if (response.status === 404) {
-					setLoading(false)
-					setError("Itinerary Does not Exist")
-				
-				} else if (!response.ok) {
-					throw new Error("Something wrong happened")
-				
-				} else {
-					const data = await response.json();
-					const mapMarkers = []
-					setItinerary(data.itinerary)
-					setDays(data.days)
-					
-					data.days.forEach(day => {
-						day.itinerary_items.forEach(location => {
-							locations.push(...day.itinerary_items)
-							mapMarkers.push({
-								lng: location.details.longitude,
-								lat: location.details.latitude,
-							})
-						})
-					})
-
-					setIncludedLocations(locations)
-					setMarkers(mapMarkers)
-					setLoading(false)
-				}
-			}
-			catch (e){
-				setLoading(false)
-				setError("Something went wrong")
-			}
-
-		}
-
-		fetchItineraryData()
-	}, [ id ])
-
-	const getDays = days && days.map(day => {
+	const displayDays = days && days.map(day => {
 		return <Day 
 			key={day.id} 
 			day={day} 
+			updateDays={updateDays}
+			removeDay={removeDay}
 			addMarker={addMarker}
 			deleteMarker={deleteMarker}
 			includedLocations={includedLocations}
@@ -120,15 +99,24 @@ const Plan = () => {
 		)
 	})
 
-	if (isLoading) return (
-		<div>Loading Please Wait</div>
+	if (itineraryLoading) return (
+		<div>Loading Itinerary Details</div>
 	)
 
-	if (error) return (
-		<div>{error}</div>
+	if(itineraryError) return (
+		<div>{itineraryError}</div>
+	)
+
+	if (daysLoading) return (
+		<div>Loading Related Days Information</div>
+	)
+
+	if (daysError) return (
+		<div>{daysError}</div>
 	)
  
 	return (
+		<>
 		<div className="create--layout">
 			<div>
 				<CreateNav />
@@ -187,14 +175,31 @@ const Plan = () => {
 							</div>
 						</section>
 						<section className="plan--itinerary-section">
-							<p className="plan--title">Itinerary</p>
-							{getDays}
+							<div className="plan--itinerary-header">
+								<p className="plan--title">Itinerary</p>
+								<div className="plan--calendar-settings">
+									{days.length !== 0 && 
+									<div className="calendar-info">
+										<FontAwesomeIcon icon={faCalendarAlt} />
+										<p>
+											{dayjs(days[0].date).format('MMM DD')} to {dayjs(days[days.length - 1].date).format('MMM DD')}
+										</p>
+									</div>
+									}
+									<div className="calendar-icon" onClick={toggleCalendar}>
+										<FontAwesomeIcon icon={faCalendarAlt}/>
+									</div>
+								</div>
+							</div>
+							{displayDays}
 						</section>
 					</main>
 				</div>
 			</div>
 			<Map markers={markers}/>
 		</div>
+		{isCalendarOpen && <DateSettings onClose={toggleCalendar} updateDays={updateCalendarDays}/>}
+		</>
     	
   	)
 }

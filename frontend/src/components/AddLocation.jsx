@@ -1,19 +1,21 @@
-import { useContext, useEffect, useRef, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faLocationDot } from "@fortawesome/free-solid-svg-icons"
+import { faClose, faLocationDot } from "@fortawesome/free-solid-svg-icons"
 import { Link } from "react-router-dom"
-import dayjs from "dayjs"
 import AuthContext from "../context/AuthContext"
 import Modal from "./Modal"
-import updateItemOrdering from "../utils/updateItemOrdering"
+import getTimeDetails from "../utils/getTimeDetails"
+import getFeeDetails from "../utils/getFeeDetails"
+import useItemLocationManager from "../hooks/useItemLocationManager"
 
-const AddLocation = ({onClose, day, locations, setLocations, includedLocations, setIncludedLocations, addMarker, deleteMarker}) => {
+const AddLocation = ({onClose, locations, setLocations, day, includedLocations, setIncludedLocations, addMarker, deleteMarker}) => {
     const { authTokens } = useContext(AuthContext)
+    const { addItem, deleteItem, updateItemOrdering } = useItemLocationManager(authTokens)
+    const [recentlyAddedLocations, setRecentlyAddedLocations] = useState([])
     const [searchData, setSearchData] = useState(null)
     const [openBookmarks, setOpenBookmarks] = useState(false)
     const [searchString, setSearchString] = useState("")
     const [displayedSearchItems, setDisplayedSearchItems] = useState(null)
-    const [recentlyAddedLocations, setRecentlyAddedLocations] = useState([])
 
     let debounceTimeout = 2000;
     let timeout;
@@ -22,91 +24,49 @@ const AddLocation = ({onClose, day, locations, setLocations, includedLocations, 
         setOpenBookmarks(prev => !prev)
     }
 
-    const addLocation = (item) => {
-        const arr1 = [...locations, item]
-        const arr2 = [...includedLocations, item]
-        const arr3 = [...recentlyAddedLocations, item]
-        
-        // adds the location for the current Day object to display
-        setLocations(arr1)
-        // adding the location for the add modal to keep track of all existing locations within all days
-        // for duplicate finding 
-        setIncludedLocations(arr2)
-        // adding the location based on whether the user has added an item within the lifespan of the modal
-        setRecentlyAddedLocations(arr3)
-        addMarker(item.details.latitude, item.details.longitude)
-    }
-
     const searchLocations = async (search) => {
         const response = await fetch(`http://127.0.0.1:8000/api/location/?query=${search}`)
         const data = await response.json()
         setSearchData(data)
     }
 
-    const deleteLocation = (itemId, latitude, longitude) => {
-        console.log(latitude, longitude)
-        
-        const updatedLocations = locations.filter(i => i.id !== itemId)
-        const updatedIncludedLocations = includedLocations.filter(i => i.id !== itemId)
-        const updatedRecentlyAddedLocations = recentlyAddedLocations.filter(i => i.id !== itemId)
-
-        setLocations(updatedLocations)
-        setIncludedLocations(updatedIncludedLocations)
-        setRecentlyAddedLocations(updatedRecentlyAddedLocations)
-
-        updateItemOrdering(authTokens, updatedLocations)
-        deleteMarker(latitude, longitude)
-    }
-
-    const handleDeleteLocation = async (itemId, location) => {
+    const handleDeleteLocation = async (itemId, latitude, longitude) => {
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/day-item/${itemId}/delete`, {
-                method: "DELETE",
-                headers: {
-                    'Content-Type': "application/json",
-                    'Authorization': `Bearer ${String(authTokens.access)}`,
-                }
-            })
-
-            if(!response.ok) {
-                throw new Error('Something happened')
-            }
-            
-            deleteLocation(itemId, location.details.latitude, location.details.longitude)
+            await deleteItem(itemId)
+    
+            const updatedLocations = locations.filter(i => i.id !== itemId)
+            const updatedIncludedLocations = includedLocations.filter(i => i.id !== itemId)
+            const updatedRecentlyAddedLocations = recentlyAddedLocations.filter(i => i.id !== itemId)
+    
+            setLocations(updatedLocations)
+            setIncludedLocations(updatedIncludedLocations)
+            setRecentlyAddedLocations(updatedRecentlyAddedLocations)
+    
+            updateItemOrdering(updatedLocations)
+            deleteMarker(latitude, longitude)
         }
         catch (error) {
-            console.log("Errror While Deleting Itinerary Item: ", error)
+            console.log("An error occured: ", error)
         }
     }
 
     const handleAddLocation = async (locationId) => {
         try {
-            const requestBody = {
-                'location': locationId,
-                'day': day.id,
-                'order': locations.length
-            }
+            const item = await addItem(locationId, day.id, locations.length)
+            
+            const arr1 = [...locations, item]
+            const arr2 = [...includedLocations, item]
+            const arr3 = [...recentlyAddedLocations, item]
+            
+            setLocations(arr1)
+            setIncludedLocations(arr2)
+            setRecentlyAddedLocations(arr3)
 
-            const response = await fetch("http://127.0.0.1:8000/api/day-item/", {
-                method: "POST",
-                headers: {
-                    'Content-Type': "application/json"
-                },
-                body: JSON.stringify(requestBody)
-            })
-
-            if (!response.ok) {
-                console.log("Itinerary Item Creation Failed")
-                return
-            }
-
-            const item = await response.json()
-            addLocation(item)
+            addMarker(item.details.latitude, item.details.longitude, day.color)
         }
-        catch (error) {
-            console.log("Error. " + error)
+        catch(error) {
+            console.log("An error occured : ", error)
         }
-
     }
 
     const handleChange = (e) => {
@@ -125,35 +85,24 @@ const AddLocation = ({onClose, day, locations, setLocations, includedLocations, 
     }
 
     const checkDuplicateLocation = (locationId) => {
-        return includedLocations.some(i => i.location == locationId)
-    }
+        const status = includedLocations.some(i => {
+            return i.location == locationId
+        })
 
-    const getTimeString = (time) => {
-        const timeString = time.split(":")
-        return dayjs(new Date(2045, 1, 1, ...timeString)).format("h:mm A")
+        return status
     }
 
     const displayRecentlyAdded = recentlyAddedLocations && recentlyAddedLocations.map(location => {
-        const min = location.details.min_cost
-        const max = location.details.max_cost
-        const name = location.details.name
-        const address = location.details.address
-        const fee = min === 0 ? 
-                "Free" : max === min ? min : `${min} - ${max}`;
-        const opening_time = getTimeString(location.details.opening)
-        const closing_time = getTimeString(location.details.closing) 
-        
         return (
-            <div key={location.id} location={location} className="add-location-modal--search-item">
-                <FontAwesomeIcon icon={faLocationDot}></FontAwesomeIcon>
+            <div key={location.id} location={location} className="add-location-modal--recently-added">
+                <FontAwesomeIcon icon={faLocationDot} className="assistant--location-icon"/>
+                <p>{location.details.name}</p>
                 <div>
-                    <Link to={`/location/${location.id}`}>
-                    <p className="add-location-modal--title">{name}</p>
-                    </Link>
-                    <p className="add-location-modal--subtext">{address}</p>
-                    <p className="add-location-modal--subtext"><span>Opens {opening_time} - {closing_time} </span>•<span> Entrance Fee: {fee} </span></p>
+                    <FontAwesomeIcon 
+                        icon={faClose} 
+                        className="add-location-modal--remove"
+                        onClick={() => handleDeleteLocation(location.id, location.details.latitude, location.details.longitude)}/>                
                 </div>
-                <button className="add-location-modal--add-btn" onClick={() => handleDeleteLocation(location.id, location)}>x</button>
             </div>
         )
     })
@@ -161,12 +110,9 @@ const AddLocation = ({onClose, day, locations, setLocations, includedLocations, 
     useEffect(() => {
         if (searchData) {
             const results = searchData.map(location => {
-                const fee = location.fee.min === 0 ? 
-                "Free" : location.fee.min === location.fee.max ? location.fee.min : `${location.fee.min} - ${location.fee.max}`;
-    
-                const opening_time = getTimeString(location.schedule.opening)
-                const closing_time = getTimeString(location.schedule.closing) 
-                
+                const fee = getFeeDetails(location.fee.min, location.fee.max)
+                const opening_time = getTimeDetails(location.schedule.opening)
+                const closing_time = getTimeDetails(location.schedule.closing) 
                 return !checkDuplicateLocation(location.id) && (
                     <div key={location.id} location={location} className="add-location-modal--search-item">
                         <FontAwesomeIcon icon={faLocationDot}></FontAwesomeIcon>
@@ -211,7 +157,7 @@ const AddLocation = ({onClose, day, locations, setLocations, includedLocations, 
                     value={searchString}
                     />
                 {recentlyAddedLocations.length !== 0 && 
-                <div>
+                <div className="add-location-modal--recently-added-container">
                     {displayRecentlyAdded}
                 </div> }
                 {searchString.length !== 0 ? 
