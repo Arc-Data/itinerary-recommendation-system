@@ -96,6 +96,7 @@ def delete_itinerary(request, itinerary_id):
 @permission_classes([IsAuthenticated])
 def update_ordering(request):
     items = request.data.get("items")
+    print(items)
 
     for order, item in enumerate(items):
         itinerary_item = ItineraryItem.objects.get(id=item["id"])

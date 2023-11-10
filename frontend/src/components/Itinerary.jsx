@@ -8,7 +8,6 @@ const Itinerary = ({itinerary, handleDelete}) => {
     const [ openDelete, setOpenDelete ] = useState(false) 
     
     const toggleDeleteModal = (e) => {
-        console.log("Triggering")
         if (e) {
             e.stopPropagation()
         }

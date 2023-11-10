@@ -19,7 +19,7 @@ const ConfirmDeleteItem = ({onClose, itemId, deleteMarker, locations, setLocatio
             setLocations(updatedLocations)
             setIncludedLocations(updatedIncludedLocations)
             
-            updateItemOrdering(authTokens, updatedLocations)
+            updateItemOrdering(updatedLocations)
             setItemOrdering(updatedLocations)
 
             deleteMarker(item.details.latitude, item.details.longitude)

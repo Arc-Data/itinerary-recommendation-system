@@ -38,14 +38,14 @@ const useDayManager = (authTokens) => {
 	} 
 
     const updateDays = (dayId, replacement) => {
-		const currentDays = days.map(day => {
+        const currentDays = days.map(day => {
 			if (day.id === dayId) {
 				return replacement
 			}
 
 			return day
 		})
-		
+
 		setDays(currentDays)
 	}
     

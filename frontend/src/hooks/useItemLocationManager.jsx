@@ -33,7 +33,7 @@ const useItemLocationManager = (authTokens) => {
     const deleteItem = async (id) => {
 
         try {
-            await fetch(`http://127.0.0.1:8000/api/day-item/${id}/delete`, {
+            await fetch(`http://127.0.0.1:8000/api/day-item/${id}/delete/`, {
                 method: "DELETE",
                 headers: {
                     'Content-Type': "application/json",
@@ -47,7 +47,8 @@ const useItemLocationManager = (authTokens) => {
     }
 
     const updateItemOrdering = async (locations) => {
-        
+        console.log(locations)
+
         try {
             const response = await fetch(`http://127.0.0.1:8000/api/update-ordering/`, {
                 method: "PATCH",

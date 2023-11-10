@@ -2,12 +2,11 @@ import dayjs from "dayjs"
 import { useContext, useEffect, useState } from "react"
 import AuthContext from "../context/AuthContext"
 import Recommendation from "./Recommendation"
+import useRecommendationsManager from "../hooks/useRecommendationsManager"
 
 const Assistant = ({onClose, day, updateDays}) => {
-    const [loading, setLoading] = useState(true)
-    const [status, setStatus] = useState("")
-    const [recommendations, setRecommendations] = useState([])
     const { authTokens } = useContext(AuthContext)
+    const { loading, status, recommendations, applyRecommendation, fetchRecommendations } = useRecommendationsManager(authTokens)
     const [selectedItem, setSelectedItem] = useState() 
 
     const formatDate = (day) => {
@@ -26,65 +25,22 @@ const Assistant = ({onClose, day, updateDays}) => {
         setSelectedItem(id)
     }
 
-    const applyRecommendation = async (e) => {
-        setStatus("Applying Recommendations...")
-        setLoading(true)
-
+    const handleApplyRecommendation = async (e) => {
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/recommendations/${selectedItem}/apply/`, {
-                'method' : 'POST',
-                'headers': {
-                    "Content-Type" : "application/json",
-                },
-                'body': JSON.stringify({
-                    'day_id': day.id
-                })
-            })
-
-            const data = await response.json();
-
+            const data = await applyRecommendation(selectedItem, day.id);
             updateDays(day.id, data.day)
         }
         catch(error) {
             console.log("An error occured: ", error)
         }
         finally {
-            setLoading(false)
             onClose()
-            setStatus("")
         }
 
-    }
-
-    const fetchRecommendations = async (e) => {
-        setStatus("Loading Recommendations")
-        setLoading(true)
-
-        try {
-            const response = await fetch(`http://127.0.0.1:8000/api/recommendations/content/`, {
-                'method' : 'GET',
-                'headers': {
-                    "Content-Type" : "application/json",
-                    "Authorization": `Bearer ${String(authTokens.access)}`, 
-                }
-            })
-
-            const data = await response.json()
-            setRecommendations(data.recommendations)
-        }
-        catch(error) {
-            console.log("An error occured")
-        }
-        finally {
-            setLoading(false)
-            setStatus("")
-        }
     }
 
     useEffect(() => {
-        setLoading(true)
         fetchRecommendations()
-        setLoading(false)
     }, [])
 
     return (
@@ -113,7 +69,7 @@ const Assistant = ({onClose, day, updateDays}) => {
                     <button
                         disabled={!selectedItem ? true : false} 
                         className="assistant--btn btn-primary"
-                        onClick={applyRecommendation}>
+                        onClick={handleApplyRecommendation}>
                             Done
                     </button>
                 </div>
