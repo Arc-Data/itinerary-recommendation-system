@@ -24,9 +24,7 @@ const useMarkerManager = () => {
         const mapMarkers = []
 
         if(days) {
-            days.forEach((day, idx) => {
-                console.log(day)
-
+            days.forEach(day => {
                 day.itinerary_items.forEach(location => {
                     locations.push(location)
                     mapMarkers.push({

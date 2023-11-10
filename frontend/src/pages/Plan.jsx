@@ -54,7 +54,6 @@ const Plan = () => {
 	}, [id])
 
 	useEffect(() => {
-		console.log("Days hasd been updated")
 		const locations = getMarkersData(days)
         setIncludedLocations(locations)
 	}, [days]) 
@@ -90,13 +89,6 @@ const Plan = () => {
 			includedLocations={includedLocations}
 			setIncludedLocations={setIncludedLocations}/>
 	})
-
-	// const displayDays = days && days.map(day => {
-	// 	return <Day 
-	// 		key={day.id} 
-	// 		day={day} 
-	// 		includedLocations={includedLocations}/>
-	// })
 
 	const getDayTabs = days && days.map(day => {
 		return (
@@ -186,14 +178,14 @@ const Plan = () => {
 							<div className="plan--itinerary-header">
 								<p className="plan--title">Itinerary</p>
 								<div className="plan--calendar-settings">
-									{/* {days.length !== 0 && 
+									{days.length !== 0 && 
 									<div className="calendar-info">
 										<FontAwesomeIcon icon={faCalendarAlt} />
 										<p>
 											{dayjs(days[0].date).format('MMM DD')} to {dayjs(days[days.length - 1].date).format('MMM DD')}
 										</p>
 									</div>
-									} */}
+									}
 									<div className="calendar-icon" onClick={toggleCalendar}>
 										<FontAwesomeIcon icon={faCalendarAlt}/>
 									</div>

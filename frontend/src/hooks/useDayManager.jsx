@@ -52,6 +52,21 @@ const useDayManager = (authTokens) => {
         setDays(days)
     }
 
+    const deleteDay = async (id) => {
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/api/day/${id}/delete/`, {
+                method: "DELETE",
+                headers: {
+                    'Content-Type': "application/json",
+                    'Authorization': `Bearer ${access}`,
+                }
+            })
+        }
+        catch (error) {
+            console.log("Error while deleting day: ", error)
+        } 
+    }
+
 	const removeDay = (dayId) => {
 		const currentDays = days.filter(day => dayId !== day.id)
 		setDays(currentDays)
@@ -74,6 +89,7 @@ const useDayManager = (authTokens) => {
         error,
         loading,
         getDays,
+        deleteDay,
         removeDay,
         updateDays,
         updateDayColor,
