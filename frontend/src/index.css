@@ -791,10 +791,10 @@ input[type="text"] {
     margin-top: 12px;
 }
 
-/* 
-input[type="radio"] {
+
+.radio--star-hidden {
     display: none;
-} */
+}
 
 .star {
     cursor: pointer;
@@ -886,8 +886,23 @@ input[type="radio"] {
 .searchPage--container {
     margin: 150px auto; 
     width: 60%;
-    
     background: #FCFCFC;
+    max-width: 1200px;
+    min-height: 100vh;
+    height:80%;
+    margin: 130px auto;
+}
+
+@media (orientation: landscape) and (min-width: 1520px) {
+    .searchPage--container {
+        min-height: 53vh;
+    }
+}
+
+@media (orientation: landscape) and (min-width: 1720px) {
+    .searchPage--container {
+        min-height: 100vh;
+    }
 }
 
 .searchPage--title {

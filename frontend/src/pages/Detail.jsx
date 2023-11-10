@@ -205,6 +205,7 @@ export default function DetailPage() {
                     <input
                       type="radio"
                       name="rating"
+                      className="radio--star-hidden"
                       value={ratingValue}
                       onClick={() => setRating(ratingValue)}
                     />
