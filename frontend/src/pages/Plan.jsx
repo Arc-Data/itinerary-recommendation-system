@@ -29,6 +29,7 @@ const Plan = () => {
 		loading: daysLoading,
 		error: daysError,
 		days,
+		includedLocations,
 		markers,
 		getDays,
 		getMarkersData,
@@ -45,6 +46,7 @@ const Plan = () => {
 	}, [id])
 
 	useEffect(() => {
+		console.log("Running markers data")
 		getMarkersData()
 	}, [days]) 
 
@@ -79,7 +81,7 @@ const Plan = () => {
 
 	
 
-	// const getDays = days && days.map(day => {
+	// const displayDays = days && days.map(day => {
 	// 	return <Day 
 	// 		key={day.id} 
 	// 		day={day} 
@@ -92,7 +94,10 @@ const Plan = () => {
 	// })
 
 	const displayDays = days && days.map(day => {
-		return <Day key={day.id} day={day} />
+		return <Day 
+			key={day.id} 
+			day={day} 
+			includedLocations={includedLocations}/>
 	})
 
 	const getDayTabs = days && days.map(day => {

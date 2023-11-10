@@ -35,9 +35,13 @@ const useDayManager = (authTokens) => {
         const mapMarkers = []
 
         if(days) {
-            days.forEach(day => {
+            days.forEach((day, idx) => {
+                console.log("Day ", idx)
+                console.log(day)
+
                 day.itinerary_items.forEach(location => {
-                    locations.push(...day.itinerary_items)
+                    console.log("location", location)
+                    locations.push(location)
                     mapMarkers.push({
                         lng: location.details.longitude,
                         lat: location.details.latitude,
@@ -46,6 +50,10 @@ const useDayManager = (authTokens) => {
                 })
             })
         }
+
+        console.log("Setting included locations to")
+        console.log(locations)
+        console.log(mapMarkers)
 
         setIncludedLocations(locations)
         setMarkers(mapMarkers)
@@ -59,6 +67,8 @@ const useDayManager = (authTokens) => {
 			color: color,
 		})
 
+
+        console.log(mapMarkers)
 		setMarkers(mapMarkers)
 	}
 
@@ -82,6 +92,10 @@ const useDayManager = (authTokens) => {
 		
 		setDays(currentDays)
 	}
+
+    const handleIncludedLocations = (locations) => {
+        setIncludedLocations(locations)
+    }
     
     return {
         days,
@@ -89,7 +103,7 @@ const useDayManager = (authTokens) => {
         loading,
         markers,
         includedLocations,
-        setIncludedLocations,
+        handleIncludedLocations,
         getDays,
         updateDays,
         updateCalendarDays,

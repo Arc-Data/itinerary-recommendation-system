@@ -13,9 +13,10 @@ import Assistant from "./Assistant";
 import Color from "./Color";
 import getFeeDetails from "../utils/getFeeDetails";
 import ConfirmDeleteDay from "./ConfirmDeleteDay";
+import useDayManager from "../hooks/useDayManager";
 
-const Day = ({ day }) => {
-
+const Day = ({ day, includedLocations }) => {
+    const { authTokens } = useContext(AuthContext)
 
     const [open, setOpen] = useState(false)
 
@@ -34,7 +35,6 @@ const Day = ({ day }) => {
     const [maxTotal, setMaxTotal] = useState(0)
     const [costEstimate, setCostEstimate] = useState(0)
 
-    const { authTokens } = useContext(AuthContext)
 
     let cost_estimate;
 
@@ -117,21 +117,21 @@ const Day = ({ day }) => {
     
         const reorderedLocations = [...itemOrdering];
         const temp = reorderedLocations[index];
-        reorderedlocations[index] = reorderedlocations[index - 1];
-        reorderedlocations[index - 1] = temp;
+        reorderedLocations[index] = reorderedLocations[index - 1];
+        reorderedLocations[index - 1] = temp;
     
-        setItemOrdering(reorderedlocations);
+        setItemOrdering(reorderedLocations);
     };
     
     const moveItemDown = (index) => {
         if (index === locations.length - 1) return;
     
-        const reorderedlocations = [...itemOrdering];
-        const temp = reorderedlocations[index];
-        reorderedlocations[index] = reorderedlocations[index + 1];
-        reorderedlocations[index + 1] = temp;
+        const reorderedLocations = [...itemOrdering];
+        const temp = reorderedLocations[index];
+        reorderedLocations[index] = reorderedLocations[index + 1];
+        reorderedLocations[index + 1] = temp;
     
-        setItemOrdering(reorderedlocations);
+        setItemOrdering(reorderedLocations);
     };
 
     const onSaveOrdering = async () => {
@@ -300,6 +300,7 @@ const Day = ({ day }) => {
             <AddLocation 
                 onClose={toggleLocationModal} 
                 day={day}
+                includedLocations={includedLocations}
                 />
             }
             {/* {openDeleteModal && 

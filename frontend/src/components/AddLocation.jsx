@@ -9,16 +9,19 @@ import getTimeDetails from "../utils/getTimeDetails"
 import getFeeDetails from "../utils/getFeeDetails"
 import useDayManager from "../hooks/useDayManager"
 
-const AddLocation = ({onClose, day, items }) => {
+const AddLocation = ({onClose, day, includedLocations }) => {
     const { authTokens } = useContext(AuthContext)
     const {
         addMarker,
         deleteMarker,
-        includedLocations,
-        setIncludedLocations,
+        handleIncludedLocations,
     } = useDayManager(authTokens)
-    
-    const [ locations, setLocations ] = useState(items)
+
+    console.log("day specific items")
+    console.log(day.itinerary_items)
+    console.log("items across itineraries")
+    console.log(includedLocations)
+
     const [recentlyAddedLocations, setRecentlyAddedLocations] = useState([])
     const [searchData, setSearchData] = useState(null)
     const [openBookmarks, setOpenBookmarks] = useState(false)
@@ -41,7 +44,7 @@ const AddLocation = ({onClose, day, items }) => {
         setLocations(arr1)
         // adding the location for the add modal to keep track of all existing locations within all days
         // for duplicate finding 
-        setIncludedLocations(arr2)
+        handleIncludedLocations(arr2)
         // adding the location based on whether the user has added an item within the lifespan of the modal
         setRecentlyAddedLocations(arr3)
         addMarker(item.details.latitude, item.details.longitude, day.color)
@@ -59,7 +62,7 @@ const AddLocation = ({onClose, day, items }) => {
         const updatedRecentlyAddedLocations = recentlyAddedLocations.filter(i => i.id !== itemId)
 
         setLocations(updatedLocations)
-        setIncludedLocations(updatedIncludedLocations)
+        handleIncludedLocations(updatedIncludedLocations)
         setRecentlyAddedLocations(updatedRecentlyAddedLocations)
 
         updateItemOrdering(authTokens, updatedLocations)
@@ -109,6 +112,7 @@ const AddLocation = ({onClose, day, items }) => {
             }
 
             const item = await response.json()
+            
             addLocation(item)
         }
         catch (error) {
@@ -133,7 +137,11 @@ const AddLocation = ({onClose, day, items }) => {
     }
 
     const checkDuplicateLocation = (locationId) => {
-        return includedLocations.some(i => i.location == locationId)
+        const status = includedLocations.some(i => {
+            return i.location == locationId
+        })
+
+        return status
     }
 
     const displayRecentlyAdded = recentlyAddedLocations && recentlyAddedLocations.map(location => {
@@ -153,6 +161,7 @@ const AddLocation = ({onClose, day, items }) => {
 
     useEffect(() => {
         if (searchData) {
+            console.log(searchData)
             const results = searchData.map(location => {
                 const fee = getFeeDetails(location.fee.min, location.fee.max)
                 const opening_time = getTimeDetails(location.schedule.opening)
