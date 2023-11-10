@@ -2,7 +2,7 @@ import { useState } from "react"
 
 const useDayManager = (authTokens) => {
     const access = String(authTokens.access)
-    const [ days, setDays ] = useState()
+    const [ days, setDays ] = useState([])
     const [ error, setError ] = useState(false) 
     const [ loading, setLoading ] = useState(false) 
 
