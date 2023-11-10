@@ -1,31 +1,27 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import Modal from "./Modal"
+import useDayManager from "../hooks/useDayManager"
+import AuthContext from "../context/AuthContext"
 
 const Color = ({onClose, day, updateDays}) => {
+    const { authTokens } = useContext(AuthContext)
     const [selectedColor, setSelectedColor] = useState()
+
+    const { updateDayColor } = useDayManager(authTokens)
+
     const colors = ['#184E77', '#38A3A5', '#57CC99', '#80ED99', '#C7F9CC', '#5FD9F3']
 
     const handleSubmit = async (e) => {
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/day/${day.id}/color/`, {
-                "method": "POST",
-                "headers": {
-                    'Content-Type': "application/json",
-                },
-                "body": JSON.stringify({
-                    "color": selectedColor
-                })
-            })
-
-            const data = await response.json()
-            
+            const data = await updateDayColor(day.id, selectedColor)
             updateDays(day.id, data.day)
         }
         catch (error) {
             console.log("An error occured: ", error)
+        } 
+        finally {
+            onClose()
         }
-
-        onClose()
     }
 
     return (

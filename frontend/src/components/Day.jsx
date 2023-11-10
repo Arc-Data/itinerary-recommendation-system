@@ -316,13 +316,13 @@ const Day = ({ day, updateDays, removeDay, addMarker, deleteMarker, includedLoca
                 day={day}
                 updateDays={updateDays}/>
                 }
-            {/*
             {openColorModal &&
             <Color 
                 onClose={toggleOpenColorModal}
                 day={day}
                 updateDays={updateDays}/>
-            }
+        }
+        {/*
             {openDeleteDayModal &&
             <ConfirmDeleteDay 
                 onClose={toggleDeleteDayModal} 

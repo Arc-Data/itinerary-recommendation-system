@@ -28,6 +28,26 @@ const useDayManager = (authTokens) => {
         }
     }
 
+    const updateDayColor = async (id, color) => {
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/api/day/${id}/color/`, {
+                "method": "POST",
+                "headers": {
+                    'Content-Type': "application/json",
+                },
+                "body": JSON.stringify({
+                    "color": color
+                })
+            })
+
+            const data = await response.json()
+            return data
+        }
+        catch (error) {
+            console.log("Error while updating color data :", error)
+        }
+     }
+
     const updateCalendarDays = (days) => {
         setDays(days)
     }
@@ -56,6 +76,7 @@ const useDayManager = (authTokens) => {
         getDays,
         removeDay,
         updateDays,
+        updateDayColor,
         updateCalendarDays,
     }
 }
