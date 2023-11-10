@@ -355,7 +355,79 @@ def delete_day(request, day_id):
         day = Day.objects.get(id=day_id)
         day.delete()
         return Response({
-            'messsage': "Delete Success"
+            'message': "Delete Success"
         }, status=status.HTTP_204_NO_CONTENT)
     except Day.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['GET'])
+def get_location_reviews(request, location_id):    
+    if request.method == "GET":
+        review = Review.objects.filter(location_id=location_id).exclude(user=request.user)
+        review_serializer = ReviewSerializers(review, many=True)
+        return Response(review_serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_review(request, location_id):
+    if request.method == "GET":
+        review = get_object_or_404(Review, location_id=location_id, user=request.user)
+        review_serializer = ReviewSerializers(review)
+        return Response(review_serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_review(request, location_id):
+    comment = request.data.get("comment")
+    rating = request.data.get("rating")
+
+    existing_review = Review.objects.filter(user=request.user, location_id=location_id).first()
+    if existing_review:
+        return Response({'error': 'Review already exists for this location and user.'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    try:
+        review = Review.objects.create(
+            user=request.user,
+            location_id=location_id,
+            comment=comment,
+            rating=rating
+        )
+        review_serializer = ReviewSerializers(review)
+        return Response(review_serializer.data, status=status.HTTP_201_CREATED)
+    except Exception as e:
+        return Response({'error': f'Error creating review: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
+    
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def edit_review(request, location_id, review_id):
+    try:
+        review = Review.objects.get(location_id=location_id, user=request.user, id=review_id)
+
+        review.comment = request.data.get('comment', review.comment)
+        review.rating = request.data.get('rating', review.rating)
+        review.save()
+
+        review_serializer = ReviewSerializers(instance=review)
+
+        return Response({'message': "Updated Review Successfully", 'review': review_serializer.data}, status=status.HTTP_200_OK)
+    except Review.DoesNotExist:
+        return Response({'message': 'Review not found.'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'message': f'Error updating review: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_review(request, location_id, review_id):
+    try:
+        print("You can see this")
+        review = Review.objects.get(location_id=location_id, user=request.user, id=review_id)
+        review.delete()
+        return Response({'message': 'Review deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
+    except Review.DoesNotExist:
+        return Response({'message': 'Review not found'}, status=status.HTTP_404_NOT_FOUND)
+    
