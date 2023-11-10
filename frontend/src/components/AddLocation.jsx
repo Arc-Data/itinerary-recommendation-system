@@ -42,7 +42,7 @@ const AddLocation = ({onClose, locations, setLocations, day, includedLocations, 
             setIncludedLocations(updatedIncludedLocations)
             setRecentlyAddedLocations(updatedRecentlyAddedLocations)
     
-            updateItemOrdering(authTokens, updatedLocations)
+            updateItemOrdering(updatedLocations)
             deleteMarker(latitude, longitude)
         }
         catch (error) {

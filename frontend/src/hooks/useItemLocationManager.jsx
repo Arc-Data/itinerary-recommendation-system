@@ -47,8 +47,6 @@ const useItemLocationManager = (authTokens) => {
     }
 
     const updateItemOrdering = async (locations) => {
-        console.log(locations)
-
         try {
             const response = await fetch(`http://127.0.0.1:8000/api/update-ordering/`, {
                 method: "PATCH",

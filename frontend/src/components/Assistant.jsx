@@ -63,7 +63,7 @@ const Assistant = ({onClose, day, updateDays}) => {
                     </>
                     }
                 </div>
-
+                { !loading &&
                 <div className="assistant--footer">
                     <button className="assistant--btn btn-secondary" onClick={onClose}>Cancel</button>
                     <button
@@ -73,6 +73,7 @@ const Assistant = ({onClose, day, updateDays}) => {
                             Done
                     </button>
                 </div>
+                }
             </div>
         </>
     )
