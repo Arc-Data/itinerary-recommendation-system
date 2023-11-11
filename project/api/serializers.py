@@ -52,11 +52,12 @@ class SpotSerializers(serializers.ModelSerializer):
 
     def get_is_bookmarked(self, obj):
         user = self.context.get('user')
+        spot_id = obj.id
+        bookmark = Bookmark.objects.filter(user_id=user, spot_id=spot_id).exists()
 
-        if user:
-            return obj.interested.filter(id=user.id).exists()
+        return bookmark
 
-        return False
+
 
 class FoodPlaceSerializers(serializers.ModelSerializer):
     class Meta:
@@ -169,8 +170,9 @@ class LocationSerializers(serializers.ModelSerializer):
         fields = ('id', 'location_type', 'name', 'address', 'description', 'latitude', 'longitude',  'images', 'details')
 
     def get_details(self, obj):
+        user = self.context.get("user")
         if obj.location_type == '1':
-            serializer = SpotSerializers(Spot.objects.get(pk=obj.id))
+            serializer = SpotSerializers(Spot.objects.get(pk=obj.id), context={'user': user})
             return serializer.data
         elif obj.location_type == '2':
             serializer = FoodPlaceSerializers(FoodPlace.objects.get(pk=obj.id))
@@ -306,3 +308,9 @@ class SpotPopularSerializers(serializers.ModelSerializer):
     class Meta:
         model = Spot
         fields = ['id', 'name', 'description']
+
+
+class BookmarkSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Bookmark
+        fields = '__all__'

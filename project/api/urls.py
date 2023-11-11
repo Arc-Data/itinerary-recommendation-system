@@ -36,9 +36,7 @@ urlpatterns = [
     path('recommendations/content/', get_content_recommendations, name='content-recommendations'),
     path('recommendations/<int:model_id>/apply/', apply_recommendation, name='apply-recommendation'),
 
-    path('location/<int:location_id>/reviews/', get_location_reviews, name='get_location_reviews'),
-    path('location/<int:location_id>/reviews/user/', get_user_review, name='get_user_review'),
-    path('location/<int:location_id>/reviews/create/', create_review, name='create_review'),
-    path('location/<int:location_id>/reviews/edit/<int:review_id>/', edit_review, name='edit_review'),
-    path('location/<int:location_id>/reviews/delete/<int:review_id>/', delete_review, name='delete_review'),
+    path('location/<int:location_id>/add-bookmark/', add_bookmark, name='add_bookmark'),
+    path('location/<int:location_id>/remove-bookmark/', remove_bookmark, name='remove_bookmark'),
+    path('bookmarks/', get_bookmarks, name='get_bookmarks'),
 ]
