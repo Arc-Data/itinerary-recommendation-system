@@ -1,7 +1,8 @@
 import { useState } from "react"
 
 const useItineraryManager = (authTokens) => {
-    const [itineraries, setItineraries] = useState()
+    const [itineraries, setItineraries] = useState([])
+    const [itinerary, setItinerary] = useState()
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false)
     const access = String(authTokens.access)
@@ -31,7 +32,8 @@ const useItineraryManager = (authTokens) => {
                 const data = await response.json();
 
                 setLoading(false)
-                return data
+                setItinerary(data)
+                return data.id
             }
         }
         catch (e){
@@ -75,6 +77,7 @@ const useItineraryManager = (authTokens) => {
     return {
         error,
         loading,
+        itinerary,
         itineraries,
         getItineraries,
         getItineraryById,
