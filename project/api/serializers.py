@@ -239,7 +239,7 @@ class ItineraryListSerializers(serializers.ModelSerializer):
 class ItinerarySerializers(serializers.ModelSerializer):
     class Meta:
         model = Itinerary
-        fields = ['id', 'budget', 'number_of_people', 'user']
+        fields = ['id', 'budget', 'number_of_people', 'user', 'name']
 
 
 class DayDetailSerializers(serializers.ModelSerializer):

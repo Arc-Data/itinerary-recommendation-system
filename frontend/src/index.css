@@ -1212,6 +1212,34 @@ input[type="radio"] {
     color: rgba(51, 51, 51, 0.99);
 }
 
+.plan--itinerary-title {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.plan--itinerary-title > svg {
+    color: #184E77;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 50%;
+}
+
+.plan--itinerary-title > svg:hover {
+    box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.5);
+}
+
+.plan--edit-name {
+    all: unset;
+    border: none;
+    font-size: 32px;
+    width: auto;
+    font-style: 'Work Sans';
+    font-weight: 400;
+    text-decoration: underline;
+    padding: 12px;
+}
+
 .plan--title {
     font-size: 32px;
     font-weight: 700;
@@ -1427,7 +1455,7 @@ input[type="radio"] {
 }
 
 /*FOR IPAD*/
-@media screen and (max-width: 880px) {
+@media screen and (max-width: 1000px) {
     .hero--cards {
         grid-template-columns: repeat(1, 1fr); 
     }
@@ -1438,6 +1466,7 @@ input[type="radio"] {
 
     .plan--layout {
         display: flex;
+        flex-direction: column;
     }
 
     .plan--side-panel {
@@ -1563,7 +1592,6 @@ input[type="radio"] {
 
 .plan--itinerary-header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
 }
 
@@ -1571,6 +1599,7 @@ input[type="radio"] {
     display: flex;
     gap: 10px;
     align-items: center;
+    margin-left: auto;
 }
 
 .calendar-icon  {

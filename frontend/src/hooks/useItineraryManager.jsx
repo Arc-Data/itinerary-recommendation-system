@@ -5,6 +5,7 @@ const useItineraryManager = (authTokens) => {
     const [itinerary, setItinerary] = useState()
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false)
+    const [editedName, setEditedName] = useState("")
     const access = String(authTokens.access)
 
     const getItineraryById = async (id) => {
@@ -33,6 +34,7 @@ const useItineraryManager = (authTokens) => {
 
                 setLoading(false)
                 setItinerary(data)
+                setEditedName(data.name)
                 return data.id
             }
         }
@@ -79,6 +81,8 @@ const useItineraryManager = (authTokens) => {
         loading,
         itinerary,
         itineraries,
+        editedName,
+        setEditedName,
         getItineraries,
         getItineraryById,
         deleteItinerary,
