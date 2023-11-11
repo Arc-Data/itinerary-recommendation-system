@@ -396,7 +396,7 @@ def remove_bookmark(request, location_id):
 
 
 @api_view(['GET'])
-#@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def get_bookmarks(request):
     user = request.user
     if request.method == "GET":
