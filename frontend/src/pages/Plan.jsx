@@ -14,19 +14,17 @@ import useMarkerManager from "../hooks/useMarkerManager"
 
 const Plan = () => {
 	const { authTokens } = useContext(AuthContext)
-	const [ itinerary, setItinerary ] = useState({
-		number_of_people: '1',
-		budget: ''
-	})
 	const { id } = useParams()
 	const [ includedLocations, setIncludedLocations ] = useState([])
 
 	const { 
 		loading: itineraryLoading,
 		error: itineraryError,
+		itinerary,
 		getItineraryById, 
 	} = useItineraryManager(authTokens)
-
+	
+	console.log(itinerary)
 	const { 
 		markers, 
 		getMarkersData, 
@@ -43,11 +41,17 @@ const Plan = () => {
 		getDays,
 	} = useDayManager(authTokens)
 
+	console.log(itinerary)
+
 	useEffect(() => {
 		const fetchData = async () => {
-			const userItinerary = await getItineraryById(id)
-			setItinerary(userItinerary)
-			await getDays(userItinerary.id)
+			try {
+				await getItineraryById(id)
+				await getDays(id)
+			}
+			catch(error) {
+				console.log("Error while retrieving itinerary")
+			}
 		}
 
 		fetchData()
@@ -161,7 +165,7 @@ const Plan = () => {
 										type="number" 
 										name="number_of_people"
 										id="number_of_people"
-										defaultValue={itinerary.number_of_people}/>
+										defaultValue={itinerary?.number_of_people}/>
 										
 								</div>
 								<div className="form-row">
@@ -170,7 +174,7 @@ const Plan = () => {
 										type="number" 
 										name="budget" 
 										id="budget"
-										defaultValue={itinerary.budget}/>							
+										defaultValue={itinerary?.budget}/>							
 								</div>
 							</div>
 						</section>
