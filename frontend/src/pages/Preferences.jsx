@@ -72,7 +72,7 @@ const Preferences = () => {
             {Object.keys(preferences).map((key, index) => (
                 <PreferenceOption 
                     key={index}
-                    url={images[idx]}
+                    url={images[index]}
                     name={key}
                     onClick={() => toggleOption(key)}
                     isSelected={preferences[key]}

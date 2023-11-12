@@ -22,7 +22,7 @@ const HomePage = () => {
 			<header className="home--banner">
 				<div className="home--banner-itinerary">
 					<p>You have not created an itinerary yet.</p>
-					<img src="/banner-1.jpg" class="banner-img"/>
+					<img src="/banner-1.jpg" className="banner-img"/>
 				</div>
 				<div className="home--banner-business">
 					<p>Promote your food business with CebuRoute</p>

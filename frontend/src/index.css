@@ -1953,6 +1953,7 @@ input[type="radio"] {
     height: 100%;
     border-radius: 20px;
     background-position: center;
+    cursor: pointer;
 }
 
 .preferences--option > p {
