@@ -1028,10 +1028,23 @@ input[type="radio"] {
     font-size: 22px;
     font-weight: 700;
     border-radius: 10px;
-    padding: 0px 36px;
     display: grid;
     align-items:center;
     cursor: pointer;
+    overflow: hidden;
+    display: flex;
+}
+
+.home--banner > div > p {
+    padding: 20px;
+}
+
+.banner-img {
+    object-fit: cover;
+    width: 260px;
+    height: 100%;
+    border-top-left-radius: 25%;
+    border-bottom-left-radius: 25%;
 }
 
 .home--banner > div:first-child {
