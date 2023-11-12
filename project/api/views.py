@@ -6,6 +6,7 @@ from rest_framework.filters import SearchFilter
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.pagination import PageNumberPagination
 
 from .managers import *
 from .models import *
@@ -362,11 +363,17 @@ def delete_day(request, day_id):
 
 
 @api_view(['GET'])
-def get_location_reviews(request, location_id):    
+def get_location_reviews(request, location_id):
+    user = get_object_or_404(User, id=1)    
     if request.method == "GET":
-        review = Review.objects.filter(location_id=location_id).exclude(user=request.user)
-        review_serializer = ReviewSerializers(review, many=True)
-        return Response(review_serializer.data, status=status.HTTP_200_OK)
+        paginator = PageNumberPagination()
+        paginator.page_size = 5
+
+        reviews = Review.objects.filter(location_id=location_id).exclude(user=user)
+        result_page = paginator.paginate_queryset(reviews, request)
+        review_serializer = ReviewSerializers(result_page, many=True)
+        
+        return paginator.get_paginated_response(review_serializer.data)
 
 
 @api_view(['GET'])
@@ -424,10 +431,8 @@ def edit_review(request, location_id, review_id):
 @permission_classes([IsAuthenticated])
 def delete_review(request, location_id, review_id):
     try:
-        print("You can see this")
         review = Review.objects.get(location_id=location_id, user=request.user, id=review_id)
         review.delete()
         return Response({'message': 'Review deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
     except Review.DoesNotExist:
         return Response({'message': 'Review not found'}, status=status.HTTP_404_NOT_FOUND)
-    
