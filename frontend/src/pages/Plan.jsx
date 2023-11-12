@@ -11,6 +11,7 @@ import DateSettings from "../components/DateSettings"
 import useItineraryManager from "../hooks/useItineraryManager"
 import useDayManager from "../hooks/useDayManager"
 import useMarkerManager from "../hooks/useMarkerManager"
+import Error404 from "../components/Error404"
 
 const Plan = () => {
 	const { authTokens } = useContext(AuthContext)
@@ -135,9 +136,29 @@ const Plan = () => {
 		<div>Loading Itinerary Details</div>
 	)
 
-	if(itineraryError) return (
-		<div>{itineraryError}</div>
-	)
+	if(itineraryError) {
+		if (itineraryError===404) {
+			return (
+				<div>
+					<UserNav />
+					<Error404 />
+				</div>
+			)
+		}
+		else if (itineraryError===403) {
+			return (
+				<div>
+					<UserNav />
+					<Error403 />
+				</div>
+			)
+		}
+		else {
+			return (
+				<div>{itineraryError}</div>
+			)
+		}
+	}
 
 	if (daysLoading) return (
 		<div>Loading Related Days Information</div>

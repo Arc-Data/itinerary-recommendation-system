@@ -134,6 +134,46 @@ a:-webkit-any-link {
     font-size: 12px;
 }
 
+.error-container {
+    display: grid;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    gap: 40px;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+}
+
+.error-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.error-code {
+    font-size:36px;
+    color: #dcdcdc;
+    font-weight: 500;
+}
+
+.error-title {
+    font-size: 64px;
+    color: #333333;
+    font-weight: 500;
+}
+
+.error-subtext {
+    font-size: 20px;
+}
+
+.error-btn {
+    margin-top: 30px;
+    background: #184E77;
+    width: 160px;
+    padding: 12px;
+}
+
 .user--dropdown-content {
     position: absolute;
     background-color: white;
