@@ -8,11 +8,11 @@
 	/*Icon*/
 	import addressIcon from "/images/maps-and-flags.png";
 	import timeIcon from "/images/clock.png";
-	import bookmarkIcon from "/images/bookmark.png";
+	import bookmarkIcon from "/images/bookmark-icon-4.png";
 	import star from "/images/star.png";
 	import { useParams } from "react-router-dom";
 	import { FaStar } from "react-icons/fa";
-	import { FaChevronLeft, FaChevronRight } from "react-icons/fa"; // Import arrow icons
+	import { FaChevronLeft, FaChevronRight } from "react-icons/fa"; 
 	import AuthContext from "../context/AuthContext";
 
 	export default function DetailPage() {
@@ -174,7 +174,10 @@
 			className={`detailPage--bookmark ${isBookmarked ? 'true' : 'false'}`}
 			onClick={toggleBookmark}
 		>
-			<img src={bookmarkIcon} alt="Bookmark" />
+			<div className="bookmark-content">
+				<img src={bookmarkIcon} alt="Bookmark" />
+				<div className="bookmark-text">Bookmark</div>
+			</div>
 		</button>
 		</div>
 		<div className="detailPage--sections">

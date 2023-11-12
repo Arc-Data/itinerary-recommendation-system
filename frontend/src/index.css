@@ -631,19 +631,40 @@ input[type="text"] {
 }
   
 .detailPage--bookmark {
+    position: relative;
     background-color: #D9D9D9;
-    padding: 5px 10px;
+    padding: 0;
     border-radius: 10px;
     margin: 15px 0 0 auto;
+    overflow: hidden;
   }
-
   .detailPage--bookmark.true {
-    background-color: yellow;
-    /* Add any other styles for the bookmarked state */
+    background-color: #b8fbff;
+  }
+  .detailPage--bookmark > .bookmark-content {
+    display: flex;
+    align-items: center;
+  }
+  .detailPage--bookmark > .bookmark-content > img {
+    width: 70px;
+    height: 60px;
+  }
+  .bookmark-text {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: 0.5s;
+    background-color: #333;
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 10px;
   }
   
-.detailPage--bookmark > img {
-    width: 35px;
+  .detailPage--bookmark:hover .bookmark-text {
+    opacity: 1;
   }
 
   /*PICTURES OF DESTINATION*/
