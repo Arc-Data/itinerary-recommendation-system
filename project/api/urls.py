@@ -11,8 +11,7 @@ urlpatterns = [
 
     path('location/', LocationViewSet.as_view({'get': 'list'}), name="locations"),
     path('location/<int:id>/', get_location, name='location-detail'),
-    path('location/<int:location_id>/add-bookmark/', add_bookmark, name='add_bookmark'),
-    path('location/<int:location_id>/remove-bookmark/', remove_bookmark, name='remove_bookmark'),
+    path('location/<int:location_id>/bookmark/', bookmark, name='bookmark'),
     
     path('itinerary/',  create_itinerary, name='create_itinerary'),
     path('itinerary/list/', get_itinerary_list, name="itinerary-list"),
