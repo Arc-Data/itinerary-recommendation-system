@@ -47,7 +47,7 @@ const useItineraryManager = (authTokens) => {
     }
 
     const getItineraries = async () => {
-        const response = await fetch('http://127.0.0.1:8000/api/itineraries/', {
+        const response = await fetch('http://127.0.0.1:8000/api/itinerary/list/', {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',

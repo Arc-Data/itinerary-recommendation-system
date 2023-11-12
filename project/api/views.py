@@ -57,7 +57,7 @@ def get_related_days(request, itinerary_id):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def get_user_itineraries(request):
+def get_itinerary_list(request):
     user = request.user
     itineraries = Itinerary.objects.filter(user=user)
     serializer = ItineraryListSerializers(itineraries, many=True)
@@ -65,7 +65,7 @@ def get_user_itineraries(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def get_itinerary_2(request, itinerary_id):
+def get_itinerary(request, itinerary_id):
     try:
         itinerary = Itinerary.objects.get(id=itinerary_id)
     except Itinerary.DoesNotExist:
@@ -113,34 +113,6 @@ def edit_itinerary_name(request, itinerary_id):
     itinerary.save()
 
     return Response(status=status.HTTP_200_OK)
-
-@api_view(["GET"])
-@permission_classes([IsAuthenticated])
-def get_itinerary(request, itinerary_id):
-    try:
-        itinerary = Itinerary.objects.get(id=itinerary_id)
-    except Itinerary.DoesNotExist:
-        return Response(response_data, status=status.HTTP_404_NOT_FOUND)
-
-    if request.user != itinerary.user:
-        return Response({'message': "Access Denied"}, status=status.HTTP_403_FORBIDDEN)
-
-    if request.method == "GET":
-        try:
-            itinerary_serializer = ItinerarySerializers(itinerary)
-
-            days = Day.objects.filter(itinerary=itinerary)
-            day_serializers = DaySerializers(days, many=True)  # Use many=True here
-
-            response_data = {
-                'itinerary': itinerary_serializer.data,
-                'days': day_serializers.data
-            }
-
-            return Response(response_data, status=status.HTTP_200_OK)
-
-        except Exception as e:
-            return Response({'message': 'Internal Server Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(['GET'])
 def get_location(request, id):
@@ -213,13 +185,6 @@ def create_itinerary_item(request):
     serializer = ItineraryItemSerializer(itinerary_item)
 
     return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-@api_view(["GET"])
-def popular_spots(request):
-    if request.method == "GET":
-        spot = Spot.objects.all()[:6]
-        serializer = SpotPopularSerializers(spot, many=True)
-        return Response(serializer.data)
 
 @api_view(["GET"])
 def location(request):

@@ -34,7 +34,7 @@ const CreateTrip = () => {
 
         try {
             const access = String(authTokens.access)
-            const response = await fetch('http://127.0.0.1:8000/api/create_itinerary/', {
+            const response = await fetch('http://127.0.0.1:8000/api/itinerary/', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
