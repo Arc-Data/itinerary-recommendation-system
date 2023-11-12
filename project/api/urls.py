@@ -36,4 +36,6 @@ urlpatterns = [
     path('recommendations/<int:model_id>/apply/', apply_recommendation, name='apply-recommendation'),
 
     path('bookmarks/', get_bookmarks, name='get_bookmarks'),
+    path('trip-bookmarks/', trip_bookmarks, name='trip_bookmarks'),
+
 ]

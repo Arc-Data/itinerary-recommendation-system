@@ -362,6 +362,23 @@ def get_bookmarks(request):
     if request.method == "GET":
         bookmarks = Bookmark.objects.filter(user=user)
         location_ids = bookmarks.values_list('spot__location_ptr', flat=True).distinct()
-        bookmarked_locations = Location.objects.filter(id__in=location_ids)
-        serializer = LocationSerializers(bookmarked_locations, many=True, context={'user': user})
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        bookmarked = Location.objects.filter(id__in=location_ids)
+        serializer = RecentBookmarkSerializer(bookmarked, many=True, context={'bookmarks': bookmarks, 'user': user})
+        data = serializer.data
+        sorted_data = sorted(data, key=lambda x: x['datetime_created'], reverse=True)
+        return Response(sorted_data, status=status.HTTP_200_OK)
+    
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def trip_bookmarks(request):
+    user = get_object_or_404(User, id=2)
+    if request.method == "GET":
+        bookmarks = Bookmark.objects.filter(user=user)
+        location_ids = bookmarks.values_list('spot__location_ptr', flat=True).distinct()
+        bookmarked = Location.objects.filter(id__in=location_ids)
+        serializer = BookmarkLocationSerializer(bookmarked, many=True, context={'bookmarks': bookmarks, 'user': user})
+        data = serializer.data
+        sorted_data = sorted(data, key=lambda x: x['datetime_created'], reverse=True)
+        return Response(sorted_data, status=status.HTTP_200_OK)
+
+    
