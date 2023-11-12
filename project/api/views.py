@@ -375,5 +375,7 @@ def get_bookmarks(request):
     user = request.user
     if request.method == "GET":
         bookmarks = Bookmark.objects.filter(user=user)
-        serializer = BookmarkSerializer(bookmarks, many=True)
+        location_ids = bookmarks.values_list('spot__location_ptr', flat=True).distinct()
+        bookmarked_locations = Location.objects.filter(id__in=location_ids)
+        serializer = LocationSerializers(bookmarked_locations, many=True, context={'user': user})
         return Response(serializer.data, status=status.HTTP_200_OK)
