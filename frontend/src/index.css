@@ -636,6 +636,11 @@ input[type="text"] {
     border-radius: 10px;
     margin: 15px 0 0 auto;
   }
+
+  .detailPage--bookmark.true {
+    background-color: yellow;
+    /* Add any other styles for the bookmarked state */
+  }
   
 .detailPage--bookmark > img {
     width: 35px;
