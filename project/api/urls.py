@@ -36,4 +36,8 @@ urlpatterns = [
     path('preferences/', update_preferences, name="update-preferences"),
     path('recommendations/content/', get_content_recommendations, name='content-recommendations'),
     path('recommendations/<int:model_id>/apply/', apply_recommendation, name='apply-recommendation'),
+
+    path('location/<int:location_id>/add-bookmark/', add_bookmark, name='add_bookmark'),
+    path('location/<int:location_id>/remove-bookmark/', remove_bookmark, name='remove_bookmark'),
+    path('bookmarks/', get_bookmarks, name='get_bookmarks'),
 ]

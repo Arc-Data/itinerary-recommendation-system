@@ -144,14 +144,16 @@ def get_itinerary(request, itinerary_id):
 
 @api_view(['GET'])
 def get_location(request, id):
+    user = request.user
     try:
         location = Location.objects.get(pk=id)
     except Location.DoesNotExist:
         return Response({'error': 'Location not found'}, status=404)
-  
-    serializer = LocationSerializers(location)
-  
-    return Response(serializer.data)
+
+    serializer = LocationSerializers(location, context={'user': user})
+    data = serializer.data
+
+    return Response(data)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -364,7 +366,49 @@ def delete_day(request, day_id):
         day = Day.objects.get(id=day_id)
         day.delete()
         return Response({
-            'messsage': "Delete Success"
+            'message': "Delete Success"
         }, status=status.HTTP_204_NO_CONTENT)
     except Day.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def add_bookmark(request, location_id):
+    user = request.user
+    spot = get_object_or_404(Spot, id=location_id)
+
+    existing_bookmark = Bookmark.objects.filter(user=user, spot=spot).first()
+    if existing_bookmark:
+        return Response({'message': 'Bookmark already exists.'}, status=status.HTTP_400_BAD_REQUEST)
+
+    bookmark = Bookmark(user=user, spot=spot)
+    bookmark.save()
+
+    bookmark_serializer = BookmarkSerializer(bookmark)
+    return Response({'message': 'Bookmark added successfully.', 'data': bookmark_serializer.data}, status=status.HTTP_201_CREATED)
+
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def remove_bookmark(request, location_id):
+    user = request.user
+    spot = get_object_or_404(Spot, id=location_id)
+
+    existing_bookmark = Bookmark.objects.filter(user=user, spot=spot).first()
+    if not existing_bookmark:
+        return Response({'message': 'Bookmark does not exist.'}, status=status.HTTP_400_BAD_REQUEST)
+
+    existing_bookmark.delete()
+
+    return Response({'message': 'Bookmark removed successfully.'}, status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_bookmarks(request):
+    user = request.user
+    if request.method == "GET":
+        bookmarks = Bookmark.objects.filter(user=user)
+        serializer = BookmarkSerializer(bookmarks, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
