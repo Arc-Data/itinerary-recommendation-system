@@ -1215,14 +1215,35 @@ input[type="radio"] {
 .plan--itinerary-title {
     display: flex;
     gap: 10px;
-    align-items: center;
 }
 
-.plan--itinerary-title > svg {
+.plan--itinerary-header-icons > svg {
+    padding: 12px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.2);
+}
+
+.calendar-icon  {
+    background: #38A3A5;
+    color: white;
+    margin-left: 10px;
+}
+
+.pencil-icon {
     color: #184E77;
     cursor: pointer;
-    padding: 10px;
+}
+
+.check-icon {
+    align-self: center;
+    padding: 12px;
+    cursor: pointer;
     border-radius: 50%;
+}
+
+.check-icon:hover {
+    box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.5);
 }
 
 .plan--itinerary-title > svg:hover {
@@ -1232,12 +1253,12 @@ input[type="radio"] {
 .plan--edit-name {
     all: unset;
     border: none;
-    font-size: 32px;
+    font-size: 30px;
     width: auto;
     font-style: 'Work Sans';
     font-weight: 400;
-    text-decoration: underline;
     padding: 12px;
+    border-bottom: 1px solid
 }
 
 .plan--title {
@@ -1591,26 +1612,10 @@ input[type="radio"] {
 }
 
 .plan--itinerary-header {
-    display: flex;
-    align-items: center;
-}
-
-.plan--calendar-settings {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    margin-left: auto;
-}
-
-.calendar-icon  {
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    background: #38A3A5;
     display: grid;
-    place-items: center;
-    cursor: pointer;
-    box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.2);
+    grid-template-columns: 1fr auto; 
+    gap: 10px;
+    justify-content: space-between;
 }
 
 .calendar-icon:hover {

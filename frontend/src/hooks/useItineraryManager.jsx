@@ -76,6 +76,37 @@ const useItineraryManager = (authTokens) => {
         setItineraries(updatedItineraries)
     }
 
+    const editItineraryName = async (id) => {
+        if (editedName === itinerary.name) return 
+
+        try {
+            fetch(`http://127.0.0.1:8000/api/itinerary/${id}/edit/name/`, {
+                method: "PATCH",
+                headers: {
+                    'Content-Type': "application/json",
+                    'Authorization': `Bearer ${access}`,
+                },
+                body: JSON.stringify({
+                    name: editedName
+                })
+            })
+
+            const editedItinerary = {
+                ...itinerary,
+                "name": editedName
+            }
+
+            setItinerary(editedItinerary)
+        }
+        catch (error) {
+            console.log("An error occured while editing name")
+        }
+    }
+
+    const cancelEditName = () => {
+        setEditedName(itinerary.name)
+    }
+
     return {
         error,
         loading,
@@ -85,7 +116,9 @@ const useItineraryManager = (authTokens) => {
         setEditedName,
         getItineraries,
         getItineraryById,
+        editItineraryName,
         deleteItinerary,
+        cancelEditName,
     }
 }
 

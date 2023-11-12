@@ -105,6 +105,15 @@ def update_ordering(request):
 
     return Response({'message': 'Ordering Updated Successfully'}, status=status.HTTP_200_OK)
 
+@api_view(["PATCH"])
+def edit_itinerary_name(request, itinerary_id):
+    name = request.data.get("name")
+    itinerary = Itinerary.objects.get(id=itinerary_id)
+    itinerary.name = name
+    itinerary.save()
+
+    return Response(status=status.HTTP_200_OK)
+
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def get_itinerary(request, itinerary_id):

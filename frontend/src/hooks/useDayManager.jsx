@@ -30,7 +30,7 @@ const useDayManager = (authTokens) => {
 
     const updateDayColor = async (id, color) => {
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/day/${id}/color/`, {
+            const response = await fetch(`httcd ..p://127.0.0.1:8000/api/day/${id}/color/`, {
                 "method": "POST",
                 "headers": {
                     'Content-Type': "application/json",

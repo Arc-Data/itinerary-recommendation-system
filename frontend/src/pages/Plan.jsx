@@ -6,7 +6,7 @@ import dayjs from "dayjs"
 import CreateNav from "../components/CreateNav"
 import Map from "../components/Map"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCalendarAlt, faMap, faMoneyBill, faPencilAlt, faPencilSquare } from "@fortawesome/free-solid-svg-icons"
+import { faCalendarAlt, faCheck, faMap, faMoneyBill, faPencilAlt, faPencilSquare } from "@fortawesome/free-solid-svg-icons"
 import DateSettings from "../components/DateSettings"
 import useItineraryManager from "../hooks/useItineraryManager"
 import useDayManager from "../hooks/useDayManager"
@@ -23,7 +23,9 @@ const Plan = () => {
 		itinerary,
 		editedName,
 		setEditedName,
-		getItineraryById, 
+		getItineraryById,
+		editItineraryName,
+		cancelEditName, 
 	} = useItineraryManager(authTokens)
 
 	const inputRef = useRef(null)
@@ -92,6 +94,20 @@ const Plan = () => {
 
 	const toggleEditName = () => {
 		setEditName(prev => !prev)
+	}
+
+	const handleKeyPress = (e) => {
+		if (e.key === 'Enter') {
+			handleEditName()
+		} else if (e.key === 'Escape') {
+			cancelEditName()
+			toggleEditName()
+		}
+	}
+
+	const handleEditName = () => {
+		editItineraryName(id)
+		toggleEditName()
 	}
 
 	const displayDays = days && days.map(day => {
@@ -191,8 +207,8 @@ const Plan = () => {
 							</div>
 						</section>
 						<section className="plan--itinerary-section">
+							{editName ? 
 							<div className="plan--itinerary-header">
-								{editName ? 
 								<div className="plan--itinerary-title">
 									<input 
 										ref={inputRef}
@@ -200,31 +216,31 @@ const Plan = () => {
 										placeholder={"Enter Trip Name"} 
 										onChange={(e) => setEditedName(e.target.value)} 
 										maxLength={60}
+										onKeyDown={handleKeyPress}
 										className="plan--edit-name" />
-									<FontAwesomeIcon icon={faPencilAlt} onClick={toggleEditName}/>
 								</div>
-								:
-								<>
+								<FontAwesomeIcon 
+									icon={faCheck} 
+									onClick={handleEditName} 
+									className="check-icon"/>
+							</div>
+							:
+							<div className="plan--itinerary-header">
 								<div className="plan--itinerary-title">
 									<p className="plan--title">{itinerary?.name}</p>
-									<FontAwesomeIcon icon={faPencilAlt} onClick={toggleEditName}/>
 								</div>
-								<div className="plan--calendar-settings">
-									{days.length !== 0 && 
-									<div className="calendar-info">
-										<FontAwesomeIcon icon={faCalendarAlt} />
-										<p>
-											{dayjs(days[0].date).format('MMM DD')} to {dayjs(days[days.length - 1].date).format('MMM DD')}
-										</p>
-									</div>
-									}
-									<div className="calendar-icon" onClick={toggleCalendar}>
-										<FontAwesomeIcon icon={faCalendarAlt}/>
-									</div>
+								<div className="plan--itinerary-header-icons">
+									<FontAwesomeIcon 
+										icon={faPencilAlt}
+										onClick={toggleEditName} 
+										className=""/>
+									<FontAwesomeIcon 
+										className="calendar-icon"
+										onClick={toggleCalendar}
+										icon={faCalendarAlt}/>
 								</div>
-								</>
-								}
 							</div>
+							}
 							{displayDays}
 						</section>
 					</main>
