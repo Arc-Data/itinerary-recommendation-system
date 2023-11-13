@@ -52,11 +52,12 @@ class SpotSerializers(serializers.ModelSerializer):
 
     def get_is_bookmarked(self, obj):
         user = self.context.get('user')
+        spot_id = obj.id
+        bookmark = Bookmark.objects.filter(user_id=user, spot_id=spot_id).exists()
 
-        if user:
-            return obj.interested.filter(id=user.id).exists()
+        return bookmark
 
-        return False
+
 
 class FoodPlaceSerializers(serializers.ModelSerializer):
     class Meta:
@@ -169,8 +170,9 @@ class LocationSerializers(serializers.ModelSerializer):
         fields = ('id', 'location_type', 'name', 'address', 'description', 'latitude', 'longitude',  'images', 'details')
 
     def get_details(self, obj):
+        user = self.context.get("user")
         if obj.location_type == '1':
-            serializer = SpotSerializers(Spot.objects.get(pk=obj.id))
+            serializer = SpotSerializers(Spot.objects.get(pk=obj.id), context={'user': user})
             return serializer.data
         elif obj.location_type == '2':
             serializer = FoodPlaceSerializers(FoodPlace.objects.get(pk=obj.id))
@@ -239,7 +241,7 @@ class ItineraryListSerializers(serializers.ModelSerializer):
 class ItinerarySerializers(serializers.ModelSerializer):
     class Meta:
         model = Itinerary
-        fields = ['id', 'budget', 'number_of_people', 'user']
+        fields = ['id', 'budget', 'number_of_people', 'user', 'name']
 
 
 class DayDetailSerializers(serializers.ModelSerializer):
@@ -306,3 +308,78 @@ class SpotPopularSerializers(serializers.ModelSerializer):
     class Meta:
         model = Spot
         fields = ['id', 'name', 'description']
+
+
+class BookmarkSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Bookmark
+        fields = '__all__'
+
+
+class RecentBookmarkSerializer(serializers.ModelSerializer):
+    primary_image = serializers.SerializerMethodField()
+    datetime_created = serializers.SerializerMethodField()
+    class Meta:
+        model = Location
+        fields = ('id', 'name', 'primary_image', 'datetime_created')
+
+    def get_primary_image(self, obj):
+        primary_image = obj.images.filter(is_primary_image=True).first()
+
+        if primary_image:
+            return primary_image.image.url
+
+        return None
+    
+    def get_datetime_created(self, obj):
+        location_id = obj.id
+        user_id = self.context.get('user').id
+        bookmark = self.context.get('bookmarks').filter(spot__location_ptr=location_id, user=user_id).first()
+
+        return bookmark.datetime_created
+    
+class BookmarkLocationSerializer(serializers.ModelSerializer):
+    fee = serializers.SerializerMethodField()
+    schedule = serializers.SerializerMethodField()
+    primary_image = serializers.SerializerMethodField()
+    datetime_created = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Location
+        fields = ['id', 'name', 'address', 'fee', 'schedule', 'primary_image', 'datetime_created']
+    
+    def get_fee(self, obj):
+        spot = Spot.objects.get(pk=obj.id)
+
+        if spot:
+            return {
+                "min": spot.get_min_cost,
+                "max": spot.get_max_cost
+            } 
+        return None
+    
+    def get_schedule(self, obj):
+        spot = Spot.objects.get(pk=obj.id)
+
+        if spot:
+            return {
+                "opening": spot.opening_time,
+                "closing": spot.closing_time 
+            }
+        return None
+
+    def get_primary_image(self, obj):
+        primary_image = obj.images.filter(is_primary_image=True).first()
+
+        if primary_image:
+            return primary_image.image.url
+
+        return None
+    
+    def get_datetime_created(self, obj):
+        location_id = obj.id
+        user_id = self.context.get('user').id
+        bookmark = self.context.get('bookmarks').filter(spot__location_ptr=location_id, user=user_id).first()
+
+        return bookmark.datetime_created    
+        

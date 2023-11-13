@@ -134,6 +134,46 @@ a:-webkit-any-link {
     font-size: 12px;
 }
 
+.error-container {
+    display: grid;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    gap: 40px;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+}
+
+.error-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.error-code {
+    font-size:36px;
+    color: #dcdcdc;
+    font-weight: 500;
+}
+
+.error-title {
+    font-size: 64px;
+    color: #333333;
+    font-weight: 500;
+}
+
+.error-subtext {
+    font-size: 20px;
+}
+
+.error-btn {
+    margin-top: 30px;
+    background: #184E77;
+    width: 160px;
+    padding: 12px;
+}
+
 .user--dropdown-content {
     position: absolute;
     background-color: white;
@@ -631,14 +671,40 @@ input[type="text"] {
 }
   
 .detailPage--bookmark {
+    position: relative;
     background-color: #D9D9D9;
-    padding: 5px 10px;
+    padding: 0;
     border-radius: 10px;
     margin: 15px 0 0 auto;
+    overflow: hidden;
+  }
+  .detailPage--bookmark.true {
+    background-color: #b8fbff;
+  }
+  .detailPage--bookmark > .bookmark-content {
+    display: flex;
+    align-items: center;
+  }
+  .detailPage--bookmark > .bookmark-content > img {
+    width: 70px;
+    height: 60px;
+  }
+  .bookmark-text {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: 0.5s;
+    background-color: #333;
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 10px;
   }
   
-.detailPage--bookmark > img {
-    width: 35px;
+  .detailPage--bookmark:hover .bookmark-text {
+    opacity: 1;
   }
 
   /*PICTURES OF DESTINATION*/
@@ -988,10 +1054,23 @@ input[type="radio"] {
     font-size: 22px;
     font-weight: 700;
     border-radius: 10px;
-    padding: 0px 36px;
     display: grid;
     align-items:center;
     cursor: pointer;
+    overflow: hidden;
+    display: flex;
+}
+
+.home--banner > div > p {
+    padding: 20px;
+}
+
+.banner-img {
+    object-fit: cover;
+    width: 260px;
+    height: 100%;
+    border-top-left-radius: 25%;
+    border-bottom-left-radius: 25%;
 }
 
 .home--banner > div:first-child {
@@ -1198,18 +1277,67 @@ input[type="radio"] {
     width: 100%;
     height: 100%;
     display: grid;
-    grid-template-columns: 200px 1fr;
+    grid-template-columns: 180px 1fr;
     overflow: hidden;
 }
 
 .plan--side-panel {
     display: flex;
     flex-direction: column;
-    padding: 40px 10px;
+    padding: 40px 6px;
     background: #fcfcfc;
     border-right: 1px solid #e7e7e7;
     font-size: 1rem;
     color: rgba(51, 51, 51, 0.99);
+}
+
+.plan--itinerary-title {
+    display: flex;
+    gap: 10px;
+}
+
+.plan--itinerary-header-icons > svg {
+    padding: 12px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.2);
+}
+
+.calendar-icon  {
+    background: #38A3A5;
+    color: white;
+    margin-left: 10px;
+}
+
+.pencil-icon {
+    color: #184E77;
+    cursor: pointer;
+}
+
+.check-icon {
+    align-self: center;
+    padding: 12px;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.check-icon:hover {
+    box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.5);
+}
+
+.plan--itinerary-title > svg:hover {
+    box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.5);
+}
+
+.plan--edit-name {
+    all: unset;
+    border: none;
+    font-size: 30px;
+    width: auto;
+    font-style: 'Work Sans';
+    font-weight: 400;
+    padding: 12px;
+    border-bottom: 1px solid
 }
 
 .plan--title {
@@ -1427,13 +1555,22 @@ input[type="radio"] {
 }
 
 /*FOR IPAD*/
-@media screen and (max-width: 880px) {
+@media screen and (max-width: 1000px) {
     .hero--cards {
         grid-template-columns: repeat(1, 1fr); 
     }
 
     .home---page-content {
         padding:0;
+    }
+
+    .plan--layout {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .plan--side-panel {
+        display: none;
     }
 }
 
@@ -1554,26 +1691,10 @@ input[type="radio"] {
 }
 
 .plan--itinerary-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.plan--calendar-settings {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-.calendar-icon  {
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    background: #38A3A5;
     display: grid;
-    place-items: center;
-    cursor: pointer;
-    box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.2);
+    grid-template-columns: 1fr auto; 
+    gap: 10px;
+    justify-content: space-between;
 }
 
 .calendar-icon:hover {
@@ -1686,6 +1807,22 @@ input[type="radio"] {
 .add-location-modal--remove:hover {
     cursor: pointer;
     color: red;
+}
+
+.delete-btn {
+    margin-top: 20px;
+    font-size: 16px;
+    width: 120px;
+    border-radius: 10px;
+    padding: 6px;
+    cursor: pointer;
+    background: red;
+    color: white;
+    opacity: 0.8;
+}
+
+.delete-btn:hover {
+    opacity: 1;
 }
 
 
@@ -1858,6 +1995,7 @@ input[type="radio"] {
     height: 100%;
     border-radius: 20px;
     background-position: center;
+    cursor: pointer;
 }
 
 .preferences--option > p {

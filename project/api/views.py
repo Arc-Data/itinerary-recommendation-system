@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status, viewsets
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.filters import SearchFilter
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.generics import CreateAPIView
@@ -40,10 +41,44 @@ class LocationViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        query = self.request.query_params.get('query')
+        query = self.request.query_params.get('query', None)
+        hide = self.request.query_params.get('hide', None) 
+
 
         if query:
             queryset = queryset.filter(name__istartswith=query)
+
+        if hide:
+            queryset = queryset.filter(is_closed=False)
+
+        return queryset
+    
+class CustomNumberPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+
+class PaginatedLocationViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Location.objects.all()
+    serializer_class = LocationQuerySerializers
+    filter_backends = [SearchFilter]
+    search_fields = ['name']
+    pagination_class = CustomNumberPagination
+
+    action = {
+        'list': 'list',
+    }
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        query = self.request.query_params.get('query', None)
+        hide = self.request.query_params.get('hide', None) 
+
+
+        if query:
+            queryset = queryset.filter(name__istartswith=query)
+
+        if hide:
+            queryset = queryset.filter(is_closed=False)
 
         return queryset
     
@@ -58,7 +93,7 @@ def get_related_days(request, itinerary_id):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def get_user_itineraries(request):
+def get_itinerary_list(request):
     user = request.user
     itineraries = Itinerary.objects.filter(user=user)
     serializer = ItineraryListSerializers(itineraries, many=True)
@@ -66,7 +101,7 @@ def get_user_itineraries(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def get_itinerary_2(request, itinerary_id):
+def get_itinerary(request, itinerary_id):
     try:
         itinerary = Itinerary.objects.get(id=itinerary_id)
     except Itinerary.DoesNotExist:
@@ -106,44 +141,28 @@ def update_ordering(request):
 
     return Response({'message': 'Ordering Updated Successfully'}, status=status.HTTP_200_OK)
 
-@api_view(["GET"])
-@permission_classes([IsAuthenticated])
-def get_itinerary(request, itinerary_id):
-    try:
-        itinerary = Itinerary.objects.get(id=itinerary_id)
-    except Itinerary.DoesNotExist:
-        return Response(response_data, status=status.HTTP_404_NOT_FOUND)
+@api_view(["PATCH"])
+def edit_itinerary_name(request, itinerary_id):
+    name = request.data.get("name")
+    itinerary = Itinerary.objects.get(id=itinerary_id)
+    itinerary.name = name
+    itinerary.save()
 
-    if request.user != itinerary.user:
-        return Response({'message': "Access Denied"}, status=status.HTTP_403_FORBIDDEN)
-
-    if request.method == "GET":
-        try:
-            itinerary_serializer = ItinerarySerializers(itinerary)
-
-            days = Day.objects.filter(itinerary=itinerary)
-            day_serializers = DaySerializers(days, many=True)  # Use many=True here
-
-            response_data = {
-                'itinerary': itinerary_serializer.data,
-                'days': day_serializers.data
-            }
-
-            return Response(response_data, status=status.HTTP_200_OK)
-
-        except Exception as e:
-            return Response({'message': 'Internal Server Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    return Response(status=status.HTTP_200_OK)
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def get_location(request, id):
+    user = request.user
     try:
         location = Location.objects.get(pk=id)
     except Location.DoesNotExist:
         return Response({'error': 'Location not found'}, status=404)
-  
-    serializer = LocationSerializers(location)
-  
-    return Response(serializer.data)
+
+    serializer = LocationSerializers(location, context={'user': user})
+    data = serializer.data
+
+    return Response(data)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -203,13 +222,6 @@ def create_itinerary_item(request):
     serializer = ItineraryItemSerializer(itinerary_item)
 
     return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-@api_view(["GET"])
-def popular_spots(request):
-    if request.method == "GET":
-        spot = Spot.objects.all()[:6]
-        serializer = SpotPopularSerializers(spot, many=True)
-        return Response(serializer.data)
 
 @api_view(["GET"])
 def location(request):
@@ -361,6 +373,35 @@ def delete_day(request, day_id):
     except Day.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def add_bookmark(request, location_id):
+    user = request.user
+    spot = get_object_or_404(Spot, id=location_id)
+
+    existing_bookmark = Bookmark.objects.filter(user=user, spot=spot).first()
+    if existing_bookmark:
+        return Response({'message': 'Bookmark already exists.'}, status=status.HTTP_400_BAD_REQUEST)
+
+    bookmark = Bookmark(user=user, spot=spot)
+    bookmark.save()
+
+    bookmark_serializer = BookmarkSerializer(bookmark)
+    return Response({'message': 'Bookmark added successfully.', 'data': bookmark_serializer.data}, status=status.HTTP_201_CREATED)
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def remove_bookmark(request, location_id):
+    user = request.user
+    spot = get_object_or_404(Spot, id=location_id)
+
+    existing_bookmark = Bookmark.objects.filter(user=user, spot=spot).first()
+    if not existing_bookmark:
+        return Response({'message': 'Bookmark does not exist.'}, status=status.HTTP_400_BAD_REQUEST)
+
+    existing_bookmark.delete()
+
+    return Response({'message': 'Bookmark removed successfully.'}, status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET'])
 def get_location_reviews(request, location_id):
@@ -375,7 +416,6 @@ def get_location_reviews(request, location_id):
         
         return paginator.get_paginated_response(review_serializer.data)
 
-
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_user_review(request, location_id):
@@ -384,6 +424,57 @@ def get_user_review(request, location_id):
         review_serializer = ReviewSerializers(review)
         return Response(review_serializer.data, status=status.HTTP_200_OK)
 
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_bookmarks(request):
+    user = request.user
+    if request.method == "GET":
+        bookmarks = Bookmark.objects.filter(user=user)
+        serializer = BookmarkSerializer(bookmarks, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def bookmark(request, location_id):
+    user = request.user
+    spot = get_object_or_404(Spot, id=location_id)
+
+    existing_bookmark = Bookmark.objects.filter(user=user, spot=spot).first()
+    if existing_bookmark:
+        existing_bookmark.delete()
+        return Response({'message': 'Bookmark deleted.'}, status=status.HTTP_201_CREATED)
+
+    else:
+        bookmark = Bookmark(user=user, spot=spot)
+        bookmark.save()
+        return Response({'message': 'Bookmark added.'}, status=status.HTTP_201_CREATED)
+
+@api_view(["DELETE"])
+@permission_classes([IsAuthenticated])
+def delete_location(request, id):
+    try:
+        location = Location.objects.get(id=id)
+        location.delete()   
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    except Location.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def bookmark(request, location_id):
+    user = request.user
+    spot = get_object_or_404(Spot, id=location_id)
+
+    existing_bookmark = Bookmark.objects.filter(user=user, spot=spot).first()
+    if existing_bookmark:
+        existing_bookmark.delete()
+        return Response({'message': 'Bookmark deleted.'}, status=status.HTTP_201_CREATED)
+
+    else:
+        bookmark = Bookmark(user=user, spot=spot)
+        bookmark.save()
+        return Response({'message': 'Bookmark added.'}, status=status.HTTP_201_CREATED)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -406,7 +497,7 @@ def create_review(request, location_id):
         return Response(review_serializer.data, status=status.HTTP_201_CREATED)
     except Exception as e:
         return Response({'error': f'Error creating review: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
-    
+
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
@@ -426,8 +517,20 @@ def edit_review(request, location_id, review_id):
     except Exception as e:
         return Response({'message': f'Error updating review: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def trip_bookmarks(request):
+    user = request.user
 
-@api_view(['DELETE'])
+    bookmarks = Bookmark.objects.filter(user=user)
+    location_ids = bookmarks.values_list('spot__location_ptr', flat=True).distinct()
+    bookmarked = Location.objects.filter(id__in=location_ids)
+
+    serializer = BookmarkLocationSerializer(bookmarked, many=True, context={'bookmarks': bookmarks, 'user': user})
+    
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def delete_review(request, location_id, review_id):
     try:
@@ -436,3 +539,52 @@ def delete_review(request, location_id, review_id):
         return Response({'message': 'Review deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
     except Review.DoesNotExist:
         return Response({'message': 'Review not found'}, status=status.HTTP_404_NOT_FOUND)
+    
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_location(request):
+    type = request.data.get("type")
+    name = request.data.get("name")
+    address = request.data.get("address")
+    latitude = request.data.get("latitude")
+    longitude = request.data.get("longitude")
+    description = request.data.get("description")
+    image = request.data.get("image")
+
+    location = Location.objects.create(
+        name=name,
+        address=address,
+        latitude=latitude,
+        longitude=longitude,
+        description=description,
+        location_type=type,
+        is_closed=True
+    )
+
+    if image:
+        LocationImage.objects.create(
+            image=image,
+            location=location,
+            is_primary_image=True
+        )
+
+    serializer = LocationSerializers(location)
+    data = serializer.data
+
+    response_data = {
+        'id': data['id'],
+        'message': "Created successfully",
+    }
+
+    return Response(response_data, status=status.HTTP_200_OK)
+
+@api_view(["DELETE"])
+@permission_classes([IsAuthenticated])
+def delete_location(request, id):
+    try:
+        location = Location.objects.get(id=id)
+        location.delete()   
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    except Location.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)

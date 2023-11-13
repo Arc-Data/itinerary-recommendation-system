@@ -19,8 +19,16 @@ const Preferences = () => {
     // fill this up with links for each
     // and set the url to images[idx]
     const images = [
-
+        '/pref-art.png',
+        '/pref-act.png',
+        '/pref-culture.png',
+        '/pref-entertainment.png',
+        '/pref-history.png',
+        '/pref-nature.png',
+        '/pref-religion.png',
     ]
+
+    console.log(user.set_preferences)
 
     if (user.set_preferences) {
         return <Navigate to="/home"/>
@@ -38,8 +46,6 @@ const Preferences = () => {
                 }, 
                 body: JSON.stringify(preferences),
             })
-
-            const data = await response.json()
 
             if (response.ok) {
                 userSetPreference()
@@ -68,7 +74,7 @@ const Preferences = () => {
             {Object.keys(preferences).map((key, index) => (
                 <PreferenceOption 
                     key={index}
-                    url={'/beach.jpg'}
+                    url={images[index]}
                     name={key}
                     onClick={() => toggleOption(key)}
                     isSelected={preferences[key]}

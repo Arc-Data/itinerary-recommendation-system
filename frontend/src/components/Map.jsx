@@ -27,8 +27,6 @@ const Map = ({markers}) => {
         })
     }
 
-    console.log("Map re-rendered")
-
     useEffect(() => {
         if(map.current) return; 
 

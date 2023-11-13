@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import { useParams } from "react-router-dom"
 import AuthContext from "../context/AuthContext"
 import Day from "../components/Day"
@@ -6,27 +6,31 @@ import dayjs from "dayjs"
 import CreateNav from "../components/CreateNav"
 import Map from "../components/Map"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCalendarAlt, faMap, faMoneyBill } from "@fortawesome/free-solid-svg-icons"
+import { faCalendarAlt, faCheck, faMap, faMoneyBill, faPencilAlt, faPencilSquare } from "@fortawesome/free-solid-svg-icons"
 import DateSettings from "../components/DateSettings"
 import useItineraryManager from "../hooks/useItineraryManager"
 import useDayManager from "../hooks/useDayManager"
 import useMarkerManager from "../hooks/useMarkerManager"
+import Error404 from "../components/Error404"
 
 const Plan = () => {
 	const { authTokens } = useContext(AuthContext)
-	const [ itinerary, setItinerary ] = useState({
-		number_of_people: '1',
-		budget: ''
-	})
 	const { id } = useParams()
 	const [ includedLocations, setIncludedLocations ] = useState([])
 
 	const { 
 		loading: itineraryLoading,
 		error: itineraryError,
-		getItineraryById, 
+		itinerary,
+		editedName,
+		setEditedName,
+		getItineraryById,
+		editItineraryName,
+		cancelEditName, 
 	} = useItineraryManager(authTokens)
 
+	const inputRef = useRef(null)
+	
 	const { 
 		markers, 
 		getMarkersData, 
@@ -43,11 +47,20 @@ const Plan = () => {
 		getDays,
 	} = useDayManager(authTokens)
 
+	const [isExpenseOpen, setExpenseOpen] = useState(true)
+	const [isItineraryOpen, setItineraryOpen] = useState(true)
+	const [isCalendarOpen, setCalendarOpen] = useState(false)
+	const [editName, setEditName] = useState(false)
+
 	useEffect(() => {
 		const fetchData = async () => {
-			const userItinerary = await getItineraryById(id)
-			setItinerary(userItinerary)
-			await getDays(userItinerary.id)
+			try {
+				await getItineraryById(id)
+				await getDays(id)
+			}
+			catch(error) {
+				console.log("Error while retrieving itinerary")
+			}
 		}
 
 		fetchData()
@@ -57,11 +70,13 @@ const Plan = () => {
 		const locations = getMarkersData(days)
         setIncludedLocations(locations)
 	}, [days]) 
-
-	const [isExpenseOpen, setExpenseOpen] = useState(true)
-	const [isItineraryOpen, setItineraryOpen] = useState(true)
-	const [isCalendarOpen, setCalendarOpen] = useState(false)
-
+	
+	useEffect(() => {
+		if (inputRef.current && editName) {
+			inputRef.current.focus();
+		}
+	}, [editName])
+	
 	const toggleCalendar = (e) => {
 		if(e) {
 			e.stopPropagation()
@@ -76,6 +91,24 @@ const Plan = () => {
 	
 	const toggleItinerary = () => {
 		setItineraryOpen(prev => !prev)
+	}
+
+	const toggleEditName = () => {
+		setEditName(prev => !prev)
+	}
+
+	const handleKeyPress = (e) => {
+		if (e.key === 'Enter') {
+			handleEditName()
+		} else if (e.key === 'Escape') {
+			cancelEditName()
+			toggleEditName()
+		}
+	}
+
+	const handleEditName = () => {
+		editItineraryName(id)
+		toggleEditName()
 	}
 
 	const displayDays = days && days.map(day => {
@@ -103,9 +136,29 @@ const Plan = () => {
 		<div>Loading Itinerary Details</div>
 	)
 
-	if(itineraryError) return (
-		<div>{itineraryError}</div>
-	)
+	if(itineraryError) {
+		if (itineraryError===404) {
+			return (
+				<div>
+					<UserNav />
+					<Error404 />
+				</div>
+			)
+		}
+		else if (itineraryError===403) {
+			return (
+				<div>
+					<UserNav />
+					<Error403 />
+				</div>
+			)
+		}
+		else {
+			return (
+				<div>{itineraryError}</div>
+			)
+		}
+	}
 
 	if (daysLoading) return (
 		<div>Loading Related Days Information</div>
@@ -161,7 +214,7 @@ const Plan = () => {
 										type="number" 
 										name="number_of_people"
 										id="number_of_people"
-										defaultValue={itinerary.number_of_people}/>
+										defaultValue={itinerary?.number_of_people}/>
 										
 								</div>
 								<div className="form-row">
@@ -170,27 +223,45 @@ const Plan = () => {
 										type="number" 
 										name="budget" 
 										id="budget"
-										defaultValue={itinerary.budget}/>							
+										defaultValue={itinerary?.budget}/>							
 								</div>
 							</div>
 						</section>
 						<section className="plan--itinerary-section">
+							{editName ? 
 							<div className="plan--itinerary-header">
-								<p className="plan--title">Itinerary</p>
-								<div className="plan--calendar-settings">
-									{days.length !== 0 && 
-									<div className="calendar-info">
-										<FontAwesomeIcon icon={faCalendarAlt} />
-										<p>
-											{dayjs(days[0].date).format('MMM DD')} to {dayjs(days[days.length - 1].date).format('MMM DD')}
-										</p>
-									</div>
-									}
-									<div className="calendar-icon" onClick={toggleCalendar}>
-										<FontAwesomeIcon icon={faCalendarAlt}/>
-									</div>
+								<div className="plan--itinerary-title">
+									<input 
+										ref={inputRef}
+										value={editedName}
+										placeholder={"Enter Trip Name"} 
+										onChange={(e) => setEditedName(e.target.value)} 
+										maxLength={60}
+										onKeyDown={handleKeyPress}
+										className="plan--edit-name" />
+								</div>
+								<FontAwesomeIcon 
+									icon={faCheck} 
+									onClick={handleEditName} 
+									className="check-icon"/>
+							</div>
+							:
+							<div className="plan--itinerary-header">
+								<div className="plan--itinerary-title">
+									<p className="plan--title">{itinerary?.name}</p>
+								</div>
+								<div className="plan--itinerary-header-icons">
+									<FontAwesomeIcon 
+										icon={faPencilAlt}
+										onClick={toggleEditName} 
+										className=""/>
+									<FontAwesomeIcon 
+										className="calendar-icon"
+										onClick={toggleCalendar}
+										icon={faCalendarAlt}/>
 								</div>
 							</div>
+							}
 							{displayDays}
 						</section>
 					</main>

@@ -33,7 +33,7 @@ function Sidebar() {
                 </NavLink>
                 <NavLink
                     className={({ isActive }) => isActive ? 'active' : 'link'}
-                    to="/admin/location"
+                    to="/admin/locations"
                     onClick={toggleLocationDropdown}
                 >
                     <h4 className="locations">
@@ -48,25 +48,19 @@ function Sidebar() {
                     <>
                         <NavLink
                             className={({ isActive }) => (isActive ? 'active-drp dropdown' : 'link dropdown')}
-                            to="/admin/location"
+                            to="/admin/locations?type=spot"
                         >
-                            Tour
+                            Tourist Spot
                         </NavLink>
                         <NavLink
                             className={({ isActive }) => (isActive ? 'active-drp dropdown' : 'link dropdown')}
-                            to="/admin/accommodation"
+                            to="/admin/locations?type=accomodation"
                         >
                             Accommodation
                         </NavLink>
                         <NavLink
                             className={({ isActive }) => (isActive ? 'active-drp dropdown' : 'link dropdown')}
-                            to="/admin/activity"
-                        >
-                            Activity
-                        </NavLink>
-                        <NavLink
-                            className={({ isActive }) => (isActive ? 'active-drp dropdown' : 'link dropdown')}
-                            to="/admin/food"
+                            to="/admin/locations?type=food"
                         >
                             Food
                         </NavLink>

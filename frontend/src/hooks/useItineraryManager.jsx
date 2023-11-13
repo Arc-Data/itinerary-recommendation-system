@@ -1,9 +1,11 @@
 import { useState } from "react"
 
 const useItineraryManager = (authTokens) => {
-    const [itineraries, setItineraries] = useState()
+    const [itineraries, setItineraries] = useState([])
+    const [itinerary, setItinerary] = useState()
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false)
+    const [editedName, setEditedName] = useState("")
     const access = String(authTokens.access)
 
     const getItineraryById = async (id) => {
@@ -19,10 +21,10 @@ const useItineraryManager = (authTokens) => {
             })
 
             if (response.status === 403) {
-                setError("Access Denied")
+                setError(403)
 
             } else if (response.status === 404) {
-                setError("Itinerary Does not Exist")
+                setError(404)
             
             } else if (!response.ok) {
                 throw new Error("Something wrong happened")
@@ -31,7 +33,9 @@ const useItineraryManager = (authTokens) => {
                 const data = await response.json();
 
                 setLoading(false)
-                return data
+                setItinerary(data)
+                setEditedName(data.name)
+                return data.id
             }
         }
         catch (e){
@@ -43,7 +47,7 @@ const useItineraryManager = (authTokens) => {
     }
 
     const getItineraries = async () => {
-        const response = await fetch('http://127.0.0.1:8000/api/itineraries/', {
+        const response = await fetch('http://127.0.0.1:8000/api/itinerary/list/', {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
@@ -72,13 +76,49 @@ const useItineraryManager = (authTokens) => {
         setItineraries(updatedItineraries)
     }
 
+    const editItineraryName = async (id) => {
+        if (editedName === itinerary.name) return 
+
+        try {
+            fetch(`http://127.0.0.1:8000/api/itinerary/${id}/edit/name/`, {
+                method: "PATCH",
+                headers: {
+                    'Content-Type': "application/json",
+                    'Authorization': `Bearer ${access}`,
+                },
+                body: JSON.stringify({
+                    name: editedName
+                })
+            })
+
+            const editedItinerary = {
+                ...itinerary,
+                "name": editedName
+            }
+
+            setItinerary(editedItinerary)
+        }
+        catch (error) {
+            console.log("An error occured while editing name")
+        }
+    }
+
+    const cancelEditName = () => {
+        setEditedName(itinerary.name)
+    }
+
     return {
         error,
         loading,
+        itinerary,
         itineraries,
+        editedName,
+        setEditedName,
         getItineraries,
         getItineraryById,
+        editItineraryName,
         deleteItinerary,
+        cancelEditName,
     }
 }
 

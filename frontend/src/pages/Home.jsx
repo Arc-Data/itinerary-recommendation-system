@@ -20,9 +20,18 @@ const HomePage = () => {
 	return (
 		<div className = "home--page-content">
 			<header className="home--banner">
-				<div className="home--banner-itinerary">You have not created an itinerary yet.</div>
-				<div className="home--banner-business">Promote your food business with CebuRoute</div>
-				<div className="home--banner-ai">Try our AI Recommendations Feature while building your itinerary.</div>
+				<div className="home--banner-itinerary">
+					<p>You have not created an itinerary yet.</p>
+					<img src="/banner-1.jpg" className="banner-img"/>
+				</div>
+				<div className="home--banner-business">
+					<p>Promote your food business with CebuRoute</p>
+					<img src="/banner-2.png" className="banner-img" />
+				</div>
+				<div className="home--banner-ai">
+					<p>Try our AI Recommendations Feature while building your itinerary.</p>
+					<img src="/banner-3.png" className="banner-img" />
+				</div>
 			</header>
 			{ itineraries !== null && (
 			<div>

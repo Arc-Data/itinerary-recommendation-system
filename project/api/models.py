@@ -7,6 +7,7 @@ from django.db.models.signals import post_save
 from .managers import CustomUserManager
 from django.dispatch import receiver
 from django.db.models.signals import post_save
+from django.utils import timezone
 
 import os
 
@@ -104,9 +105,10 @@ class CustomFee(models.Model):
 class Bookmark(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     spot = models.ForeignKey("Spot", on_delete=models.CASCADE)
-
+    datetime_created = models.DateTimeField(default=timezone.now)
     class Meta:
         unique_together = ('user', 'spot')
+        ordering = ['-datetime_created']
 
     def __str__(self):
         return f"{self.user.get_full_name} bookmarked {self.spot.name}"
