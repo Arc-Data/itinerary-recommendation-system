@@ -28,6 +28,8 @@ const Preferences = () => {
         '/pref-religion.png',
     ]
 
+    console.log(user.set_preferences)
+
     if (user.set_preferences) {
         return <Navigate to="/home"/>
     }

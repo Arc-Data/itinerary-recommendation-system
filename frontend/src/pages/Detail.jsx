@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 /*Components*/
 import Review from "../components/Review";
 import DetailCard from "../components/DetailCard";
@@ -13,8 +13,10 @@ import star from "/images/star.png";
 import { useParams } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa"; // Import arrow icons
+import AuthContext from "../context/AuthContext";
 
 export default function DetailPage() {
+  const { authTokens } = useContext(AuthContext)
   const [location, setLocation] = useState(null);
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
@@ -33,6 +35,7 @@ export default function DetailPage() {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${authTokens.access}`
         },
       });
 
