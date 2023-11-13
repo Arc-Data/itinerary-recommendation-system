@@ -25,7 +25,7 @@ const AddLocation = ({onClose, locations, setLocations, day, includedLocations, 
     }
 
     const searchLocations = async (search) => {
-        const response = await fetch(`http://127.0.0.1:8000/api/location/?query=${search}`)
+        const response = await fetch(`http://127.0.0.1:8000/api/location/?query=${search}&hide`)
         const data = await response.json()
         setSearchData(data)
     }
@@ -113,6 +113,7 @@ const AddLocation = ({onClose, locations, setLocations, day, includedLocations, 
                 const fee = getFeeDetails(location.fee.min, location.fee.max)
                 const opening_time = getTimeDetails(location.schedule.opening)
                 const closing_time = getTimeDetails(location.schedule.closing) 
+
                 return !checkDuplicateLocation(location.id) && (
                     <div key={location.id} location={location} className="add-location-modal--search-item">
                         <FontAwesomeIcon icon={faLocationDot}></FontAwesomeIcon>

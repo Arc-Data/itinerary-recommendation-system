@@ -1,21 +1,21 @@
-	import React, { useContext, useEffect, useState } from "react";
-	/*Components*/
-	import Review from "../components/Review";
-	import DetailCard from "../components/DetailCard";
-	/*Data*/
-	import reviewData from "../reviewData";
-	import cardData from "../cardData";
-	/*Icon*/
-	import addressIcon from "/images/maps-and-flags.png";
-	import timeIcon from "/images/clock.png";
-	import bookmarkIcon from "/images/bookmark-icon-4.png";
-	import star from "/images/star.png";
-	import { useParams } from "react-router-dom";
-	import { FaStar } from "react-icons/fa";
-	import { FaChevronLeft, FaChevronRight } from "react-icons/fa"; 
-	import AuthContext from "../context/AuthContext";
+import React, { useContext, useEffect, useState } from "react";
+/*Components*/
+import Review from "../components/Review";
+import DetailCard from "../components/DetailCard";
+/*Data*/
+import reviewData from "../reviewData";
+import cardData from "../cardData";
+/*Icon*/
+import addressIcon from "/images/maps-and-flags.png";
+import timeIcon from "/images/clock.png";
+import bookmarkIcon from "/images/bookmark-icon-4.png";
+import star from "/images/star.png";
+import { useParams } from "react-router-dom";
+import { FaStar } from "react-icons/fa";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa"; 
+import AuthContext from "../context/AuthContext";
 
-	export default function DetailPage() {
+export default function DetailPage() {
 	const { authTokens } = useContext(AuthContext)
 	const [location, setLocation] = useState(null);
 	const { id } = useParams();
@@ -288,4 +288,4 @@
 		</div>
 		</div>
 	);
-	}
+}

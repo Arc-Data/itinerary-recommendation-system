@@ -108,6 +108,7 @@ class Bookmark(models.Model):
     datetime_created = models.DateTimeField(default=timezone.now)
     class Meta:
         unique_together = ('user', 'spot')
+        ordering = ['-datetime_created']
 
     def __str__(self):
         return f"{self.user.get_full_name} bookmarked {self.spot.name}"

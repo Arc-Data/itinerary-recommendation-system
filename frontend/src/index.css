@@ -134,6 +134,46 @@ a:-webkit-any-link {
     font-size: 12px;
 }
 
+.error-container {
+    display: grid;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    gap: 40px;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+}
+
+.error-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.error-code {
+    font-size:36px;
+    color: #dcdcdc;
+    font-weight: 500;
+}
+
+.error-title {
+    font-size: 64px;
+    color: #333333;
+    font-weight: 500;
+}
+
+.error-subtext {
+    font-size: 20px;
+}
+
+.error-btn {
+    margin-top: 30px;
+    background: #184E77;
+    width: 160px;
+    padding: 12px;
+}
+
 .user--dropdown-content {
     position: absolute;
     background-color: white;
@@ -1014,10 +1054,23 @@ input[type="radio"] {
     font-size: 22px;
     font-weight: 700;
     border-radius: 10px;
-    padding: 0px 36px;
     display: grid;
     align-items:center;
     cursor: pointer;
+    overflow: hidden;
+    display: flex;
+}
+
+.home--banner > div > p {
+    padding: 20px;
+}
+
+.banner-img {
+    object-fit: cover;
+    width: 260px;
+    height: 100%;
+    border-top-left-radius: 25%;
+    border-bottom-left-radius: 25%;
 }
 
 .home--banner > div:first-child {
@@ -1756,6 +1809,22 @@ input[type="radio"] {
     color: red;
 }
 
+.delete-btn {
+    margin-top: 20px;
+    font-size: 16px;
+    width: 120px;
+    border-radius: 10px;
+    padding: 6px;
+    cursor: pointer;
+    background: red;
+    color: white;
+    opacity: 0.8;
+}
+
+.delete-btn:hover {
+    opacity: 1;
+}
+
 
 .add-location-modal--recently-added {
     display: flex;
@@ -1926,6 +1995,7 @@ input[type="radio"] {
     height: 100%;
     border-radius: 20px;
     background-position: center;
+    cursor: pointer;
 }
 
 .preferences--option > p {

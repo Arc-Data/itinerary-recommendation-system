@@ -14,7 +14,7 @@ const DateSettings = ({onClose, updateDays}) => {
         setLoading(true)
     
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/plan/${id}/calendar/`, {
+            const response = await fetch(`http://127.0.0.1:8000/api/itinerary/${id}/calendar/`, {
                 'method': "POST",
                 'headers': {
                     "Content-Type": "application/json",

@@ -21,10 +21,10 @@ const useItineraryManager = (authTokens) => {
             })
 
             if (response.status === 403) {
-                setError("Access Denied")
+                setError(403)
 
             } else if (response.status === 404) {
-                setError("Itinerary Does not Exist")
+                setError(404)
             
             } else if (!response.ok) {
                 throw new Error("Something wrong happened")
