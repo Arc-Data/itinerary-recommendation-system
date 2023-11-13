@@ -40,9 +40,13 @@ class LocationViewSet(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):
         queryset = super().get_queryset()
         query = self.request.query_params.get('query')
+        hide = self.request.query_params.get('hide') is not None
 
         if query:
             queryset = queryset.filter(name__istartswith=query)
+        
+        if hide:
+            queryset = queryset.filter(is_closed=False)
 
         return queryset
     
@@ -388,11 +392,33 @@ def create_location(request):
     latitude = request.data.get("latitude")
     longitude = request.data.get("longitude")
     description = request.data.get("description")
-
     image = request.data.get("image")
-    print(request.data.get("latitude"))
 
-    return Response(status=status.HTTP_200_OK)
+    location = Location.objects.create(
+        name=name,
+        address=address,
+        latitude=latitude,
+        longitude=longitude,
+        description=description,
+        location_type=type,
+        is_closed=True
+    )
+
+    LocationImage.objects.create(
+        image=image,
+        location=location,
+        is_primary_image=True
+    )
+
+    serializer = LocationSerializers(location)
+    data = serializer.data
+
+    response_data = {
+        'id': data['id'],
+        'message': "Created successfully",
+    }
+
+    return Response(response_data, status=status.HTTP_200_OK)
 
 @api_view(["DELETE"])
 @permission_classes([IsAuthenticated])

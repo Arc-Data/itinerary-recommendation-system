@@ -3,7 +3,6 @@ import AuthContext from "../context/AuthContext"
 import useLocationManager from "../hooks/useLocationManager"
 import { useNavigate, useParams } from "react-router-dom"
 import Error404 from "../components/Error404"
-import { faDove } from "@fortawesome/free-solid-svg-icons"
 
 const AdminLocationView = () => {
     const { authTokens } = useContext(AuthContext)

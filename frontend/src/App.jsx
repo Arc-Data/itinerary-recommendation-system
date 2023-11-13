@@ -29,7 +29,6 @@ import AdminRoutes from './utils/AdminRoutes';
 import AdminLocationView from './pages/AdminLocationView';
 	/*css*/
 	
-
 function App() {
 	return (
 		<BrowserRouter>
@@ -60,14 +59,14 @@ function App() {
 				</Route>
 				<Route path="/admin" element={<AdminRoutes />}>
 					<Route path = "/admin/" index element={<Users users={data[0].users}/>} />
-					<Route path="/admin/location" element={<Location locations={data[0].locations}/>} />
-
-					<Route path="/admin/location/:id/" element={<AdminLocationView />} />
+					<Route path="/admin/locations" element={<Location locations={data[0].locations}/>} />
+					
+					<Route path="/admin/location" element={<AddLocation/>} />
+					<Route path="/admin/location/:id" element={<AdminLocationView />} />
 
 					<Route path="/admin/accommodation" element={<Accommodation />} />
 					<Route path="/admin/activity" element={<Activity />} />
 					<Route path="/admin/food" element={<Food />} />
-					<Route path="/admin/add-location" element={<AddLocation />} />
 				</Route>
 			</Routes>
 		</AuthProvider>

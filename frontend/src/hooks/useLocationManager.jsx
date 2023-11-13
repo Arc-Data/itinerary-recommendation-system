@@ -17,13 +17,17 @@ const useLocationManager = (authTokens) => {
                 "body": location
             })
             
-            return response.ok;
+            console.log(response)
+
+            const data = await response.json()
+            console.log(data)
+
+            return data.id
         }
         catch (error) {
             console.log(error)
         }
 
-        return false;
     }
 
     const getLocation = async (id) => {

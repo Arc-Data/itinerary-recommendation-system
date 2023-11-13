@@ -2,6 +2,7 @@ import { useContext, useState } from 'react'
 import image from '/image.png'
 import AuthContext from '../context/AuthContext'
 import useLocationManager from '../hooks/useLocationManager'
+import { useNavigate } from 'react-router-dom'
 
 function AddLocation() {
     const { authTokens } = useContext(AuthContext)
@@ -15,6 +16,7 @@ function AddLocation() {
             description: ""
         }
     )
+    const navigate = useNavigate()
     const { createLocation } = useLocationManager(authTokens)
 
     const handleSubmit = async () => {
@@ -31,11 +33,9 @@ function AddLocation() {
             }
     
             try {
-                if (await createLocation(formData)) {
-                    console.log('Proceed');
-                } else {
-                    console.log('Error');
-                }
+                const id = await createLocation(formData)
+                navigate(`/admin/location/${id}`)
+
             } catch (error) {
                 console.error(error);
             }
@@ -75,9 +75,9 @@ function AddLocation() {
                         className="styled-input" 
                     >
                         <option value="">-- Location Type --</option>
-                        <option value="spot">Spot</option>
-                        <option value="accommodation">Accommodation</option>
-                        <option value="food">Food</option>
+                        <option value="1">Spot</option>
+                        <option value="2">Food</option>
+                        <option value="3">Accommodation</option>
                     </select>
 
                     <div className="input admin--container">
