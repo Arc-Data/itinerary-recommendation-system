@@ -373,39 +373,11 @@ def delete_day(request, day_id):
     except Day.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def add_bookmark(request, location_id):
-    user = request.user
-    spot = get_object_or_404(Spot, id=location_id)
-
-    existing_bookmark = Bookmark.objects.filter(user=user, spot=spot).first()
-    if existing_bookmark:
-        return Response({'message': 'Bookmark already exists.'}, status=status.HTTP_400_BAD_REQUEST)
-
-    bookmark = Bookmark(user=user, spot=spot)
-    bookmark.save()
-
-    bookmark_serializer = BookmarkSerializer(bookmark)
-    return Response({'message': 'Bookmark added successfully.', 'data': bookmark_serializer.data}, status=status.HTTP_201_CREATED)
-
-@api_view(['DELETE'])
-@permission_classes([IsAuthenticated])
-def remove_bookmark(request, location_id):
-    user = request.user
-    spot = get_object_or_404(Spot, id=location_id)
-
-    existing_bookmark = Bookmark.objects.filter(user=user, spot=spot).first()
-    if not existing_bookmark:
-        return Response({'message': 'Bookmark does not exist.'}, status=status.HTTP_400_BAD_REQUEST)
-
-    existing_bookmark.delete()
-
-    return Response({'message': 'Bookmark removed successfully.'}, status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def get_location_reviews(request, location_id):
-    user = get_object_or_404(User, id=1)    
+    user = request.user 
     if request.method == "GET":
         paginator = PageNumberPagination()
         paginator.page_size = 5
@@ -431,8 +403,12 @@ def get_bookmarks(request):
     user = request.user
     if request.method == "GET":
         bookmarks = Bookmark.objects.filter(user=user)
-        serializer = BookmarkSerializer(bookmarks, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        location_ids = bookmarks.values_list('spot__location_ptr', flat=True).distinct()
+        bookmarked = Location.objects.filter(id__in=location_ids)
+        serializer = RecentBookmarkSerializer(bookmarked, many=True, context={'bookmarks': bookmarks, 'user': user})
+        data = serializer.data
+        sorted_data = sorted(data, key=lambda x: x['datetime_created'], reverse=True)
+        return Response(sorted_data, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -450,31 +426,6 @@ def bookmark(request, location_id):
         bookmark.save()
         return Response({'message': 'Bookmark added.'}, status=status.HTTP_201_CREATED)
 
-@api_view(["DELETE"])
-@permission_classes([IsAuthenticated])
-def delete_location(request, id):
-    try:
-        location = Location.objects.get(id=id)
-        location.delete()   
-        return Response(status=status.HTTP_204_NO_CONTENT)
-    except Location.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def bookmark(request, location_id):
-    user = request.user
-    spot = get_object_or_404(Spot, id=location_id)
-
-    existing_bookmark = Bookmark.objects.filter(user=user, spot=spot).first()
-    if existing_bookmark:
-        existing_bookmark.delete()
-        return Response({'message': 'Bookmark deleted.'}, status=status.HTTP_201_CREATED)
-
-    else:
-        bookmark = Bookmark(user=user, spot=spot)
-        bookmark.save()
-        return Response({'message': 'Bookmark added.'}, status=status.HTTP_201_CREATED)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -501,9 +452,9 @@ def create_review(request, location_id):
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
-def edit_review(request, location_id, review_id):
+def edit_review(request, location_id):
     try:
-        review = Review.objects.get(location_id=location_id, user=request.user, id=review_id)
+        review = Review.objects.get(location_id=location_id, user=request.user)
 
         review.comment = request.data.get('comment', review.comment)
         review.rating = request.data.get('rating', review.rating)
@@ -527,18 +478,19 @@ def trip_bookmarks(request):
     bookmarked = Location.objects.filter(id__in=location_ids)
 
     serializer = BookmarkLocationSerializer(bookmarked, many=True, context={'bookmarks': bookmarks, 'user': user})
-    
-    return Response(serializer.data, status=status.HTTP_200_OK)
+    data = serializer.data
+    sorted_data = sorted(data, key=lambda x: x['datetime_created'], reverse=True)
+    return Response(sorted_data, status=status.HTTP_200_OK)
 
-@api_view(['GET'])
+@api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
-def delete_review(request, location_id, review_id):
+def delete_review(request, location_id):
     try:
-        review = Review.objects.get(location_id=location_id, user=request.user, id=review_id)
+        review = Review.objects.get(location_id=location_id, user=request.user)
         review.delete()
-        return Response({'message': 'Review deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
+        return Response({'message': 'Review deleted successfully.'}, status=status.HTTP_204_NO_CONTENT)
     except Review.DoesNotExist:
-        return Response({'message': 'Review not found'}, status=status.HTTP_404_NOT_FOUND)
+        return Response({'message': 'Review not found.'}, status=status.HTTP_404_NOT_FOUND)
     
 
 @api_view(['POST'])
