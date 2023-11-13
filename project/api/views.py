@@ -444,8 +444,7 @@ def create_review(request, location_id):
             comment=comment,
             rating=rating
         )
-        review_serializer = ReviewSerializers(review)
-        return Response(review_serializer.data, status=status.HTTP_201_CREATED)
+        return Response({'message': 'Review published.'}, status=status.HTTP_201_CREATED)
     except Exception as e:
         return Response({'error': f'Error creating review: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
 
