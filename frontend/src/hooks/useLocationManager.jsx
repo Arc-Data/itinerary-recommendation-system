@@ -3,7 +3,7 @@ import { useState } from "react"
 const useLocationManager = (authTokens) => {
     const access = String(authTokens.access)
     const [location, setLocation] = useState()
-    const [locations, setLocations] = useState([])
+    const [result, setResult] = useState()
     const [error, setError] = useState(false)
     const [loading, setLoading] = useState(false)
 
@@ -17,17 +17,34 @@ const useLocationManager = (authTokens) => {
                 "body": location
             })
             
-            console.log(response)
-
             const data = await response.json()
-            console.log(data)
-
             return data.id
         }
         catch (error) {
             console.log(error)
         }
 
+    }
+
+    const getLocations = async (page, query = "") => {
+        setLoading(true)
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/api/location/paginated/?query=${query}&page=${page}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            })
+
+            const data = await response.json()
+            setResult(data)
+        }   
+        catch(error) {
+            setError("Something has occured")
+        } finally {
+            setLoading(false)
+        }
+        
     }
 
     const getLocation = async (id) => {
@@ -41,16 +58,14 @@ const useLocationManager = (authTokens) => {
                 },
             })
 
-            console.log(response)
-    
             if(response.status===404) {
                 setError(404)
             } else if(response.status===403) {
                 setError(403)
             }     
+
             const data = await response.json()
             setLocation(data)
-            console.log(data)
         }
         catch (error) {
             console.log("An error occured")
@@ -70,15 +85,17 @@ const useLocationManager = (authTokens) => {
             })
         }
         catch (error) {
-
+            console.log("Encountered error while deleting location : ", error)
         }
     }
     
     return {
         location,
+        result,
         error,
         loading,
         getLocation,
+        getLocations,
         createLocation,
         deleteLocation
     }

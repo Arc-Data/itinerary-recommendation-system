@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status, viewsets
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.filters import SearchFilter
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.generics import CreateAPIView
@@ -39,12 +40,42 @@ class LocationViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        query = self.request.query_params.get('query')
-        hide = self.request.query_params.get('hide') is not None
+        query = self.request.query_params.get('query', None)
+        hide = self.request.query_params.get('hide', None) 
+
 
         if query:
             queryset = queryset.filter(name__istartswith=query)
-        
+
+        if hide:
+            queryset = queryset.filter(is_closed=False)
+
+        return queryset
+    
+class CustomNumberPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+
+class PaginatedLocationViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Location.objects.all()
+    serializer_class = LocationQuerySerializers
+    filter_backends = [SearchFilter]
+    search_fields = ['name']
+    pagination_class = CustomNumberPagination
+
+    action = {
+        'list': 'list',
+    }
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        query = self.request.query_params.get('query', None)
+        hide = self.request.query_params.get('hide', None) 
+
+
+        if query:
+            queryset = queryset.filter(name__istartswith=query)
+
         if hide:
             queryset = queryset.filter(is_closed=False)
 
