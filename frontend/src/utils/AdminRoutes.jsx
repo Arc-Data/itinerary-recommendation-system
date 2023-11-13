@@ -22,7 +22,7 @@ const AdminRoutes = () => {
     return (
         <div className="site-wrapper">
             <Sidebar />
-            <main class="admin--main">
+            <main className="admin--main">
                 <Outlet />
             </main>
         </div>

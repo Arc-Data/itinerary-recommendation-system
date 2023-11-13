@@ -1,23 +1,59 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import image from '/image.png'
+import AuthContext from '../context/AuthContext'
+import useLocationManager from '../hooks/useLocationManager'
 
 function AddLocation() {
+    const { authTokens } = useContext(AuthContext)
     const [locationData, setLocationData] = useState(
         {
             type: "",
             name: "",
-            openingHours: "",
-            closingHours: "",
             address: "",
-            city: "",
-            postalCode: "",
+            latitude: "",
+            longitude: "",
             description: ""
         }
     )
+    const { createLocation } = useLocationManager(authTokens)
 
-    console.log(locationData)
+    const handleSubmit = async () => {
+        // if (validateForm()) {
+            const formData = new FormData();
+    
+            Object.entries(locationData).forEach(([key, value]) => {
+                formData.append(key, value);
+            });
+    
+            const imageFileInput = document.getElementById('imgFile');
+            if (imageFileInput.files.length > 0) {
+                formData.append('image', imageFileInput.files[0]);
+            }
+    
+            try {
+                if (await createLocation(formData)) {
+                    console.log('Proceed');
+                } else {
+                    console.log('Error');
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        // }
+    };
 
-    function handleChange(event) {
+    const validateForm = () => {
+        return (
+            locationData.type.trim() !== '' &&
+            locationData.name.trim() !== '' &&
+            locationData.address.trim() !== '' &&
+            locationData.latitude.trim() !== '' &&
+            locationData.longitude.trim() !== '' &&
+            locationData.description.trim() !== ''
+        );
+    };
+
+    const handleChange = (event) =>  {
         const { name, value } = event.target
         setLocationData(prevLocationData => {
             return {
@@ -39,9 +75,8 @@ function AddLocation() {
                         className="styled-input" 
                     >
                         <option value="">-- Location Type --</option>
-                        <option value="tour">Tour</option>
+                        <option value="spot">Spot</option>
                         <option value="accommodation">Accommodation</option>
-                        <option value="activity">Activity</option>
                         <option value="food">Food</option>
                     </select>
 
@@ -55,28 +90,7 @@ function AddLocation() {
                             className="styled-input" 
                         />
                     </div>
-                    <div className="admin--container">
-                        <div className="input admin--container">
-                            <label htmlFor="openingHours">Opening Hours</label>
-                            <input
-                                type="time"
-                                onChange={handleChange}
-                                name="openingHours"
-                                value={locationData.openingHours}
-                                className="styled-input" 
-                            />
-                        </div>
-                        <div className="input admin--container">
-                            <label htmlFor="closingHours">Closing Hours</label>
-                            <input
-                                type="time"
-                                onChange={handleChange}
-                                name="closingHours"
-                                value={locationData.closingHours}
-                                className="styled-input" 
-                            />
-                        </div>
-                    </div>
+                    
                     <div className="input admin--container">
                         <label htmlFor="address">Address</label>
                         <input
@@ -89,22 +103,24 @@ function AddLocation() {
                     </div>
                     <div className="admin--container">
                         <div className="input admin--container">
-                            <label htmlFor="city">City</label>
+                            <label htmlFor="latitude">Latitude</label>
                             <input
-                                type="text"
+                                type="number"
+                                step="0.000001"
                                 onChange={handleChange}
-                                name="city"
-                                value={locationData.city}
+                                name="latitude"
+                                value={locationData.latitude}
                                 className="styled-input" 
                             />
                         </div>
                         <div className="input admin--container">
-                            <label htmlFor="postalCode">Postal Code</label>
+                            <label htmlFor="postalCode">Longitude</label>
                             <input
-                                type="text"
+                                number="text"
+                                step="0.000001"
                                 onChange={handleChange}
-                                name="postalCode"
-                                value={locationData.postalCode}
+                                name="longitude"
+                                value={locationData.longitude}
                                 className="styled-input" 
                             />
                         </div>
@@ -121,6 +137,7 @@ function AddLocation() {
                     <button
                         type="button"
                         className="btn done"
+                        onClick={handleSubmit}
                     >
                         Upload
                     </button>
