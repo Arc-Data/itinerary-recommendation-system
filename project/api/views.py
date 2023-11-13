@@ -404,11 +404,12 @@ def create_location(request):
         is_closed=True
     )
 
-    LocationImage.objects.create(
-        image=image,
-        location=location,
-        is_primary_image=True
-    )
+    if image:
+        LocationImage.objects.create(
+            image=image,
+            location=location,
+            is_primary_image=True
+        )
 
     serializer = LocationSerializers(location)
     data = serializer.data
