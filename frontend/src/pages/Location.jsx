@@ -39,6 +39,14 @@ function Location() {
             setCurrentPage(newPage);
         }
     };
+
+    const handleSearchChange = (e) => {
+        if (e.key === 'Enter') {
+            const query = e.target.value
+            setCurrentPage(1)
+            getLocations(1, query)
+        }
+    }
     
     const generatePageButtons = () => {
         const buttons = [];
@@ -94,31 +102,30 @@ function Location() {
     return (
         <>
             <div>
-                <form className="admin--container">
-                    <img className='admin--search--icon' src={searchIcon} alt="Search Icon" />
-                    <input 
-                        type="text"
-                        placeholder="Search for location"
-                        className="admin--search--bar" 
-                    />
-                    <button 
-                        className="btn search"
-                        type="button"
+                <img className='admin--search--icon' src={searchIcon} alt="Search Icon" />
+                <input 
+                    type="text"
+                    placeholder="Search for location"
+                    className="admin--search--bar" 
+                    onKeyDown={handleSearchChange}
+                />
+                <button 
+                    className="btn search"
+                    type="button"
+                >
+                    Search
+                </button>
+                <button 
+                    className="btn add-location"
+                    type="button"
+                >
+                    <NavLink 
+                        to="/admin/add-location"
+                        className="link"
                     >
-                        Search
-                    </button>
-                    <button 
-                        className="btn add-location"
-                        type="button"
-                    >
-                        <NavLink 
-                            to="/admin/add-location"
-                            className="link"
-                        >
-                            Add Location
-                        </NavLink>
-                    </button>
-                </form>
+                        Add Location
+                    </NavLink>
+                </button>
             </div>
             <table>
                 <thead>
