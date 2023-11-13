@@ -9,6 +9,9 @@ urlpatterns = [
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('register/', UserRegistrationView.as_view(), name="register"),
 
+    path('location/create/', create_location, name="create-location"),
+    path('location/<int:id>/delete/', delete_location, name="delete-location"),
+    
     path('location/', LocationViewSet.as_view({'get': 'list'}), name="locations"),
     path('location/<int:id>/', get_location, name='location-detail'),
     path('location/<int:location_id>/add-bookmark/', add_bookmark, name='add_bookmark'),

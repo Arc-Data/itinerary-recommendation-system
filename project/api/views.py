@@ -378,3 +378,29 @@ def get_bookmarks(request):
         bookmarks = Bookmark.objects.filter(user=user)
         serializer = BookmarkSerializer(bookmarks, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_location(request):
+    type = request.data.get("type")
+    name = request.data.get("name")
+    address = request.data.get("address")
+    latitude = request.data.get("latitude")
+    longitude = request.data.get("longitude")
+    description = request.data.get("description")
+
+    image = request.data.get("image")
+    print(request.data.get("latitude"))
+
+    return Response(status=status.HTTP_200_OK)
+
+@api_view(["DELETE"])
+@permission_classes([IsAuthenticated])
+def delete_location(request, id):
+    try:
+        location = Location.objects.get(id=id)
+        location.delete()   
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    except Location.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    

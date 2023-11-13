@@ -5,10 +5,10 @@ const Error404 = () => {
                 <p className="error-code">Error 404</p>
                 <p className="error-title">Page not found</p>
                 <p className="error-subtext">The page you are looking for was moved, remove, renamed or might never existed.</p>
-                <button class="error-btn">Go Back</button>
+                <button className="error-btn">Go Back</button>
             </div>
             <img 
-                src="/exclamation.svg"
+                src="/question.svg"
                 height={160} 
                 width={160}/>
         </div>
