@@ -86,15 +86,23 @@ a:-webkit-any-link {
     position: fixed;
     top: 0;
     left: 0;
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    place-items: center;
     background-color: #FFFFFF;
-    height:100px;
     width: 100%;
+    height:100px;
+    border-bottom: 1px solid #e7e7e7;
+    box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.2);
     z-index: 1000;
+}
+
+.nav-wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    place-items: center;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1600px;
     padding: 12px 24px;
-    border-bottom: 1px solid black;
+    height: 100%
 }
 
 .user--search {
@@ -188,17 +196,24 @@ a:-webkit-any-link {
     flex-direction: column;
 }
   
-.user--dropdown-content button { 
-    display: block;
-    padding: 8px 5px;
-    text-align: center;
+.user--dropdown-content { 
     border: none;
     background-color: transparent;
     cursor: pointer;
     color: black;
+    font-size: 12px;
+    
 }
   
-.user--dropdown-content button:hover {
+.user--dropdown-content > * {
+    background: #fff;
+    color: black;
+    text-align: left;
+    width: 100%;
+    padding: 12px;
+}   
+
+.user--dropdown-content > *:hover {
     background-color: #184E77;
     color: white;
 }
@@ -206,7 +221,8 @@ a:-webkit-any-link {
 .user--create-trip {
     background-color: #184E77;
     padding: 14px 26px;
-    font-size: 18px;
+    border-radius: 10px;
+    font-size: 12px;
 }
 
 .user--links {
