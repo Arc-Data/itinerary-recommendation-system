@@ -30,14 +30,18 @@ function Users(props) {
                 </form>
             </div>
             <table>
-                <tr>
-                    <th className="font16">ID</th>
-                    <th className="font16">First Name</th>
-                    <th className="font16">Last Name</th>
-                    <th className="font16">Email</th>
-                    <th className="font16">Action</th>
-                </tr>
-                {userElements}
+                <thead>
+                    <tr>
+                        <th className="font16">ID</th>
+                        <th className="font16">First Name</th>
+                        <th className="font16">Last Name</th>
+                        <th className="font16">Email</th>
+                        <th className="font16">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {userElements}
+                </tbody>
             </table>
         </>
     );

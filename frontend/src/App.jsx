@@ -23,6 +23,9 @@ import Plan from './pages/Plan';
 import Preferences from './pages/Preferences';
 import AdminRoutes from './utils/AdminRoutes';
 import AdminLocationView from './pages/AdminLocationView';
+import ProfileLayout from './layout/ProfileLayout';
+import Profile from './pages/Profile';
+import Trips from './pages/Trips';
 	/*css*/
 	
 function App() {
@@ -44,6 +47,11 @@ function App() {
 						<Route path="/search" element={<SearchPage />} />
 					</Route>
 
+					<Route path="/profile" element={<ProfileLayout/>}>
+						<Route path="/profile/" element={<Profile />} />
+						<Route path="/profile/trips" element={<Trips/>} />
+					</Route>
+
 					<Route element={<CreateTripLayout/>}>
 						<Route path="/create" element={<CreateTrip />} /> 
 					</Route>
@@ -53,7 +61,7 @@ function App() {
 				<Route path="/admin" element={<AdminRoutes />}>
 					<Route path = "/admin/" index element={<Users users={data[0].users}/>} />
 					<Route path="/admin/location" element={<AddLocation/>} />
-					<Route path="/admin/locations" element={<Location locations={data[0].locations}/>} />
+					<Route path="/admin/locations" element={<Location/>} />
 					<Route path="/admin/location/:id" element={<AdminLocationView />} />
 				</Route>
 			</Routes>

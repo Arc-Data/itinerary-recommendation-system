@@ -44,7 +44,6 @@ button {
 }
 
 a:-webkit-any-link {
-    color: white;
     cursor: pointer;
     text-decoration: none;
 }
@@ -112,12 +111,6 @@ a:-webkit-any-link {
     border-radius: 10px;
 }
 
-.user--create-trip {
-    background-color: #184E77;
-    border-radius: 10px;
-    padding: 12px 16px;
-    font-size: 16px;
-}
 
 .search--bar-container {
     position:relative;
@@ -198,12 +191,21 @@ a:-webkit-any-link {
   
 .user--dropdown-content { 
     border: none;
-    background-color: transparent;
     cursor: pointer;
     color: black;
     font-size: 12px;
     
 }
+
+.user--dropdown-content > * {
+    background: #fff;
+    color: black;
+    text-align: left;
+    width: 100%;
+    padding: 12px;
+}   
+
+.user--dropdown-content > *:hover {
   
 .user--dropdown-content > * {
     background: #fff;
@@ -2217,3 +2219,18 @@ input[type="radio"] {
     cursor: pointer;
 }
 
+.profile--container {
+    display: grid;
+    margin-top: 100px;
+    grid-template-columns: 200pxgfr;
+    height: 100%;
+    min-height: calc(100vh - 100px);
+}
+
+.profile--container > div {
+    padding: 12px;
+}
+
+.profile--sidebar {
+    background: black;
+}
