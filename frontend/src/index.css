@@ -89,7 +89,6 @@ a:-webkit-any-link {
     width: 100%;
     height:100px;
     border-bottom: 1px solid #e7e7e7;
-    box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.2);
     z-index: 1000;
 }
 
@@ -205,8 +204,6 @@ a:-webkit-any-link {
     padding: 12px;
 }   
 
-.user--dropdown-content > *:hover {
-  
 .user--dropdown-content > * {
     background: #fff;
     color: black;
@@ -1303,11 +1300,13 @@ input[type="radio"] {
     display: flex;
     flex-direction: column;
     padding: 40px 6px;
+    gap: 40px;
     background: #fcfcfc;
     border-right: 1px solid #e7e7e7;
     font-size: 1rem;
     color: rgba(51, 51, 51, 0.99);
 }
+
 
 .plan--itinerary-title {
     display: flex;
@@ -1383,21 +1382,33 @@ input[type="radio"] {
     font-size: 16px;
 }
 
-.plan--accordion-header {
+.accordion-header {
     border-radius: 10px;
+    padding: 12px 14px;
+    cursor: pointer;
+    background-color: transparent;
+    border: 2px solid #E7E7E7;
 }
 
-.plan--accordion-header:hover, .plan--accordion-header.active {
+.accordion-header:hover, .accordion-header.active {
     background: #184e77;
     color:white;
 }
 
-.plan--accordion-content > div, .plan--accordion-header {
+.accordion-header, .accordion-content > div {
     display: grid;
     grid-template-columns: 20px 1fr;
-    gap: 10px;
-    padding: 10px 15px;
+    gap: 10px 4px;
+    padding: 14px 12px;
     cursor: pointer;
+}
+
+.accordion-content > div {
+    padding: 10px 12px; 
+}
+
+.accordion-underline {
+    text-decoration: underline;
 }
 
 .plan--main-panel {
@@ -1415,14 +1426,7 @@ input[type="radio"] {
     background-color: #f6f6f6;
 }
 
-.accordion-header {
-  padding: 25px 20px;
-  background-color: transparent;
-  cursor: pointer;
-  border: 2px solid #E7E7E7;
-  border-radius: 10px;
-  transition: border-color 0.3s ease;
-}
+
 
 .accordion-header:hover {
   border: 2px solid #184E77;
@@ -2222,15 +2226,66 @@ input[type="radio"] {
 .profile--container {
     display: grid;
     margin-top: 100px;
-    grid-template-columns: 200pxgfr;
+    grid-template-columns: auto 1fr;
     height: 100%;
     min-height: calc(100vh - 100px);
 }
 
 .profile--container > div {
-    padding: 12px;
+    padding: 20px 24px;
 }
 
 .profile--sidebar {
-    background: black;
+    border-right: 1px solid #e7e7e7;
+    background: white;
+}
+
+.profile--details {
+    display: flex;
+}
+
+.profile--section {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0 10px;
+    align-items: center;
+}
+
+.profile--icon {
+    background: yellow;
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    grid-row: 1/3;
+}
+
+.profile--name {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.profile--email {
+    color: #333;
+    font-size: 16px;
+}
+
+.profile--trips-section {
+    margin-top: 40px;
+}
+
+.profile--link {
+    display: grid;
+    grid-template-columns: 20px 1fr;
+    gap: 2px;
+    padding: 12px 14px;
+    cursor: pointer;
+}
+
+.profile--links-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }

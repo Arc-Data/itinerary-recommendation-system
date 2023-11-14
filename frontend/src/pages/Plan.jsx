@@ -12,6 +12,8 @@ import useItineraryManager from "../hooks/useItineraryManager"
 import useDayManager from "../hooks/useDayManager"
 import useMarkerManager from "../hooks/useMarkerManager"
 import Error404 from "../components/Error404"
+import Error403 from "../components/Error403"
+import AccordionHeader from "./AccordionHeader"
 
 const Plan = () => {
 	const { authTokens } = useContext(AuthContext)
@@ -175,34 +177,36 @@ const Plan = () => {
 				<CreateNav />
 				<div className="plan--layout">
 					<aside className="plan--side-panel">
-						<div 
-							className="plan--accordion-header" 
-							onClick={toggleExpense}>
-							<FontAwesomeIcon icon={faMoneyBill}/>
-							<p>Expense</p>
+						<div>
+							<AccordionHeader 
+								active={isExpenseOpen}
+								handleClick={toggleExpense}
+								icon={faMoneyBill}
+								text={"Expenses"}/>
+							{isExpenseOpen && 
+							<div className="accordion-content">
+								<div >
+									<p></p>
+									<p>Budget</p>
+								</div>
+								<div >
+									<p></p>
+									<p>Group Size</p>
+								</div>
+							</div>}
 						</div>
-						{isExpenseOpen && 
-						<div className="plan--accordion-content">
-							<div >
-								<p></p>
-								<p>Budget</p>
+						<div>
+							<AccordionHeader 
+								active={isItineraryOpen}
+								handleClick={toggleItinerary}
+								icon={faMap}
+								text={"Itinerary"}/>
+							{isItineraryOpen && 
+							<div className="accordion-content">
+								{ getDayTabs }
 							</div>
-							<div >
-								<p></p>
-								<p>Group Size</p>
-							</div>
-						</div>}
-						<div 
-							className="plan--accordion-header" 
-							onClick={toggleItinerary}>
-							<FontAwesomeIcon icon={faMap} />
-							<p>Itinerary</p>
+							}
 						</div>
-						{isItineraryOpen && 
-						<div className="plan--accordion-content">
-							{ getDayTabs }
-						</div>
-						}
 					</aside>
 					<main className="plan--main-panel">
 						<section className="plan--expense-section">
