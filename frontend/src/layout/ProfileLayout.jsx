@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom'
+import { Link, Outlet } from 'react-router-dom'
 import UserNav from '../components/UserNav'
 import { useContext, useState } from 'react'
 import AuthContext from '../context/AuthContext'
@@ -10,8 +10,6 @@ const ProfileLayout = () => {
 	const { user } = useContext(AuthContext)
 	const [openTrips, setOpenTrips] = useState(true)
 	
-	console.log(user)
-
 	const toggleTrips = () => {
 		setOpenTrips(prev => !prev)
 	}
@@ -28,16 +26,18 @@ const ProfileLayout = () => {
 					</div>
 					<div className='profile--links-section'>
 						<div className="profile--trips-section">
-							<AccordionHeader 
-								active={openTrips}
-								handleClick={toggleTrips}
-								icon={faDirections}
-								text={"Your Trips"}/>
+								<AccordionHeader 
+									active={openTrips}
+									handleClick={toggleTrips}
+									icon={faDirections}
+									text={"Your Trips"}/>
 							{openTrips &&
 							<div className='accordion-content accordion-underline'>
 								<div>
 									<p></p>
-									<p>Recent</p>
+									<Link to="trips">
+									Recent
+									</Link>
 								</div>
 								<div>
 									<p></p>

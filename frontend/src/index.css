@@ -1106,8 +1106,9 @@ input[type="radio"] {
     font-weight: 700;
 }
 
-.home--trip-containers {
-    display: flex;
+.trips--container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     overflow-x: hidden;
     gap: 20px;
     padding: 30px 0px;
@@ -1387,10 +1388,9 @@ input[type="radio"] {
     padding: 12px 14px;
     cursor: pointer;
     background-color: transparent;
-    border: 2px solid #E7E7E7;
 }
 
-.accordion-header:hover, .accordion-header.active {
+.accordion-header:hover, .accordion-header.active, .profile--link:hover {
     background: #184e77;
     color:white;
 }
@@ -1401,6 +1401,10 @@ input[type="radio"] {
     gap: 10px 4px;
     padding: 14px 12px;
     cursor: pointer;
+}
+
+.accordion-content > div:first-child {
+    margin-top: 20px;
 }
 
 .accordion-content > div {
@@ -1424,12 +1428,6 @@ input[type="radio"] {
 
 .plan--expense-section {
     background-color: #f6f6f6;
-}
-
-
-
-.accordion-header:hover {
-  border: 2px solid #184E77;
 }
 
 .plan--itinerary {
@@ -2224,10 +2222,16 @@ input[type="radio"] {
 }
 
 .profile--container {
+    margin: 0 auto;
     display: grid;
     margin-top: 100px;
     grid-template-columns: auto 1fr;
     height: 100%;
+    width: 100%;
+    max-width: 1600px;
+    overflow-x: hidden;
+    border: 1px solid #e7e7e7;
+
     min-height: calc(100vh - 100px);
 }
 
@@ -2272,7 +2276,7 @@ input[type="radio"] {
     font-size: 16px;
 }
 
-.profile--trips-section {
+.profile--1section {
     margin-top: 40px;
 }
 
@@ -2282,10 +2286,16 @@ input[type="radio"] {
     gap: 2px;
     padding: 12px 14px;
     cursor: pointer;
+    border-radius: 10px;
 }
 
 .profile--links-section {
+    margin-top: 40px;
     display: flex;
     flex-direction: column;
     gap: 20px;
+}
+
+.profile-trips--container {
+    max-width: 1200px;
 }
