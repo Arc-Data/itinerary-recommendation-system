@@ -258,6 +258,7 @@ class ItineraryItemSerializer(serializers.ModelSerializer):
         model = ItineraryItem
         fields = ['id', 'location', 'day', 'details']
 
+
 class DaySerializers(serializers.ModelSerializer):
     itinerary_items = ItineraryItemSerializer(source='itineraryitem_set', many=True)
 
@@ -383,4 +384,27 @@ class BookmarkLocationSerializer(serializers.ModelSerializer):
         bookmark = self.context.get('bookmarks').filter(spot__location_ptr=location_id, user=user_id).first()
 
         return bookmark.datetime_created    
-        
+
+class DayRatingSerializer(serializers.ModelSerializer):
+    locations = serializers.SerializerMethodField()
+    name = serializers.SerializerMethodField()
+    day_number = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Day
+        fields = ['date', 'locations', 'name', 'day_number']
+
+    def get_name(self, obj):
+        return obj.itinerary.name
+
+    def get_day_number(self, obj):
+        return f"Day {obj.order}"
+
+    def get_locations(self, obj):
+        items = ItineraryItem.objects.filter(day=obj)
+
+        location_names = []
+        for item in items:
+            location_names.append(item.location.name)
+
+        return location_names
