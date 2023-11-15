@@ -41,7 +41,9 @@ const ProfileLayout = () => {
 								</div>
 								<div>
 									<p></p>
-									<p>To Rate</p>
+									<Link to ="rate">
+									To Rate
+									</Link>
 								</div>
 								<div>
 									<p></p>
