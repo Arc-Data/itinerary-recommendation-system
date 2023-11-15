@@ -177,22 +177,23 @@ def create_itinerary(request):
     itinerary_serializer = ItinerarySerializers(data=itinerary_data)
 
     if itinerary_serializer.is_valid():
-        print("valid")
         itinerary = itinerary_serializer.save()
 
         current_date = datetime.datetime.strptime(start_date, '%Y-%m-%d').date()
         end_date = datetime.datetime.strptime(end_date, '%Y-%m-%d').date()
         
+        order = 1
         while current_date <= end_date:
             Day.objects.create(
                 date=current_date,
-                itinerary=itinerary
+                itinerary=itinerary,
+                order=order
             )
 
+            order = order + 1
             current_date += timedelta(days=1)
         
         return Response({'id': itinerary.id}, status=status.HTTP_201_CREATED)
-    
 
     return Response(itinerary_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -503,18 +504,17 @@ def mark_day_as_completed(request, day_id):
 
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def get_completed_days(request):
-    user = User.objects.get(id=1)
+    user = request.user
     itineraries = Itinerary.objects.filter(user=user)
     completed_days = []
 
     for itinerary in itineraries:
         days = Day.objects.filter(itinerary=itinerary)
 
-        for order, day in enumerate(days, start=1):
+        for day in days:
             if ItineraryItem.objects.filter(day=day).count() != 0:
-                day.order = order
-                day.save()
                 completed_days.append(day)
 
     serializer = DayRatingSerializer(completed_days, many=True)
