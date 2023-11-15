@@ -492,3 +492,32 @@ def trip_bookmarks(request):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+@api_view(['PATCH'])
+@permission_classes([IsAuthenticated])
+def mark_day_as_completed(request, day_id):
+    day = Day.objects.get(id=day_id)
+    day.completed = False if day.completed else True
+    day.save()
+
+    return Response(status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def get_completed_days(request):
+    user = User.objects.get(id=1)
+    itineraries = Itinerary.objects.filter(user=user)
+    completed_days = []
+
+    for itinerary in itineraries:
+        days = Day.objects.filter(itinerary=itinerary)
+
+        for order, day in enumerate(days, start=1):
+            if ItineraryItem.objects.filter(day=day).count() != 0:
+                day.order = order
+                day.save()
+                completed_days.append(day)
+
+    serializer = DayRatingSerializer(completed_days, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+    

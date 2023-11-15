@@ -28,6 +28,7 @@ urlpatterns = [
 
     path('day/<int:day_id>/color/', edit_day_color, name="edit-day-color"),
     path('day/<int:day_id>/delete/', delete_day, name="delete-day"),
+    path('days/complete/', get_completed_days, name="get_completed_days"),
 
     path('day-item/', create_itinerary_item, name="create-itinerary-item"),
     path('day-item/<int:day_id>/delete/', delete_day_item, name="delete-day-item"),
