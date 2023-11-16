@@ -385,7 +385,7 @@ class BookmarkLocationSerializer(serializers.ModelSerializer):
 
         return bookmark.datetime_created    
 
-class DayRatingSerializer(serializers.ModelSerializer):
+class DayRatingsSerializer(serializers.ModelSerializer):
     locations = serializers.SerializerMethodField()
     name = serializers.SerializerMethodField()
     day_number = serializers.SerializerMethodField()
@@ -415,3 +415,28 @@ class DayRatingSerializer(serializers.ModelSerializer):
         
         if item:
             return LocationImage.objects.get(location=item.location, is_primary_image=True).image.url
+
+class DayRatingSerializer(serializers.ModelSerializer):
+    locations = serializers.SerializerMethodField()
+    name = serializers.SerializerMethodField()
+    day_number = serializers.SerializerMethodField()
+
+    class Meta: 
+        model = Day
+        fields = ['id', 'date', 'locations', 'day_number', 'name']
+
+    def get_name(self, obj):
+        return obj.itinerary.name
+
+    def get_day_number(self, obj):
+        return f"Day {obj.order}"
+
+    def get_locations(self, obj):
+        items = ItineraryItem.objects.filter(day=obj)
+
+        locations = []
+        for item in items:
+            serializer = LocationPlanSerializers(item.location)
+            locations.append(serializer.data)
+        
+        return locations

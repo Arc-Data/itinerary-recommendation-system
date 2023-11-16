@@ -517,7 +517,13 @@ def get_completed_days(request):
             if ItineraryItem.objects.filter(day=day).count() != 0:
                 completed_days.append(day)
 
-    serializer = DayRatingSerializer(completed_days, many=True)
+    serializer = DayRatingsSerializer(completed_days, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
     
+@api_view(['GET'])
+def get_completed_day(request, day_id):
+    day = Day.objects.get(id=day_id)
+
+    serializers = DayRatingSerializer(day)
+    return Response(serializers.data, status=status.HTTP_200_OK)
