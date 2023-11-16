@@ -127,7 +127,7 @@ class LocationPlanSerializers(serializers.ModelSerializer):
 
     class Meta:
         model = Location
-        fields = ['name', 'primary_image', 'address', 'longitude', 'latitude', 'min_cost', 'max_cost', 'opening', 'closing']
+        fields = ['id', 'name', 'primary_image', 'address', 'longitude', 'latitude', 'min_cost', 'max_cost', 'opening', 'closing']
 
     def get_primary_image(self, obj):
         primary_image = obj.images.filter(is_primary_image=True).first()

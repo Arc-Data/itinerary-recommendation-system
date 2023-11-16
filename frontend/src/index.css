@@ -2365,3 +2365,27 @@ input[type="radio"] {
     border-radius: 6px;
     color: white;
 }
+
+.profile--rating-header {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.profile--rating-header > div {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.profile--rate-locations-container {
+    padding: 20px 20px;
+}
+
+.back {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    cursor: pointer;
+}

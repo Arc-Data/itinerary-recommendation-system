@@ -27,6 +27,7 @@ import ProfileLayout from './layout/ProfileLayout';
 import Profile from './pages/Profile';
 import Trips from './pages/Trips';
 import Rate from './pages/Rate';
+import RateDay from './pages/RateDay';
 	/*css*/
 	
 function App() {
@@ -52,6 +53,7 @@ function App() {
 						<Route path="/profile/" element={<Profile />} />
 						<Route path="/profile/trips" element={<Trips/>} />
 						<Route path="/profile/rate" element={<Rate/>} />
+						<Route path="/profile/rate/:id" element={<RateDay />} />
 					</Route>
 
 					<Route element={<CreateTripLayout/>}>

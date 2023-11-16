@@ -1,8 +1,7 @@
 import { useContext, useEffect, useState } from "react"
 import AuthContext from "../context/AuthContext"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faCalendar } from "@fortawesome/free-solid-svg-icons"
 import dayjs from "dayjs"
+import { Link } from "react-router-dom"
 
 const Rate = () => {
     const { authTokens } = useContext(AuthContext)
@@ -35,11 +34,12 @@ const Rate = () => {
 
     const displayRatings = ratings && ratings.map(rating => {
         const locations = rating.locations.toString().split(",").join(" • ")
-        console.log()
 
         return (
             <div key={rating.id} className="profile--ratings-item">
-                <img src={`http://127.0.0.1:8000${rating.image}`} width={200} height={100}/>
+                <Link to={`/profile/rate/${rating.id}`}>
+                    <img src={`http://127.0.0.1:8000${rating.image}`} width={200} height={100}/>
+                </Link>
                 <div className="profile--ratings-content">
                     <div className="profile--ratings-name">
                         <p className="profile--ratings-item-name">{rating.name}</p>
