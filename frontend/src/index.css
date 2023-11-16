@@ -17,7 +17,8 @@ input[type="search"]::-webkit-search-cancel-button {
     display: none;
 }
 
-h1, p {
+h1, p, a {
+    padding: 0;
     margin: 0;
 }
 
@@ -2282,8 +2283,9 @@ input[type="radio"] {
 
 .profile--link {
     display: grid;
-    grid-template-columns: 20px 1fr;
-    gap: 2px;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 4px;
     padding: 12px 14px;
     cursor: pointer;
     border-radius: 10px;

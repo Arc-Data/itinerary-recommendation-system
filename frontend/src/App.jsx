@@ -26,6 +26,7 @@ import AdminLocationView from './pages/AdminLocationView';
 import ProfileLayout from './layout/ProfileLayout';
 import Profile from './pages/Profile';
 import Trips from './pages/Trips';
+import Business from './pages/Business';
 	/*css*/
 	
 function App() {
@@ -50,6 +51,7 @@ function App() {
 					<Route path="/profile" element={<ProfileLayout/>}>
 						<Route path="/profile/" element={<Profile />} />
 						<Route path="/profile/trips" element={<Trips/>} />
+						<Route path="/profile/business" element={<Business/>} />
 					</Route>
 
 					<Route element={<CreateTripLayout/>}>
