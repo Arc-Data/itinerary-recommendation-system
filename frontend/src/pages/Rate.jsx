@@ -1,13 +1,14 @@
 import { useContext, useEffect, useState } from "react"
 import AuthContext from "../context/AuthContext"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faCalendar } from "@fortawesome/free-solid-svg-icons"
+import dayjs from "dayjs"
 
 const Rate = () => {
     const { authTokens } = useContext(AuthContext)
     const [ratings, setRatings] = useState([])
     const [loading , setLoading] = useState(true)
     const [error, setError] = useState(false)
-
-    console.log(ratings)
 
     useEffect(() => {
         const fetchRatings = async () => {
@@ -32,6 +33,32 @@ const Rate = () => {
         fetchRatings()
     }, [])
 
+    const displayRatings = ratings && ratings.map(rating => {
+        const locations = rating.locations.toString().split(",").join(" • ")
+        console.log()
+
+        return (
+            <div key={rating.id} className="profile--ratings-item">
+                <img src={`http://127.0.0.1:8000${rating.image}`} width={200} height={100}/>
+                <div className="profile--ratings-content">
+                    <div className="profile--ratings-name">
+                        <p className="profile--ratings-item-name">{rating.name}</p>
+                        <div className="day-number-badge">{rating.day_number}</div>
+                    </div>
+                    <div>
+                        <img src="/calendar.svg" />
+                        <span>{dayjs(rating.date).format("MMMM M, YYYY")}</span>
+                    </div>
+                    <div>
+                        <img src="/trip.svg" />
+                        <span>{locations}</span>
+                    </div>
+                    <p></p>
+                </div>
+            </div>
+        )
+    })
+
     if (error) {
         return (
             <div className="profile--container">
@@ -41,13 +68,14 @@ const Rate = () => {
     }
 
     return (
-        <div className="profile--container">
-            <p>To Rate</p>
+        <div className="profile--main-content">
+            <p className="header-title">Your trips</p>
+            <p className="header-subtitle">To Rate</p>
             {loading ?
             <div> Loading days data...</div>
             :
-            <div>
-                Retrieved Data successfully
+            <div className="profile--ratings-container">
+                {displayRatings}
             </div>
             }
         </div>

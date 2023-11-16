@@ -72,6 +72,14 @@ a:-webkit-any-link {
     margin-right: 2px; 
 }
 
+.header-title {
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.header-subtitle {
+    font-size: 20px;
+}
 
 /*DISPLAY GRID FOR LANDING PAGE*/
 .d-Grid {
@@ -2290,12 +2298,70 @@ input[type="radio"] {
 }
 
 .profile--links-section {
-    margin-top: 40px;
+    margin-top: 80px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 15px;
 }
 
-.profile-trips--container {
+.profile--main-content {
     max-width: 1200px;
+}
+
+.profile--ratings-container {
+    padding: 30px 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.profile--ratings-container > div ~ * {
+    border-top: 1px solid #E7E7E7;
+}
+
+.profile--ratings-content {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.profile--ratings-content > div {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.profile--ratings-item {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 20px;
+    padding: 20px 0;
+    align-items:center;
+}
+
+.profile--ratings-item > img {
+    object-fit: cover;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+
+.profile--ratings-name {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.profile--ratings-item-name {
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+}
+
+.day-number-badge {
+    font-size: 16px;
+    background: #38A3A5;
+    text-transform: uppercase;
+    padding: 2px 12px;
+    border-radius: 6px;
+    color: white;
 }
