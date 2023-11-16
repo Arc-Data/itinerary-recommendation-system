@@ -58,11 +58,19 @@ a:-webkit-any-link {
 }
 
 .font15 {
-    font-size: 15px;
+    font-size: 0.9375rem; /* 15px / 16 = 0.9375rem */
 }
 
 .font12 {
-    font-size: 12px;
+    font-size: 0.75rem; /* 12px / 16 = 0.75rem */
+}
+
+.font14 {
+    font-size: 0.875rem; /* 14px / 16 = 0.875rem */
+}
+
+.mb15px {
+    margin-bottom: 15px;
 }
 
 .tag {
@@ -73,6 +81,31 @@ a:-webkit-any-link {
     margin-right: 2px; 
 }
 
+.mr10px{
+   margin-right: 10px;
+}
+
+.flex {
+    display: flex;
+    justify-content: space-between;
+}
+
+.d-flexCenter {
+    display: flex;
+    align-items: center;
+}
+
+.j-end {
+    justify-content: end;
+}
+
+.relative {
+    position: relative;
+}
+
+.w80 {
+    width: 80%;
+}
 
 /*DISPLAY GRID FOR LANDING PAGE*/
 .d-Grid {
@@ -614,8 +647,8 @@ input[type="text"] {
 }
 
 .detailPage--icon {
-    width: 12px; 
-    height: 12px; 
+    width: 15px; 
+    height: 15px; 
     margin-right: 8px;
 }
 
@@ -823,6 +856,33 @@ input[type="text"] {
     width: 100%;
 }
 
+.ellipsis-icon {
+    margin-left: 15px;
+    height: 35px;
+    width: 35px;
+    padding: 8px;
+}
+
+.ellipsis-icon:hover {
+    background-color: #bebebe;
+    border-radius: 50%;
+}
+
+.userReview-dropContent {
+    position: absolute;
+    left: -25px;
+    top: 40px;
+    min-width: 120px;
+    width: 120px;
+    background: white;
+    font-weight: 400;
+    font-size: 14px;
+    text-align: center;
+    z-index: 20;
+    box-shadow: 0 0 0.5em rgba(105, 100, 100, 0.5);
+    border-radius: 8px;
+}
+
 .input--review{
     width: 93%;
     height: 55px;
@@ -842,24 +902,24 @@ input[type="text"] {
     
 }
 
-/* ADD REVIEW BUTTON */
-.submit--review {
+/* ADD REVIEW BUTTON AND EDIT REVIEW BUTTON */
+.submit--review, .edit--review {
     display: flex;
-    border-radius: 30px;
+    border-radius: 10px;
     background: var(--1, #184E77);
     height: 45px;
     font-size: 14px;
     font-weight: 400;
-    padding: 10px 10px;
+    width: 20%;
+    padding: 17px 13px;
     justify-content: center;
     align-items: center;
     margin-top: 12px;
 }
 
-/* 
-input[type="radio"] {
+.star--radioBtn[type="radio"] {
     display: none;
-} */
+} 
 
 .star {
     cursor: pointer;
@@ -874,20 +934,20 @@ input[type="radio"] {
 }
 
 .user--username {
-    font-size: 15px;
     font-weight: 600;
+    text-align: left;
+    justify-content: center;
+    margin-left: 10px;
 }
 
 /*USER REVIEW ABOUT SPOT*/
 .user--review {
-    max-width: 55%;
-    margin-left: auto;
-    margin-right: 120px;
-    margin-bottom: 100px;
+    max-width: 100%;
+    margin: 50px 70px 100px auto;
+    width: 60%;
 }
 
-.user--review > p{
-    font-size: 15px;
+.user--reviews {
     width: 100%;
     height: 100%;
     text-align: justify;
@@ -896,23 +956,11 @@ input[type="radio"] {
     line-height: 20px;
 }
 
-.review--row {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    margin-bottom: 10px;
-}
-
-.user--logo-and-name,
-.star--rating-and-date {
-    display: flex;
-    align-items: center; 
-}
-
 .date--posted {
-    font-size: 15px;
     color: #333333;
     margin-left: 10px;
+    margin-right: 10px;
+    text-align: end;
 }
 
 /* PAGINATION */
@@ -922,22 +970,25 @@ input[type="radio"] {
   
   #pagination--button {
     display: inline-block;
-    margin: 0.5rem;
+    margin: 0.3rem;
     padding: 0.25rem 0.5rem;
-    border: 1px solid #ccc;
     cursor: pointer;
-    color: var(--1, #184E77);
+    color: var(--1, rgb(0, 0, 0));
     width: 30px;
-    border-radius: 20px;
+    border-radius: 50%;
     height: 30px;
     padding: 5px;
     font-size: 10px;
+    border: 1px solid #184E77;
   }
-  
-  #pagination--button.active {
-    background-color: #184E77;
-    color: #ccc;
-    border: 1px solid #007bff;
+  #pagination--button1 {
+    color: var(--1, #184E77);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    padding: 10px;
+    font-size: 10px;
+    background-color: transparent;
   }
 
   .pagination--result {
@@ -959,7 +1010,7 @@ input[type="radio"] {
     font-size: 20px;
 }
 
-.user--profile {
+.user--profile, .user--profile1 {
     display: grid;
     position: relative;
     place-items: center;
@@ -969,6 +1020,7 @@ input[type="radio"] {
     background: #F0C34D;
     cursor: pointer;
     font-size: 18px;
+   
 }
 
 .user--profile p {
@@ -1653,6 +1705,10 @@ input[type="radio"] {
 }
 
 .plan--day-dropcontent > div:hover {
+    background: #ccc;
+}
+
+.plan--day-dropcontent-item:hover {
     background: #ccc;
 }
 

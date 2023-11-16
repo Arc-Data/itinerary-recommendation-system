@@ -1,291 +1,486 @@
-import React, { useContext, useEffect, useState } from "react";
-/*Components*/
-import Review from "../components/Review";
-import DetailCard from "../components/DetailCard";
-/*Data*/
-import reviewData from "../reviewData";
-import cardData from "../cardData";
-/*Icon*/
-import addressIcon from "/images/maps-and-flags.png";
-import timeIcon from "/images/clock.png";
-import bookmarkIcon from "/images/bookmark-icon-4.png";
-import star from "/images/star.png";
-import { useParams } from "react-router-dom";
-import { FaStar } from "react-icons/fa";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa"; 
-import AuthContext from "../context/AuthContext";
+	import React, { useContext, useEffect, useState } from "react";
+	/*Components*/
+	import DetailCard from "../components/DetailCard";
+	import Review from "../components/Review";
+	/*Data*/
+	import cardData from "../cardData";
+	/*Icon*/
+	import addressIcon from "/images/carbon_location-filled.svg";
+	import timeIcon from "/images/ion_time.svg";
+	import bookmarkIcon from "/images/bookmark-icon-4.png";
+	import star from "/images/star.png";
+	import { useParams } from "react-router-dom";
+	import { FaEllipsisH, FaStar , FaTrash , FaEdit, FaArrowLeft, FaArrowRight  } from "react-icons/fa";
+	import AuthContext from "../context/AuthContext";
 
-export default function DetailPage() {
-	const { authTokens } = useContext(AuthContext)
-	const [location, setLocation] = useState(null);
-	const { id } = useParams();
-	const [loading, setLoading] = useState(true);
-	const [selectedImage, setSelectedImage] = useState("");
-	const [images, setImages] = useState(null);
-	const [rating, setRating] = useState(null); // Add rating state
-	const [isBookmarked, setBookmarked] = useState(false)
+	export default function DetailPage() {
+		const { authTokens, user } = useContext(AuthContext);
+		const [location, setLocation] = useState(null);
+		const { id } = useParams();
+		const [loading, setLoading] = useState(true);
+		const [selectedImage, setSelectedImage] = useState("");
+		const [images, setImages] = useState(null);
+		const [isBookmarked, setBookmarked] = useState(false);
+		const [userReview, setUserReview] = useState("");
+		const [userRating, setUserRating] = useState(0);
+		const [hasReview, setHasReview] = useState(false);
+		const [userDate, setUserDate] = useState(false);
+		const letter = user.email[0].toUpperCase();
+		const [userFName, setUserFName] = useState("")
+		const [userLName, setUserLName] = useState("")
+		const [editMode, setEditMode] = useState(false);
+		const [dropdownOpen, setDropdownOpen] = useState(false);
+		const [reviewData, setReviewData] = useState("");
+		const [currentPage, setCurrentPage] = useState(1);
+ 		const [totalPages, setTotalPages] = useState(1);
+	
+ 
+		useEffect(() => {
+			const getLocationData = async () => {
+			const response = await fetch(`http://127.0.0.1:8000/api/location/${id}/`, {
+				method: "GET",
+				headers: {
+				"Content-Type": "application/json",
+				"Authorization": `Bearer ${authTokens.access}`,
+				},
+			});
 
-	// Pagination state
-	const [currentPage, setCurrentPage] = useState(1);
-	const reviewsPerPage = 3; // Number of reviews to display per page
-	const [totalReviews, setTotalReviews] = useState(0);
+			const data = await response.json();
+			setLoading(false);
+			setBookmarked(data.details.is_bookmarked);
+			setLocation(data);
+			setImages(data.images);
+			setSelectedImage(`http://127.0.0.1:8000` + data.images[0]);
 
-	useEffect(() => {
-		const getLocationData = async () => {
-		const response = await fetch(`http://127.0.0.1:8000/api/location/${id}/`, {
-			method: "GET",
-			headers: {
-			"Content-Type": "application/json",
-			"Authorization": `Bearer ${authTokens.access}`,
-			},
-		});
-
-		if (!response.ok) {
-			throw new Error("Error fetching location data");
-		}
-
-		const data = await response.json();
-		setLoading(false);
-		setBookmarked(data.details.is_bookmarked);
-		setLocation(data);
-		setImages(data.images);
-		setTotalReviews(reviewData.length);
-		setSelectedImage(`http://127.0.0.1:8000` + data.images[0]);
 		};
-		getLocationData();
-	}, [id]);
 
-	const handleThumbnailClick = (image) => {
-		setSelectedImage(image); // Set the selected image to the clicked thumbnail image
-	};
-
-	if (loading) {
-		return <div>Loading</div>;
-	}
-
-	const thumbnails = images.map((image, index) => (
-		<img
-		key={index}
-		className="thumbnail"
-		src={`http://127.0.0.1:8000${image}`}
-		alt={`Thumbnail ${index}`}
-		onClick={() => handleThumbnailClick(`http://127.0.0.1:8000${image}`)}
-		/>
-	));
-
-	const limitedCardData = cardData.slice(0, 4);
-
-	const detailCards = limitedCardData.map((location) => (
-		<DetailCard key={location.id} {...location} />
-	));
-
-	// PAGINATION
-	const indexOfLastReview = currentPage * reviewsPerPage;
-	const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
-	const paginatedReviews = reviewData.slice(
-		indexOfFirstReview,
-		indexOfLastReview
-	);
-	const showingResultsText = `Showing results ${
-		indexOfFirstReview + 1
-	}-${indexOfLastReview} of ${totalReviews}`;
-
-	// Create navigation buttons for changing the current page
-	const pageNumbers = [];
-	for (let i = 1; i <= Math.ceil(reviewData.length / reviewsPerPage); i++) {
-		pageNumbers.push(i);
-	}
-
-	const renderPageNumbers = pageNumbers.map((number) => (
-		<button
-		id="pagination--button"
-		key={number}
-		onClick={() => setCurrentPage(number)}
-		className={currentPage === number ? "active" : ""}
-		>
-		{number}
-		</button>
-	));
-
-	const handleBookmarkSave = async (value) => {
-		try {
-		  const response = await fetch(`http://127.0.0.1:8000/api/location/${id}/bookmark/`, {
-			method: "POST",
-			headers: {
-			  'Content-Type': 'application/json',
-			  'Authorization': `Bearer ${authTokens.access}`
-			},
-		  });
+		// GET LOCATION REVIEW
+		const getLocationReviewData = async () => {
+			const response = await fetch(
+			  `http://127.0.0.1:8000/api/location/${id}/reviews/?page=${currentPage}`,
+			  {
+				method: "GET",
+				headers: {
+				  "Content-Type": "application/json",
+				  "Authorization": `Bearer ${authTokens.access}`,
+				},
+			  }
+			);
 	  
-		  console.log(response)
-		  if (!response.ok) {
-			throw new Error("Error while updating bookmark");
-		  }
+			const locationData = await response.json();
+			setReviewData(locationData.results);
+			setTotalPages(Math.ceil(locationData.count / 5)); // Assuming 5 reviews per page
+		  };
+
+		// GET REVIEW OF USER
+		const getReviewData = async () => {
+			try {
+				const response = await fetch(`http://127.0.0.1:8000/api/location/${id}/reviews/user/`, {
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": `Bearer ${authTokens.access}`,
+					},
+				});
 		
+				if (!response.ok) {
+					throw new Error("Error fetching user review data");
+				}
+		
+				const reviewData = await response.json();
+
+			if (reviewData.comment) {
+			setHasReview(true);
+			setUserFName(reviewData.user.first_name);
+			setUserLName(reviewData.user.last_name);
+			setUserReview(reviewData.comment);
+			setUserRating(reviewData.rating);
+			setUserDate (reviewData.datetime_created);
+
+
+			} else {
+			setHasReview(false);
+			}
 
 		} catch (error) {
-		  console.log("Error while updating bookmark: ", error);
+			console.error("Error while fetching user review data: ", error);
 		}
-	  }
+		};
 
-	const toggleBookmark = () => {
-		const value = isBookmarked;
-		setBookmarked(prev => !prev)
-		handleBookmarkSave(value)
-	}
+			getReviewData();
+			getLocationReviewData();
+			getLocationData();
+		}, [id, authTokens.access, currentPage]);
 
-	return (
-		<div className="detailPage">
-		<div className="detailPage--text">
-			<div className="detailPage--address-time">
-			<h1 className="detailPage--title">{location.name}</h1>
-			<p>
-				{" "}
-				<img className="detailPage--icon" src={addressIcon} />
-				{location.address}
-			</p>
-			<p>
-				{" "}
-				<img className="detailPage--icon" src={timeIcon} />
-				<span>
-				Open at {location.details.opening_time} | Closes at{" "}
-				{location.details.closing_time}{" "}
-				</span>
-			</p>
 
-			<div className="detailPage--rating-category">
-				{[...Array(5)].map((i, index) => (
-				<img key={index} src={star} alt="Star" className="star" />
-				))}
-				<span> • 4.0 •</span> {/* RATING FOR THE SPOT*/}
-				<span className="tags">
-				{location.details.tags.map((tag, index) => (
-					<span key={index} className="tag">
-					{tag}
-					{index < location.details.tags.length - 1 && (
-						<span className="tag-separator"> • </span>
-					)}
-					</span>
-				))}
-				</span>
-			</div>
-			</div>
-			<button
-			className={`detailPage--bookmark ${isBookmarked ? 'true' : 'false'}`}
-			onClick={toggleBookmark}
-		>
-			<div className="bookmark-content">
-				<img src={bookmarkIcon} alt="Bookmark" />
-				<div className="bookmark-text">Bookmark</div>
-			</div>
-		</button>
-		</div>
-		<div className="detailPage--sections">
-			<div className="detailPage--about">
-			<h1 className="detailPage--title1">About</h1>
-			<p>{location.description}</p>
-			<p className="font15 bold">
-				Entrance Fee:{" "}
-				<span className="bold1"> {location.details.max_fee} </span>
-			</p>
-			</div>
-			<div className="detailPage--pictures">
-			<div className="detailPage--images">
-				<img
-				className="detailPage--main-image"
-				src={selectedImage}
-				alt="Main"
-				/>
-				<div className="detailPage--thumbnail">{thumbnails}</div>
-			</div>
-			</div>
-		</div>
+		// SUBMIT REVIEW
+		const submitReview = async () => {
+			try {
 
-		<div className="detailPage--popular">
-			<h2>Also Popular with travelers</h2>
-			<div className="detailPage--cards">{detailCards}</div>
-		</div>
+			const response = await fetch(`http://127.0.0.1:8000/api/location/${id}/reviews/create/`, {
+				method: "POST",
+				headers: {
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${authTokens.access}`
+				},
+				body: JSON.stringify({
+					comment: userReview,
+					rating: userRating,
+				}),
+			});
+		
+			if (!response.ok) {
+				const errorData = await response.json();
+				throw new Error(`Error while submitting the review: ${errorData.detail}`);
+			}
+		
+			console.log("Review submitted successfully");
+			alert("Review submitted successfully! You can no longer submit reviews for this location.");
+		
+			setLoading(true);
+			window.location.reload();
+	  
+		  } catch (error) {
+			console.error("Error while submitting the review: ", error);
+		  }
+		};
 
-		<div className="detailPage--review">
-			<div className="detailPage--reviews">
-			<h1>Reviews</h1>
-			<div className="detailPage--star">
-				{[...Array(5)].map((i, index) => (
-				<img key={index} src={star} alt="Star" className="star" />
-				))}
-				<span> • 3 Reviews</span>
-				<span> • 4.0 </span>
-			</div>
-			<div className="progress--bars">
-				{[1, 2, 3, 4, 5].map((i, index) => (
-				<div key={index} className="progress--bar">
-					<div key={index} className="progress--number">
-					{5 - index}
+
+		// EDIT REVIEW
+		const handleEditReview = () => {
+			setEditMode(true);
+		  };
+
+		  const saveEditedReview = async () => {
+			try {
+			  const response = await fetch(`http://127.0.0.1:8000/api/location/${id}/reviews/edit/`, {
+				method: "PUT",
+				headers: {
+				  'Content-Type': 'application/json',
+				  'Authorization': `Bearer ${authTokens.access}`
+				},
+				body: JSON.stringify({
+				  comment: userReview,
+				  rating: userRating,
+				}),
+			  });
+		
+			  if (!response.ok) {
+				const errorData = await response.json();
+				throw new Error(`Error while updating the review: ${errorData.detail}`);
+			  }
+		
+			  console.log("Review updated successfully");
+			  setEditMode(false); 
+			} catch (error) {
+			  console.error("Error while updating the review: ", error);
+			}
+		  };
+
+		  // BOOKMARK
+		const handleBookmarkSave = async (value) => {
+			try {
+			const response = await fetch(`http://127.0.0.1:8000/api/location/${id}/bookmark/`, {
+				method: "POST",
+				headers: {
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${authTokens.access}`
+				},
+			});
+		
+			console.log(response)
+			if (!response.ok) {
+				throw new Error("Error while updating bookmark");
+			}
+			
+
+			} catch (error) {
+			console.log("Error while updating bookmark: ", error);
+			}
+		}
+
+		const toggleBookmark = () => {
+			const value = isBookmarked;
+			setBookmarked(prev => !prev)
+			handleBookmarkSave(value)
+		}
+
+
+		// MAIN IMAGE AND THUMBNAIL
+		const handleThumbnailClick = (image) => {
+			setSelectedImage(image); // SELECTED IMAGE FOR THE THUMBNAIL
+		};
+
+		if (loading) {
+			return <div>Loading</div>;
+		}
+
+		const thumbnails = images.map((image, index) => (
+			<img
+			key={index}
+			className="thumbnail"
+			src={`http://127.0.0.1:8000${image}`}
+			alt={`Thumbnail ${index}`}
+			onClick={() => handleThumbnailClick(`http://127.0.0.1:8000${image}`)}
+			/>
+		));
+		
+		// POPULAR LOCATION (DATA)
+		const limitedCardData = cardData.slice(0, 4);
+		const detailCards = limitedCardData.map((location) => (
+			<DetailCard key={location.id} {...location} />
+		));
+	
+		// DROPDOWN 
+		const handleEllipsisClick = () => {
+			setDropdownOpen(!dropdownOpen);
+		};
+
+		const handlePageChange = (newPage) => {
+			if (newPage >= 1 && newPage <= totalPages) {
+			  setCurrentPage(newPage);
+			}
+		  };
+
+		const handlePrevPage = () => {
+		const newPage = currentPage - 1;
+		if (newPage >= 1) {
+			setCurrentPage(newPage);
+		}
+		};
+	
+		const handleNextPage = () => {
+		const newPage = currentPage + 1;
+		if (newPage <= totalPages) {
+			setCurrentPage(newPage);
+		}
+		};
+
+		const resultStart = (currentPage - 1) * 5 + 1;
+  		const resultEnd = Math.min(currentPage * 5, reviewData.length);
+
+		return (
+			<div className="detailPage">
+				<div className="detailPage--text">
+					<div className="detailPage--address-time">
+						<h1 className="detailPage--title">{location.name}</h1>
+						<p>
+							{" "}
+							<img className="detailPage--icon" src={addressIcon} />
+							{location.address}
+						</p>
+						<p>
+							{" "}
+							<img className="detailPage--icon" src={timeIcon} />
+							<span>
+							Open at {location.details.opening_time} | Closes at{" "}
+							{location.details.closing_time}{" "}
+							</span>
+						</p>
+						<div className="detailPage--rating-category">
+							{[...Array(5)].map((i, index) => (
+							<img key={index} src={star} alt="Star" className="star" />
+							))}
+							<span> • 4.0 •</span> {/* RATING FOR THE SPOT*/}
+							<span className="tags">
+							{location.details.tags.map((tag, index) => (
+								<span key={index} className="tag">
+								{tag}
+								{index < location.details.tags.length - 1 && (
+									<span className="tag-separator"> • </span>
+								)}
+								</span>
+							))}
+							</span>
+						</div>
 					</div>
-					<div className="progress--fill"></div>
+					<button
+						className={`detailPage--bookmark ${isBookmarked ? 'true' : 'false'}`}
+						onClick={toggleBookmark}
+						>
+						<div className="bookmark-content">
+							<img src={bookmarkIcon} alt="Bookmark" />
+							<div className="bookmark-text">Bookmark</div>
+						</div>
+					</button>
 				</div>
-				))}
-			</div>
-			</div>
-			<div className="write--review">
-			<textarea
-				className="input--review"
-				placeholder="How do you find this place?"
-				rows="5"
-			></textarea>
-			<div className="button--stars">
-				<button className="submit--review">Submit Review</button>
-				<div className="detailPage--star">
-				{[...Array(5)].map((star, i) => {
-					const ratingValue = i + 1;
-					return (
-					<label key={i}>
-						<input
-						type="radio"
-						name="rating"
-						value={ratingValue}
-						onClick={() => setRating(ratingValue)}
-						/>
-						<FaStar
-						className="star"
-						color={ratingValue <= rating ? "#ffc107" : "#e4e5e9"}
-						/>
-					</label>
-					);
-				})}
+				<div className="detailPage--sections">
+					<div className="detailPage--about">
+						<h1 className="detailPage--title1">About</h1>
+						<p>{location.description}</p>
+						<p className="font15 bold">
+							Entrance Fee:{" "}
+							<span className="bold1"> {location.details.max_fee} </span>
+						</p>
+					</div>
+					<div className="detailPage--pictures">
+						<div className="detailPage--images">
+							<img
+							className="detailPage--main-image"
+							src={selectedImage}
+							alt="Main"
+							/>
+							<div className="detailPage--thumbnail">{thumbnails}</div>
+						</div>
+					</div>
 				</div>
-			</div>
-			</div>
-		</div>
-		<div className="user--review">
-			{paginatedReviews.map((item) => (
-			<Review key={item.id} {...item} />
-			))}
-			<hr></hr>
 
-			<div className="pagination">
-			{currentPage > 1 && (
-				<button
-				id="pagination--button"
-				onClick={() => setCurrentPage(currentPage - 1)}
-				>
-				<FaChevronLeft />
-				</button>
-			)}
+				<div className="detailPage--popular">
+					<h2>Also Popular with travelers</h2>
+					<div className="detailPage--cards">{detailCards}</div>
+				</div>
 
-			{renderPageNumbers}
+				<div className="detailPage--review">
+					<div className="detailPage--reviews">
+						<h1>Reviews</h1>
+						<div className="detailPage--star">
+							{[...Array(5)].map((i, index) => (
+							<img key={index} src={star} alt="Star" className="star" />
+							))}
+							<span> • 3 Reviews</span>
+							<span> • 4.0 </span>
+						</div>
+						<div className="progress--bars">
+							{[1, 2, 3, 4, 5].map((i, index) => (
+							<div key={index} className="progress--bar">
+								<div key={index} className="progress--number">
+								{5 - index}
+								</div>
+								<div className="progress--fill"></div>
+							</div>
+							))}
+						</div>
+					</div>
+					
+					<div className="write--review">
+						{hasReview ? (
+						<div className="user--reviewContainer">
+							<div className="flex mb15px">
+								<div className="d-flexCenter">
+									<div className="user--profile font15"><p>{letter}</p></div>
+									<p className="user--username  font14">{`${userFName} ${userLName}`}</p>
+								</div>
+									<div className="d-flexCenter">
+										<div className="detailPage--star j-end">
+											{[...Array(5)].map((star, i) => (
+											<FaStar
+												key={i}
+												className="star"
+												color={i + 1 <= userRating ? "#ffc107" : "#e4e5e9"}
+											/>
+											))}
+										</div>
+										<p className="date--posted font15"> Posted: {userDate}</p>
+										<div className="relative">
+											<FaEllipsisH className="ellipsis-icon" onClick={handleEllipsisClick} />
+											{dropdownOpen && (
+											<div className="userReview-dropContent"> 
+												<div className="plan--day-dropcontent-item" >
+												<FaTrash />
+													<p>Delete day</p>
+												</div>
+												<div className="plan--day-dropcontent-item" >
+												<FaEdit />
+													<p>Edit color</p>
+												</div>
+												
+											</div>   
+											)}
+										</div>
+									</div>
+								</div>
 
-			{currentPage < pageNumbers.length && (
-				<button
-				id="pagination--button"
-				onClick={() => setCurrentPage(currentPage + 1)}
-				>
-				<FaChevronRight />
-				</button>
-			)}
-			<p className="pagination--result">{showingResultsText}</p>
+							<p className="user--reviews font15">{userReview}</p>
+							<div className="flex">
+								{editMode ? (
+									<button className="submit--review" onClick={saveEditedReview}>
+									Save Review
+									</button>
+								) : (
+									<button className="edit--review" onClick={handleEditReview}>
+									Edit Review
+									</button>
+								)}
+							</div>
+						</div>
+						) : (
+						<div>
+							<textarea
+								className="input--review"
+								placeholder="How do you find this place?"
+								rows="5"
+								value={userReview}
+								onChange={(e) => setUserReview(e.target.value)}
+							></textarea>
+							<div className="button--stars">
+								<button className="submit--review" onClick={submitReview}>
+								Submit Review
+								</button>
+								<div className="detailPage--star">
+								{[...Array(5)].map((star, i) => {
+									const ratingValue = i + 1;
+									return (
+									<label key={i}>
+										<input
+										type="radio"
+										className="star--radioBtn"
+										name="rating"
+										value={ratingValue}
+										onClick={() => setUserRating(ratingValue)}
+										/>
+										<FaStar
+										className="star"
+										color={ratingValue <= userRating ? "#ffc107" : "#e4e5e9"}
+										/>
+									</label>
+									);
+								})}
+								</div>
+							</div>
+						</div>
+						)}
+					</div>
+				</div>
+				<div className="user--review">
+					<h1 className="mb15px">Reviews</h1><hr></hr>
+					{reviewData.map((item) => (
+					<Review key={item.id} {...item} />
+					))}
+					<div className="pagination">
+        {/* Previous Page Button */}
+        <button
+          id="pagination--button1"
+          className={`plan--btn ${currentPage === 1 ? "" : ""}`}
+          onClick={handlePrevPage}
+          disabled={currentPage === 1}
+        >
+          <FaArrowLeft />
+        </button>
+
+        {/* Page Buttons */}
+        {Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => (
+          <button
+            key={page}
+            id="pagination--button"
+            className={`plan--btn ${page === currentPage ? "btn-primary" : "btn-secondary"}`}
+            onClick={() => handlePageChange(page)}
+          >
+            {page}
+          </button>
+        ))}
+
+        {/* Next Page Button */}
+        <button
+          id="pagination--button1"
+          className={`plan--btn ${currentPage === totalPages ? "" : ""}`}
+          onClick={handleNextPage}
+          disabled={currentPage === totalPages}
+        >
+          <FaArrowRight />
+        </button>
+      </div>
+      <p className="pagination--result">Showing results {resultStart}-{resultEnd} of {reviewData.length}</p>
+    </div>
 			</div>
-		</div>
-		</div>
-	);
-}
+		);
+	}
