@@ -389,10 +389,11 @@ class DayRatingSerializer(serializers.ModelSerializer):
     locations = serializers.SerializerMethodField()
     name = serializers.SerializerMethodField()
     day_number = serializers.SerializerMethodField()
+    image = serializers.SerializerMethodField()
 
     class Meta:
         model = Day
-        fields = ['date', 'locations', 'name', 'day_number']
+        fields = ['id', 'date', 'locations', 'name', 'day_number', 'image']
 
     def get_name(self, obj):
         return obj.itinerary.name
@@ -408,3 +409,9 @@ class DayRatingSerializer(serializers.ModelSerializer):
             location_names.append(item.location.name)
 
         return location_names
+    
+    def get_image(self, obj):
+        item = ItineraryItem.objects.filter(day=obj).first()
+        
+        if item:
+            return LocationImage.objects.get(location=item.location, is_primary_image=True).image.url
