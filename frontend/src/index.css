@@ -2301,3 +2301,19 @@ input[type="radio"] {
 .profile-trips--container {
     max-width: 1200px;
 }
+
+.business--header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.business--btn {
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #38A3A5;
+    border-radius: 10px;
+    padding: 10px;
+}

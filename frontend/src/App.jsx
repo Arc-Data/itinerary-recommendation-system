@@ -27,6 +27,7 @@ import ProfileLayout from './layout/ProfileLayout';
 import Profile from './pages/Profile';
 import Trips from './pages/Trips';
 import Business from './pages/Business';
+import AddBusiness from './pages/AddBusiness';
 	/*css*/
 	
 function App() {
@@ -52,6 +53,7 @@ function App() {
 						<Route path="/profile/" element={<Profile />} />
 						<Route path="/profile/trips" element={<Trips/>} />
 						<Route path="/profile/business" element={<Business/>} />
+						<Route path="/profile/business/add" element={<AddBusiness/>} />
 					</Route>
 
 					<Route element={<CreateTripLayout/>}>
