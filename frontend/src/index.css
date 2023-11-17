@@ -2317,3 +2317,42 @@ input[type="radio"] {
     border-radius: 10px;
     padding: 10px;
 }
+
+.business--form-section {
+    padding: 60px 80px;
+}
+
+.business--form-section label {
+    font-size: 14px;
+}
+
+.business--form-section ~ * {
+    border-top: 1px solid #e7e7e7;
+}
+
+.business--form-header {
+    margin-bottom: 40px;
+}
+
+.business-input {
+    padding: 12px;
+    background: #FFF;
+    border: 1px solid #DEDEDE;
+    outline: none;
+    border-radius: 10px;
+}
+
+.form-column-group {
+    display: flex;
+    gap: 20px;
+}
+
+.form-column-group > * {
+    flex: 1;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
