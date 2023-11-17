@@ -1,8 +1,10 @@
 import { useContext, useState } from "react"
 import AuthContext from "../context/AuthContext"
+import { useNavigate } from "react-router-dom"
 
 const AddBusiness = () => {
     const { authTokens } = useContext(AuthContext)
+    const navigate = useNavigate()
     const [locationData, setLocationData] = useState({
         'name': '',
         'address': '',
@@ -20,16 +22,39 @@ const AddBusiness = () => {
 
     }
 
-    const checkValid = () => {
+    const checkInvalid = () => {
         return !locationData.name ||
             !locationData.address ||
-            locationData.longitude === 0 ||
-            locationData.latitude === 0 ||
+            locationData.longitude == 0 ||
+            locationData.latitude == 0 ||
             locationData.type === ''
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
+
+        if (!checkInvalid()) {
+            try {
+                const response = await fetch('http://127.0.0.1:8000/api/location/request/', {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${String(authTokens.access)}`
+                    },
+                    body: JSON.stringify(locationData)
+                })
+
+                console.log(response)
+
+                navigate('/profile/business')
+                
+            }
+            catch(error) {
+
+            }
+        } else {
+            console.log("Invalid Inputs")
+        }
     }
     
     return (
