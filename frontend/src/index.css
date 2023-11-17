@@ -1511,6 +1511,15 @@ input[type="radio"] {
     -webkit-text-fill-color: transparent;
 }
 
+.assistant--regenerate {
+    margin-top: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+    cursor: pointer;
+}
+
 .plan-item {
     display: grid;
     grid-template-columns: 1fr 140px;
@@ -2121,6 +2130,11 @@ input[type="radio"] {
     font-weight: 500;
     font-size: 20px;
     margin-bottom: 4px;
+}
+
+.assistant--content {
+    min-height: 300px;
+    height: 100%;
 }
 
 .assistant--content > p {

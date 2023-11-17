@@ -30,7 +30,7 @@ class CustomUserManager(BaseUserManager):
 class RecommendationsManager():
     def get_content_recommendations(self, user_preferences):
 
-        itinerary = pd.read_csv('itineraries.csv')
+        itinerary = pd.read_csv('TravelPackage - ItineraryList.csv')
 
         # min-max values of tags
         min_value = 0
@@ -83,3 +83,86 @@ class RecommendationsManager():
     
     def get_hybrid_recommendations(self):
         return None
+
+    def get_location_recommendation(self, location_id):
+        data = pd.read_csv('TravelPackage - Spot.csv')
+
+        # prepare labels of necessary values
+        tags_columns = ['Historical', 'Nature', 'Religious', 'Art', 'Activities', 'Entertainment', 'Culture']
+        selected_columns = ['Place'] + tags_columns
+        locations_data = data[selected_columns]
+
+        locations_data.index = range(1, len(locations_data) + 1)
+        locations_data = locations_data.assign(ID=locations_data.index)
+
+        # drop unnecessary columns
+        locations_data.drop(columns=set(locations_data.columns) - set(['Place'] + tags_columns + ['ID']), inplace=True)
+
+        # select location id 
+        selected_location_id = location_id
+        selected_location = locations_data[locations_data['ID'] == selected_location_id]
+
+        # recommendation portion
+        if selected_location.empty:
+            print(f"Location not found.")
+        else:
+            selected_vector = selected_location[tags_columns].values.reshape(1, -1)
+            all_vectors = locations_data[locations_data['ID'] != selected_location_id][tags_columns].values
+
+            cosine_similarity_scores = cosine_similarity(selected_vector, all_vectors)
+            sorted_indices = cosine_similarity_scores[0].argsort()[::-1]
+
+            top_n = 5
+
+            # Filter out the selected location
+            is_not_selected_location = locations_data['ID'] != selected_location_id
+            top_recommendations = locations_data[is_not_selected_location].iloc[sorted_indices[:top_n]]
+
+            # Print the result including similarity scores
+            # print(f"Selected Location: {selected_location['Place'].values[0]} (ID: {selected_location_id}) with tags:")
+            # print(selected_location[tags_columns])
+            # print("\nTop Recommendations:")
+            result_with_scores = top_recommendations[['ID', 'Place'] + tags_columns].copy()
+            result_with_scores['Similarity'] = cosine_similarity_scores[0, sorted_indices[:top_n]]
+            # print(result_with_scores)
+
+            # result_with_scores.head()
+            top_4_ids = result_with_scores.head(4)['ID'].tolist()
+
+        return top_4_ids
+    
+    def get_homepage_recommendation(self, user_preference):
+        
+        data = pd.read_csv('TravelPackage - Spot.csv')
+
+        # prepare labels of necessary values
+        tags_columns = ['Historical', 'Nature', 'Religious', 'Art', 'Activities', 'Entertainment', 'Culture']
+        selected_columns = ['Place'] + tags_columns
+        locations_data = data[selected_columns]
+
+        locations_data.index = range(1, len(locations_data) + 1)
+        locations_data = locations_data.assign(ID=locations_data.index)
+
+        # drop unnecessary columns
+        locations_data.drop(columns=set(locations_data.columns) - set(['Place'] + tags_columns + ['ID']), inplace=True)
+
+        #recommendation portion
+        user_vector = user_preference.reshape(1, -1)
+        all_vectors = locations_data[tags_columns].values
+
+        cosine_similarity_scores = cosine_similarity(user_vector, all_vectors)
+        sorted_indices = cosine_similarity_scores[0].argsort()[::-1]
+
+        top_n = 5
+        top_recommendations = locations_data.iloc[sorted_indices[:top_n]]
+
+        # Print the result including similarity scores
+        # print("Top Recommendations:")
+        result_with_scores = top_recommendations[['ID', 'Place'] + tags_columns].copy()
+        result_with_scores['Similarity'] = cosine_similarity_scores[0, sorted_indices[:top_n]]
+        # print(result_with_scores)
+
+        # result_with_scores.head()
+        top_4_ids = result_with_scores.head(4)['ID'].tolist()
+
+        return top_4_ids
