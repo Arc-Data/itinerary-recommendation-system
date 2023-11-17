@@ -7,7 +7,7 @@ class Command(BaseCommand):
     help = "Import data from CSV to ModelItinerary Model"
 
     def handle(self, *args, **options):
-        file_path = os.path.join(settings.BASE_DIR, 'ModelItinerary.csv')
+        file_path = os.path.join(settings.BASE_DIR, 'TravelPackage - ModelItinerary.csv')
 
         with open(file_path, newline='', encoding='utf-8') as csvfile:
             reader = csv.reader(csvfile, delimiter='\t')
