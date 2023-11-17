@@ -36,7 +36,7 @@ const HomePage = () => {
 			{ itineraries !== null && (
 			<div>
 				<p className="home--your-trips">Your trips</p>
-				<div className="home--trip-containers">
+				<div className="trips--container">
 					{displayItineraries}
 				</div>
 			</div>

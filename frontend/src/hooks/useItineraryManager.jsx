@@ -47,20 +47,29 @@ const useItineraryManager = (authTokens) => {
     }
 
     const getItineraries = async () => {
-        const response = await fetch('http://127.0.0.1:8000/api/itinerary/list/', {
-            method: "GET",
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${access}`,
+        setLoading(true)
+        try {
+            const response = await fetch('http://127.0.0.1:8000/api/itinerary/list/', {
+                method: "GET",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${access}`,
+                }
+            })
+    
+            if(!response.ok) {
+                throw new Error('Error retrieving itinerary information')
             }
-        })
-
-        if(!response.ok) {
-            throw new Error('Error retrieving itinerary information')
+    
+            const data = await response.json()
+            setItineraries(data)
+        } 
+        catch (error) {
+            setError("An error occured while retrieving itineraries")
+        } 
+        finally {
+            setLoading(false)
         }
-
-        const data = await response.json()
-        setItineraries(data)
     }
 
     const deleteItinerary = async (id) => {
