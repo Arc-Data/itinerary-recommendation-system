@@ -56,6 +56,7 @@ def save_user_preferences(sender, instance, **kwargs):
 
 
 class Location(models.Model):
+    owner = models.ForeignKey(User, blank=True, null=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=250, unique=True)
     address = models.CharField(max_length=250)
     description = models.CharField(default="No Description Provided.", max_length=500)
@@ -90,7 +91,13 @@ class Location(models.Model):
 
     def __str__(self):
         return self.name
-    
+
+class OwnershipRequest(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE)
+    is_approved = models.BooleanField(default=False)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
 class CustomFee(models.Model):
     spot = models.OneToOneField("Spot", on_delete=models.CASCADE, related_name='custom_fee')
     min_cost = models.FloatField()
