@@ -430,6 +430,8 @@ def bookmark(request, location_id):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def create_review(request, location_id):
+    print(request.data)
+
     comment = request.data.get("comment")
     rating = request.data.get("rating")
 

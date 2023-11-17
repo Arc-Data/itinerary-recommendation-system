@@ -21,20 +21,40 @@
 		const [selectedImage, setSelectedImage] = useState("");
 		const [images, setImages] = useState(null);
 		const [isBookmarked, setBookmarked] = useState(false);
-		const [userReview, setUserReview] = useState("");
-		const [userRating, setUserRating] = useState(0);
-		const [hasReview, setHasReview] = useState(false);
-		const [userDate, setUserDate] = useState(false);
+		
+		// this will be the object to be used when the user does not
+		// have any reviews yet
+		const [formData, setFormData] = useState({
+			'comment': '',
+			'rating': 0,
+		})
+		// an object that contains the user's review data
+		const [userReview, setUserReview] = useState()
+		// contains all the reviews data
+		const [reviewData, setReviewData] = useState("");
+
 		const letter = user.email[0].toUpperCase();
-		const [userFName, setUserFName] = useState("")
-		const [userLName, setUserLName] = useState("")
 		const [editMode, setEditMode] = useState(false);
 		const [dropdownOpen, setDropdownOpen] = useState(false);
-		const [reviewData, setReviewData] = useState("");
+		
 		const [currentPage, setCurrentPage] = useState(1);
  		const [totalPages, setTotalPages] = useState(1);
-	
- 
+
+		const handleDescriptionChange = (comment) => {
+			setFormData(prev => ({
+				...prev,
+				'comment': comment,
+			}))
+		}
+
+		const handleRatingChange = (rating) => {
+			setFormData(prev => ({
+				...prev,
+				'rating': rating,
+			}))
+
+		}
+		
 		useEffect(() => {
 			const getLocationData = async () => {
 			const response = await fetch(`http://127.0.0.1:8000/api/location/${id}/`, {
@@ -68,6 +88,8 @@
 			);
 	  
 			const locationData = await response.json();
+
+			console.log(locationData)
 			setReviewData(locationData.results);
 			setTotalPages(Math.ceil(locationData.count / 5)); // Assuming 5 reviews per page
 		  };
@@ -87,20 +109,12 @@
 					throw new Error("Error fetching user review data");
 				}
 		
-				const reviewData = await response.json();
+				const userReviewData = await response.json();
 
-			if (reviewData.comment) {
-			setHasReview(true);
-			setUserFName(reviewData.user.first_name);
-			setUserLName(reviewData.user.last_name);
-			setUserReview(reviewData.comment);
-			setUserRating(reviewData.rating);
-			setUserDate (reviewData.datetime_created);
-
-
-			} else {
-			setHasReview(false);
-			}
+				if (userReviewData.comment) {
+					setUserReview(userReviewData)
+				} else {
+				}
 
 		} catch (error) {
 			console.error("Error while fetching user review data: ", error);
@@ -115,6 +129,7 @@
 
 		// SUBMIT REVIEW
 		const submitReview = async () => {
+			
 			try {
 
 			const response = await fetch(`http://127.0.0.1:8000/api/location/${id}/reviews/create/`, {
@@ -123,16 +138,14 @@
 				'Content-Type': 'application/json',
 				'Authorization': `Bearer ${authTokens.access}`
 				},
-				body: JSON.stringify({
-					comment: userReview,
-					rating: userRating,
-				}),
+				body: JSON.stringify(formData),
 			});
+
 		
 			if (!response.ok) {
-				const errorData = await response.json();
-				throw new Error(`Error while submitting the review: ${errorData.detail}`);
+				throw new Error(`Error while submitting the review: `);
 			}
+			const errorData = await response.json();
 		
 			console.log("Review submitted successfully");
 			alert("Review submitted successfully! You can no longer submit reviews for this location.");
@@ -159,10 +172,7 @@
 				  'Content-Type': 'application/json',
 				  'Authorization': `Bearer ${authTokens.access}`
 				},
-				body: JSON.stringify({
-				  comment: userReview,
-				  rating: userRating,
-				}),
+				body: JSON.stringify(formData),
 			  });
 		
 			  if (!response.ok) {
@@ -353,12 +363,12 @@
 					</div>
 					
 					<div className="write--review">
-						{hasReview ? (
+						{userReview ? (
 						<div className="user--reviewContainer">
 							<div className="flex mb15px">
 								<div className="d-flexCenter">
 									<div className="user--profile font15"><p>{letter}</p></div>
-									<p className="user--username  font14">{`${userFName} ${userLName}`}</p>
+									<p className="user--username  font14">{`${userReview.user.first_name} ${userReview.user.last_name}`}</p>
 								</div>
 									<div className="d-flexCenter">
 										<div className="detailPage--star j-end">
@@ -366,11 +376,11 @@
 											<FaStar
 												key={i}
 												className="star"
-												color={i + 1 <= userRating ? "#ffc107" : "#e4e5e9"}
+												color={i + 1 < userReview.rating ? "#ffc107" : "#e4e5e9"}
 											/>
 											))}
 										</div>
-										<p className="date--posted font15"> Posted: {userDate}</p>
+										<p className="date--posted font15"> Posted: {userReview.datetime_created}</p>
 										<div className="relative">
 											<FaEllipsisH className="ellipsis-icon" onClick={handleEllipsisClick} />
 											{dropdownOpen && (
@@ -390,7 +400,7 @@
 									</div>
 								</div>
 
-							<p className="user--reviews font15">{userReview}</p>
+							<p className="user--reviews font15">{userReview.comment}</p>
 							<div className="flex">
 								{editMode ? (
 									<button className="submit--review" onClick={saveEditedReview}>
@@ -409,8 +419,8 @@
 								className="input--review"
 								placeholder="How do you find this place?"
 								rows="5"
-								value={userReview}
-								onChange={(e) => setUserReview(e.target.value)}
+								value={formData.comment}
+								onChange={(e) => handleDescriptionChange(e.target.value)}
 							></textarea>
 							<div className="button--stars">
 								<button className="submit--review" onClick={submitReview}>
@@ -418,19 +428,18 @@
 								</button>
 								<div className="detailPage--star">
 								{[...Array(5)].map((star, i) => {
-									const ratingValue = i + 1;
 									return (
 									<label key={i}>
 										<input
 										type="radio"
 										className="star--radioBtn"
 										name="rating"
-										value={ratingValue}
-										onClick={() => setUserRating(ratingValue)}
+										value={i + 1}
+										onClick={() => handleRatingChange(i + 1)}
 										/>
 										<FaStar
 										className="star"
-										color={ratingValue <= userRating ? "#ffc107" : "#e4e5e9"}
+										color={`${i + 1 <= formData.rating ? "#ffc107" : "#e4e5e9"}`}
 										/>
 									</label>
 									);
@@ -444,7 +453,7 @@
 				<div className="user--review">
 					<h1 className="mb15px">Reviews</h1><hr></hr>
 					{reviewData.map((item) => (
-					<Review key={item.id} {...item} />
+						<Review key={item.id} {...item} />
 					))}
 					<div className="pagination">
         {/* Previous Page Button */}
