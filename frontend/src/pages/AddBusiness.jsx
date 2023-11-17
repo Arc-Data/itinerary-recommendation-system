@@ -1,6 +1,8 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
+import AuthContext from "../context/AuthContext"
 
 const AddBusiness = () => {
+    const { authTokens } = useContext(AuthContext)
     const [locationData, setLocationData] = useState({
         'name': '',
         'address': '',
