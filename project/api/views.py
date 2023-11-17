@@ -576,3 +576,38 @@ def get_user(request, user_id):
         return Response(data)
     except User.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def create_ownership_request(request):
+    user = request.user
+
+    name = request.data.get('name')
+    address = request.data.get('address')
+    longitude = request.data.get('longitude')
+    latitude = request.data.get('latitude')
+    location_type = request.data.get('type')
+
+    Location.objects.create(
+        name=name,
+        address=address,
+        latitude=latitude,
+        longitude=longitude,
+        location_type=location_type
+    )
+
+    OwnershipRequest.objects.create(
+        user=user,
+        location=location
+    )
+
+    return Response(status=status.HTTP_200_OK)
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def get_ownership_requests(request):
+    user = request.user
+    requests = OwnershipRequest.objects.filter(user=user)
+    serializers = OnwershipRequestSerializer(requests, many=True)
+
+    return Response(serializers.data, status=status.HTTP_200_OK)

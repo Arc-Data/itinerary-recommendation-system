@@ -162,6 +162,12 @@ class LocationPlanSerializers(serializers.ModelSerializer):
             return spot.closing_time
 
 
+class LocationBasicSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Location
+        fields = '__all__'
+
 class LocationSerializers(serializers.ModelSerializer):
     images = serializers.SerializerMethodField()
     details = serializers.SerializerMethodField()
@@ -398,3 +404,11 @@ class RecommendedLocationSerializer(serializers.ModelSerializer):
             return primary_image.image.url
 
         return None
+
+class OwnershipRequestSerializer(serializers.ModelSerializer):
+    details = LocationBasicSerializer(source='location', read_only=True)
+
+    class Meta:
+        model = OwnershipRequest
+        fields = ['id', 'is_approved', 'timestamp', 'details']
+    

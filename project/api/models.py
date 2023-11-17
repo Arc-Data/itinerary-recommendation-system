@@ -244,8 +244,6 @@ class Food(models.Model):
     price = models.FloatField()
     image = models.ImageField(blank=True, null=True, upload_to='location_food/')
 
-
-
     
 
 
