@@ -592,10 +592,10 @@ def get_location_recommendations(request, location_id):
 
 
 @api_view(["GET"])
-#permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def get_homepage_recommendations(request):
 
-    user = get_object_or_404(User, id=2)
+    user = request.user
 
     preferences = [
         user.preferences.history,

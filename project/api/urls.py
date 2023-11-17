@@ -40,7 +40,7 @@ urlpatterns = [
     path('recommendations/content/', get_content_recommendations, name='content-recommendations'),
     path('recommendations/<int:model_id>/apply/', apply_recommendation, name='apply-recommendation'),
     path('recommendations/location/<int:location_id>/', get_location_recommendations, name='get_location_recommendation'),
-    path('recommendations/homepage/', get_homepage_recommendations, name='get_homepage_recommendations'),
+    path('recommendations/homepage/', get_homepage_recommendations, name='get_homepage_recommendations'), 
 
     path('bookmarks/', get_bookmarks, name='get_bookmarks'),
     path('trip-bookmarks/', trip_bookmarks, name='trip_bookmarks'),
