@@ -25,6 +25,13 @@ const Assistant = ({onClose, day, updateDays}) => {
         setSelectedItem(id)
     }
 
+    const handleRegenerate = (e) => {
+        if (e) {
+            e.stopPropagation()
+        }
+        fetchRecommendations()
+    }
+
     const handleApplyRecommendation = async (e) => {
         try {
             const data = await applyRecommendation(selectedItem, day.id);
@@ -52,18 +59,21 @@ const Assistant = ({onClose, day, updateDays}) => {
                     <p>Use AI Assistant to generate your itinerary</p>
                 </div>
                 <div className="assistant--content">
-                    { loading ? 
-                    <div>{status}</div>
-                    :
-                    <>
                     <p>Choose 1 from the list genereated. Note that this will replace the itinerary you created in <span className="assistant--date">{formatDate(day.date)}</span>.</p>
-                    <div className="assistant--content-grid">
-                        {displayRecommendations}
+                        {loading ? 
+                        <div> Loading... </div>
+                        :
+                        <div className="assistant--content-grid">
+                            {displayRecommendations}
+                        </div>
+                        }
+                    <div className="assistant--regenerate" onClick={handleRegenerate}>
+                        <img src="/reload.svg" alt="" />
+                        <p>Regenerate</p>
                     </div>
-                    </>
-                    }
                 </div>
                 { !loading &&
+                <>
                 <div className="assistant--footer">
                     <button className="assistant--btn btn-secondary" onClick={onClose}>Cancel</button>
                     <button
@@ -73,6 +83,7 @@ const Assistant = ({onClose, day, updateDays}) => {
                             Done
                     </button>
                 </div>
+                </>
                 }
             </div>
         </>

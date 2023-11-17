@@ -25,7 +25,7 @@ class Command(BaseCommand):
             return None
 
     def handle(self, *args, **options):
-        csv_file = os.path.join(settings.BASE_DIR, 'Spot.csv')
+        csv_file = os.path.join(settings.BASE_DIR, 'TravelPackage - Spot.csv')
 
         with open(csv_file, 'r') as file:
             reader = csv.DictReader(file)
