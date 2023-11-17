@@ -55,8 +55,6 @@ export default function DetailPage() {
 			}))
 		}
 
-		dayjs.extend(relativeTime)
-		dayjs.extend(utc)
 		
 		useEffect(() => {
 			const getLocationData = async () => {
