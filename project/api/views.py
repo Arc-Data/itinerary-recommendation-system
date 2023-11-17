@@ -588,7 +588,7 @@ def create_ownership_request(request):
     latitude = request.data.get('latitude')
     location_type = request.data.get('type')
 
-    Location.objects.create(
+    location = Location.objects.create(
         name=name,
         address=address,
         latitude=latitude,
