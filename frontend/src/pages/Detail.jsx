@@ -22,7 +22,6 @@ export default function DetailPage() {
 		const [selectedImage, setSelectedImage] = useState("");
 		const [images, setImages] = useState(null);
 		const [isBookmarked, setBookmarked] = useState(false);
-		
 		// this will be the object to be used when the user does not
 		// have any reviews yet
 		const [formData, setFormData] = useState({
@@ -33,7 +32,6 @@ export default function DetailPage() {
 		const [userReview, setUserReview] = useState()
 		// contains all the reviews data
 		const [reviewData, setReviewData] = useState("");
-
 		const letter = user.email[0].toUpperCase();
 		const [editMode, setEditMode] = useState(false);
 		const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -41,20 +39,12 @@ export default function DetailPage() {
 		const [currentPage, setCurrentPage] = useState(1);
  		const [totalPages, setTotalPages] = useState(1);
 
-		const handleDescriptionChange = (comment) => {
+		const handleReviewChange = (name, value) => {
 			setFormData(prev => ({
 				...prev,
-				'comment': comment,
+				[name]: value,
 			}))
 		}
-
-		const handleRatingChange = (rating) => {
-			setFormData(prev => ({
-				...prev,
-				'rating': rating,
-			}))
-		}
-
 		
 		useEffect(() => {
 			const getLocationData = async () => {
@@ -415,7 +405,7 @@ export default function DetailPage() {
 								placeholder="How do you find this place?"
 								rows="5"
 								value={formData.comment}
-								onChange={(e) => handleDescriptionChange(e.target.value)}
+								onChange={(e) => handleReviewChange(comment, e.target.value)}
 							></textarea>
 							<div className="button--stars">
 								<button className="submit--review" onClick={submitReview}>
@@ -430,7 +420,7 @@ export default function DetailPage() {
 										className="star--radioBtn"
 										name="rating"
 										value={i + 1}
-										onClick={() => handleRatingChange(i + 1)}
+										onClick={() => handleReviewChange(rating, i + 1)}
 										/>
 										<FaStar
 										className="star"
