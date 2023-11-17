@@ -1,5 +1,6 @@
 import React from "react";
 import { FaStar } from "react-icons/fa";
+import timeToNow from "../utils/timeToNow";
 
 export default function Review(props) {
     const letter = props.user.first_name[0].toUpperCase();
@@ -19,7 +20,7 @@ export default function Review(props) {
             color={i + 1 <= props.rating ? "#ffc107" : "#e4e5e9"}
         />
         ))}
-          <span className="date--posted font15">Posted: {props.datetime_created} </span>
+          <span className="date--posted font15">Posted: {timeToNow(props.datetime_created)} </span>
         </div>
       </div>
       <p className="user--reviews font15">{props.comment}</p>

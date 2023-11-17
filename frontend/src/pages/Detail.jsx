@@ -1,19 +1,20 @@
-	import React, { useContext, useEffect, useState } from "react";
-	/*Components*/
-	import DetailCard from "../components/DetailCard";
-	import Review from "../components/Review";
-	/*Data*/
-	import cardData from "../cardData";
-	/*Icon*/
-	import addressIcon from "/images/carbon_location-filled.svg";
-	import timeIcon from "/images/ion_time.svg";
-	import bookmarkIcon from "/images/bookmark-icon-4.png";
-	import star from "/images/star.png";
-	import { useParams } from "react-router-dom";
-	import { FaEllipsisH, FaStar , FaTrash , FaEdit, FaArrowLeft, FaArrowRight  } from "react-icons/fa";
-	import AuthContext from "../context/AuthContext";
+import React, { useContext, useEffect, useState } from "react";
+/*Components*/
+import DetailCard from "../components/DetailCard";
+import Review from "../components/Review";
+/*Data*/
+import cardData from "../cardData";
+/*Icon*/
+import addressIcon from "/images/carbon_location-filled.svg";
+import timeIcon from "/images/ion_time.svg";
+import bookmarkIcon from "/images/bookmark-icon-4.png";
+import star from "/images/star.png";
+import { useParams } from "react-router-dom";
+import { FaEllipsisH, FaStar , FaTrash , FaEdit, FaArrowLeft, FaArrowRight  } from "react-icons/fa";
+import AuthContext from "../context/AuthContext";
+import timeToNow from "../utils/timeToNow";
 
-	export default function DetailPage() {
+export default function DetailPage() {
 		const { authTokens, user } = useContext(AuthContext);
 		const [location, setLocation] = useState(null);
 		const { id } = useParams();
@@ -52,8 +53,10 @@
 				...prev,
 				'rating': rating,
 			}))
-
 		}
+
+		dayjs.extend(relativeTime)
+		dayjs.extend(utc)
 		
 		useEffect(() => {
 			const getLocationData = async () => {
@@ -110,11 +113,7 @@
 				}
 		
 				const userReviewData = await response.json();
-
-				if (userReviewData.comment) {
-					setUserReview(userReviewData)
-				} else {
-				}
+				setUserReview(userReviewData)
 
 		} catch (error) {
 			console.error("Error while fetching user review data: ", error);
@@ -203,7 +202,6 @@
 				throw new Error("Error while updating bookmark");
 			}
 			
-
 			} catch (error) {
 			console.log("Error while updating bookmark: ", error);
 			}
@@ -380,7 +378,7 @@
 											/>
 											))}
 										</div>
-										<p className="date--posted font15"> Posted: {userReview.datetime_created}</p>
+										<p className="date--posted font15"> Posted: {timeToNow(userReview.datetime_created)}</p>
 										<div className="relative">
 											<FaEllipsisH className="ellipsis-icon" onClick={handleEllipsisClick} />
 											{dropdownOpen && (
@@ -393,7 +391,6 @@
 												<FaEdit />
 													<p>Edit color</p>
 												</div>
-												
 											</div>   
 											)}
 										</div>
