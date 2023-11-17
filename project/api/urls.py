@@ -39,6 +39,8 @@ urlpatterns = [
     
     path('recommendations/content/', get_content_recommendations, name='content-recommendations'),
     path('recommendations/<int:model_id>/apply/', apply_recommendation, name='apply-recommendation'),
+    path('recommendations/location/<int:location_id>/', get_location_recommendations, name='get_location_recommendation'),
+    path('recommendations/homepage/', get_homepage_recommendations, name='get_homepage_recommendations'),
 
     path('bookmarks/', get_bookmarks, name='get_bookmarks'),
     path('trip-bookmarks/', trip_bookmarks, name='trip_bookmarks'),
@@ -48,4 +50,8 @@ urlpatterns = [
     path('location/<int:location_id>/reviews/create/', create_review, name='create_review'),
     path('location/<int:location_id>/reviews/edit/', edit_review, name='edit_review'),
     path('location/<int:location_id>/reviews/delete/', delete_review, name='delete_review'),
+
+    path('user/<int:user_id>/delete/', delete_user, name='delete_user'),
+    path('user/', get_all_users, name='get_all_users'),
+    path('user/<int:user_id>/', get_user, name='get_user'),
 ]

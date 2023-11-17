@@ -383,4 +383,18 @@ class BookmarkLocationSerializer(serializers.ModelSerializer):
         bookmark = self.context.get('bookmarks').filter(spot__location_ptr=location_id, user=user_id).first()
 
         return bookmark.datetime_created    
-        
+
+
+class RecommendedLocationSerializer(serializers.ModelSerializer):
+    primary_image = serializers.SerializerMethodField()
+    class Meta:
+        model = Location
+        fields = ('id', 'name', 'primary_image')
+
+    def get_primary_image(self, obj):
+        primary_image = obj.images.filter(is_primary_image=True).first()
+
+        if primary_image:
+            return primary_image.image.url
+
+        return None
