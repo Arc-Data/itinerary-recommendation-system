@@ -608,6 +608,6 @@ def create_ownership_request(request):
 def get_ownership_requests(request):
     user = request.user
     requests = OwnershipRequest.objects.filter(user=user)
-    serializers = OnwershipRequestSerializer(requests, many=True)
+    serializers = OwnershipRequestSerializer(requests, many=True)
 
     return Response(serializers.data, status=status.HTTP_200_OK)
