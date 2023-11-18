@@ -1,28 +1,25 @@
-import { useContext, useEffect } from "react"
+import { useContext, useEffect, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import AuthContext from "../context/AuthContext"
 import dayjs from "dayjs"
 import getFeeDetails from "../utils/getFeeDetails"
 import getTimeDetails from "../utils/getTimeDetails"
 import useDayManager from "../hooks/useDayManager"
+import StarDefault from "../components/StarDefault"
 
 const RateDay = () => {
     const { id } = useParams()
     const { authTokens } = useContext(AuthContext)
-    const { day, loading, error, getDayRating, markDayAsComplete } = useDayManager(authTokens)
+    const { day, loading, error, getDayRating, markDayAsComplete, updateDayRating } = useDayManager(authTokens)
+    const [ rating, setRating ] = useState(0)
     const navigate = useNavigate()
-
-    console.log(loading, error)
 
     const handleMarkComplete = async (e) => {
         e.stopPropagation()
         markDayAsComplete(id)
     }
 
-    console.log(day)
-
     useEffect(() => {
-        console.log("Shouldnt this work on page load though?")
         getDayRating(id)
     }, [id])
 
@@ -48,6 +45,15 @@ const RateDay = () => {
         )
     })
 
+    const handleRating = (rating) => {
+        setRating(rating)
+    }
+
+    const handleSubmitDayRating = async () => {
+        updateDayRating(id, rating)
+    }
+
+
     if (error) {
         return (
             <div>{error}</div>
@@ -66,8 +72,8 @@ const RateDay = () => {
                 <>
                 <div className="profile--rating-header">
                     <div className="header-title">
-                        <p>{day?.name}</p>
-                        <div className="day-number-badge">{day?.day_number}</div>
+                        <p>{day.name}</p>
+                        <div className="day-number-badge">{day.day_number}</div>
                     </div>
                     <div className="header-subtitle">
                         <img src="/calendar.svg" alt="" />
@@ -79,6 +85,24 @@ const RateDay = () => {
                         {displayLocations}
                     </div>
                     <div>
+                        {day.completed ? 
+                        <div className="profile--rate-modal">
+                            <p>How did your overall trip went?</p>
+                            <div className="profile--star-container">
+                            {Array.from({length: 5}).map((_, idx) => (
+                                <StarDefault 
+                                    key={idx}
+                                    onClick={() => handleRating(idx + 1)}
+                                    color={`${idx + 1 <= rating ? "#F2C44F" : "#CCC"}`} />
+                            ))}
+                            </div>
+                            <div className="profile--star-btns">
+                                <button className="profile--star-cancel-btn">Undo</button>
+                                <button className="profile--star-submit-btn" onClick={handleSubmitDayRating}>Submit</button>
+                            </div>
+                            
+                        </div>
+                        :
                         <div className="profile--rate-modal">
                             <p>Finished this trip? Mark it as completed.</p>
                             <button className="profile--rate-btn" onClick={handleMarkComplete}>
@@ -86,6 +110,7 @@ const RateDay = () => {
                                 <p>Mark as complete</p>
                             </button>
                         </div>
+                        }
                     </div>
                 </div>
                 </>

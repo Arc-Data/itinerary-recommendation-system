@@ -2415,8 +2415,13 @@ input[type="radio"] {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 20px;
     border-radius: 10px;
+}
+
+.profile--star-container {
+    display: flex;
+    gap: 10px;
 }
 
 .profile--rate-btn {
@@ -2431,4 +2436,31 @@ input[type="radio"] {
 
 .profile--rate-btn:hover {
     opacity: 1;
+}
+
+.profile--star-btns {
+    display: flex;
+    gap: 20px;
+}
+
+.profile--star-btns > button{
+    padding: 12px;
+    border-radius: 10px;
+    width: 120px;
+}
+
+.profile--star-cancel-btn {
+    background-color: #fcfcfc;
+    color: black;
+    border: 1px solid #CDCDCD
+}
+
+.profile--star-submit-btn {
+    background-color: #184E77;
+    color: white;
+    border: 1px solid transparent;
+}
+
+.star {
+    cursor: pointer;
 }

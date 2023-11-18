@@ -105,7 +105,6 @@ const useDayManager = (authTokens) => {
     }
 
     const getDayRating = async (id) => {
-        console.log("Confirmed working")
         setLoading(true)
         
         try {
@@ -127,6 +126,22 @@ const useDayManager = (authTokens) => {
             setLoading(false)
         }
     }
+
+    const updateDayRating = async (id, rating) => {
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/api/day/${id}/rate/`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${access}`
+                },
+                body: JSON.stringify(rating)
+            })
+        }        
+        catch (error) {
+            console.log("An error occured while rating the day itinerary: ", error)
+        }
+    }
     
     return {
         day,
@@ -141,6 +156,7 @@ const useDayManager = (authTokens) => {
         markDayAsComplete,
         updateDayColor,
         updateCalendarDays,
+        updateDayRating,
     }
 }
 

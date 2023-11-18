@@ -31,6 +31,7 @@ urlpatterns = [
     path('days/complete/', get_completed_days, name="get_completed_days"),
     path('day/<int:day_id>/complete/', mark_day_complete, name="mark_day_complete"),
     path('day/<int:day_id>/detail/', get_completed_day, name="get-completed-day"),
+    path('day/<int:day_id>/rate/', rate_day, name="rate-day"),
 
     path('day-item/', create_itinerary_item, name="create-itinerary-item"),
     path('day-item/<int:day_id>/delete/', delete_day_item, name="delete-day-item"),

@@ -616,3 +616,13 @@ def mark_day_complete(request, day_id):
 
     serializer = DayRatingSerializer(day)
     return Response(serializer.data,status=status.HTTP_200_OK)
+
+@api_view(["POST"])
+def rate_day(request, day_id):
+    rating = request.data
+
+    day = Day.objects.get(id=day_id)
+    day.rating = rating
+    day.save()
+
+    return Response(status=status.HTTP_200_OK)
