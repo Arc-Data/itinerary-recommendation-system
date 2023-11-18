@@ -9,14 +9,28 @@ import { Link } from "react-router-dom";
 const HomePage = () => {
 	const { authTokens } = useContext(AuthContext)
 	const { itineraries, getItineraries, deleteItinerary } = useItineraryManager(authTokens)
-	const { days, error, loading, getActiveTrips } = useDayManager(authTokens)
+	const [ selectedDays, setSelectedDays ] = useState([])
+	const { days, error, loading, getActiveTrips, markDaysAsCompleted } = useDayManager(authTokens)
 
 	useEffect(() => {
 		getItineraries();
 		getActiveTrips();
 	}, [])
 
-	console.log(days)
+	const toggleDaySelection = (dayId) => {
+		const isSelected = selectedDays.includes(dayId)
+		
+		if (isSelected) {
+			setSelectedDays(prev => prev.filter(id => id !== dayId))
+		} 
+		else {
+			setSelectedDays(prev => [...prev, dayId])
+		}
+	}
+
+	const handleMarkDaysAsCompleted = () => {
+		markDaysAsCompleted(selectedDays)
+	}
 
 	const displayActiveTrips = () => {
  		return days.map(day => {
@@ -25,7 +39,10 @@ const HomePage = () => {
 			return (
 				<div key={day.id} className="active--day-item">
 					<div className="active--trip-name">
-						<input type="checkbox" />
+						<input 
+							type="checkbox" 
+							checked={selectedDays.includes(day.id)}
+							onChange={() => toggleDaySelection(day.id)}/>
 						<p>{day.name} {dayjs(day.date).format('MMM D, YYYY')}</p>
 					</div>
 					<div className="active--trip-locations">{locations}</div>
@@ -36,7 +53,6 @@ const HomePage = () => {
 			)
 		})
 	}
-	
 
 	const displayItineraries = itineraries && itineraries.map(itinerary => {
 		return (
@@ -65,6 +81,9 @@ const HomePage = () => {
 				<p className="header-title">Active Trips</p>
 				<div className="active--trips-container">
 				{displayActiveTrips()}
+				{selectedDays.length > 0 && 
+				<button className="active--trip-save" onClick={handleMarkDaysAsCompleted}>Save</button>
+				}
 				</div>
 			</div>
 			}

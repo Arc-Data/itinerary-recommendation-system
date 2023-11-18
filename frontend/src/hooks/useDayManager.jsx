@@ -162,6 +162,26 @@ const useDayManager = (authTokens) => {
             console.log("An error occured while rating the day itinerary: ", error)
         }
     }
+
+    const markDaysAsCompleted = async (dayIds) => {
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/api/days/complete/`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${access}`
+                },
+                body: JSON.stringify({
+                    "ids": dayIds
+                })
+            })
+
+            getActiveTrips()            
+        }
+        catch(error) {
+            console.log("An error occured while marking days as completed: ", error)
+        }
+    }
     
     return {
         day,
@@ -174,6 +194,7 @@ const useDayManager = (authTokens) => {
         updateDays,
         getDayRating,
         markDayAsComplete,
+        markDaysAsCompleted,
         updateDayColor,
         updateCalendarDays,
         updateDayRating,
