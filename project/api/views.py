@@ -593,7 +593,7 @@ def get_completed_days(request):
     completed_days = []
 
     for itinerary in itineraries:
-        days = Day.objects.filter(itinerary=itinerary, completed=True, rating=0)
+        days = Day.objects.filter(itinerary=itinerary)
 
         for day in days:
             if ItineraryItem.objects.filter(day=day).count() != 0:

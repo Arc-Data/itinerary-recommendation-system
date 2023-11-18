@@ -147,6 +147,25 @@ const useDayManager = (authTokens) => {
         }
     }
 
+    const getRecentDays = async () => {
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/api/days/completed/`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${access}`
+                }
+            })
+
+            const data = await response.json()
+            setDays(data)
+            setLoading(false)
+        }
+        catch(error) {
+            setError("An error has occured while retrieving completed days data")
+        }
+    }
+
     const updateDayRating = async (id, rating) => {
         try {
             const response = await fetch(`http://127.0.0.1:8000/api/day/${id}/rate/`, {
@@ -199,6 +218,7 @@ const useDayManager = (authTokens) => {
         updateCalendarDays,
         updateDayRating,
         getActiveTrips,
+        getRecentDays,
     }
 }
 
