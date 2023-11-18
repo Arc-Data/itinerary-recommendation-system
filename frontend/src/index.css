@@ -2464,3 +2464,42 @@ input[type="radio"] {
 .star {
     cursor: pointer;
 }
+
+.active--trips-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px 0;
+}
+
+.active--trip-name {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.active--trip-name > input[type=checkbox] {
+    width: 20px;
+    height: 20px;
+}
+
+.active--day-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 20px;
+    padding: 12px;
+    align-items: center;
+    border: 1px solid #e7e7e7;
+    border-radius: 10px;
+    box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.2);
+}
+
+.active--trip-locations {
+    text-overflow: ellipsis;
+}
+
+.active--trip-btn {
+    padding: 12px;
+    background: #007bff;
+    border-radius: 10px;
+}

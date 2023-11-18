@@ -408,7 +408,7 @@ class DayRatingsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Day
-        fields = ['id', 'date', 'locations', 'name', 'day_number', 'image']
+        fields = ['id', 'date', 'locations', 'name', 'day_number', 'image', 'itinerary']
 
     def get_name(self, obj):
         return obj.itinerary.name

@@ -138,9 +138,8 @@ const useDayManager = (authTokens) => {
             })
 
             console.log(response)
-
             const data = await response.json()
-            console.log(data)
+            setDays(data)
 
         }   
         catch(error) {

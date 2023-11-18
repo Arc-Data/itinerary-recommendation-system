@@ -33,7 +33,7 @@ const Rate = () => {
     }, [])
 
     const displayRatings = ratings && ratings.map(rating => {
-        const locations = rating.locations.toString().split(",").join(" • ")
+        const locations = rating.locations.join(" • ")
 
         return (
             <div key={rating.id} className="profile--ratings-item">

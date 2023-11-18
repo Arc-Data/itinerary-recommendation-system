@@ -3,6 +3,8 @@ import AuthContext from "../context/AuthContext";
 import Itinerary from "../components/Itinerary";
 import useItineraryManager from "../hooks/useItineraryManager";
 import useDayManager from "../hooks/useDayManager";
+import dayjs from "dayjs";
+import { Link } from "react-router-dom";
 
 const HomePage = () => {
 	const { authTokens } = useContext(AuthContext)
@@ -13,6 +15,28 @@ const HomePage = () => {
 		getItineraries();
 		getActiveTrips();
 	}, [])
+
+	console.log(days)
+
+	const displayActiveTrips = () => {
+ 		return days.map(day => {
+			const locations = day.locations.join(" • ")
+
+			return (
+				<div key={day.id} className="active--day-item">
+					<div className="active--trip-name">
+						<input type="checkbox" />
+						<p>{day.name} {dayjs(day.date).format('MMM D, YYYY')}</p>
+					</div>
+					<div className="active--trip-locations">{locations}</div>
+					<Link to={`/plan/${day.itinerary}`}>
+						<button className="active--trip-btn">View</button>
+					</Link>
+				</div>
+			)
+		})
+	}
+	
 
 	const displayItineraries = itineraries && itineraries.map(itinerary => {
 		return (
@@ -36,12 +60,11 @@ const HomePage = () => {
 					<img src="/banner-3.png" className="banner-img" />
 				</div>
 			</header>
-			{ days && 
+			{ days.length !== 0 && 
 			<div>
-				<p className="header-title">Active</p>
-				<p className="header-subtitle">Ongoing Trips</p>
+				<p className="header-title">Active Trips</p>
 				<div className="active--trips-container">
-
+				{displayActiveTrips()}
 				</div>
 			</div>
 			}

@@ -7,6 +7,7 @@ from rest_framework.filters import SearchFilter
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import IsAuthenticated
+from django.db.models import Count
 
 from .managers import *
 from .models import *
@@ -637,8 +638,10 @@ def get_active_trips(request):
     days = []
     for itinerary in itineraries:
         matching_days = Day.objects.filter(itinerary=itinerary, date__lte=current_date, completed=False)
+        matching_days = matching_days.annotate(num_items=Count('itineraryitem')).filter(num_items__gt=0)
+
         days.extend(matching_days)
 
-    serializer = DayRatingSerializer(days, many=True)
+    serializer = DayRatingsSerializer(days, many=True)
 
     return Response(serializer.data, status=status.HTTP_200_OK)
