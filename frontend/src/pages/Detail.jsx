@@ -26,8 +26,11 @@
 	const [location, setLocation] = useState(null);
 	const { id } = useParams();
 	const [loading, setLoading] = useState(true);
+	const letter = user.email[0].toUpperCase();
+	// Thumbnail
 	const [selectedImage, setSelectedImage] = useState("");
 	const [images, setImages] = useState(null);
+	// Bookmark
 	const [isBookmarked, setBookmarked] = useState(false);
 	// this will be the object to be used when the user does not
 	// have any reviews yet
@@ -40,12 +43,17 @@
 	const [userReview, setUserReview] = useState();
 	// contains all the reviews data
 	const [reviewData, setReviewData] = useState([]);
-	const letter = user.email[0].toUpperCase();
+	
 	const [editMode, setEditMode] = useState(false);
 	const [dropdownOpen, setDropdownOpen] = useState(false);
 
 	const [currentPage, setCurrentPage] = useState(1);
 	const [totalPages, setTotalPages] = useState(1);
+
+	// Recommended location
+	const [recommendedLocations, setRecommendedLocations] = useState([]);
+
+	
 
 	const handleReviewChange = (name, value) => {
 		setFormData((prev) => ({
@@ -119,6 +127,33 @@
 		}
 		};
 
+		// GET RECOMMENDED LOCATIONS
+		const getRecommendedLocations = async () => {
+			try {
+			  const response = await fetch(
+				`http://127.0.0.1:8000/api/recommendations/location/${id}/`,
+				{
+				  method: "GET",
+				  headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${authTokens.access}`,
+				  },
+				}
+			  );
+	  
+			  if (!response.ok) {
+				throw new Error("Error fetching recommended locations data");
+			  }
+	  
+			  const data = await response.json();
+			  setRecommendedLocations(data.recommendations);
+			} catch (error) {
+			  console.error("Error while fetching recommended locations data: ", error);
+			}
+		  };
+	  
+		  
+		getRecommendedLocations();
 		getReviewData();
 		getLocationReviewData();
 		getLocationData();
@@ -187,6 +222,36 @@
 		}
 	};
 
+	// DELETE REVIEW 
+	const deleteReview = async () => {
+		try {
+		  const response = await fetch(
+			`http://127.0.0.1:8000/api/location/${id}/reviews/delete/`,
+			{
+			  method: "DELETE",
+			  headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${authTokens.access}`,
+			  },
+			}
+		  );
+	  
+		  if (!response.ok) {
+			throw new Error("Error while deleting the review");
+		  }
+	  
+		  console.log("Review deleted successfully");
+		  alert(
+			"Review deleted successfully"
+		);
+
+		setLoading(true);
+		window.location.reload();
+		} catch (error) {
+		  console.error("Error while deleting the review: ", error);
+		}
+	  };
+
 	// BOOKMARK
 	const handleBookmarkSave = async (value) => {
 		try {
@@ -235,10 +300,10 @@
 	));
 
 	// POPULAR LOCATION (DATA)
-	const limitedCardData = cardData.slice(0, 4);
-	const detailCards = limitedCardData.map((location) => (
+	const recommendedCards = recommendedLocations.map((location) => (
 		<DetailCard key={location.id} {...location} />
-	));
+	  ));
+
 
 	// DROPDOWN
 	const handleEllipsisClick = () => {
@@ -337,7 +402,7 @@
 
 		<div className="detailPage--popular">
 			<h2>Also Popular with travelers</h2>
-			<div className="detailPage--cards">{detailCards}</div>
+			<div className="detailPage--cards">{recommendedCards}</div>
 		</div>
 
 		<div className="detailPage--review">
@@ -395,7 +460,10 @@
 								/>
 								{dropdownOpen && (
 								<div className="userReview-dropContent">
-									<div className="plan--day-dropcontent-item">
+									<div 
+										className="plan--day-dropcontent-item"
+										onClick={deleteReview}>
+										
 										<FaTrash />
 										<p>Delete review</p>
 									</div>
