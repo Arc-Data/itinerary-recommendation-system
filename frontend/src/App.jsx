@@ -26,6 +26,8 @@ import AdminLocationView from './pages/AdminLocationView';
 import ProfileLayout from './layout/ProfileLayout';
 import Profile from './pages/Profile';
 import Trips from './pages/Trips';
+import Recent from './pages/Recent';
+import RateDay from './pages/RateDay';
 	/*css*/
 	
 function App() {
@@ -50,6 +52,8 @@ function App() {
 					<Route path="/profile" element={<ProfileLayout/>}>
 						<Route path="/profile/" element={<Profile />} />
 						<Route path="/profile/trips" element={<Trips/>} />
+						<Route path="/profile/rate" element={<Recent/>} />
+						<Route path="/profile/rate/:id" element={<RateDay />} />
 					</Route>
 
 					<Route element={<CreateTripLayout/>}>

@@ -51,7 +51,7 @@ const Signup = () => {
         <div className="container--sign-log">
             <div className="container-form">
                 <Link to="/">
-					<img className="cebu--logo" src="../images/Untitled design.png" alt="LandingPage" />
+					<img className="cebu--logo" src="/images/logo.png" alt="LandingPage" />
 				</Link>
             <h2>Sign Up</h2>
             <form className='modal-login-sign-form' onSubmit={handleSubmit}>

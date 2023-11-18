@@ -2,9 +2,10 @@ import { useState } from "react"
 
 const useDayManager = (authTokens) => {
     const access = String(authTokens.access)
+    const [ day, setDay ] = useState() 
     const [ days, setDays ] = useState([])
     const [ error, setError ] = useState(false) 
-    const [ loading, setLoading ] = useState(false) 
+    const [ loading, setLoading ] = useState(true) 
 
     const getDays = async (itinerary_id) => {
         setLoading(true)
@@ -83,8 +84,129 @@ const useDayManager = (authTokens) => {
 
 		setDays(currentDays)
 	}
+
+    const markDayAsComplete = async (id) => {
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/api/day/${id}/complete/`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${String(authTokens.access)}`
+                },
+            })
+            console.log(response)
+
+            const data = await response.json();
+            setDay(data)
+        }
+        catch (error) {
+            console.log("An error occured while marking day as complete: ", error)
+        }
+    }
+
+    const getDayRating = async (id) => {
+        setLoading(true)
+        
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/api/day/${id}/detail/`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${access}`
+                }
+            })
+
+            const data = await response.json()
+            setDay(data)
+        }
+        catch(error) {
+            setError("An error occured while fetching Day data: ", error)
+        }
+        finally {
+            setLoading(false)
+        }
+    }
+
+    const getActiveTrips = async () => {
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/api/user/active/`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${access}`
+                }
+            })
+
+            console.log(response)
+            const data = await response.json()
+            setDays(data)
+
+        }   
+        catch(error) {
+            console.log("An error occured while fetching active trips")
+        }
+    }
+
+    const getRecentDays = async () => {
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/api/days/completed/`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${access}`
+                }
+            })
+
+            const data = await response.json()
+            setDays(data)
+            setLoading(false)
+        }
+        catch(error) {
+            setError("An error has occured while retrieving completed days data")
+        }
+    }
+
+    const updateDayRating = async (id, rating) => {
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/api/day/${id}/rate/`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${access}`
+                },
+                body: JSON.stringify(rating)
+            })
+
+            const data = await response.json()
+            setDay(data)
+        }        
+        catch (error) {
+            console.log("An error occured while rating the day itinerary: ", error)
+        }
+    }
+
+    const markDaysAsCompleted = async (dayIds) => {
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/api/days/complete/`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${access}`
+                },
+                body: JSON.stringify({
+                    "ids": dayIds
+                })
+            })
+
+            getActiveTrips()            
+        }
+        catch(error) {
+            console.log("An error occured while marking days as completed: ", error)
+        }
+    }
     
     return {
+        day,
         days,
         error,
         loading,
@@ -92,8 +214,14 @@ const useDayManager = (authTokens) => {
         deleteDay,
         removeDay,
         updateDays,
+        getDayRating,
+        markDayAsComplete,
+        markDaysAsCompleted,
         updateDayColor,
         updateCalendarDays,
+        updateDayRating,
+        getActiveTrips,
+        getRecentDays,
     }
 }
 
