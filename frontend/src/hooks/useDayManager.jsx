@@ -127,6 +127,27 @@ const useDayManager = (authTokens) => {
         }
     }
 
+    const getActiveTrips = async () => {
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/api/user/active/`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${access}`
+                }
+            })
+
+            console.log(response)
+
+            const data = await response.json()
+            console.log(data)
+
+        }   
+        catch(error) {
+            console.log("An error occured while fetching active trips")
+        }
+    }
+
     const updateDayRating = async (id, rating) => {
         try {
             const response = await fetch(`http://127.0.0.1:8000/api/day/${id}/rate/`, {
@@ -157,6 +178,7 @@ const useDayManager = (authTokens) => {
         updateDayColor,
         updateCalendarDays,
         updateDayRating,
+        getActiveTrips,
     }
 }
 

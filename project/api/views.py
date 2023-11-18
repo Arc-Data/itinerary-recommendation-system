@@ -592,7 +592,7 @@ def get_completed_days(request):
     completed_days = []
 
     for itinerary in itineraries:
-        days = Day.objects.filter(itinerary=itinerary)
+        days = Day.objects.filter(itinerary=itinerary, completed=True, rating=0)
 
         for day in days:
             if ItineraryItem.objects.filter(day=day).count() != 0:
@@ -626,3 +626,19 @@ def rate_day(request, day_id):
     day.save()
 
     return Response(status=status.HTTP_200_OK)
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def get_active_trips(request):
+    user = request.user
+    itineraries = Itinerary.objects.filter(user=user)
+    current_date = datetime.datetime.now().date()
+
+    days = []
+    for itinerary in itineraries:
+        matching_days = Day.objects.filter(itinerary=itinerary, date__lte=current_date, completed=False)
+        days.extend(matching_days)
+
+    serializer = DayRatingSerializer(days, many=True)
+
+    return Response(serializer.data, status=status.HTTP_200_OK)
