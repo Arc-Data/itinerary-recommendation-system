@@ -1,26 +1,34 @@
 import { useContext, useEffect } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
-import useRatingManager from "../hooks/useRatingManager"
 import AuthContext from "../context/AuthContext"
 import dayjs from "dayjs"
 import getFeeDetails from "../utils/getFeeDetails"
 import getTimeDetails from "../utils/getTimeDetails"
+import useDayManager from "../hooks/useDayManager"
 
 const RateDay = () => {
     const { id } = useParams()
     const { authTokens } = useContext(AuthContext)
-    const { loading, error, day, getDayRating } = useRatingManager(authTokens) 
+    const { day, loading, error, getDayRating, markDayAsComplete } = useDayManager(authTokens)
     const navigate = useNavigate()
 
+    console.log(loading, error)
+
+    const handleMarkComplete = async (e) => {
+        e.stopPropagation()
+        markDayAsComplete(id)
+    }
+
+    console.log(day)
+
     useEffect(() => {
+        console.log("Shouldnt this work on page load though?")
         getDayRating(id)
-    }, [])
+    }, [id])
 
     const handleBack = () => {
         navigate(-1)
     }
-
-    console.log(day?.locations)
 
     const displayLocations = day && day.locations.map(location => {
         const fee = getFeeDetails(location.min_cost, location.max_cost)
@@ -53,35 +61,35 @@ const RateDay = () => {
                 <span>Back</span>
             </div>
             {loading ? 
-            <div>Loading...</div>
-            :
-            <>
-            <div className="profile--rating-header">
-                <div className="header-title">
-                    <p>{day.name}</p>
-                    <div className="day-number-badge">{day.day_number}</div>
-                </div>
-                <div className="header-subtitle">
-                    <img src="/calendar.svg" alt="" />
-                    <span>{dayjs(day.date).format("MMM M, YYYY")}</span>
-                </div>
-            </div>
-            <div className="profile--rate-locations">
-                <div className="profile--rate-locations-container">
-                    {displayLocations}
-                </div>
-                <div>
-                    <div className="profile--rate-modal">
-                        <p>Finished this trip? Mark it as completed.</p>
-                        <button className="profile--rate-btn">
-                            <img src="/check.svg" alt="" />
-                            <p>Mark as complete</p>
-                        </button>
+                <div>Loading...</div>
+                :
+                <>
+                <div className="profile--rating-header">
+                    <div className="header-title">
+                        <p>{day?.name}</p>
+                        <div className="day-number-badge">{day?.day_number}</div>
+                    </div>
+                    <div className="header-subtitle">
+                        <img src="/calendar.svg" alt="" />
+                        <span>{dayjs(day.date).format("MMM M, YYYY")}</span>
                     </div>
                 </div>
-            </div>
-            </>
-            }
+                <div className="profile--rate-locations">
+                    <div className="profile--rate-locations-container">
+                        {displayLocations}
+                    </div>
+                    <div>
+                        <div className="profile--rate-modal">
+                            <p>Finished this trip? Mark it as completed.</p>
+                            <button className="profile--rate-btn" onClick={handleMarkComplete}>
+                                <img src="/check.svg" alt="" />
+                                <p>Mark as complete</p>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                </>
+                }
         </div>
     )
 }

@@ -2,9 +2,10 @@ import { useState } from "react"
 
 const useDayManager = (authTokens) => {
     const access = String(authTokens.access)
+    const [ day, setDay ] = useState() 
     const [ days, setDays ] = useState([])
     const [ error, setError ] = useState(false) 
-    const [ loading, setLoading ] = useState(false) 
+    const [ loading, setLoading ] = useState(true) 
 
     const getDays = async (itinerary_id) => {
         setLoading(true)
@@ -83,8 +84,53 @@ const useDayManager = (authTokens) => {
 
 		setDays(currentDays)
 	}
+
+    const markDayAsComplete = async (id) => {
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/api/day/${id}/complete/`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${String(authTokens.access)}`
+                },
+            })
+            console.log(response)
+
+            const data = await response.json();
+            console.log(data)
+        }
+        catch (error) {
+            console.log("An error occured while marking day as complete: ", error)
+        }
+    }
+
+    const getDayRating = async (id) => {
+        console.log("Confirmed working")
+        setLoading(true)
+        
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/api/day/${id}/detail/`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${access}`
+                }
+            })
+            console.log(response)
+
+            const data = await response.json()
+            setDay(data)
+        }
+        catch(error) {
+            setError("An error occured while fetching Day data: ", error)
+        }
+        finally {
+            setLoading(false)
+        }
+    }
     
     return {
+        day,
         days,
         error,
         loading,
@@ -92,6 +138,8 @@ const useDayManager = (authTokens) => {
         deleteDay,
         removeDay,
         updateDays,
+        getDayRating,
+        markDayAsComplete,
         updateDayColor,
         updateCalendarDays,
     }

@@ -607,3 +607,13 @@ def get_completed_day(request, day_id):
 
     serializers = DayRatingSerializer(day)
     return Response(serializers.data, status=status.HTTP_200_OK)
+
+@api_view(['PATCH'])
+def mark_day_complete(request, day_id):
+    day = Day.objects.get(id=day_id)
+    day.completed = True
+    day.save()
+    
+    return Response({
+        'message': 'Marked day as completed.'
+    },status=status.HTTP_200_OK)
