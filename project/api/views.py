@@ -637,7 +637,9 @@ def rate_day(request, day_id):
     day.rating = rating
     day.save()
 
-    return Response(status=status.HTTP_200_OK)
+    serializer = DayRatingSerializer(day)
+
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])

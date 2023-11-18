@@ -85,8 +85,18 @@ const RateDay = () => {
                         {displayLocations}
                     </div>
                     <div>
-                        {day.completed ? 
+                        {!day.completed ? 
                         <div className="profile--rate-modal">
+                            <p>Finished this trip? Mark it as completed.</p>
+                            <button className="profile--rate-btn" onClick={handleMarkComplete}>
+                                <img src="/check.svg" alt="" />
+                                <p>Mark as complete</p>
+                            </button>
+                        </div>
+                        :
+                        <div className="profile--rate-modal">
+                            {!day.rating ? 
+                            <>
                             <p>How did your overall trip went?</p>
                             <div className="profile--star-container">
                             {Array.from({length: 5}).map((_, idx) => (
@@ -100,16 +110,15 @@ const RateDay = () => {
                                 <button className="profile--star-cancel-btn">Undo</button>
                                 <button className="profile--star-submit-btn" onClick={handleSubmitDayRating}>Submit</button>
                             </div>
+                            </>
+                            :
+                            <>
+                            <p>Your Rating: {day.rating}</p>
+                            </>
+                            }
                             
                         </div>
-                        :
-                        <div className="profile--rate-modal">
-                            <p>Finished this trip? Mark it as completed.</p>
-                            <button className="profile--rate-btn" onClick={handleMarkComplete}>
-                                <img src="/check.svg" alt="" />
-                                <p>Mark as complete</p>
-                            </button>
-                        </div>
+                        
                         }
                     </div>
                 </div>

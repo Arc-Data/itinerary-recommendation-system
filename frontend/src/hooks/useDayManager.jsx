@@ -176,6 +176,9 @@ const useDayManager = (authTokens) => {
                 },
                 body: JSON.stringify(rating)
             })
+
+            const data = await response.json()
+            setDay(data)
         }        
         catch (error) {
             console.log("An error occured while rating the day itinerary: ", error)
