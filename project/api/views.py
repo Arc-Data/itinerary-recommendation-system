@@ -613,7 +613,6 @@ def mark_day_complete(request, day_id):
     day = Day.objects.get(id=day_id)
     day.completed = True
     day.save()
-    
-    return Response({
-        'message': 'Marked day as completed.'
-    },status=status.HTTP_200_OK)
+
+    serializer = DayRatingSerializer(day)
+    return Response(serializer.data,status=status.HTTP_200_OK)

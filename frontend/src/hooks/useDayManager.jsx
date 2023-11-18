@@ -97,7 +97,7 @@ const useDayManager = (authTokens) => {
             console.log(response)
 
             const data = await response.json();
-            console.log(data)
+            setDay(data)
         }
         catch (error) {
             console.log("An error occured while marking day as complete: ", error)
@@ -116,7 +116,6 @@ const useDayManager = (authTokens) => {
                     "Authorization": `Bearer ${access}`
                 }
             })
-            console.log(response)
 
             const data = await response.json()
             setDay(data)
