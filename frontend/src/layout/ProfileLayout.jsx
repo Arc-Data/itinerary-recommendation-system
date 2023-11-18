@@ -36,20 +36,15 @@ const ProfileLayout = () => {
 								<div>
 									<p></p>
 									<Link to="trips">
-									Recent
+									Itineraries
 									</Link>
 								</div>
 								<div>
 									<p></p>
 									<Link to ="rate">
-									To Rate
+									Recent
 									</Link>
 								</div>
-								<div>
-									<p></p>
-									<p>Archived</p>
-								</div>
-								
 							</div>
 							}
 						</div>

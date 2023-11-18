@@ -2485,7 +2485,7 @@ input[type="radio"] {
 
 .active--day-item {
     display: grid;
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: auto 1fr auto auto;
     gap: 20px;
     padding: 12px;
     align-items: center;
@@ -2498,9 +2498,21 @@ input[type="radio"] {
     text-overflow: ellipsis;
 }
 
-.active--trip-btn {
-    padding: 12px;
+.active--trip-btns {
+    display: flex;
+    gap: 10px;
+}
+
+.active--trip-view {
     background: #007bff;
+}
+
+.active--trip-edit {
+    color: black;
+}
+
+.active--trip-edit, .active--trip-view {
+    padding: 12px;
     border-radius: 10px;
 }
 
@@ -2518,3 +2530,4 @@ input[type="radio"] {
 .active--trip-save:hover {
     opacity: 1;
 }
+

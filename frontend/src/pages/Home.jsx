@@ -46,9 +46,14 @@ const HomePage = () => {
 						<p>{day.name} {dayjs(day.date).format('MMM D, YYYY')}</p>
 					</div>
 					<div className="active--trip-locations">{locations}</div>
-					<Link to={`/plan/${day.itinerary}`}>
-						<button className="active--trip-btn">View</button>
-					</Link>
+					<div className="active--trip-btns">
+						<Link to={`/plan/${day.itinerary}`}>
+							<button className="active--trip-edit">Edit</button>
+						</Link>					
+						<Link to={`/profile/rate/${day.id}`}>
+							<button className="active--trip-view">View</button>
+						</Link>
+					</div>
 				</div>
 			)
 		})
