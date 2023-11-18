@@ -3,8 +3,6 @@ import { Link, useNavigate, useParams } from "react-router-dom"
 import useRatingManager from "../hooks/useRatingManager"
 import AuthContext from "../context/AuthContext"
 import dayjs from "dayjs"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faLocationDot } from "@fortawesome/free-solid-svg-icons"
 import getFeeDetails from "../utils/getFeeDetails"
 import getTimeDetails from "../utils/getTimeDetails"
 
@@ -68,8 +66,19 @@ const RateDay = () => {
                     <span>{dayjs(day.date).format("MMM M, YYYY")}</span>
                 </div>
             </div>
-            <div className="profile--rate-locations-container">
-                {displayLocations}
+            <div className="profile--rate-locations">
+                <div className="profile--rate-locations-container">
+                    {displayLocations}
+                </div>
+                <div>
+                    <div className="profile--rate-modal">
+                        <p>Finished this trip? Mark it as completed.</p>
+                        <button className="profile--rate-btn">
+                            <img src="/check.svg" alt="" />
+                            <p>Mark as complete</p>
+                        </button>
+                    </div>
+                </div>
             </div>
             </>
             }

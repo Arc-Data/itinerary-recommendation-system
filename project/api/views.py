@@ -515,7 +515,7 @@ def get_location_recommendations(request, location_id):
 
 
 @api_view(["GET"])
-permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def get_homepage_recommendations(request):
     user = request.user
 
