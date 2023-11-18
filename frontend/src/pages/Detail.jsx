@@ -399,7 +399,7 @@
 										<FaTrash />
 										<p>Delete review</p>
 									</div>
-									<div className="plan--day-dropcontent-item">
+									<div className="plan--day-dropcontent-item" onClick={handleEditReview}>
 										<FaEdit />
 										<p>Edit review</p>
 									</div>
@@ -408,19 +408,7 @@
 							</div>
 						</div>
 					</div>
-
 					<p className="user--reviews font15">{userReview.comment}</p>
-					<div className="flex">
-						{editMode ? (
-						<button className="submit--review" onClick={saveEditedReview}>
-							Save Review
-						</button>
-						) : (
-						<button className="edit--review" onClick={handleEditReview}>
-							Edit Review
-						</button>
-						)}
-					</div>
 				</div>
 			) : (
 				<div>

@@ -12,7 +12,7 @@ export default function Review(props) {
             <div className="user--profile font15"><p>{letter}</p></div>
             <span className="user--username font14"> {props.user.first_name} {props.user.last_name} </span>
         </div>
-        <div className="w80 d-flexCenter">
+        <div className="jc-end w80 d-flexCenter">
         {[...Array(5)].map((star, i) => (
         <FaStar
             key={i}

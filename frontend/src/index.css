@@ -83,6 +83,9 @@ a:-webkit-any-link {
 .mr10px{
    margin-right: 10px;
 }
+.jc-end{
+    justify-content: end;
+ }
 
 .flex {
     display: flex;
@@ -104,6 +107,7 @@ a:-webkit-any-link {
 
 .w80 {
     width: 80%;
+    
 }
 
 /*DISPLAY GRID FOR LANDING PAGE*/
@@ -1715,6 +1719,7 @@ input[type="text"] {
 
 .plan--day-dropcontent-item {
     padding: 12px 14px;
+    cursor: pointer;
 }
 
 .plan--day-dropcontent-item:first-child {
