@@ -2642,3 +2642,9 @@ input[type="radio"] {
     border-radius: 4px;
     cursor: unset;
 }
+
+.view-details {
+    padding: 8px;
+    border-radius: 4px;
+    background: #57CC99;
+}

@@ -1,13 +1,20 @@
-import { useContext, useEffect } from "react"
+import { useContext, useEffect, useState } from "react"
 import AuthContext from "../context/AuthContext"
 import useBusinessManager from "../hooks/useBusinessManager"
 import dayjs from "dayjs"
+import RequestModal from "../components/RequestModal"
 
 const Request = () => {
     const { authTokens } = useContext(AuthContext)
     const { requests, error, loading, getAllApprovalRequests } = useBusinessManager(authTokens) 
 
-    console.log(requests)
+    const [isOpenDetails, setOpenDetails] = useState(false)
+    const [selectedId, setSelectedId] = useState()
+
+    const toggleDetails = (id) => {
+        setSelectedId(id)
+        setOpenDetails(prev => !prev)
+    }
 
     const displayRequests = requests && requests.map(request => {
         return (
@@ -26,6 +33,7 @@ const Request = () => {
                 <td>{request.requester.first_name} {request.requester.last_name}</td>
                 <td>{dayjs(request.timestamp).format("MMMM D YYYY")}</td>
                 <td><button disabled className="request--status">For Approval</button></td>
+                <td><button className="view-details" onClick={() => toggleDetails(request.id)}>View Details</button></td>
             </tr>
         )   
     })
@@ -40,17 +48,21 @@ const Request = () => {
             <div className="requests--table">
                 <table>
                     <thead>
-                        <th>Name</th>
-                        <th>Location Type</th>
-                        <th>Owner</th>
-                        <th>Date Filled</th>
-                        <th>Action</th>
+                        <td>Name</td>
+                        <td>Location Type</td>
+                        <td>Owner</td>
+                        <td>Date Filled</td>
+                        <td>Status</td>
+                        <td>Action</td>
                     </thead>
                     <tbody>
                         {displayRequests}
                     </tbody>
                 </table>
             </div>
+            {isOpenDetails &&
+            <RequestModal onClose={toggleDetails} id={selectedId}/>
+            }
         </div>
     )
 }
