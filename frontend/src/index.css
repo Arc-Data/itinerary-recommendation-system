@@ -2562,8 +2562,16 @@ input[type="radio"] {
     gap: 10px;
     flex-direction: column;
 }
+
+.flex-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .business--header {
     display: flex;
+    padding-bottom: 40px;
     align-items: center;
     justify-content: space-between;
 }
@@ -2615,4 +2623,22 @@ input[type="radio"] {
     display: flex;
     flex-direction: column;
     gap: 4px;
+}
+
+.requests--table {
+    border-top: 1px solid #e7e7e7;
+    padding: 40px 0;    
+}
+
+.requests--title {
+    color: #333;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.request--status {
+    padding: 8px;
+    background-color: #E86B6B;
+    border-radius: 4px;
+    cursor: unset;
 }

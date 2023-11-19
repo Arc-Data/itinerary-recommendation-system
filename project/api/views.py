@@ -607,11 +607,13 @@ def create_ownership_request(request):
 @permission_classes([IsAuthenticated])
 def get_ownership_requests(request):
     user = request.user
-    requests = OwnershipRequest.objects.filter(user=user)
+    requests = OwnershipRequest.objects.filter(user=user, is_approved=False)
+    print(requests)
     serializers = OwnershipRequestSerializer(requests, many=True)
 
-    return Response(serializers.data, status=status.HTTP_200_OK)@api_view(['PATCH'])
+    return Response(serializers.data, status=status.HTTP_200_OK)
 
+@api_view(['PATCH'])
 @permission_classes([IsAuthenticated])
 def mark_day_as_completed(request, day_id):
     day = Day.objects.get(id=day_id)
@@ -693,3 +695,11 @@ def get_active_trips(request):
     serializer = DayRatingsSerializer(days, many=True)
 
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def get_user_business(request):
+    user = request.user
+    location = Location.objects.filter(owner=user)
+
+    return Response(status=status.HTTP_200_OK)
