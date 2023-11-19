@@ -127,7 +127,7 @@ class LocationPlanSerializers(serializers.ModelSerializer):
 
     class Meta:
         model = Location
-        fields = ['name', 'primary_image', 'address', 'longitude', 'latitude', 'min_cost', 'max_cost', 'opening', 'closing']
+        fields = ['id', 'name', 'primary_image', 'address', 'longitude', 'latitude', 'min_cost', 'max_cost', 'opening', 'closing']
 
     def get_primary_image(self, obj):
         primary_image = obj.images.filter(is_primary_image=True).first()
@@ -264,6 +264,7 @@ class ItineraryItemSerializer(serializers.ModelSerializer):
         model = ItineraryItem
         fields = ['id', 'location', 'day', 'details']
 
+
 class DaySerializers(serializers.ModelSerializer):
     itinerary_items = ItineraryItemSerializer(source='itineraryitem_set', many=True)
 
@@ -390,9 +391,9 @@ class BookmarkLocationSerializer(serializers.ModelSerializer):
 
         return bookmark.datetime_created    
 
-
 class RecommendedLocationSerializer(serializers.ModelSerializer):
     primary_image = serializers.SerializerMethodField()
+    
     class Meta:
         model = Location
         fields = ('id', 'name', 'primary_image')
@@ -412,3 +413,59 @@ class OwnershipRequestSerializer(serializers.ModelSerializer):
         model = OwnershipRequest
         fields = ['id', 'is_approved', 'timestamp', 'details']
     
+
+class DayRatingsSerializer(serializers.ModelSerializer):
+    locations = serializers.SerializerMethodField()
+    name = serializers.SerializerMethodField()
+    day_number = serializers.SerializerMethodField()
+    image = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Day
+        fields = ['id', 'date', 'locations', 'name', 'day_number', 'image', 'itinerary', 'completed', 'rating']
+
+    def get_name(self, obj):
+        return obj.itinerary.name
+
+    def get_day_number(self, obj):
+        return f"Day {obj.order}"
+
+    def get_locations(self, obj):
+        items = ItineraryItem.objects.filter(day=obj)
+
+        location_names = []
+        for item in items:
+            location_names.append(item.location.name)
+
+        return location_names
+    
+    def get_image(self, obj):
+        item = ItineraryItem.objects.filter(day=obj).first()
+        
+        if item:
+            return LocationImage.objects.get(location=item.location, is_primary_image=True).image.url
+
+class DayRatingSerializer(serializers.ModelSerializer):
+    locations = serializers.SerializerMethodField()
+    name = serializers.SerializerMethodField()
+    day_number = serializers.SerializerMethodField()
+
+    class Meta: 
+        model = Day
+        fields = ['id', 'date', 'locations', 'day_number', 'name', 'completed', 'rating']
+
+    def get_name(self, obj):
+        return obj.itinerary.name
+
+    def get_day_number(self, obj):
+        return f"Day {obj.order}"
+
+    def get_locations(self, obj):
+        items = ItineraryItem.objects.filter(day=obj)
+
+        locations = []
+        for item in items:
+            serializer = LocationPlanSerializers(item.location)
+            locations.append(serializer.data)
+        
+        return locations

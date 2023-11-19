@@ -29,8 +29,9 @@ const Trips = () => {
 	}
 
 	return (
-		<div className="profile-trips--container">
-			<p>Your trips</p>
+		<div className="profile--main-content">
+			<p className="header-title">Your trips</p>
+			<p className="header-subtitle">Recent</p>
 			{loading ? 
 			<div>
 				Loading...

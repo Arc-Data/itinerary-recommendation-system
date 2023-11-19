@@ -30,6 +30,11 @@ urlpatterns = [
 
     path('day/<int:day_id>/color/', edit_day_color, name="edit-day-color"),
     path('day/<int:day_id>/delete/', delete_day, name="delete-day"),
+    path('days/completed/', get_completed_days, name="get_completed_days"),
+    path('day/<int:day_id>/complete/', mark_day_complete, name="mark_day_complete"),
+    path('day/<int:day_id>/detail/', get_completed_day, name="get-completed-day"),
+    path('day/<int:day_id>/rate/', rate_day, name="rate-day"),
+    path('days/complete/', mark_days_complete, name="mark_days_complete"),
 
     path('day-item/', create_itinerary_item, name="create-itinerary-item"),
     path('day-item/<int:day_id>/delete/', delete_day_item, name="delete-day-item"),
@@ -50,5 +55,6 @@ urlpatterns = [
     path('user/<int:user_id>/delete/', delete_user, name='delete_user'),
     path('user/', get_all_users, name='get_all_users'),
     path('user/<int:user_id>/', get_user, name='get_user'),
+    path('user/active/', get_active_trips, name="get-active-trips"),
 
 ]

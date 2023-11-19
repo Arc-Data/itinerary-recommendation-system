@@ -73,6 +73,14 @@ a:-webkit-any-link {
     margin-right: 2px; 
 }
 
+.header-title {
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.header-subtitle {
+    font-size: 20px;
+}
 
 /*DISPLAY GRID FOR LANDING PAGE*/
 .d-Grid {
@@ -2306,16 +2314,254 @@ input[type="radio"] {
 }
 
 .profile--links-section {
-    margin-top: 40px;
+    margin-top: 80px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 15px;
 }
 
-.profile-trips--container {
+.profile--main-content {
     max-width: 1200px;
 }
 
+.profile--mark-btn {
+    background: #184E77;
+    border-radius: 50%;
+    display: grid;
+    height: 40px;
+    width: 40px;
+    place-items: center;
+}
+
+.profile--ratings-container {
+    padding: 30px 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.profile--ratings-container > div ~ * {
+    border-top: 1px solid #E7E7E7;
+}
+
+.profile--ratings-content {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.profile--ratings-content > div {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.profile--ratings-item {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 20px;
+    padding: 20px 0;
+    align-items:center;
+}
+
+.profile--ratings-item > img {
+    object-fit: cover;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+
+.profile--ratings-name {
+    display: flex;
+    gap: 10px;
+    max-width: 800px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.profile--ratings-item-name {
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+}
+
+.day-number-badge {
+    font-size: 16px;
+    background: #38A3A5;
+    text-transform: uppercase;
+    padding: 2px 12px;
+    border-radius: 6px;
+    color: white;
+}
+
+.profile--rating-header {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.profile--rating-btn {
+    padding: 8px 12px;
+    color: black;
+    box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+.profile--rating-header > div {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.profile--rate-locations-container {
+    padding: 20px 20px;
+}
+
+.back {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    cursor: pointer;
+}
+
+.profile--rate-locations {
+    display: flex;
+    gap: 10px;
+}
+
+.profile--rate-modal {
+    border: 1px solid #e7e7e7;
+    padding: 40px 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    border-radius: 10px;
+}
+
+.profile--star-container {
+    display: flex;
+    gap: 10px;
+}
+
+.profile--rate-btn {
+    background: #57CC99;
+    opacity: 0.9;
+    padding: 12px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+}
+
+.profile--rate-btn:hover {
+    opacity: 1;
+}
+
+.profile--star-btns {
+    display: flex;
+    gap: 20px;
+}
+
+.profile--star-btns > button{
+    padding: 12px;
+    border-radius: 10px;
+    width: 120px;
+}
+
+.profile--star-cancel-btn {
+    background-color: #fcfcfc;
+    color: black;
+    border: 1px solid #CDCDCD
+}
+
+.profile--star-submit-btn {
+    background-color: #184E77;
+    color: white;
+    border: 1px solid transparent;
+}
+
+.star {
+    cursor: pointer;
+}
+
+.active--trips-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px 0;
+}
+
+.active--trip-name {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.active--trip-name > input[type=checkbox] {
+    width: 20px;
+    height: 20px;
+}
+
+.active--day-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    gap: 20px;
+    padding: 12px;
+    align-items: center;
+    border: 1px solid #e7e7e7;
+    border-radius: 10px;
+    box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.2);
+}
+
+.active--trip-locations {
+    text-overflow: ellipsis;
+}
+
+.active--trip-btns {
+    display: flex;
+    gap: 10px;
+}
+
+.active--trip-view {
+    background: #007bff;
+}
+
+.active--trip-edit {
+    color: black;
+}
+
+.active--trip-edit, .active--trip-view {
+    padding: 12px;
+    border-radius: 10px;
+}
+
+.active--trip-save {
+    background: #57CC99;
+    margin-top: 20px;
+    align-self: flex-end;
+    padding: 12px;
+    width: 120px;
+    border-radius: 10px;
+    opacity: .9;
+    box-shadow: 0 0 1em rgba(0,0,0,0.2);
+}
+
+.active--trip-save:hover {
+    opacity: 1;
+}
+
+.flex-10 {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.flex-col-10 {
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+}
 .business--header {
     display: flex;
     align-items: center;

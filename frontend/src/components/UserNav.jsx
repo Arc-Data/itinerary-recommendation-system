@@ -29,7 +29,7 @@ const UserNav = () => {
         <nav className='user--navbar'>
             <div className='nav-wrapper'>
                 <Link to = "/home">
-                    <img className="cebu--route" src="../images/Untitled design.png" alt="LandingPage" />
+                    <img className="cebu--route" src="/images/logo.png" alt="LandingPage" />
                 </Link>
                 <form onSubmit={handleSearchSubmit} method="GET">
                     <div className='user--search'>

@@ -195,6 +195,9 @@ class Day(models.Model):
     date = models.DateField()
     itinerary = models.ForeignKey(Itinerary, on_delete=models.CASCADE)
     color = models.CharField(max_length=7, default="#184E77")
+    completed = models.BooleanField(default=False)
+    order = models.PositiveIntegerField(default=1)
+    rating = models.PositiveIntegerField(default=0)
 
     class Meta:
         ordering = ['date']

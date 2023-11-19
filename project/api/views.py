@@ -7,6 +7,7 @@ from rest_framework.filters import SearchFilter
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import IsAuthenticated
+from django.db.models import Count
 
 from .managers import *
 from .models import *
@@ -177,22 +178,23 @@ def create_itinerary(request):
     itinerary_serializer = ItinerarySerializers(data=itinerary_data)
 
     if itinerary_serializer.is_valid():
-        print("valid")
         itinerary = itinerary_serializer.save()
 
         current_date = datetime.datetime.strptime(start_date, '%Y-%m-%d').date()
         end_date = datetime.datetime.strptime(end_date, '%Y-%m-%d').date()
         
+        order = 1
         while current_date <= end_date:
             Day.objects.create(
                 date=current_date,
-                itinerary=itinerary
+                itinerary=itinerary,
+                order=order
             )
 
+            order = order + 1
             current_date += timedelta(days=1)
         
         return Response({'id': itinerary.id}, status=status.HTTP_201_CREATED)
-    
 
     return Response(itinerary_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -514,10 +516,9 @@ def get_location_recommendations(request, location_id):
 
 
 @api_view(["GET"])
-#permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def get_homepage_recommendations(request):
-
-    user = get_object_or_404(User, id=2)
+    user = request.user
 
     preferences = [
         user.preferences.history,
@@ -565,7 +566,6 @@ def delete_user(request, user_id):
     except User.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def get_user(request, user_id):
@@ -610,4 +610,86 @@ def get_ownership_requests(request):
     requests = OwnershipRequest.objects.filter(user=user)
     serializers = OwnershipRequestSerializer(requests, many=True)
 
+    return Response(serializers.data, status=status.HTTP_200_OK)@api_view(['PATCH'])
+
+@permission_classes([IsAuthenticated])
+def mark_day_as_completed(request, day_id):
+    day = Day.objects.get(id=day_id)
+    day.completed = False if day.completed else True
+    day.save()
+
+    return Response(status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_completed_days(request):
+    user = request.user
+    itineraries = Itinerary.objects.filter(user=user)
+    completed_days = []
+
+    for itinerary in itineraries:
+        days = Day.objects.filter(itinerary=itinerary)
+
+        for day in days:
+            if ItineraryItem.objects.filter(day=day).count() != 0:
+                completed_days.append(day)
+
+    serializer = DayRatingsSerializer(completed_days, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_completed_day(request, day_id):
+    day = Day.objects.get(id=day_id)
+
+    serializers = DayRatingSerializer(day)
     return Response(serializers.data, status=status.HTTP_200_OK)
+
+@api_view(['PATCH'])
+def mark_day_complete(request, day_id):
+    day = Day.objects.get(id=day_id)
+    day.completed = True
+    day.save()
+
+    serializer = DayRatingSerializer(day)
+    return Response(serializer.data,status=status.HTTP_200_OK)
+
+@api_view(['PATCH'])
+def mark_days_complete(request):
+    ids = request.data.get('ids')
+    
+    for id in ids:
+        day = Day.objects.get(id=id)
+        day.completed = True 
+        day.save()
+
+    return Response(status=status.HTTP_200_OK)
+
+@api_view(["POST"])
+def rate_day(request, day_id):
+    rating = request.data
+
+    day = Day.objects.get(id=day_id)
+    day.rating = rating
+    day.save()
+
+    serializer = DayRatingSerializer(day)
+
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def get_active_trips(request):
+    user = request.user
+    itineraries = Itinerary.objects.filter(user=user)
+    current_date = datetime.datetime.now().date()
+
+    days = []
+    for itinerary in itineraries:
+        matching_days = Day.objects.filter(itinerary=itinerary, date__lte=current_date, completed=False)
+        matching_days = matching_days.annotate(num_items=Count('itineraryitem')).filter(num_items__gt=0)
+
+        days.extend(matching_days)
+
+    serializer = DayRatingsSerializer(days, many=True)
+
+    return Response(serializer.data, status=status.HTTP_200_OK)
