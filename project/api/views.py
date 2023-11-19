@@ -608,10 +608,15 @@ def create_ownership_request(request):
 def get_ownership_requests(request):
     user = request.user
     requests = OwnershipRequest.objects.filter(user=user, is_approved=False)
-    print(requests)
     serializers = OwnershipRequestSerializer(requests, many=True)
 
     return Response(serializers.data, status=status.HTTP_200_OK)
+
+@api_view(["GET"])
+def get_all_ownership_requests(request):
+    requests = OwnershipRequest.objects.filter(is_approved=False)
+    serializer = OwnershipRequestSerializer(requests, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['PATCH'])
 @permission_classes([IsAuthenticated])
@@ -703,3 +708,5 @@ def get_user_business(request):
     location = Location.objects.filter(owner=user)
 
     return Response(status=status.HTTP_200_OK)
+
+

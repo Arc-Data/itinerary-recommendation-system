@@ -31,6 +31,29 @@ const useBusinessManager = (authTokens) => {
         }
     }
 
+    const getAllApprovalRequests = async () => {
+        setLoading(true)
+
+        try {
+            const response = await fetch('http://127.0.0.1:8000/api/requests/', {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${access}`
+                }
+            })
+
+            const data = await response.json()
+            setRequests(data)
+        }
+        catch (error) {
+            setError("An error occured while retrieving approval requests")
+        } 
+        finally {
+            setLoading(false)
+        }
+    }
+
     return {
         loading,
         error,
@@ -38,6 +61,7 @@ const useBusinessManager = (authTokens) => {
         locations,
         requests, 
         getApprovalRequests,
+        getAllApprovalRequests,
     }
 }
 

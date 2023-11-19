@@ -408,10 +408,11 @@ class RecommendedLocationSerializer(serializers.ModelSerializer):
 
 class OwnershipRequestSerializer(serializers.ModelSerializer):
     details = LocationBasicSerializer(source='location', read_only=True)
+    requester = UserSerializers(source='user')
 
     class Meta:
         model = OwnershipRequest
-        fields = ['id', 'is_approved', 'timestamp', 'details']
+        fields = ['id', 'is_approved', 'timestamp', 'details', 'requester']
     
 
 class DayRatingsSerializer(serializers.ModelSerializer):

@@ -30,6 +30,7 @@ import Business from './pages/Business';
 import AddBusiness from './pages/AddBusiness';
 import Recent from './pages/Recent';
 import RateDay from './pages/RateDay';
+import Request from './pages/Request';
 	/*css*/
 	
 function App() {
@@ -71,6 +72,7 @@ function App() {
 					<Route path="/admin/location" element={<AddLocation/>} />
 					<Route path="/admin/locations" element={<Location/>} />
 					<Route path="/admin/location/:id" element={<AdminLocationView />} />
+					<Route path="/admin/requests" element={<Request />} />
 				</Route>
 			</Routes>
 		</AuthProvider>
