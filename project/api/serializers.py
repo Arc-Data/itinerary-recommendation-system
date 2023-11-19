@@ -3,6 +3,7 @@ from .models import *
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth.hashers import make_password
+from django.db.models import Avg, Max
 
 from datetime import datetime
 
@@ -387,10 +388,12 @@ class BookmarkLocationSerializer(serializers.ModelSerializer):
 
 class RecommendedLocationSerializer(serializers.ModelSerializer):
     primary_image = serializers.SerializerMethodField()
+    tags = serializers.SerializerMethodField()
+    ratings = serializers.SerializerMethodField()
     
     class Meta:
         model = Location
-        fields = ('id', 'name', 'primary_image')
+        fields = ('id', 'name', 'primary_image', 'tags', 'ratings')
 
     def get_primary_image(self, obj):
         primary_image = obj.images.filter(is_primary_image=True).first()
@@ -399,6 +402,23 @@ class RecommendedLocationSerializer(serializers.ModelSerializer):
             return primary_image.image.url
 
         return None
+    
+    def get_tags(self, obj):
+        spot = Spot.objects.get(pk=obj.id)
+        
+        if spot:
+            return [tag.name for tag in spot.tags.all()]
+        
+        return None
+    
+    def get_ratings(self, obj):
+        reviews = Review.objects.filter(location_id=obj.id)
+        average_rating = reviews.aggregate(Avg('rating'))['rating__avg'] if reviews.exists() else 0
+
+        return {
+            'total_reviews': reviews.count(),
+            'average_rating': average_rating
+        }
 
 class DayRatingsSerializer(serializers.ModelSerializer):
     locations = serializers.SerializerMethodField()
