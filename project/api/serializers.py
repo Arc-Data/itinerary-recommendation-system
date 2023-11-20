@@ -170,7 +170,7 @@ class LocationSerializers(serializers.ModelSerializer):
 
     class Meta:
         model = Location
-        fields = ('id', 'location_type', 'name', 'address', 'description', 'latitude', 'longitude',  'images', 'details')
+        fields = ('id', 'location_type', 'name', 'address', 'description', 'latitude', 'longitude',  'images', 'details', 'rating_percentages')
 
     def get_details(self, obj):
         user = self.context.get("user")

@@ -150,7 +150,7 @@ def edit_itinerary_name(request, itinerary_id):
     return Response(status=status.HTTP_200_OK)
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+#@permission_classes([IsAuthenticated])
 def get_location(request, id):
     user = request.user
     try:
