@@ -652,8 +652,50 @@ def get_user(request, user_id):
         data = user_serializer.data
         return Response(data)
     except User.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)@api_view(['PATCH'])
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def create_ownership_request(request):
+    user = request.user
+
+    name = request.data.get('name')
+    address = request.data.get('address')
+    longitude = request.data.get('longitude')
+    latitude = request.data.get('latitude')
+    location_type = request.data.get('type')
+
+    location = Location.objects.create(
+        name=name,
+        address=address,
+        latitude=latitude,
+        longitude=longitude,
+        location_type=location_type
+    )
+
+    OwnershipRequest.objects.create(
+        user=user,
+        location=location
+    )
+
+    return Response(status=status.HTTP_200_OK)
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def get_ownership_requests(request):
+    user = request.user
+    requests = OwnershipRequest.objects.filter(user=user, is_approved=False)
+    serializers = OwnershipRequestSerializer(requests, many=True)
+
+    return Response(serializers.data, status=status.HTTP_200_OK)
+
+@api_view(["GET"])
+def get_all_ownership_requests(request):
+    requests = OwnershipRequest.objects.filter(is_approved=False)
+    serializer = OwnershipRequestSerializer(requests, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['PATCH'])
 @permission_classes([IsAuthenticated])
 def mark_day_as_completed(request, day_id):
     day = Day.objects.get(id=day_id)
@@ -735,3 +777,19 @@ def get_active_trips(request):
     serializer = DayRatingsSerializer(days, many=True)
 
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def get_user_business(request):
+    user = request.user
+    location = Location.objects.filter(owner=user)
+
+    return Response(status=status.HTTP_200_OK)
+
+@api_view(["PATCH"])
+def approve_request(request, request_id):
+    approval_request = OwnershipRequest(id=request_id)
+    approval_request.is_approved=True
+    approval_request.save()
+    
+    return Response(status=status.HTTP_200_OK)

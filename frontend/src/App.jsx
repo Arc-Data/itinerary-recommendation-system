@@ -26,8 +26,11 @@ import AdminLocationView from './pages/AdminLocationView';
 import ProfileLayout from './layout/ProfileLayout';
 import Profile from './pages/Profile';
 import Trips from './pages/Trips';
+import Business from './pages/Business';
+import AddBusiness from './pages/AddBusiness';
 import Recent from './pages/Recent';
 import RateDay from './pages/RateDay';
+import Request from './pages/Request';
 	/*css*/
 	
 function App() {
@@ -52,6 +55,8 @@ function App() {
 					<Route path="/profile" element={<ProfileLayout/>}>
 						<Route path="/profile/" element={<Profile />} />
 						<Route path="/profile/trips" element={<Trips/>} />
+						<Route path="/profile/business" element={<Business/>} />
+						<Route path="/profile/business/add" element={<AddBusiness/>} />
 						<Route path="/profile/rate" element={<Recent/>} />
 						<Route path="/profile/rate/:id" element={<RateDay />} />
 					</Route>
@@ -67,6 +72,7 @@ function App() {
 					<Route path="/admin/location" element={<AddLocation/>} />
 					<Route path="/admin/locations" element={<Location/>} />
 					<Route path="/admin/location/:id" element={<AdminLocationView />} />
+					<Route path="/admin/requests" element={<Request />} />
 				</Route>
 			</Routes>
 		</AuthProvider>

@@ -11,6 +11,8 @@ urlpatterns = [
 
     path('location/create/', create_location, name="create-location"),
     path('location/<int:id>/delete/', delete_location, name="delete-location"),
+    path('location/request/', create_ownership_request, name="create_ownership_requests"),
+    path('location/requests/', get_ownership_requests, name="get_ownership_requests"),
 
     path('location/paginated/', PaginatedLocationViewSet.as_view({'get': 'list'}, name="paginated_locations")),
 
@@ -59,4 +61,8 @@ urlpatterns = [
     path('user/<int:user_id>/delete/', delete_user, name='delete_user'),
     path('user/', get_all_users, name='get_all_users'),
     path('user/<int:user_id>/', get_user, name='get_user'),
+    path('user/active/', get_active_trips, name="get-active-trips"),
+    
+    path('requests/', get_all_ownership_requests, name="get_all_ownership_requests"),
+    path('request/<int:request_id>/approve', approve_request, name="approve-request")
 ]

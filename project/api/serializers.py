@@ -163,6 +163,12 @@ class LocationPlanSerializers(serializers.ModelSerializer):
             return spot.closing_time
 
 
+class LocationBasicSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Location
+        fields = '__all__'
+
 class LocationSerializers(serializers.ModelSerializer):
     images = serializers.SerializerMethodField()
     details = serializers.SerializerMethodField()
@@ -453,6 +459,15 @@ class RecommendedLocationSerializer(serializers.ModelSerializer):
             'total_reviews': reviews.count(),
             'average_rating': average_rating
         }
+
+class OwnershipRequestSerializer(serializers.ModelSerializer):
+    details = LocationBasicSerializer(source='location', read_only=True)
+    requester = UserSerializers(source='user')
+
+    class Meta:
+        model = OwnershipRequest
+        fields = ['id', 'is_approved', 'timestamp', 'details', 'requester']
+    
 
 class DayRatingsSerializer(serializers.ModelSerializer):
     locations = serializers.SerializerMethodField()
