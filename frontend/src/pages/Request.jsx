@@ -61,7 +61,7 @@ const Request = () => {
                 </table>
             </div>
             {isOpenDetails &&
-            <RequestModal onClose={toggleDetails} id={selectedId}/>
+            <RequestModal onClose={toggleDetails} request={selectedRequest}/>
             }
         </div>
     )
