@@ -11,8 +11,8 @@ const Request = () => {
     const [isOpenDetails, setOpenDetails] = useState(false)
     const [selectedRequest, setSelectedRequest] = useState()
 
-    const toggleDetails = (id) => {
-        setSelectedId(id)
+    const toggleDetails = (request) => {
+        setSelectedRequest(request)
         setOpenDetails(prev => !prev)
     }
 
