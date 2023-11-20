@@ -2,7 +2,7 @@ import React from 'react';
 import { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
-import { FaMapMarkerAlt, FaUser, FaAngleUp, FaAngleDown } from 'react-icons/fa'; // Import arrow icons
+import { FaMapMarkerAlt, FaUser, FaAngleUp, FaAngleDown, FaReceipt } from 'react-icons/fa'; // Import arrow icons
 
 function Sidebar() {
     const { logoutUser } = useContext(AuthContext);
@@ -66,6 +66,14 @@ function Sidebar() {
                         </NavLink>
                     </>
                 )}
+                <NavLink
+                    className={({ isActive }) => isActive ? 'active' : 'link'}
+                    to="requests"
+                >
+                    <h4 className="users">
+                        <FaReceipt /> Requests
+                    </h4>
+                </NavLink>
             </div>
             <button className="btn logout" onClick={logoutUser}>
                 Logout

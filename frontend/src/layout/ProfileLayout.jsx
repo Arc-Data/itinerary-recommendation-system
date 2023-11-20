@@ -48,12 +48,12 @@ const ProfileLayout = () => {
 							</div>
 							}
 						</div>
-						<AccordionHeader 
-							handleClick={() => {}}
-							active={false}
-							text={"Business"}
-							icon={faBusinessTime}
-							/>
+						<Link to = "business">
+							<div className='profile--link'>
+								<img src="/business.svg" alt="" />
+								<p>Business</p>
+							</div>
+						</Link>
 						<div className="profile--link">
 							<FontAwesomeIcon icon={faBookmark} />
 							<p>Bookmarks</p>
