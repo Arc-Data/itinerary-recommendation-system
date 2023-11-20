@@ -3,7 +3,7 @@ from .models import *
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth.hashers import make_password
-from django.db.models import Avg, Max
+from django.db.models import Avg
 
 from datetime import datetime
 
@@ -166,6 +166,7 @@ class LocationPlanSerializers(serializers.ModelSerializer):
 class LocationSerializers(serializers.ModelSerializer):
     images = serializers.SerializerMethodField()
     details = serializers.SerializerMethodField()
+    rating_percentages = serializers.SerializerMethodField()
 
     class Meta:
         model = Location
@@ -184,6 +185,39 @@ class LocationSerializers(serializers.ModelSerializer):
             return serializer.data
         
         return None
+
+    def get_rating_percentages(self, obj):
+        reviews = Review.objects.filter(location_id=obj.id)
+
+        average_rating = reviews.aggregate(Avg('rating'))['rating__avg'] if reviews.exists() else 0
+
+        count_5_star = reviews.filter(rating=5).count()
+        count_4_star = reviews.filter(rating=4).count()
+        count_3_star = reviews.filter(rating=3).count()
+        count_2_star = reviews.filter(rating=2).count()
+        count_1_star = reviews.filter(rating=1).count()
+
+        highest_count = max(count_5_star, count_4_star, count_3_star, count_2_star, count_1_star)
+
+        percentage_5_star = (count_5_star / highest_count) if highest_count > 0 else 0
+        percentage_4_star = (count_4_star / highest_count) if highest_count > 0 else 0
+        percentage_3_star = (count_3_star / highest_count) if highest_count > 0 else 0
+        percentage_2_star = (count_2_star / highest_count) if highest_count > 0 else 0
+        percentage_1_star = (count_1_star / highest_count) if highest_count > 0 else 0
+
+        rating_data = [
+            {'rating': 5, 'count': count_5_star, 'percentage': percentage_5_star},
+            {'rating': 4, 'count': count_4_star, 'percentage': percentage_4_star},
+            {'rating': 3, 'count': count_3_star, 'percentage': percentage_3_star},
+            {'rating': 2, 'count': count_2_star, 'percentage': percentage_2_star},
+            {'rating': 1, 'count': count_1_star, 'percentage': percentage_1_star},
+        ]
+
+        return {
+            'total_reviews': reviews.count(),
+            'average_rating': average_rating,
+            'ratings': rating_data,
+        }
 
     def get_images(self, obj):
         return [image.image.url for image in obj.images.all()]
