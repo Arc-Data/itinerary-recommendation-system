@@ -2,11 +2,10 @@
 	/*Components*/
 	import DetailCard from "../components/DetailCard";
 	import Review from "../components/Review";
-	/*Data*/
-	import cardData from "../cardData";
 	/*Icon*/
 	import addressIcon from "/images/carbon_location-filled.svg";
-	import timeIcon from "/images/ion_time.svg";
+	import timeIcon from "/images/wi_time-4.svg";
+	import money from "/images/fluent_money-20-regular.svg";
 	import bookmarkIcon from "/images/bookmark-icon-4.png";
 	import star from "/images/star.png";
 	import { useParams } from "react-router-dom";
@@ -304,7 +303,6 @@
 		<DetailCard key={location.id} {...location} />
 	  ));
 
-
 	// DROPDOWN
 	const handleEllipsisClick = () => {
 		setDropdownOpen(!dropdownOpen);
@@ -352,6 +350,13 @@
 						{location.details.closing_time}{" "}
 						</span>
 					</p>
+					<p>
+						{" "}
+						<img className="detailPage--icon" src={money} />
+						<span>
+						Entrance Fee: {location.details.max_fee}  
+						</span>
+					</p>
 					<div className="detailPage--rating-category">
 						{[...Array(5)].map((i, index) => (
 						<img key={index} src={star} alt="Star" className="star" />
@@ -383,10 +388,6 @@
 			<div className="detailPage--about">
 				<h1 className="detailPage--title1">About</h1>
 				<p>{location.description}</p>
-				<p className="font15 bold">
-					Entrance Fee:{" "}
-					<span className="bold1"> {location.details.max_fee} </span>
-				</p>
 			</div>
 			<div className="detailPage--pictures">
 				<div className="detailPage--images">

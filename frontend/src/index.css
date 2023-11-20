@@ -73,7 +73,7 @@ a:-webkit-any-link {
 }
 
 .tag {
-    margin-right: 5px; 
+    margin-left: 3px;
 }
 
 .tag-separator {
@@ -290,7 +290,7 @@ a:-webkit-any-link {
     font-weight: 700;
     font-size: 12px;
     background-color: transparent;
-    color: inherit;
+    color: white;
     border: none;
     cursor: pointer;
 }
@@ -346,8 +346,6 @@ a:-webkit-any-link {
     .container--sign-log {
         overflow:visible;
     }
-    
-   
 }
 
 .container-form {
@@ -436,7 +434,6 @@ a:-webkit-any-link {
 }
 
 /*View Password*/
-
 input[type="password"],
 input[type="text"] {
     width: 100%;
@@ -485,6 +482,11 @@ input[type="text"] {
     border-radius: 10px;
     text-decoration: none;
     margin-top: 20px;
+    color: white;
+}
+
+.get--button {
+    color: white;
 }
 
 .hero--guide {
@@ -559,7 +561,7 @@ input[type="text"] {
 /*LANDING PAGE- DISCOVER*/
 .hero--destination{
     display: relative;
-    background-color: #F9F9F9;
+    background: #F5F1ED;
     justify-content: center;
     padding: 20px 120px;
     width: 100%;
@@ -658,7 +660,7 @@ input[type="text"] {
 .detailPage--address-time{
     align-items: center;
     font-size: 15px;
-    color: gray;
+    color: var(--default-text, #333);
 }
 
 .detailPage--address-time > p { 
@@ -666,9 +668,9 @@ input[type="text"] {
 }
 
 .detailPage--icon {
-    width: 15px; 
-    height: 15px; 
-    margin-right: 8px;
+    width: 17px; 
+    height: 17px; 
+    margin-right: 5px;
 }
 
 .detailPage--rating-stars {
@@ -903,11 +905,10 @@ input[type="text"] {
 }
 
 .input--review{
-    width: 93%;
+    width: 100%;
     height: 55px;
     border-radius: 20px;
-    margin: 25px;
-    margin-bottom: 0;
+    margin: 25px 0 0;
     padding: 20px; 
     overflow: hidden;
 }

@@ -4,7 +4,7 @@ export default function Navbar() {
 	return (
 		<nav className='navbar'>
 			<Link to="/">
-				<img className="cebu--route" src="/images/logo.png" alt="LandingPage" />
+				<img className="cebu--route" src="/images/logocebu.png" alt="LandingPage" />
 			</Link>
 			<div className='link'>
 			<Link to="login">

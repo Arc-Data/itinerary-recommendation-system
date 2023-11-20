@@ -33,7 +33,7 @@ export default function LandingPage() {
 						Cebu trip with CebuRoute's expert guidance.
 					</p>
 					<button>
-						<Link to="login">Get Started</Link>
+						<Link to="login" className='get--button'>Get Started</Link>
 					</button>
 				</div>
 			</div>
