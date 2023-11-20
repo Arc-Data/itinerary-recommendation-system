@@ -246,7 +246,3 @@ class Food(models.Model):
     item = models.CharField(max_length=100)
     price = models.FloatField()
     image = models.ImageField(blank=True, null=True, upload_to='location_food/')
-
-    
-
-

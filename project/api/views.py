@@ -716,4 +716,3 @@ def approve_request(request, request_id):
     approval_request.save()
     
     return Response(status=status.HTTP_200_OK)
-
