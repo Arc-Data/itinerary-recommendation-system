@@ -714,5 +714,6 @@ def approve_request(request, request_id):
     approval_request = OwnershipRequest(id=request_id)
     approval_request.is_approved=True
     approval_request.save()
+    
     return Response(status=status.HTTP_200_OK)
 

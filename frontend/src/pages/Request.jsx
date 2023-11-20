@@ -9,7 +9,7 @@ const Request = () => {
     const { requests, error, loading, getAllApprovalRequests } = useBusinessManager(authTokens) 
 
     const [isOpenDetails, setOpenDetails] = useState(false)
-    const [selectedId, setSelectedId] = useState()
+    const [selectedRequest, setSelectedRequest] = useState()
 
     const toggleDetails = (id) => {
         setSelectedId(id)
@@ -33,7 +33,7 @@ const Request = () => {
                 <td>{request.requester.first_name} {request.requester.last_name}</td>
                 <td>{dayjs(request.timestamp).format("MMMM D YYYY")}</td>
                 <td><button disabled className="request--status">For Approval</button></td>
-                <td><button className="view-details" onClick={() => toggleDetails(request.id)}>View Details</button></td>
+                <td><button className="view-details" onClick={() => toggleDetails(request)}>View Details</button></td>
             </tr>
         )   
     })
